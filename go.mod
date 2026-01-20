@@ -11,10 +11,10 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.7.0
-	github.com/gorilla/handlers v1.5.1
+	github.com/gorilla/handlers v1.5.2
 	github.com/jinzhu/copier v0.4.0
 	github.com/kakuilan/kgo v0.4.1
-	github.com/mojocn/base64Captcha v1.3.5
+	github.com/mojocn/base64Captcha v1.3.8
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.1.0
 	github.com/swordkee/kratos-casbin v0.0.0-20260120034143-313911f94a1f
@@ -72,7 +72,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.34.0 // indirect
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 // indirect
-	golang.org/x/image v0.5.0 // indirect
+	golang.org/x/image v0.23.0 // indirect
 	golang.org/x/mod v0.32.0 // indirect
 	golang.org/x/net v0.49.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
