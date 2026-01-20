@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"errors"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"
@@ -72,7 +73,8 @@ func (c *casbinRuleRepo) UpdateCasbinApi(ctx context.Context, oldPath string, ne
 }
 
 func (c *casbinRuleRepo) GetPolicyPathByRoleId(roleKey string) [][]string {
-	return c.syncedEnforcer.GetFilteredPolicy(0, roleKey)
+	e, _ := c.syncedEnforcer.GetFilteredPolicy(0, roleKey)
+	return e
 }
 
 func (c *casbinRuleRepo) ClearCasbin(v int, p ...string) error {

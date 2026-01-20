@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	jwtV4 "github.com/golang-jwt/jwt/v4"
+	jwtV5 "github.com/golang-jwt/jwt/v5"
 	"github.com/tx7do/kratos-casbin/authz"
 )
 
@@ -22,7 +22,7 @@ type TokenClaims struct {
 	RoleID   int64  `json:"role_id"`
 	RoleKey  string `json:"role_key"`
 	Nickname string `json:"nickname"`
-	jwtV4.RegisteredClaims
+	jwtV5.RegisteredClaims
 }
 
 type securityUser struct {
@@ -88,14 +88,14 @@ func MustFromContext(ctx context.Context) *TokenClaims {
 }
 
 func NewToken(key string, expireAt time.Time, userID, roleID int64, roleKey, nickname string) (string, error) {
-	claims := jwtV4.NewWithClaims(jwtV4.SigningMethodHS256, &TokenClaims{
+	claims := jwtV5.NewWithClaims(jwtV5.SigningMethodHS256, &TokenClaims{
 		UserID:   userID,
 		RoleID:   roleID,
 		Nickname: nickname,
 		RoleKey:  roleKey,
-		RegisteredClaims: jwtV4.RegisteredClaims{
+		RegisteredClaims: jwtV5.RegisteredClaims{
 			Issuer:    "admin",
-			ExpiresAt: jwtV4.NewNumericDate(expireAt),
+			ExpiresAt: jwtV5.NewNumericDate(expireAt),
 		},
 	})
 	return claims.SignedString([]byte(key))
