@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	jwtV5 "github.com/golang-jwt/jwt/v5"
-	"github.com/tx7do/kratos-casbin/authz/casbin"
+	"github.com/swordkee/kratos-casbin/authz/casbin"
 
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"

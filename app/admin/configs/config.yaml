@@ -9,19 +9,19 @@ server:
 data:
   database:
     driver: mysql
-    source: root:123456@tcp(127.0.0.1:3306)/kva?charset=utf8mb4&parseTime=True&loc=Local
+    source: root:root@tcp(localhost:3306)/kva?charset=utf8mb4&parseTime=True&loc=Local
     maxIdleConns: 10
     maxOpenConns: 20
-    logLevel: 'info'
+    logLevel: "info"
   redis:
-    addr: 127.0.0.1:6379
+    addr: localhost:6379
     max_idle: "128"
     max_active: "0"
     idle_timeout: "120"
     read_timeout: 0.2s
     write_timeout: 0.2s
     username:
-    password: "123456"
+    password: ""
     database: 6
 
 auth:

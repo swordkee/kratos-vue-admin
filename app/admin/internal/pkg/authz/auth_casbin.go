@@ -9,7 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	jwtV5 "github.com/golang-jwt/jwt/v5"
-	"github.com/tx7do/kratos-casbin/authz"
+	"github.com/swordkee/kratos-casbin/authz"
 )
 
 var (

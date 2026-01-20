@@ -31,7 +31,7 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	if err != nil {
 		return nil, nil, err
 	}
-	casbinRuleRepo := data.NewCasbinRuleRepo(dataData, db, casbin, logger)
+	casbinRuleRepo := data.NewCasbinRuleRepo(dataData, db, logger)
 	sysUserRepo := data.NewSysUserRepo(dataData, logger)
 	ossRepo := oss.NewOssRepo(confOss, logger)
 	sysUserUseCase := biz.NewSysUserUseCase(sysUserRepo, ossRepo, confServer, logger)

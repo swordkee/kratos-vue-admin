@@ -3,8 +3,8 @@ package biz
 import (
 	"context"
 
-	"github.com/casbin/casbin/v2/model"
-	"github.com/casbin/casbin/v2/persist"
+	"github.com/casbin/casbin/v3/model"
+	"github.com/casbin/casbin/v3/persist"
 	"github.com/go-kratos/kratos/v2/log"
 
 	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
