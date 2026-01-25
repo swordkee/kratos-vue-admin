@@ -2,10 +2,11 @@ package biz
 
 import (
 	"context"
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/go-kratos/kratos/v2/log"
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
 type SysRoleMenuRepo interface {

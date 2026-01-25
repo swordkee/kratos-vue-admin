@@ -10,9 +10,9 @@ import (
 	jwtV5 "github.com/golang-jwt/jwt/v5"
 	"github.com/swordkee/kratos-casbin/authz/casbin"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
 func AuthWhiteListMatcher() selector.MatchFunc {

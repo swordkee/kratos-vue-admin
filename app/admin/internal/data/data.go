@@ -3,16 +3,17 @@ package data
 import (
 	"context"
 	"fmt"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/query"
+	"time"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	go_redis "github.com/redis/go-redis/v9"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
-	"time"
 )
 
 // ProviderSet is data providers.
@@ -37,7 +38,7 @@ var ProviderSet = wire.NewSet(
 // Data .
 type Data struct {
 	log   *log.Helper
-	query *query.Query
+	query *dao.Query
 	db    *gorm.DB
 	rdb   go_redis.UniversalClient
 }
@@ -85,7 +86,7 @@ func NewData(db *gorm.DB, logger log.Logger, rdb go_redis.UniversalClient) (*Dat
 	logs := log.NewHelper(log.With(logger, "module", "receive-service/data"))
 	d := &Data{
 		log:   logs,
-		query: query.Use(db),
+		query: dao.Use(db),
 		db:    db,
 		rdb:   rdb,
 	}
@@ -97,14 +98,14 @@ func NewTransaction(d *Data) biz.Transaction {
 }
 
 func (d *Data) Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
-	return d.query.Transaction(func(tx *query.Query) error {
+	return d.query.Transaction(func(tx *dao.Query) error {
 		ctx = context.WithValue(ctx, contextTxKey{}, tx)
 		return fn(ctx)
 	})
 }
 
-func (d *Data) Query(ctx context.Context) *query.Query {
-	tx, ok := ctx.Value(contextTxKey{}).(*query.Query)
+func (d *Data) Query(ctx context.Context) *dao.Query {
+	tx, ok := ctx.Value(contextTxKey{}).(*dao.Query)
 	if ok {
 		return tx
 	}

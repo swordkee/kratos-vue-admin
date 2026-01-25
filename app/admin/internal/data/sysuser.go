@@ -3,9 +3,9 @@ package data
 import (
 	"context"
 	"errors"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
 type sysuserRepo struct {

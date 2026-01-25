@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/middleware"
 	"github.com/go-kratos/kratos/v2/transport/http/pprof"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/middleware"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -16,11 +16,11 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/gorilla/handlers"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	v1 "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/service"
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	v1 "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
 )
 
 func jsonMarshal(res *pb.CommonReply) ([]byte, error) {

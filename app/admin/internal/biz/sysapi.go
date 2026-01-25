@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
 type SysApiRepo interface {

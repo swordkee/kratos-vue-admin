@@ -5,11 +5,11 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"strings"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/util"
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
 
 type MenusService struct {

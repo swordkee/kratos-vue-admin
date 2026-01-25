@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
 type SysRoleRepo interface {

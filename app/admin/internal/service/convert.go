@@ -1,9 +1,9 @@
 package service
 
 import (
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/util"
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
+	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
 
 func ConvertApiBaseFromList(list [][]string) []*pb.ApiBase {
