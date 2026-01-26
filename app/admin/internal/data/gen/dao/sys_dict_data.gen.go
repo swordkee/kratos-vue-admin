@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,39 +15,41 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysDictDatum(db *gorm.DB, opts ...gen.DOOption) sysDictDatum {
-	_sysDictDatum := sysDictDatum{}
+func newSysDictData(db *gorm.DB, opts ...gen.DOOption) sysDictData {
+	_sysDictData := sysDictData{}
 
-	_sysDictDatum.sysDictDatumDo.UseDB(db, opts...)
-	_sysDictDatum.sysDictDatumDo.UseModel(&model.SysDictDatum{})
+	_sysDictData.sysDictDataDo.UseDB(db, opts...)
+	_sysDictData.sysDictDataDo.UseModel(&model.SysDictData{})
 
-	tableName := _sysDictDatum.sysDictDatumDo.TableName()
-	_sysDictDatum.ALL = field.NewAsterisk(tableName)
-	_sysDictDatum.DictCode = field.NewInt64(tableName, "dict_code")
-	_sysDictDatum.DictSort = field.NewInt32(tableName, "dict_sort")
-	_sysDictDatum.DictLabel = field.NewString(tableName, "dict_label")
-	_sysDictDatum.DictValue = field.NewString(tableName, "dict_value")
-	_sysDictDatum.DictType = field.NewString(tableName, "dict_type")
-	_sysDictDatum.Status = field.NewInt32(tableName, "status")
-	_sysDictDatum.CSSClass = field.NewString(tableName, "css_class")
-	_sysDictDatum.ListClass = field.NewString(tableName, "list_class")
-	_sysDictDatum.IsDefault = field.NewString(tableName, "is_default")
-	_sysDictDatum.CreateBy = field.NewString(tableName, "create_by")
-	_sysDictDatum.UpdateBy = field.NewString(tableName, "update_by")
-	_sysDictDatum.Remark = field.NewString(tableName, "remark")
-	_sysDictDatum.CreateTime = field.NewTime(tableName, "create_time")
-	_sysDictDatum.UpdateTime = field.NewTime(tableName, "update_time")
-	_sysDictDatum.DeleteTime = field.NewTime(tableName, "delete_time")
+	tableName := _sysDictData.sysDictDataDo.TableName()
+	_sysDictData.ALL = field.NewAsterisk(tableName)
+	_sysDictData.DictCode = field.NewInt64(tableName, "dict_code")
+	_sysDictData.DictSort = field.NewInt32(tableName, "dict_sort")
+	_sysDictData.DictLabel = field.NewString(tableName, "dict_label")
+	_sysDictData.DictValue = field.NewString(tableName, "dict_value")
+	_sysDictData.DictType = field.NewString(tableName, "dict_type")
+	_sysDictData.Status = field.NewInt32(tableName, "status")
+	_sysDictData.CSSClass = field.NewString(tableName, "css_class")
+	_sysDictData.ListClass = field.NewString(tableName, "list_class")
+	_sysDictData.IsDefault = field.NewString(tableName, "is_default")
+	_sysDictData.CreateBy = field.NewString(tableName, "create_by")
+	_sysDictData.UpdateBy = field.NewString(tableName, "update_by")
+	_sysDictData.Remark = field.NewString(tableName, "remark")
+	_sysDictData.CreateTime = field.NewTime(tableName, "create_time")
+	_sysDictData.UpdateTime = field.NewTime(tableName, "update_time")
+	_sysDictData.DeleteTime = field.NewTime(tableName, "delete_time")
 
-	_sysDictDatum.fillFieldMap()
+	_sysDictData.fillFieldMap()
 
-	return _sysDictDatum
+	return _sysDictData
 }
 
-type sysDictDatum struct {
-	sysDictDatumDo sysDictDatumDo
+type sysDictData struct {
+	sysDictDataDo sysDictDataDo
 
 	ALL        field.Asterisk
 	DictCode   field.Int64
@@ -70,17 +71,17 @@ type sysDictDatum struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysDictDatum) Table(newTableName string) *sysDictDatum {
-	s.sysDictDatumDo.UseTable(newTableName)
+func (s sysDictData) Table(newTableName string) *sysDictData {
+	s.sysDictDataDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysDictDatum) As(alias string) *sysDictDatum {
-	s.sysDictDatumDo.DO = *(s.sysDictDatumDo.As(alias).(*gen.DO))
+func (s sysDictData) As(alias string) *sysDictData {
+	s.sysDictDataDo.DO = *(s.sysDictDataDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysDictDatum) updateTableName(table string) *sysDictDatum {
+func (s *sysDictData) updateTableName(table string) *sysDictData {
 	s.ALL = field.NewAsterisk(table)
 	s.DictCode = field.NewInt64(table, "dict_code")
 	s.DictSort = field.NewInt32(table, "dict_sort")
@@ -103,15 +104,15 @@ func (s *sysDictDatum) updateTableName(table string) *sysDictDatum {
 	return s
 }
 
-func (s *sysDictDatum) WithContext(ctx context.Context) *sysDictDatumDo {
-	return s.sysDictDatumDo.WithContext(ctx)
+func (s *sysDictData) WithContext(ctx context.Context) *sysDictDataDo {
+	return s.sysDictDataDo.WithContext(ctx)
 }
 
-func (s sysDictDatum) TableName() string { return s.sysDictDatumDo.TableName() }
+func (s sysDictData) TableName() string { return s.sysDictDataDo.TableName() }
 
-func (s sysDictDatum) Alias() string { return s.sysDictDatumDo.Alias() }
+func (s sysDictData) Alias() string { return s.sysDictDataDo.Alias() }
 
-func (s *sysDictDatum) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysDictData) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -120,7 +121,7 @@ func (s *sysDictDatum) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 	return _oe, ok
 }
 
-func (s *sysDictDatum) fillFieldMap() {
+func (s *sysDictData) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 15)
 	s.fieldMap["dict_code"] = s.DictCode
 	s.fieldMap["dict_sort"] = s.DictSort
@@ -139,165 +140,165 @@ func (s *sysDictDatum) fillFieldMap() {
 	s.fieldMap["delete_time"] = s.DeleteTime
 }
 
-func (s sysDictDatum) clone(db *gorm.DB) sysDictDatum {
-	s.sysDictDatumDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysDictData) clone(db *gorm.DB) sysDictData {
+	s.sysDictDataDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysDictDatum) replaceDB(db *gorm.DB) sysDictDatum {
-	s.sysDictDatumDo.ReplaceDB(db)
+func (s sysDictData) replaceDB(db *gorm.DB) sysDictData {
+	s.sysDictDataDo.ReplaceDB(db)
 	return s
 }
 
-type sysDictDatumDo struct{ gen.DO }
+type sysDictDataDo struct{ gen.DO }
 
-func (s sysDictDatumDo) Debug() *sysDictDatumDo {
+func (s sysDictDataDo) Debug() *sysDictDataDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysDictDatumDo) WithContext(ctx context.Context) *sysDictDatumDo {
+func (s sysDictDataDo) WithContext(ctx context.Context) *sysDictDataDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysDictDatumDo) ReadDB() *sysDictDatumDo {
+func (s sysDictDataDo) ReadDB() *sysDictDataDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysDictDatumDo) WriteDB() *sysDictDatumDo {
+func (s sysDictDataDo) WriteDB() *sysDictDataDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysDictDatumDo) Session(config *gorm.Session) *sysDictDatumDo {
+func (s sysDictDataDo) Session(config *gorm.Session) *sysDictDataDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysDictDatumDo) Clauses(conds ...clause.Expression) *sysDictDatumDo {
+func (s sysDictDataDo) Clauses(conds ...clause.Expression) *sysDictDataDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysDictDatumDo) Returning(value interface{}, columns ...string) *sysDictDatumDo {
+func (s sysDictDataDo) Returning(value interface{}, columns ...string) *sysDictDataDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysDictDatumDo) Not(conds ...gen.Condition) *sysDictDatumDo {
+func (s sysDictDataDo) Not(conds ...gen.Condition) *sysDictDataDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysDictDatumDo) Or(conds ...gen.Condition) *sysDictDatumDo {
+func (s sysDictDataDo) Or(conds ...gen.Condition) *sysDictDataDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysDictDatumDo) Select(conds ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Select(conds ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysDictDatumDo) Where(conds ...gen.Condition) *sysDictDatumDo {
+func (s sysDictDataDo) Where(conds ...gen.Condition) *sysDictDataDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDictDatumDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDictDatumDo {
+func (s sysDictDataDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDictDataDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysDictDatumDo) Order(conds ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Order(conds ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysDictDatumDo) Distinct(cols ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Distinct(cols ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysDictDatumDo) Omit(cols ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Omit(cols ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysDictDatumDo) Join(table schema.Tabler, on ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Join(table schema.Tabler, on ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysDictDatumDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysDictDatumDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysDictDatumDo) Group(cols ...field.Expr) *sysDictDatumDo {
+func (s sysDictDataDo) Group(cols ...field.Expr) *sysDictDataDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysDictDatumDo) Having(conds ...gen.Condition) *sysDictDatumDo {
+func (s sysDictDataDo) Having(conds ...gen.Condition) *sysDictDataDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysDictDatumDo) Limit(limit int) *sysDictDatumDo {
+func (s sysDictDataDo) Limit(limit int) *sysDictDataDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysDictDatumDo) Offset(offset int) *sysDictDatumDo {
+func (s sysDictDataDo) Offset(offset int) *sysDictDataDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysDictDatumDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDictDatumDo {
+func (s sysDictDataDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDictDataDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysDictDatumDo) Unscoped() *sysDictDatumDo {
+func (s sysDictDataDo) Unscoped() *sysDictDataDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysDictDatumDo) Create(values ...*model.SysDictDatum) error {
+func (s sysDictDataDo) Create(values ...*model.SysDictData) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysDictDatumDo) CreateInBatches(values []*model.SysDictDatum, batchSize int) error {
+func (s sysDictDataDo) CreateInBatches(values []*model.SysDictData, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysDictDatumDo) Save(values ...*model.SysDictDatum) error {
+func (s sysDictDataDo) Save(values ...*model.SysDictData) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysDictDatumDo) First() (*model.SysDictDatum, error) {
+func (s sysDictDataDo) First() (*model.SysDictData, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictDatum), nil
+		return result.(*model.SysDictData), nil
 	}
 }
 
-func (s sysDictDatumDo) Take() (*model.SysDictDatum, error) {
+func (s sysDictDataDo) Take() (*model.SysDictData, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictDatum), nil
+		return result.(*model.SysDictData), nil
 	}
 }
 
-func (s sysDictDatumDo) Last() (*model.SysDictDatum, error) {
+func (s sysDictDataDo) Last() (*model.SysDictData, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictDatum), nil
+		return result.(*model.SysDictData), nil
 	}
 }
 
-func (s sysDictDatumDo) Find() ([]*model.SysDictDatum, error) {
+func (s sysDictDataDo) Find() ([]*model.SysDictData, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysDictDatum), err
+	return result.([]*model.SysDictData), err
 }
 
-func (s sysDictDatumDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDictDatum, err error) {
-	buf := make([]*model.SysDictDatum, 0, batchSize)
+func (s sysDictDataDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDictData, err error) {
+	buf := make([]*model.SysDictData, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -305,49 +306,49 @@ func (s sysDictDatumDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (s sysDictDatumDo) FindInBatches(result *[]*model.SysDictDatum, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysDictDataDo) FindInBatches(result *[]*model.SysDictData, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysDictDatumDo) Attrs(attrs ...field.AssignExpr) *sysDictDatumDo {
+func (s sysDictDataDo) Attrs(attrs ...field.AssignExpr) *sysDictDataDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysDictDatumDo) Assign(attrs ...field.AssignExpr) *sysDictDatumDo {
+func (s sysDictDataDo) Assign(attrs ...field.AssignExpr) *sysDictDataDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysDictDatumDo) Joins(fields ...field.RelationField) *sysDictDatumDo {
+func (s sysDictDataDo) Joins(fields ...field.RelationField) *sysDictDataDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysDictDatumDo) Preload(fields ...field.RelationField) *sysDictDatumDo {
+func (s sysDictDataDo) Preload(fields ...field.RelationField) *sysDictDataDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysDictDatumDo) FirstOrInit() (*model.SysDictDatum, error) {
+func (s sysDictDataDo) FirstOrInit() (*model.SysDictData, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictDatum), nil
+		return result.(*model.SysDictData), nil
 	}
 }
 
-func (s sysDictDatumDo) FirstOrCreate() (*model.SysDictDatum, error) {
+func (s sysDictDataDo) FirstOrCreate() (*model.SysDictData, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictDatum), nil
+		return result.(*model.SysDictData), nil
 	}
 }
 
-func (s sysDictDatumDo) FindByPage(offset int, limit int) (result []*model.SysDictDatum, count int64, err error) {
+func (s sysDictDataDo) FindByPage(offset int, limit int) (result []*model.SysDictData, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -362,7 +363,7 @@ func (s sysDictDatumDo) FindByPage(offset int, limit int) (result []*model.SysDi
 	return
 }
 
-func (s sysDictDatumDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysDictDataDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -372,15 +373,15 @@ func (s sysDictDatumDo) ScanByPage(result interface{}, offset int, limit int) (c
 	return
 }
 
-func (s sysDictDatumDo) Scan(result interface{}) (err error) {
+func (s sysDictDataDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysDictDatumDo) Delete(models ...*model.SysDictDatum) (result gen.ResultInfo, err error) {
+func (s sysDictDataDo) Delete(models ...*model.SysDictData) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysDictDatumDo) withDO(do gen.Dao) *sysDictDatumDo {
+func (s *sysDictDataDo) withDO(do gen.Dao) *sysDictDataDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

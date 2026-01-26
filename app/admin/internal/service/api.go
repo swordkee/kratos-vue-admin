@@ -62,7 +62,7 @@ func (a *ApiService) CreateApi(ctx context.Context, req *pb.CreateApiRequest) (*
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := a.apiUseCase.CreateApi(ctx, &model.SysAPI{
+	_, err := a.apiUseCase.CreateApi(ctx, &model.SysApis{
 		Path:        req.Path,
 		Description: req.Description,
 		APIGroup:    req.ApiGroup,
@@ -74,7 +74,7 @@ func (a *ApiService) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) (*
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := a.apiUseCase.UpdateApi(ctx, &model.SysAPI{
+	_, err := a.apiUseCase.UpdateApi(ctx, &model.SysApis{
 		ID:          req.Id,
 		Path:        req.Path,
 		Description: req.Description,

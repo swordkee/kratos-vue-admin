@@ -5,7 +5,7 @@ import "base.proto";
 
 package api.admin.v1;
 
-option go_package = "fengyin/api/admin/v1;v1";
+option go_package = "https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
 
 // api管理
 service Api {

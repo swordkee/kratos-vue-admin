@@ -4,17 +4,17 @@
 
 package model
 
-const TableNameSysRoleBtn = "sys_role_btns"
+const TableNameSysRoleBtns = "sys_role_btns"
 
-// SysRoleBtn mapped from table <sys_role_btns>
-type SysRoleBtn struct {
-	ID     int64 `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	RoleID int64 `gorm:"column:role_id;type:bigint(20);not null;comment:角色ID" json:"role_id"`
-	MenuID int64 `gorm:"column:menu_id;type:bigint(20);not null;comment:菜单ID" json:"menu_id"`
-	BtnID  int64 `gorm:"column:btn_id;type:bigint(20);not null;comment:菜单按钮ID" json:"btn_id"`
+// SysRoleBtns mapped from table <sys_role_btns>
+type SysRoleBtns struct {
+	ID     int64 `gorm:"column:id;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	RoleID int64 `gorm:"column:role_id;not null;comment:角色ID" json:"role_id"`
+	MenuID int64 `gorm:"column:menu_id;not null;comment:菜单ID" json:"menu_id"`
+	BtnID  int64 `gorm:"column:btn_id;not null;comment:菜单按钮ID" json:"btn_id"`
 }
 
-// TableName SysRoleBtn's table name
-func (*SysRoleBtn) TableName() string {
-	return TableNameSysRoleBtn
+// TableName SysRoleBtns's table name
+func (*SysRoleBtns) TableName() string {
+	return TableNameSysRoleBtns
 }

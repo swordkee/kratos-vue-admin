@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
@@ -20,29 +21,29 @@ func NewSysPostRepo(data *Data, logger log.Logger) biz.SysPostRepo {
 	}
 }
 
-func (p *sysPostRepo) Create(ctx context.Context, post *model.SysPost) error {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) Create(ctx context.Context, post *model.SysPosts) error {
+	q := p.data.Query(ctx).SysPosts
 	return q.WithContext(ctx).Create(post)
 }
 
-func (p *sysPostRepo) Save(ctx context.Context, post *model.SysPost) error {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) Save(ctx context.Context, post *model.SysPosts) error {
+	q := p.data.Query(ctx).SysPosts
 	return q.WithContext(ctx).Save(post)
 }
 
 func (p *sysPostRepo) Delete(ctx context.Context, ids []int64) error {
-	q := p.data.Query(ctx).SysPost
+	q := p.data.Query(ctx).SysPosts
 	_, err := q.WithContext(ctx).Where(q.ID.In(ids...)).Delete()
 	return err
 }
 
-func (p *sysPostRepo) FindByID(ctx context.Context, id int64) (*model.SysPost, error) {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) FindByID(ctx context.Context, id int64) (*model.SysPosts, error) {
+	q := p.data.Query(ctx).SysPosts
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
 
-func (p *sysPostRepo) ListPage(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPost, error) {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) ListPage(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPosts, error) {
+	q := p.data.Query(ctx).SysPosts
 	db := q.WithContext(ctx)
 	if postName != "" {
 		db = db.Where(q.PostName.Like(buildLikeValue(postName)))
@@ -58,7 +59,7 @@ func (p *sysPostRepo) ListPage(ctx context.Context, postName, postCode string, s
 }
 
 func (p *sysPostRepo) ListPageCount(ctx context.Context, postName, postCode string, status int32) (int32, error) {
-	q := p.data.Query(ctx).SysPost
+	q := p.data.Query(ctx).SysPosts
 	db := q.WithContext(ctx)
 	if postName != "" {
 		db = db.Where(q.PostName.Like(buildLikeValue(postName)))
@@ -73,12 +74,12 @@ func (p *sysPostRepo) ListPageCount(ctx context.Context, postName, postCode stri
 	return int32(count), err
 }
 
-func (p *sysPostRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPost, error) {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPosts, error) {
+	q := p.data.Query(ctx).SysPosts
 	return q.WithContext(ctx).Where(q.ID.In(ids...)).Find()
 }
 
-func (p *sysPostRepo) FindAll(ctx context.Context) ([]*model.SysPost, error) {
-	q := p.data.Query(ctx).SysPost
+func (p *sysPostRepo) FindAll(ctx context.Context) ([]*model.SysPosts, error) {
+	q := p.data.Query(ctx).SysPosts
 	return q.WithContext(ctx).Find()
 }

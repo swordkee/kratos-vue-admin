@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
@@ -26,13 +27,13 @@ func NewSysRoleMenuRepo(data *Data, logger log.Logger) biz.SysRoleMenuRepo {
 	}
 }
 
-func (s *sysRoleMenuRepo) Create(ctx context.Context, roleMenus ...*model.SysRoleMenu) error {
-	q := s.data.Query(ctx).SysRoleMenu
+func (s *sysRoleMenuRepo) Create(ctx context.Context, roleMenus ...*model.SysRoleMenus) error {
+	q := s.data.Query(ctx).SysRoleMenus
 	return q.WithContext(ctx).Create(roleMenus...)
 }
 
 func (s *sysRoleMenuRepo) DeleteByRoleId(ctx context.Context, roleIDs ...int64) error {
-	q := s.data.Query(ctx).SysRoleMenu
+	q := s.data.Query(ctx).SysRoleMenus
 	_, err := q.WithContext(ctx).Where(q.RoleID.In(roleIDs...)).Delete()
 	return err
 }
@@ -40,8 +41,8 @@ func (s *sysRoleMenuRepo) DeleteByRoleId(ctx context.Context, roleIDs ...int64) 
 // GetPermission 查询权限标识
 func (s *sysRoleMenuRepo) GetPermission(ctx context.Context, roleID int64) ([]string, error) {
 	query := s.data.Query(ctx)
-	roleMenu := query.SysRoleMenu
-	menu := query.SysMenu
+	roleMenu := query.SysRoleMenus
+	menu := query.SysMenus
 
 	var result []string
 	err := menu.WithContext(ctx).
@@ -53,10 +54,10 @@ func (s *sysRoleMenuRepo) GetPermission(ctx context.Context, roleID int64) ([]st
 }
 
 // FindMenuByRoleId 查询菜单路径
-func (s *sysRoleMenuRepo) FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenu, error) {
+func (s *sysRoleMenuRepo) FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenus, error) {
 	query := s.data.Query(ctx)
-	roleMenu := query.SysRoleMenu
-	menu := query.SysMenu
+	roleMenu := query.SysRoleMenus
+	menu := query.SysMenus
 
 	return menu.WithContext(ctx).
 		LeftJoin(roleMenu, menu.ID.EqCol(roleMenu.MenuID)).
@@ -69,7 +70,10 @@ func (s *sysRoleMenuRepo) FindMenuByRoleId(ctx context.Context, roleID int64) ([
 func (s *sysRoleMenuRepo) SelectMenuRole(ctx context.Context, roleKey string) ([]*pb.MenuTree, error) {
 	redData := make([]*pb.MenuTree, 0)
 
-	menuList := s.GetMenuByRoleKey(roleKey)
+	menuList, err := s.GetMenuByRoleKey(ctx, roleKey)
+	if err != nil {
+		return nil, err
+	}
 
 	for i := 0; i < len(menuList); i++ {
 		if menuList[i].ParentID != 0 {
@@ -86,15 +90,23 @@ func (s *sysRoleMenuRepo) SelectMenuRole(ctx context.Context, roleKey string) ([
 	return redData, nil
 }
 
-func (s *sysRoleMenuRepo) GetMenuByRoleKey(roleKey string) []*model.SysMenu {
-	menus := make([]*model.SysMenu, 0)
+func (s *sysRoleMenuRepo) GetMenuByRoleKey(ctx context.Context, roleKey string) ([]*model.SysMenus, error) {
+	menus := make([]*model.SysMenus, 0)
 
-	db := s.data.db.Table("sys_menus")
-	db = db.Select("sys_menus.*").Joins("left join sys_role_menus on sys_role_menus.menu_id=sys_menus.id")
-	db = db.Where("sys_role_menus.role_name=? and sys_menus.menu_type in ('M','C') and (sys_menus.status = 1 or sys_menus.status = 0)", roleKey)
-	err := db.Debug().Order("sys_menus.sort").Find(&menus).Error
+	query := s.data.Query(ctx)
+	roleMenu := query.SysRoleMenus
+	menu := query.SysMenus
+
+	menus, err := menu.WithContext(ctx).
+		Select(menu.ALL).
+		LeftJoin(roleMenu, menu.ID.EqCol(roleMenu.MenuID)).
+		Where(roleMenu.RoleName.Eq(roleKey)).
+		Where(menu.MenuType.In("M", "C")).
+		Where(menu.Status.In(1, 0)).
+		Order(menu.Sort).
+		Find()
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return menus
+	return menus, nil
 }

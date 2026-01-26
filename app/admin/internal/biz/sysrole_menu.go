@@ -10,10 +10,10 @@ import (
 )
 
 type SysRoleMenuRepo interface {
-	Create(ctx context.Context, roleMenus ...*model.SysRoleMenu) error
+	Create(ctx context.Context, roleMenus ...*model.SysRoleMenus) error
 	DeleteByRoleId(ctx context.Context, roleIDs ...int64) error
 	GetPermission(ctx context.Context, roleID int64) ([]string, error)
-	FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenu, error)
+	FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenus, error)
 	SelectMenuRole(ctx context.Context, roleName string) ([]*pb.MenuTree, error)
 }
 
@@ -26,10 +26,10 @@ func NewSysRoleMenuUseCase(repo SysRoleMenuRepo, logger log.Logger) *SysRoleMenu
 	return &SysRoleMenuUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (r *SysRoleMenuUseCase) CreateRoleMenus(ctx context.Context, role *model.SysRole, menuIDs []int64) error {
-	roleMenus := make([]*model.SysRoleMenu, len(menuIDs))
+func (r *SysRoleMenuUseCase) CreateRoleMenus(ctx context.Context, role *model.SysRoles, menuIDs []int64) error {
+	roleMenus := make([]*model.SysRoleMenus, len(menuIDs))
 	for i, menuID := range menuIDs {
-		roleMenus[i] = &model.SysRoleMenu{
+		roleMenus[i] = &model.SysRoleMenus{
 			MenuID:   menuID,
 			RoleID:   role.ID,
 			RoleName: role.RoleName,
@@ -46,7 +46,7 @@ func (r *SysRoleMenuUseCase) GetPermission(ctx context.Context, roleID int64) ([
 	return r.repo.GetPermission(ctx, roleID)
 }
 
-func (r *SysRoleMenuUseCase) FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenu, error) {
+func (r *SysRoleMenuUseCase) FindMenuByRoleId(ctx context.Context, roleID int64) ([]*model.SysMenus, error) {
 	return r.repo.FindMenuByRoleId(ctx, roleID)
 }
 

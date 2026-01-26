@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,32 +15,34 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysAPI(db *gorm.DB, opts ...gen.DOOption) sysAPI {
-	_sysAPI := sysAPI{}
+func newSysApis(db *gorm.DB, opts ...gen.DOOption) sysApis {
+	_sysApis := sysApis{}
 
-	_sysAPI.sysAPIDo.UseDB(db, opts...)
-	_sysAPI.sysAPIDo.UseModel(&model.SysAPI{})
+	_sysApis.sysApisDo.UseDB(db, opts...)
+	_sysApis.sysApisDo.UseModel(&model.SysApis{})
 
-	tableName := _sysAPI.sysAPIDo.TableName()
-	_sysAPI.ALL = field.NewAsterisk(tableName)
-	_sysAPI.ID = field.NewInt64(tableName, "id")
-	_sysAPI.Path = field.NewString(tableName, "path")
-	_sysAPI.Description = field.NewString(tableName, "description")
-	_sysAPI.APIGroup = field.NewString(tableName, "api_group")
-	_sysAPI.Method = field.NewString(tableName, "method")
-	_sysAPI.CreatedAt = field.NewTime(tableName, "created_at")
-	_sysAPI.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_sysAPI.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _sysApis.sysApisDo.TableName()
+	_sysApis.ALL = field.NewAsterisk(tableName)
+	_sysApis.ID = field.NewInt64(tableName, "id")
+	_sysApis.Path = field.NewString(tableName, "path")
+	_sysApis.Description = field.NewString(tableName, "description")
+	_sysApis.APIGroup = field.NewString(tableName, "api_group")
+	_sysApis.Method = field.NewString(tableName, "method")
+	_sysApis.CreatedAt = field.NewTime(tableName, "created_at")
+	_sysApis.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_sysApis.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_sysAPI.fillFieldMap()
+	_sysApis.fillFieldMap()
 
-	return _sysAPI
+	return _sysApis
 }
 
-type sysAPI struct {
-	sysAPIDo sysAPIDo
+type sysApis struct {
+	sysApisDo sysApisDo
 
 	ALL         field.Asterisk
 	ID          field.Int64  // 主键id
@@ -56,17 +57,17 @@ type sysAPI struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysAPI) Table(newTableName string) *sysAPI {
-	s.sysAPIDo.UseTable(newTableName)
+func (s sysApis) Table(newTableName string) *sysApis {
+	s.sysApisDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysAPI) As(alias string) *sysAPI {
-	s.sysAPIDo.DO = *(s.sysAPIDo.As(alias).(*gen.DO))
+func (s sysApis) As(alias string) *sysApis {
+	s.sysApisDo.DO = *(s.sysApisDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysAPI) updateTableName(table string) *sysAPI {
+func (s *sysApis) updateTableName(table string) *sysApis {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.Path = field.NewString(table, "path")
@@ -82,13 +83,13 @@ func (s *sysAPI) updateTableName(table string) *sysAPI {
 	return s
 }
 
-func (s *sysAPI) WithContext(ctx context.Context) *sysAPIDo { return s.sysAPIDo.WithContext(ctx) }
+func (s *sysApis) WithContext(ctx context.Context) *sysApisDo { return s.sysApisDo.WithContext(ctx) }
 
-func (s sysAPI) TableName() string { return s.sysAPIDo.TableName() }
+func (s sysApis) TableName() string { return s.sysApisDo.TableName() }
 
-func (s sysAPI) Alias() string { return s.sysAPIDo.Alias() }
+func (s sysApis) Alias() string { return s.sysApisDo.Alias() }
 
-func (s *sysAPI) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysApis) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -97,7 +98,7 @@ func (s *sysAPI) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysAPI) fillFieldMap() {
+func (s *sysApis) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 8)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["path"] = s.Path
@@ -109,165 +110,165 @@ func (s *sysAPI) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 }
 
-func (s sysAPI) clone(db *gorm.DB) sysAPI {
-	s.sysAPIDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysApis) clone(db *gorm.DB) sysApis {
+	s.sysApisDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysAPI) replaceDB(db *gorm.DB) sysAPI {
-	s.sysAPIDo.ReplaceDB(db)
+func (s sysApis) replaceDB(db *gorm.DB) sysApis {
+	s.sysApisDo.ReplaceDB(db)
 	return s
 }
 
-type sysAPIDo struct{ gen.DO }
+type sysApisDo struct{ gen.DO }
 
-func (s sysAPIDo) Debug() *sysAPIDo {
+func (s sysApisDo) Debug() *sysApisDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysAPIDo) WithContext(ctx context.Context) *sysAPIDo {
+func (s sysApisDo) WithContext(ctx context.Context) *sysApisDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysAPIDo) ReadDB() *sysAPIDo {
+func (s sysApisDo) ReadDB() *sysApisDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysAPIDo) WriteDB() *sysAPIDo {
+func (s sysApisDo) WriteDB() *sysApisDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysAPIDo) Session(config *gorm.Session) *sysAPIDo {
+func (s sysApisDo) Session(config *gorm.Session) *sysApisDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysAPIDo) Clauses(conds ...clause.Expression) *sysAPIDo {
+func (s sysApisDo) Clauses(conds ...clause.Expression) *sysApisDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysAPIDo) Returning(value interface{}, columns ...string) *sysAPIDo {
+func (s sysApisDo) Returning(value interface{}, columns ...string) *sysApisDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysAPIDo) Not(conds ...gen.Condition) *sysAPIDo {
+func (s sysApisDo) Not(conds ...gen.Condition) *sysApisDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysAPIDo) Or(conds ...gen.Condition) *sysAPIDo {
+func (s sysApisDo) Or(conds ...gen.Condition) *sysApisDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysAPIDo) Select(conds ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Select(conds ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysAPIDo) Where(conds ...gen.Condition) *sysAPIDo {
+func (s sysApisDo) Where(conds ...gen.Condition) *sysApisDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysAPIDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysAPIDo {
+func (s sysApisDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysApisDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysAPIDo) Order(conds ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Order(conds ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysAPIDo) Distinct(cols ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Distinct(cols ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysAPIDo) Omit(cols ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Omit(cols ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysAPIDo) Join(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Join(table schema.Tabler, on ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysAPIDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysApisDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysAPIDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysApisDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysAPIDo) Group(cols ...field.Expr) *sysAPIDo {
+func (s sysApisDo) Group(cols ...field.Expr) *sysApisDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysAPIDo) Having(conds ...gen.Condition) *sysAPIDo {
+func (s sysApisDo) Having(conds ...gen.Condition) *sysApisDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysAPIDo) Limit(limit int) *sysAPIDo {
+func (s sysApisDo) Limit(limit int) *sysApisDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysAPIDo) Offset(offset int) *sysAPIDo {
+func (s sysApisDo) Offset(offset int) *sysApisDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysAPIDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysAPIDo {
+func (s sysApisDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysApisDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysAPIDo) Unscoped() *sysAPIDo {
+func (s sysApisDo) Unscoped() *sysApisDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysAPIDo) Create(values ...*model.SysAPI) error {
+func (s sysApisDo) Create(values ...*model.SysApis) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysAPIDo) CreateInBatches(values []*model.SysAPI, batchSize int) error {
+func (s sysApisDo) CreateInBatches(values []*model.SysApis, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysAPIDo) Save(values ...*model.SysAPI) error {
+func (s sysApisDo) Save(values ...*model.SysApis) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysAPIDo) First() (*model.SysAPI, error) {
+func (s sysApisDo) First() (*model.SysApis, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysAPI), nil
+		return result.(*model.SysApis), nil
 	}
 }
 
-func (s sysAPIDo) Take() (*model.SysAPI, error) {
+func (s sysApisDo) Take() (*model.SysApis, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysAPI), nil
+		return result.(*model.SysApis), nil
 	}
 }
 
-func (s sysAPIDo) Last() (*model.SysAPI, error) {
+func (s sysApisDo) Last() (*model.SysApis, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysAPI), nil
+		return result.(*model.SysApis), nil
 	}
 }
 
-func (s sysAPIDo) Find() ([]*model.SysAPI, error) {
+func (s sysApisDo) Find() ([]*model.SysApis, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysAPI), err
+	return result.([]*model.SysApis), err
 }
 
-func (s sysAPIDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysAPI, err error) {
-	buf := make([]*model.SysAPI, 0, batchSize)
+func (s sysApisDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysApis, err error) {
+	buf := make([]*model.SysApis, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -275,49 +276,49 @@ func (s sysAPIDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (s sysAPIDo) FindInBatches(result *[]*model.SysAPI, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysApisDo) FindInBatches(result *[]*model.SysApis, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysAPIDo) Attrs(attrs ...field.AssignExpr) *sysAPIDo {
+func (s sysApisDo) Attrs(attrs ...field.AssignExpr) *sysApisDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysAPIDo) Assign(attrs ...field.AssignExpr) *sysAPIDo {
+func (s sysApisDo) Assign(attrs ...field.AssignExpr) *sysApisDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysAPIDo) Joins(fields ...field.RelationField) *sysAPIDo {
+func (s sysApisDo) Joins(fields ...field.RelationField) *sysApisDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysAPIDo) Preload(fields ...field.RelationField) *sysAPIDo {
+func (s sysApisDo) Preload(fields ...field.RelationField) *sysApisDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysAPIDo) FirstOrInit() (*model.SysAPI, error) {
+func (s sysApisDo) FirstOrInit() (*model.SysApis, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysAPI), nil
+		return result.(*model.SysApis), nil
 	}
 }
 
-func (s sysAPIDo) FirstOrCreate() (*model.SysAPI, error) {
+func (s sysApisDo) FirstOrCreate() (*model.SysApis, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysAPI), nil
+		return result.(*model.SysApis), nil
 	}
 }
 
-func (s sysAPIDo) FindByPage(offset int, limit int) (result []*model.SysAPI, count int64, err error) {
+func (s sysApisDo) FindByPage(offset int, limit int) (result []*model.SysApis, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -332,7 +333,7 @@ func (s sysAPIDo) FindByPage(offset int, limit int) (result []*model.SysAPI, cou
 	return
 }
 
-func (s sysAPIDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysApisDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -342,15 +343,15 @@ func (s sysAPIDo) ScanByPage(result interface{}, offset int, limit int) (count i
 	return
 }
 
-func (s sysAPIDo) Scan(result interface{}) (err error) {
+func (s sysApisDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysAPIDo) Delete(models ...*model.SysAPI) (result gen.ResultInfo, err error) {
+func (s sysApisDo) Delete(models ...*model.SysApis) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysAPIDo) withDO(do gen.Dao) *sysAPIDo {
+func (s *sysApisDo) withDO(do gen.Dao) *sysApisDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

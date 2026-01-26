@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,46 +15,48 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysMenu(db *gorm.DB, opts ...gen.DOOption) sysMenu {
-	_sysMenu := sysMenu{}
+func newSysMenus(db *gorm.DB, opts ...gen.DOOption) sysMenus {
+	_sysMenus := sysMenus{}
 
-	_sysMenu.sysMenuDo.UseDB(db, opts...)
-	_sysMenu.sysMenuDo.UseModel(&model.SysMenu{})
+	_sysMenus.sysMenusDo.UseDB(db, opts...)
+	_sysMenus.sysMenusDo.UseModel(&model.SysMenus{})
 
-	tableName := _sysMenu.sysMenuDo.TableName()
-	_sysMenu.ALL = field.NewAsterisk(tableName)
-	_sysMenu.ID = field.NewInt64(tableName, "id")
-	_sysMenu.MenuName = field.NewString(tableName, "menu_name")
-	_sysMenu.Title = field.NewString(tableName, "title")
-	_sysMenu.ParentID = field.NewInt64(tableName, "parent_id")
-	_sysMenu.Sort = field.NewInt32(tableName, "sort")
-	_sysMenu.Icon = field.NewString(tableName, "icon")
-	_sysMenu.Path = field.NewString(tableName, "path")
-	_sysMenu.Component = field.NewString(tableName, "component")
-	_sysMenu.IsIframe = field.NewInt32(tableName, "is_iframe")
-	_sysMenu.Link = field.NewString(tableName, "link")
-	_sysMenu.MenuType = field.NewString(tableName, "menu_type")
-	_sysMenu.Hidden = field.NewInt32(tableName, "hidden")
-	_sysMenu.KeepAlive = field.NewInt32(tableName, "keep_alive")
-	_sysMenu.IsAffix = field.NewInt32(tableName, "is_affix")
-	_sysMenu.Permission = field.NewString(tableName, "permission")
-	_sysMenu.Status = field.NewInt32(tableName, "status")
-	_sysMenu.CreateBy = field.NewString(tableName, "create_by")
-	_sysMenu.UpdateBy = field.NewString(tableName, "update_by")
-	_sysMenu.Remark = field.NewString(tableName, "remark")
-	_sysMenu.CreatedAt = field.NewTime(tableName, "created_at")
-	_sysMenu.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_sysMenu.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _sysMenus.sysMenusDo.TableName()
+	_sysMenus.ALL = field.NewAsterisk(tableName)
+	_sysMenus.ID = field.NewInt64(tableName, "id")
+	_sysMenus.MenuName = field.NewString(tableName, "menu_name")
+	_sysMenus.Title = field.NewString(tableName, "title")
+	_sysMenus.ParentID = field.NewInt64(tableName, "parent_id")
+	_sysMenus.Sort = field.NewInt32(tableName, "sort")
+	_sysMenus.Icon = field.NewString(tableName, "icon")
+	_sysMenus.Path = field.NewString(tableName, "path")
+	_sysMenus.Component = field.NewString(tableName, "component")
+	_sysMenus.IsIframe = field.NewInt32(tableName, "is_iframe")
+	_sysMenus.Link = field.NewString(tableName, "link")
+	_sysMenus.MenuType = field.NewString(tableName, "menu_type")
+	_sysMenus.Hidden = field.NewInt32(tableName, "hidden")
+	_sysMenus.KeepAlive = field.NewInt32(tableName, "keep_alive")
+	_sysMenus.IsAffix = field.NewInt32(tableName, "is_affix")
+	_sysMenus.Permission = field.NewString(tableName, "permission")
+	_sysMenus.Status = field.NewInt32(tableName, "status")
+	_sysMenus.CreateBy = field.NewString(tableName, "create_by")
+	_sysMenus.UpdateBy = field.NewString(tableName, "update_by")
+	_sysMenus.Remark = field.NewString(tableName, "remark")
+	_sysMenus.CreatedAt = field.NewTime(tableName, "created_at")
+	_sysMenus.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_sysMenus.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_sysMenu.fillFieldMap()
+	_sysMenus.fillFieldMap()
 
-	return _sysMenu
+	return _sysMenus
 }
 
-type sysMenu struct {
-	sysMenuDo sysMenuDo
+type sysMenus struct {
+	sysMenusDo sysMenusDo
 
 	ALL        field.Asterisk
 	ID         field.Int64
@@ -84,17 +85,17 @@ type sysMenu struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysMenu) Table(newTableName string) *sysMenu {
-	s.sysMenuDo.UseTable(newTableName)
+func (s sysMenus) Table(newTableName string) *sysMenus {
+	s.sysMenusDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysMenu) As(alias string) *sysMenu {
-	s.sysMenuDo.DO = *(s.sysMenuDo.As(alias).(*gen.DO))
+func (s sysMenus) As(alias string) *sysMenus {
+	s.sysMenusDo.DO = *(s.sysMenusDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysMenu) updateTableName(table string) *sysMenu {
+func (s *sysMenus) updateTableName(table string) *sysMenus {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.MenuName = field.NewString(table, "menu_name")
@@ -124,13 +125,13 @@ func (s *sysMenu) updateTableName(table string) *sysMenu {
 	return s
 }
 
-func (s *sysMenu) WithContext(ctx context.Context) *sysMenuDo { return s.sysMenuDo.WithContext(ctx) }
+func (s *sysMenus) WithContext(ctx context.Context) *sysMenusDo { return s.sysMenusDo.WithContext(ctx) }
 
-func (s sysMenu) TableName() string { return s.sysMenuDo.TableName() }
+func (s sysMenus) TableName() string { return s.sysMenusDo.TableName() }
 
-func (s sysMenu) Alias() string { return s.sysMenuDo.Alias() }
+func (s sysMenus) Alias() string { return s.sysMenusDo.Alias() }
 
-func (s *sysMenu) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysMenus) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -139,7 +140,7 @@ func (s *sysMenu) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysMenu) fillFieldMap() {
+func (s *sysMenus) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 22)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["menu_name"] = s.MenuName
@@ -165,165 +166,165 @@ func (s *sysMenu) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 }
 
-func (s sysMenu) clone(db *gorm.DB) sysMenu {
-	s.sysMenuDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysMenus) clone(db *gorm.DB) sysMenus {
+	s.sysMenusDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysMenu) replaceDB(db *gorm.DB) sysMenu {
-	s.sysMenuDo.ReplaceDB(db)
+func (s sysMenus) replaceDB(db *gorm.DB) sysMenus {
+	s.sysMenusDo.ReplaceDB(db)
 	return s
 }
 
-type sysMenuDo struct{ gen.DO }
+type sysMenusDo struct{ gen.DO }
 
-func (s sysMenuDo) Debug() *sysMenuDo {
+func (s sysMenusDo) Debug() *sysMenusDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysMenuDo) WithContext(ctx context.Context) *sysMenuDo {
+func (s sysMenusDo) WithContext(ctx context.Context) *sysMenusDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysMenuDo) ReadDB() *sysMenuDo {
+func (s sysMenusDo) ReadDB() *sysMenusDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysMenuDo) WriteDB() *sysMenuDo {
+func (s sysMenusDo) WriteDB() *sysMenusDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysMenuDo) Session(config *gorm.Session) *sysMenuDo {
+func (s sysMenusDo) Session(config *gorm.Session) *sysMenusDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysMenuDo) Clauses(conds ...clause.Expression) *sysMenuDo {
+func (s sysMenusDo) Clauses(conds ...clause.Expression) *sysMenusDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysMenuDo) Returning(value interface{}, columns ...string) *sysMenuDo {
+func (s sysMenusDo) Returning(value interface{}, columns ...string) *sysMenusDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysMenuDo) Not(conds ...gen.Condition) *sysMenuDo {
+func (s sysMenusDo) Not(conds ...gen.Condition) *sysMenusDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysMenuDo) Or(conds ...gen.Condition) *sysMenuDo {
+func (s sysMenusDo) Or(conds ...gen.Condition) *sysMenusDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysMenuDo) Select(conds ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Select(conds ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysMenuDo) Where(conds ...gen.Condition) *sysMenuDo {
+func (s sysMenusDo) Where(conds ...gen.Condition) *sysMenusDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysMenuDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysMenuDo {
+func (s sysMenusDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysMenusDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysMenuDo) Order(conds ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Order(conds ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysMenuDo) Distinct(cols ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Distinct(cols ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysMenuDo) Omit(cols ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Omit(cols ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysMenuDo) Join(table schema.Tabler, on ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Join(table schema.Tabler, on ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysMenuDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysMenuDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysMenuDo) Group(cols ...field.Expr) *sysMenuDo {
+func (s sysMenusDo) Group(cols ...field.Expr) *sysMenusDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysMenuDo) Having(conds ...gen.Condition) *sysMenuDo {
+func (s sysMenusDo) Having(conds ...gen.Condition) *sysMenusDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysMenuDo) Limit(limit int) *sysMenuDo {
+func (s sysMenusDo) Limit(limit int) *sysMenusDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysMenuDo) Offset(offset int) *sysMenuDo {
+func (s sysMenusDo) Offset(offset int) *sysMenusDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysMenuDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysMenuDo {
+func (s sysMenusDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysMenusDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysMenuDo) Unscoped() *sysMenuDo {
+func (s sysMenusDo) Unscoped() *sysMenusDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysMenuDo) Create(values ...*model.SysMenu) error {
+func (s sysMenusDo) Create(values ...*model.SysMenus) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysMenuDo) CreateInBatches(values []*model.SysMenu, batchSize int) error {
+func (s sysMenusDo) CreateInBatches(values []*model.SysMenus, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysMenuDo) Save(values ...*model.SysMenu) error {
+func (s sysMenusDo) Save(values ...*model.SysMenus) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysMenuDo) First() (*model.SysMenu, error) {
+func (s sysMenusDo) First() (*model.SysMenus, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysMenu), nil
+		return result.(*model.SysMenus), nil
 	}
 }
 
-func (s sysMenuDo) Take() (*model.SysMenu, error) {
+func (s sysMenusDo) Take() (*model.SysMenus, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysMenu), nil
+		return result.(*model.SysMenus), nil
 	}
 }
 
-func (s sysMenuDo) Last() (*model.SysMenu, error) {
+func (s sysMenusDo) Last() (*model.SysMenus, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysMenu), nil
+		return result.(*model.SysMenus), nil
 	}
 }
 
-func (s sysMenuDo) Find() ([]*model.SysMenu, error) {
+func (s sysMenusDo) Find() ([]*model.SysMenus, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysMenu), err
+	return result.([]*model.SysMenus), err
 }
 
-func (s sysMenuDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysMenu, err error) {
-	buf := make([]*model.SysMenu, 0, batchSize)
+func (s sysMenusDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysMenus, err error) {
+	buf := make([]*model.SysMenus, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -331,49 +332,49 @@ func (s sysMenuDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (s sysMenuDo) FindInBatches(result *[]*model.SysMenu, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysMenusDo) FindInBatches(result *[]*model.SysMenus, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysMenuDo) Attrs(attrs ...field.AssignExpr) *sysMenuDo {
+func (s sysMenusDo) Attrs(attrs ...field.AssignExpr) *sysMenusDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysMenuDo) Assign(attrs ...field.AssignExpr) *sysMenuDo {
+func (s sysMenusDo) Assign(attrs ...field.AssignExpr) *sysMenusDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysMenuDo) Joins(fields ...field.RelationField) *sysMenuDo {
+func (s sysMenusDo) Joins(fields ...field.RelationField) *sysMenusDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysMenuDo) Preload(fields ...field.RelationField) *sysMenuDo {
+func (s sysMenusDo) Preload(fields ...field.RelationField) *sysMenusDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysMenuDo) FirstOrInit() (*model.SysMenu, error) {
+func (s sysMenusDo) FirstOrInit() (*model.SysMenus, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysMenu), nil
+		return result.(*model.SysMenus), nil
 	}
 }
 
-func (s sysMenuDo) FirstOrCreate() (*model.SysMenu, error) {
+func (s sysMenusDo) FirstOrCreate() (*model.SysMenus, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysMenu), nil
+		return result.(*model.SysMenus), nil
 	}
 }
 
-func (s sysMenuDo) FindByPage(offset int, limit int) (result []*model.SysMenu, count int64, err error) {
+func (s sysMenusDo) FindByPage(offset int, limit int) (result []*model.SysMenus, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -388,7 +389,7 @@ func (s sysMenuDo) FindByPage(offset int, limit int) (result []*model.SysMenu, c
 	return
 }
 
-func (s sysMenuDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysMenusDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -398,15 +399,15 @@ func (s sysMenuDo) ScanByPage(result interface{}, offset int, limit int) (count 
 	return
 }
 
-func (s sysMenuDo) Scan(result interface{}) (err error) {
+func (s sysMenusDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysMenuDo) Delete(models ...*model.SysMenu) (result gen.ResultInfo, err error) {
+func (s sysMenusDo) Delete(models ...*model.SysMenus) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysMenuDo) withDO(do gen.Dao) *sysMenuDo {
+func (s *sysMenusDo) withDO(do gen.Dao) *sysMenusDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

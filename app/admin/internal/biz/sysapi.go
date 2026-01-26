@@ -9,12 +9,12 @@ import (
 )
 
 type SysApiRepo interface {
-	FindByID(ctx context.Context, id int64) (*model.SysAPI, error)
-	Create(ctx context.Context, api *model.SysAPI) error
-	Save(ctx context.Context, api *model.SysAPI) error
+	FindByID(ctx context.Context, id int64) (*model.SysApis, error)
+	Create(ctx context.Context, api *model.SysApis) error
+	Save(ctx context.Context, api *model.SysApis) error
 	Delete(ctx context.Context, id int64) error
-	FindAll(ctx context.Context) ([]*model.SysAPI, error)
-	ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, error)
+	FindAll(ctx context.Context) ([]*model.SysApis, error)
+	ListPage(ctx context.Context, page, size int32) ([]*model.SysApis, error)
 	ListPageCount(ctx context.Context) (int32, error)
 }
 
@@ -32,7 +32,7 @@ func NewSysApiUseCase(repo SysApiRepo, casbinRepo CasbinRuleRepo, logger log.Log
 	}
 }
 
-func (a *SysApiUseCase) ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, int32, error) {
+func (a *SysApiUseCase) ListPage(ctx context.Context, page, size int32) ([]*model.SysApis, int32, error) {
 	total, err := a.apiRepo.ListPageCount(ctx)
 	if err != nil || total == 0 {
 		return nil, 0, err
@@ -41,16 +41,16 @@ func (a *SysApiUseCase) ListPage(ctx context.Context, page, size int32) ([]*mode
 	return apis, total, err
 }
 
-func (a *SysApiUseCase) AllApi(ctx context.Context) ([]*model.SysAPI, error) {
+func (a *SysApiUseCase) AllApi(ctx context.Context) ([]*model.SysApis, error) {
 	return a.apiRepo.FindAll(ctx)
 }
 
-func (a *SysApiUseCase) CreateApi(ctx context.Context, api *model.SysAPI) (*model.SysAPI, error) {
+func (a *SysApiUseCase) CreateApi(ctx context.Context, api *model.SysApis) (*model.SysApis, error) {
 	err := a.apiRepo.Create(ctx, api)
 	return api, err
 }
 
-func (a *SysApiUseCase) UpdateApi(ctx context.Context, api *model.SysAPI) (*model.SysAPI, error) {
+func (a *SysApiUseCase) UpdateApi(ctx context.Context, api *model.SysApis) (*model.SysApis, error) {
 	err := a.apiRepo.Save(ctx, api)
 	return api, err
 }
@@ -63,6 +63,6 @@ func (a *SysApiUseCase) GetPolicyPathByRoleKey(ctx context.Context, roleKey stri
 	return a.casbinRepo.GetPolicyPathByRoleId(roleKey), nil
 }
 
-func (a *SysApiUseCase) GetApiByID(ctx context.Context, id int64) (*model.SysAPI, error) {
+func (a *SysApiUseCase) GetApiByID(ctx context.Context, id int64) (*model.SysApis, error) {
 	return a.apiRepo.FindByID(ctx, id)
 }

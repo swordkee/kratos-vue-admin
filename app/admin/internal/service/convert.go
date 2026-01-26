@@ -17,7 +17,7 @@ func ConvertApiBaseFromList(list [][]string) []*pb.ApiBase {
 	return data
 }
 
-func ConvertApiDataFromApiList(list []*model.SysAPI) []*pb.ApiData {
+func ConvertApiDataFromApiList(list []*model.SysApis) []*pb.ApiData {
 	data := make([]*pb.ApiData, len(list))
 	for i, d := range list {
 		data[i] = &pb.ApiData{

@@ -10,18 +10,18 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameJwtBlacklist = "jwt_blacklists"
+const TableNameJwtBlacklists = "jwt_blacklists"
 
-// JwtBlacklist mapped from table <jwt_blacklists>
-type JwtBlacklist struct {
-	ID        int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true" json:"id"`
-	Jwt       string         `gorm:"column:jwt;type:text;comment:jwt" json:"jwt"`
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+// JwtBlacklists mapped from table <jwt_blacklists>
+type JwtBlacklists struct {
+	ID        int64          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	Jwt       string         `gorm:"column:jwt;comment:jwt" json:"jwt"`
+	CreatedAt time.Time      `gorm:"column:created_at;comment:创建时间" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;comment:更新时间" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`
 }
 
-// TableName JwtBlacklist's table name
-func (*JwtBlacklist) TableName() string {
-	return TableNameJwtBlacklist
+// TableName JwtBlacklists's table name
+func (*JwtBlacklists) TableName() string {
+	return TableNameJwtBlacklists
 }

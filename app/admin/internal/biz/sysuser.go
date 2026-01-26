@@ -33,18 +33,18 @@ type UserListCondition struct {
 }
 
 type SysUserRepo interface {
-	Save(ctx context.Context, user *model.SysUser) (*model.SysUser, error)
+	Save(ctx context.Context, user *model.SysUsers) (*model.SysUsers, error)
 	Delete(ctx context.Context, id int64) error
-	UpdateByID(ctx context.Context, id int64, user *model.SysUser) error
-	Create(ctx context.Context, g *model.SysUser) (*model.SysUser, error)
+	UpdateByID(ctx context.Context, id int64, user *model.SysUsers) error
+	Create(ctx context.Context, g *model.SysUsers) (*model.SysUsers, error)
 
-	FindByID(ctx context.Context, id int64) (*model.SysUser, error)
-	FindByUsername(ctx context.Context, username string) (*model.SysUser, error)
-	FindByPostId(ctx context.Context, postId int64) ([]*model.SysUser, error)
-	ListPage(ctx context.Context, page, size int32, condition UserListCondition) ([]*model.SysUser, error)
+	FindByID(ctx context.Context, id int64) (*model.SysUsers, error)
+	FindByUsername(ctx context.Context, username string) (*model.SysUsers, error)
+	FindByPostId(ctx context.Context, postId int64) ([]*model.SysUsers, error)
+	ListPage(ctx context.Context, page, size int32, condition UserListCondition) ([]*model.SysUsers, error)
 	Count(ctx context.Context, condition UserListCondition) (int32, error)
 	CountByRoleId(ctx context.Context, roleId int64) (int64, error)
-	FindAll(ctx context.Context) ([]*model.SysUser, error)
+	FindAll(ctx context.Context) ([]*model.SysUsers, error)
 }
 
 // SysUserUseCase is a SysUser use case.
@@ -67,7 +67,7 @@ func NewSysUserUseCase(userRepo SysUserRepo, uploadRepo OssRepo, severConfig *co
 }
 
 // CreateSysUser creates a SysUser, and returns the new SysUser.
-func (uc *SysUserUseCase) CreateSysUser(ctx context.Context, u *model.SysUser) (*model.SysUser, error) {
+func (uc *SysUserUseCase) CreateSysUser(ctx context.Context, u *model.SysUsers) (*model.SysUsers, error) {
 	uc.log.WithContext(ctx).Infof("CreateSysUser: %v", u)
 	u.Password = util.BcryptHash(u.Password)
 	u.UUID = uuid.NewString()
@@ -86,7 +86,7 @@ func (uc *SysUserUseCase) CreateSysUser(ctx context.Context, u *model.SysUser) (
 	}
 }
 
-func (uc *SysUserUseCase) UpdateSysUser(ctx context.Context, u *model.SysUser) error {
+func (uc *SysUserUseCase) UpdateSysUser(ctx context.Context, u *model.SysUsers) error {
 	uc.log.WithContext(ctx).Infof("UpdateSysUser: %v", u)
 	oldUser, err := uc.userRepo.FindByID(ctx, u.ID)
 	if err != nil {
@@ -108,11 +108,11 @@ func (uc *SysUserUseCase) DeleteSysUser(ctx context.Context, id int64) error {
 	return uc.userRepo.Delete(ctx, id)
 }
 
-func (uc *SysUserUseCase) FindSysUserById(ctx context.Context, id int64) (*model.SysUser, error) {
+func (uc *SysUserUseCase) FindSysUserById(ctx context.Context, id int64) (*model.SysUsers, error) {
 	return uc.userRepo.FindByID(ctx, id)
 }
 
-func (uc *SysUserUseCase) ListPage(ctx context.Context, req *pb.ListSysuserRequest) (users []*model.SysUser, total int32, err error) {
+func (uc *SysUserUseCase) ListPage(ctx context.Context, req *pb.ListSysuserRequest) (users []*model.SysUsers, total int32, err error) {
 	var condition = UserListCondition{
 		UserName: req.Username,
 		Phone:    req.Phone,
@@ -150,7 +150,7 @@ func (uc *SysUserUseCase) UpdatePassword(ctx context.Context, id int64, newPwd, 
 	return err
 }
 
-func (uc *SysUserUseCase) FindByPostId(ctx context.Context, postId int64) ([]*model.SysUser, error) {
+func (uc *SysUserUseCase) FindByPostId(ctx context.Context, postId int64) ([]*model.SysUsers, error) {
 	return uc.userRepo.FindByPostId(ctx, postId)
 }
 
@@ -158,7 +158,7 @@ func (uc *SysUserUseCase) CountByRoleId(ctx context.Context, roleId int64) (int6
 	return uc.userRepo.CountByRoleId(ctx, roleId)
 }
 
-func (uc *SysUserUseCase) FindSysUserByUsername(ctx context.Context, username string) (*model.SysUser, error) {
+func (uc *SysUserUseCase) FindSysUserByUsername(ctx context.Context, username string) (*model.SysUsers, error) {
 	return uc.userRepo.FindByUsername(ctx, username)
 }
 
@@ -183,7 +183,7 @@ func (uc *SysUserUseCase) UpdateAvatar(ctx context.Context) error {
 		return err
 	}
 
-	return uc.userRepo.UpdateByID(ctx, claims.UserID, &model.SysUser{
+	return uc.userRepo.UpdateByID(ctx, claims.UserID, &model.SysUsers{
 		UpdateBy:  claims.Nickname,
 		UpdatedAt: time.Now(),
 		Avatar:    domain + filePath,

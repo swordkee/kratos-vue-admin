@@ -69,7 +69,7 @@ func (s *DeptService) GetDeptTree(ctx context.Context, req *pb.GetDeptTreeReques
 	}, nil
 }
 func (s *DeptService) CreateDept(ctx context.Context, req *pb.CreateDeptRequest) (*pb.CreateDeptReply, error) {
-	_, err := s.deptUseCase.CreateDept(ctx, &model.SysDept{
+	_, err := s.deptUseCase.CreateDept(ctx, &model.SysDepts{
 		ParentID: req.ParentId,
 		DeptName: req.DeptName,
 		Sort:     req.Sort,
@@ -82,7 +82,7 @@ func (s *DeptService) CreateDept(ctx context.Context, req *pb.CreateDeptRequest)
 }
 func (s *DeptService) UpdateDept(ctx context.Context, req *pb.UpdateDeptRequest) (*pb.UpdateDeptReply, error) {
 	fmt.Print("status:", req.Status)
-	_, err := s.deptUseCase.UpdateDept(ctx, &model.SysDept{
+	_, err := s.deptUseCase.UpdateDept(ctx, &model.SysDepts{
 		ID:       req.DeptId,
 		ParentID: req.ParentId,
 		DeptName: req.DeptName,

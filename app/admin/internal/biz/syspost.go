@@ -11,14 +11,14 @@ import (
 )
 
 type SysPostRepo interface {
-	Create(ctx context.Context, post *model.SysPost) error
-	Save(ctx context.Context, post *model.SysPost) error
+	Create(ctx context.Context, post *model.SysPosts) error
+	Save(ctx context.Context, post *model.SysPosts) error
 	Delete(ctx context.Context, ids []int64) error
-	FindByID(ctx context.Context, id int64) (*model.SysPost, error)
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPost, error)
-	FindAll(ctx context.Context) ([]*model.SysPost, error)
+	FindByID(ctx context.Context, id int64) (*model.SysPosts, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPosts, error)
+	FindAll(ctx context.Context) ([]*model.SysPosts, error)
 
-	ListPage(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPost, error)
+	ListPage(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPosts, error)
 	ListPageCount(ctx context.Context, postName, postCode string, status int32) (int32, error)
 }
 
@@ -32,7 +32,7 @@ func NewSysPostUseCase(repo SysPostRepo, logger log.Logger, uc *SysUserUseCase) 
 	return &SysPostUseCase{repo: repo, log: log.NewHelper(logger), uc: uc}
 }
 
-func (p *SysPostUseCase) ListPost(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPost, int32, error) {
+func (p *SysPostUseCase) ListPost(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPosts, int32, error) {
 	total, err := p.repo.ListPageCount(ctx, postName, postCode, status)
 	if err != nil {
 		return nil, 0, err
@@ -41,7 +41,7 @@ func (p *SysPostUseCase) ListPost(ctx context.Context, postName, postCode string
 	return posts, total, err
 }
 
-func (p *SysPostUseCase) CreatePost(ctx context.Context, post *model.SysPost) (*model.SysPost, error) {
+func (p *SysPostUseCase) CreatePost(ctx context.Context, post *model.SysPosts) (*model.SysPosts, error) {
 	claims := authz.MustFromContext(ctx)
 	post.CreateBy = claims.Nickname
 
@@ -49,7 +49,7 @@ func (p *SysPostUseCase) CreatePost(ctx context.Context, post *model.SysPost) (*
 	return post, err
 }
 
-func (p *SysPostUseCase) UpdatePost(ctx context.Context, post *model.SysPost) (*model.SysPost, error) {
+func (p *SysPostUseCase) UpdatePost(ctx context.Context, post *model.SysPosts) (*model.SysPosts, error) {
 	claims := authz.MustFromContext(ctx)
 	post.UpdateBy = claims.Nickname
 	err := p.repo.Save(ctx, post)
@@ -76,17 +76,17 @@ func (p *SysPostUseCase) DeletePost(ctx context.Context, ids []int64) error {
 	return p.repo.Delete(ctx, deList)
 }
 
-func (p *SysPostUseCase) FindPostByIDList(ctx context.Context, ids []int64) ([]*model.SysPost, error) {
+func (p *SysPostUseCase) FindPostByIDList(ctx context.Context, ids []int64) ([]*model.SysPosts, error) {
 	if len(ids) == 0 {
-		return []*model.SysPost{}, nil
+		return []*model.SysPosts{}, nil
 	}
 	return p.repo.FindByIDList(ctx, ids...)
 }
 
-func (p *SysPostUseCase) FindPostByID(ctx context.Context, id int64) (*model.SysPost, error) {
+func (p *SysPostUseCase) FindPostByID(ctx context.Context, id int64) (*model.SysPosts, error) {
 	return p.repo.FindByID(ctx, id)
 }
 
-func (p *SysPostUseCase) FindPostAll(ctx context.Context) ([]*model.SysPost, error) {
+func (p *SysPostUseCase) FindPostAll(ctx context.Context) ([]*model.SysPosts, error) {
 	return p.repo.FindAll(ctx)
 }

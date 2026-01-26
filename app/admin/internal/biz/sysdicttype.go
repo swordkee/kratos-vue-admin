@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
@@ -9,14 +10,14 @@ import (
 )
 
 type SysDictTypeRepo interface {
-	Create(ctx context.Context, post *model.SysDictType) error
-	Save(ctx context.Context, post *model.SysDictType) error
+	Create(ctx context.Context, post *model.SysDictTypes) error
+	Save(ctx context.Context, post *model.SysDictTypes) error
 	Delete(ctx context.Context, ids []int64) error
-	FindByID(ctx context.Context, id int64) (*model.SysDictType, error)
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictType, error)
-	FindAll(ctx context.Context) ([]*model.SysDictType, error)
+	FindByID(ctx context.Context, id int64) (*model.SysDictTypes, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictTypes, error)
+	FindAll(ctx context.Context) ([]*model.SysDictTypes, error)
 
-	ListPage(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictType, error)
+	ListPage(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictTypes, error)
 	ListPageCount(ctx context.Context, dictName, dictType string, status int32) (int32, error)
 }
 
@@ -29,7 +30,7 @@ func NewSysDictTypeUseCase(repo SysDictTypeRepo, logger log.Logger) *SysDictType
 	return &SysDictTypeUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (p *SysDictTypeUseCase) ListDictType(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictType, int32, error) {
+func (p *SysDictTypeUseCase) ListDictType(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictTypes, int32, error) {
 	total, err := p.repo.ListPageCount(ctx, dictName, dictType, status)
 	if err != nil {
 		return nil, 0, err
@@ -38,7 +39,7 @@ func (p *SysDictTypeUseCase) ListDictType(ctx context.Context, dictName, dictTyp
 	return dictLists, total, err
 }
 
-func (p *SysDictTypeUseCase) CreateDictType(ctx context.Context, post *model.SysDictType) (*model.SysDictType, error) {
+func (p *SysDictTypeUseCase) CreateDictType(ctx context.Context, post *model.SysDictTypes) (*model.SysDictTypes, error) {
 	claims := authz.MustFromContext(ctx)
 	post.CreateBy = claims.Nickname
 
@@ -46,7 +47,7 @@ func (p *SysDictTypeUseCase) CreateDictType(ctx context.Context, post *model.Sys
 	return post, err
 }
 
-func (p *SysDictTypeUseCase) UpdateDictType(ctx context.Context, post *model.SysDictType) (*model.SysDictType, error) {
+func (p *SysDictTypeUseCase) UpdateDictType(ctx context.Context, post *model.SysDictTypes) (*model.SysDictTypes, error) {
 	claims := authz.MustFromContext(ctx)
 	post.UpdateBy = claims.Nickname
 	err := p.repo.Save(ctx, post)
@@ -57,17 +58,17 @@ func (p *SysDictTypeUseCase) DeleteDictType(ctx context.Context, id []int64) err
 	return p.repo.Delete(ctx, id)
 }
 
-func (p *SysDictTypeUseCase) FindDictTypeByIDList(ctx context.Context, ids []int64) ([]*model.SysDictType, error) {
+func (p *SysDictTypeUseCase) FindDictTypeByIDList(ctx context.Context, ids []int64) ([]*model.SysDictTypes, error) {
 	if len(ids) == 0 {
-		return []*model.SysDictType{}, nil
+		return []*model.SysDictTypes{}, nil
 	}
 	return p.repo.FindByIDList(ctx, ids...)
 }
 
-func (p *SysDictTypeUseCase) FindDictTypeByID(ctx context.Context, id int64) (*model.SysDictType, error) {
+func (p *SysDictTypeUseCase) FindDictTypeByID(ctx context.Context, id int64) (*model.SysDictTypes, error) {
 	return p.repo.FindByID(ctx, id)
 }
 
-func (p *SysDictTypeUseCase) FindDictTypeAll(ctx context.Context) ([]*model.SysDictType, error) {
+func (p *SysDictTypeUseCase) FindDictTypeAll(ctx context.Context) ([]*model.SysDictTypes, error) {
 	return p.repo.FindAll(ctx)
 }

@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,40 +15,42 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysJob(db *gorm.DB, opts ...gen.DOOption) sysJob {
-	_sysJob := sysJob{}
+func newSysJobs(db *gorm.DB, opts ...gen.DOOption) sysJobs {
+	_sysJobs := sysJobs{}
 
-	_sysJob.sysJobDo.UseDB(db, opts...)
-	_sysJob.sysJobDo.UseModel(&model.SysJob{})
+	_sysJobs.sysJobsDo.UseDB(db, opts...)
+	_sysJobs.sysJobsDo.UseModel(&model.SysJobs{})
 
-	tableName := _sysJob.sysJobDo.TableName()
-	_sysJob.ALL = field.NewAsterisk(tableName)
-	_sysJob.ID = field.NewInt64(tableName, "id")
-	_sysJob.JobName = field.NewString(tableName, "job_name")
-	_sysJob.JobGroup = field.NewString(tableName, "job_group")
-	_sysJob.JobType = field.NewInt32(tableName, "job_type")
-	_sysJob.CronExpression = field.NewString(tableName, "cron_expression")
-	_sysJob.InvokeTarget = field.NewString(tableName, "invoke_target")
-	_sysJob.Args = field.NewString(tableName, "args")
-	_sysJob.MisfirePolicy = field.NewInt32(tableName, "misfire_policy")
-	_sysJob.Concurrent = field.NewInt32(tableName, "concurrent")
-	_sysJob.Status = field.NewInt32(tableName, "status")
-	_sysJob.EntryID = field.NewInt32(tableName, "entry_id")
-	_sysJob.CreateBy = field.NewString(tableName, "create_by")
-	_sysJob.UpdateBy = field.NewString(tableName, "update_by")
-	_sysJob.CreatedAt = field.NewTime(tableName, "created_at")
-	_sysJob.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_sysJob.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _sysJobs.sysJobsDo.TableName()
+	_sysJobs.ALL = field.NewAsterisk(tableName)
+	_sysJobs.ID = field.NewInt64(tableName, "id")
+	_sysJobs.JobName = field.NewString(tableName, "job_name")
+	_sysJobs.JobGroup = field.NewString(tableName, "job_group")
+	_sysJobs.JobType = field.NewInt32(tableName, "job_type")
+	_sysJobs.CronExpression = field.NewString(tableName, "cron_expression")
+	_sysJobs.InvokeTarget = field.NewString(tableName, "invoke_target")
+	_sysJobs.Args = field.NewString(tableName, "args")
+	_sysJobs.MisfirePolicy = field.NewInt32(tableName, "misfire_policy")
+	_sysJobs.Concurrent = field.NewInt32(tableName, "concurrent")
+	_sysJobs.Status = field.NewInt32(tableName, "status")
+	_sysJobs.EntryID = field.NewInt32(tableName, "entry_id")
+	_sysJobs.CreateBy = field.NewString(tableName, "create_by")
+	_sysJobs.UpdateBy = field.NewString(tableName, "update_by")
+	_sysJobs.CreatedAt = field.NewTime(tableName, "created_at")
+	_sysJobs.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_sysJobs.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_sysJob.fillFieldMap()
+	_sysJobs.fillFieldMap()
 
-	return _sysJob
+	return _sysJobs
 }
 
-type sysJob struct {
-	sysJobDo sysJobDo
+type sysJobs struct {
+	sysJobsDo sysJobsDo
 
 	ALL            field.Asterisk
 	ID             field.Int64  // 主键id
@@ -72,17 +73,17 @@ type sysJob struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysJob) Table(newTableName string) *sysJob {
-	s.sysJobDo.UseTable(newTableName)
+func (s sysJobs) Table(newTableName string) *sysJobs {
+	s.sysJobsDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysJob) As(alias string) *sysJob {
-	s.sysJobDo.DO = *(s.sysJobDo.As(alias).(*gen.DO))
+func (s sysJobs) As(alias string) *sysJobs {
+	s.sysJobsDo.DO = *(s.sysJobsDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysJob) updateTableName(table string) *sysJob {
+func (s *sysJobs) updateTableName(table string) *sysJobs {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.JobName = field.NewString(table, "job_name")
@@ -106,13 +107,13 @@ func (s *sysJob) updateTableName(table string) *sysJob {
 	return s
 }
 
-func (s *sysJob) WithContext(ctx context.Context) *sysJobDo { return s.sysJobDo.WithContext(ctx) }
+func (s *sysJobs) WithContext(ctx context.Context) *sysJobsDo { return s.sysJobsDo.WithContext(ctx) }
 
-func (s sysJob) TableName() string { return s.sysJobDo.TableName() }
+func (s sysJobs) TableName() string { return s.sysJobsDo.TableName() }
 
-func (s sysJob) Alias() string { return s.sysJobDo.Alias() }
+func (s sysJobs) Alias() string { return s.sysJobsDo.Alias() }
 
-func (s *sysJob) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysJobs) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -121,7 +122,7 @@ func (s *sysJob) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysJob) fillFieldMap() {
+func (s *sysJobs) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 16)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["job_name"] = s.JobName
@@ -141,165 +142,165 @@ func (s *sysJob) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 }
 
-func (s sysJob) clone(db *gorm.DB) sysJob {
-	s.sysJobDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysJobs) clone(db *gorm.DB) sysJobs {
+	s.sysJobsDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysJob) replaceDB(db *gorm.DB) sysJob {
-	s.sysJobDo.ReplaceDB(db)
+func (s sysJobs) replaceDB(db *gorm.DB) sysJobs {
+	s.sysJobsDo.ReplaceDB(db)
 	return s
 }
 
-type sysJobDo struct{ gen.DO }
+type sysJobsDo struct{ gen.DO }
 
-func (s sysJobDo) Debug() *sysJobDo {
+func (s sysJobsDo) Debug() *sysJobsDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysJobDo) WithContext(ctx context.Context) *sysJobDo {
+func (s sysJobsDo) WithContext(ctx context.Context) *sysJobsDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysJobDo) ReadDB() *sysJobDo {
+func (s sysJobsDo) ReadDB() *sysJobsDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysJobDo) WriteDB() *sysJobDo {
+func (s sysJobsDo) WriteDB() *sysJobsDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysJobDo) Session(config *gorm.Session) *sysJobDo {
+func (s sysJobsDo) Session(config *gorm.Session) *sysJobsDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysJobDo) Clauses(conds ...clause.Expression) *sysJobDo {
+func (s sysJobsDo) Clauses(conds ...clause.Expression) *sysJobsDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysJobDo) Returning(value interface{}, columns ...string) *sysJobDo {
+func (s sysJobsDo) Returning(value interface{}, columns ...string) *sysJobsDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysJobDo) Not(conds ...gen.Condition) *sysJobDo {
+func (s sysJobsDo) Not(conds ...gen.Condition) *sysJobsDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysJobDo) Or(conds ...gen.Condition) *sysJobDo {
+func (s sysJobsDo) Or(conds ...gen.Condition) *sysJobsDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysJobDo) Select(conds ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Select(conds ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysJobDo) Where(conds ...gen.Condition) *sysJobDo {
+func (s sysJobsDo) Where(conds ...gen.Condition) *sysJobsDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysJobDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysJobDo {
+func (s sysJobsDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysJobsDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysJobDo) Order(conds ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Order(conds ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysJobDo) Distinct(cols ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Distinct(cols ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysJobDo) Omit(cols ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Omit(cols ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysJobDo) Join(table schema.Tabler, on ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Join(table schema.Tabler, on ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysJobDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysJobDo {
+func (s sysJobsDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysJobDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysJobDo {
+func (s sysJobsDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysJobDo) Group(cols ...field.Expr) *sysJobDo {
+func (s sysJobsDo) Group(cols ...field.Expr) *sysJobsDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysJobDo) Having(conds ...gen.Condition) *sysJobDo {
+func (s sysJobsDo) Having(conds ...gen.Condition) *sysJobsDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysJobDo) Limit(limit int) *sysJobDo {
+func (s sysJobsDo) Limit(limit int) *sysJobsDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysJobDo) Offset(offset int) *sysJobDo {
+func (s sysJobsDo) Offset(offset int) *sysJobsDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysJobDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysJobDo {
+func (s sysJobsDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysJobsDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysJobDo) Unscoped() *sysJobDo {
+func (s sysJobsDo) Unscoped() *sysJobsDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysJobDo) Create(values ...*model.SysJob) error {
+func (s sysJobsDo) Create(values ...*model.SysJobs) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysJobDo) CreateInBatches(values []*model.SysJob, batchSize int) error {
+func (s sysJobsDo) CreateInBatches(values []*model.SysJobs, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysJobDo) Save(values ...*model.SysJob) error {
+func (s sysJobsDo) Save(values ...*model.SysJobs) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysJobDo) First() (*model.SysJob, error) {
+func (s sysJobsDo) First() (*model.SysJobs, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysJob), nil
+		return result.(*model.SysJobs), nil
 	}
 }
 
-func (s sysJobDo) Take() (*model.SysJob, error) {
+func (s sysJobsDo) Take() (*model.SysJobs, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysJob), nil
+		return result.(*model.SysJobs), nil
 	}
 }
 
-func (s sysJobDo) Last() (*model.SysJob, error) {
+func (s sysJobsDo) Last() (*model.SysJobs, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysJob), nil
+		return result.(*model.SysJobs), nil
 	}
 }
 
-func (s sysJobDo) Find() ([]*model.SysJob, error) {
+func (s sysJobsDo) Find() ([]*model.SysJobs, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysJob), err
+	return result.([]*model.SysJobs), err
 }
 
-func (s sysJobDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysJob, err error) {
-	buf := make([]*model.SysJob, 0, batchSize)
+func (s sysJobsDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysJobs, err error) {
+	buf := make([]*model.SysJobs, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -307,49 +308,49 @@ func (s sysJobDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (s sysJobDo) FindInBatches(result *[]*model.SysJob, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysJobsDo) FindInBatches(result *[]*model.SysJobs, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysJobDo) Attrs(attrs ...field.AssignExpr) *sysJobDo {
+func (s sysJobsDo) Attrs(attrs ...field.AssignExpr) *sysJobsDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysJobDo) Assign(attrs ...field.AssignExpr) *sysJobDo {
+func (s sysJobsDo) Assign(attrs ...field.AssignExpr) *sysJobsDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysJobDo) Joins(fields ...field.RelationField) *sysJobDo {
+func (s sysJobsDo) Joins(fields ...field.RelationField) *sysJobsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysJobDo) Preload(fields ...field.RelationField) *sysJobDo {
+func (s sysJobsDo) Preload(fields ...field.RelationField) *sysJobsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysJobDo) FirstOrInit() (*model.SysJob, error) {
+func (s sysJobsDo) FirstOrInit() (*model.SysJobs, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysJob), nil
+		return result.(*model.SysJobs), nil
 	}
 }
 
-func (s sysJobDo) FirstOrCreate() (*model.SysJob, error) {
+func (s sysJobsDo) FirstOrCreate() (*model.SysJobs, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysJob), nil
+		return result.(*model.SysJobs), nil
 	}
 }
 
-func (s sysJobDo) FindByPage(offset int, limit int) (result []*model.SysJob, count int64, err error) {
+func (s sysJobsDo) FindByPage(offset int, limit int) (result []*model.SysJobs, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -364,7 +365,7 @@ func (s sysJobDo) FindByPage(offset int, limit int) (result []*model.SysJob, cou
 	return
 }
 
-func (s sysJobDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysJobsDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -374,15 +375,15 @@ func (s sysJobDo) ScanByPage(result interface{}, offset int, limit int) (count i
 	return
 }
 
-func (s sysJobDo) Scan(result interface{}) (err error) {
+func (s sysJobsDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysJobDo) Delete(models ...*model.SysJob) (result gen.ResultInfo, err error) {
+func (s sysJobsDo) Delete(models ...*model.SysJobs) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysJobDo) withDO(do gen.Dao) *sysJobDo {
+func (s *sysJobsDo) withDO(do gen.Dao) *sysJobsDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

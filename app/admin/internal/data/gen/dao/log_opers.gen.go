@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,40 +15,42 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newLogOper(db *gorm.DB, opts ...gen.DOOption) logOper {
-	_logOper := logOper{}
+func newLogOpers(db *gorm.DB, opts ...gen.DOOption) logOpers {
+	_logOpers := logOpers{}
 
-	_logOper.logOperDo.UseDB(db, opts...)
-	_logOper.logOperDo.UseModel(&model.LogOper{})
+	_logOpers.logOpersDo.UseDB(db, opts...)
+	_logOpers.logOpersDo.UseModel(&model.LogOpers{})
 
-	tableName := _logOper.logOperDo.TableName()
-	_logOper.ALL = field.NewAsterisk(tableName)
-	_logOper.ID = field.NewInt64(tableName, "id")
-	_logOper.Title = field.NewString(tableName, "title")
-	_logOper.BusinessType = field.NewInt32(tableName, "business_type")
-	_logOper.URL = field.NewString(tableName, "url")
-	_logOper.Method = field.NewString(tableName, "method")
-	_logOper.UserName = field.NewString(tableName, "user_name")
-	_logOper.UserID = field.NewInt64(tableName, "user_id")
-	_logOper.IP = field.NewString(tableName, "ip")
-	_logOper.Agent = field.NewString(tableName, "agent")
-	_logOper.Latency = field.NewInt32(tableName, "latency")
-	_logOper.Resp = field.NewString(tableName, "resp")
-	_logOper.Status = field.NewInt32(tableName, "status")
-	_logOper.ErrorMessage = field.NewString(tableName, "error_message")
-	_logOper.CreatedAt = field.NewTime(tableName, "created_at")
-	_logOper.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_logOper.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _logOpers.logOpersDo.TableName()
+	_logOpers.ALL = field.NewAsterisk(tableName)
+	_logOpers.ID = field.NewInt64(tableName, "id")
+	_logOpers.Title = field.NewString(tableName, "title")
+	_logOpers.BusinessType = field.NewInt32(tableName, "business_type")
+	_logOpers.URL = field.NewString(tableName, "url")
+	_logOpers.Method = field.NewString(tableName, "method")
+	_logOpers.UserName = field.NewString(tableName, "user_name")
+	_logOpers.UserID = field.NewInt64(tableName, "user_id")
+	_logOpers.IP = field.NewString(tableName, "ip")
+	_logOpers.Agent = field.NewString(tableName, "agent")
+	_logOpers.Latency = field.NewInt32(tableName, "latency")
+	_logOpers.Resp = field.NewString(tableName, "resp")
+	_logOpers.Status = field.NewInt32(tableName, "status")
+	_logOpers.ErrorMessage = field.NewString(tableName, "error_message")
+	_logOpers.CreatedAt = field.NewTime(tableName, "created_at")
+	_logOpers.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_logOpers.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_logOper.fillFieldMap()
+	_logOpers.fillFieldMap()
 
-	return _logOper
+	return _logOpers
 }
 
-type logOper struct {
-	logOperDo logOperDo
+type logOpers struct {
+	logOpersDo logOpersDo
 
 	ALL          field.Asterisk
 	ID           field.Int64  // 主键id
@@ -72,17 +73,17 @@ type logOper struct {
 	fieldMap map[string]field.Expr
 }
 
-func (l logOper) Table(newTableName string) *logOper {
-	l.logOperDo.UseTable(newTableName)
+func (l logOpers) Table(newTableName string) *logOpers {
+	l.logOpersDo.UseTable(newTableName)
 	return l.updateTableName(newTableName)
 }
 
-func (l logOper) As(alias string) *logOper {
-	l.logOperDo.DO = *(l.logOperDo.As(alias).(*gen.DO))
+func (l logOpers) As(alias string) *logOpers {
+	l.logOpersDo.DO = *(l.logOpersDo.As(alias).(*gen.DO))
 	return l.updateTableName(alias)
 }
 
-func (l *logOper) updateTableName(table string) *logOper {
+func (l *logOpers) updateTableName(table string) *logOpers {
 	l.ALL = field.NewAsterisk(table)
 	l.ID = field.NewInt64(table, "id")
 	l.Title = field.NewString(table, "title")
@@ -106,13 +107,13 @@ func (l *logOper) updateTableName(table string) *logOper {
 	return l
 }
 
-func (l *logOper) WithContext(ctx context.Context) *logOperDo { return l.logOperDo.WithContext(ctx) }
+func (l *logOpers) WithContext(ctx context.Context) *logOpersDo { return l.logOpersDo.WithContext(ctx) }
 
-func (l logOper) TableName() string { return l.logOperDo.TableName() }
+func (l logOpers) TableName() string { return l.logOpersDo.TableName() }
 
-func (l logOper) Alias() string { return l.logOperDo.Alias() }
+func (l logOpers) Alias() string { return l.logOpersDo.Alias() }
 
-func (l *logOper) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (l *logOpers) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := l.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -121,7 +122,7 @@ func (l *logOper) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (l *logOper) fillFieldMap() {
+func (l *logOpers) fillFieldMap() {
 	l.fieldMap = make(map[string]field.Expr, 16)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["title"] = l.Title
@@ -141,165 +142,165 @@ func (l *logOper) fillFieldMap() {
 	l.fieldMap["deleted_at"] = l.DeletedAt
 }
 
-func (l logOper) clone(db *gorm.DB) logOper {
-	l.logOperDo.ReplaceConnPool(db.Statement.ConnPool)
+func (l logOpers) clone(db *gorm.DB) logOpers {
+	l.logOpersDo.ReplaceConnPool(db.Statement.ConnPool)
 	return l
 }
 
-func (l logOper) replaceDB(db *gorm.DB) logOper {
-	l.logOperDo.ReplaceDB(db)
+func (l logOpers) replaceDB(db *gorm.DB) logOpers {
+	l.logOpersDo.ReplaceDB(db)
 	return l
 }
 
-type logOperDo struct{ gen.DO }
+type logOpersDo struct{ gen.DO }
 
-func (l logOperDo) Debug() *logOperDo {
+func (l logOpersDo) Debug() *logOpersDo {
 	return l.withDO(l.DO.Debug())
 }
 
-func (l logOperDo) WithContext(ctx context.Context) *logOperDo {
+func (l logOpersDo) WithContext(ctx context.Context) *logOpersDo {
 	return l.withDO(l.DO.WithContext(ctx))
 }
 
-func (l logOperDo) ReadDB() *logOperDo {
+func (l logOpersDo) ReadDB() *logOpersDo {
 	return l.Clauses(dbresolver.Read)
 }
 
-func (l logOperDo) WriteDB() *logOperDo {
+func (l logOpersDo) WriteDB() *logOpersDo {
 	return l.Clauses(dbresolver.Write)
 }
 
-func (l logOperDo) Session(config *gorm.Session) *logOperDo {
+func (l logOpersDo) Session(config *gorm.Session) *logOpersDo {
 	return l.withDO(l.DO.Session(config))
 }
 
-func (l logOperDo) Clauses(conds ...clause.Expression) *logOperDo {
+func (l logOpersDo) Clauses(conds ...clause.Expression) *logOpersDo {
 	return l.withDO(l.DO.Clauses(conds...))
 }
 
-func (l logOperDo) Returning(value interface{}, columns ...string) *logOperDo {
+func (l logOpersDo) Returning(value interface{}, columns ...string) *logOpersDo {
 	return l.withDO(l.DO.Returning(value, columns...))
 }
 
-func (l logOperDo) Not(conds ...gen.Condition) *logOperDo {
+func (l logOpersDo) Not(conds ...gen.Condition) *logOpersDo {
 	return l.withDO(l.DO.Not(conds...))
 }
 
-func (l logOperDo) Or(conds ...gen.Condition) *logOperDo {
+func (l logOpersDo) Or(conds ...gen.Condition) *logOpersDo {
 	return l.withDO(l.DO.Or(conds...))
 }
 
-func (l logOperDo) Select(conds ...field.Expr) *logOperDo {
+func (l logOpersDo) Select(conds ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Select(conds...))
 }
 
-func (l logOperDo) Where(conds ...gen.Condition) *logOperDo {
+func (l logOpersDo) Where(conds ...gen.Condition) *logOpersDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logOperDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logOperDo {
+func (l logOpersDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logOpersDo {
 	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (l logOperDo) Order(conds ...field.Expr) *logOperDo {
+func (l logOpersDo) Order(conds ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Order(conds...))
 }
 
-func (l logOperDo) Distinct(cols ...field.Expr) *logOperDo {
+func (l logOpersDo) Distinct(cols ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Distinct(cols...))
 }
 
-func (l logOperDo) Omit(cols ...field.Expr) *logOperDo {
+func (l logOpersDo) Omit(cols ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Omit(cols...))
 }
 
-func (l logOperDo) Join(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOpersDo) Join(table schema.Tabler, on ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Join(table, on...))
 }
 
-func (l logOperDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOpersDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.LeftJoin(table, on...))
 }
 
-func (l logOperDo) RightJoin(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOpersDo) RightJoin(table schema.Tabler, on ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.RightJoin(table, on...))
 }
 
-func (l logOperDo) Group(cols ...field.Expr) *logOperDo {
+func (l logOpersDo) Group(cols ...field.Expr) *logOpersDo {
 	return l.withDO(l.DO.Group(cols...))
 }
 
-func (l logOperDo) Having(conds ...gen.Condition) *logOperDo {
+func (l logOpersDo) Having(conds ...gen.Condition) *logOpersDo {
 	return l.withDO(l.DO.Having(conds...))
 }
 
-func (l logOperDo) Limit(limit int) *logOperDo {
+func (l logOpersDo) Limit(limit int) *logOpersDo {
 	return l.withDO(l.DO.Limit(limit))
 }
 
-func (l logOperDo) Offset(offset int) *logOperDo {
+func (l logOpersDo) Offset(offset int) *logOpersDo {
 	return l.withDO(l.DO.Offset(offset))
 }
 
-func (l logOperDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logOperDo {
+func (l logOpersDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logOpersDo {
 	return l.withDO(l.DO.Scopes(funcs...))
 }
 
-func (l logOperDo) Unscoped() *logOperDo {
+func (l logOpersDo) Unscoped() *logOpersDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
-func (l logOperDo) Create(values ...*model.LogOper) error {
+func (l logOpersDo) Create(values ...*model.LogOpers) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Create(values)
 }
 
-func (l logOperDo) CreateInBatches(values []*model.LogOper, batchSize int) error {
+func (l logOpersDo) CreateInBatches(values []*model.LogOpers, batchSize int) error {
 	return l.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (l logOperDo) Save(values ...*model.LogOper) error {
+func (l logOpersDo) Save(values ...*model.LogOpers) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Save(values)
 }
 
-func (l logOperDo) First() (*model.LogOper, error) {
+func (l logOpersDo) First() (*model.LogOpers, error) {
 	if result, err := l.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogOper), nil
+		return result.(*model.LogOpers), nil
 	}
 }
 
-func (l logOperDo) Take() (*model.LogOper, error) {
+func (l logOpersDo) Take() (*model.LogOpers, error) {
 	if result, err := l.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogOper), nil
+		return result.(*model.LogOpers), nil
 	}
 }
 
-func (l logOperDo) Last() (*model.LogOper, error) {
+func (l logOpersDo) Last() (*model.LogOpers, error) {
 	if result, err := l.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogOper), nil
+		return result.(*model.LogOpers), nil
 	}
 }
 
-func (l logOperDo) Find() ([]*model.LogOper, error) {
+func (l logOpersDo) Find() ([]*model.LogOpers, error) {
 	result, err := l.DO.Find()
-	return result.([]*model.LogOper), err
+	return result.([]*model.LogOpers), err
 }
 
-func (l logOperDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogOper, err error) {
-	buf := make([]*model.LogOper, 0, batchSize)
+func (l logOpersDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogOpers, err error) {
+	buf := make([]*model.LogOpers, 0, batchSize)
 	err = l.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -307,49 +308,49 @@ func (l logOperDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (l logOperDo) FindInBatches(result *[]*model.LogOper, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (l logOpersDo) FindInBatches(result *[]*model.LogOpers, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (l logOperDo) Attrs(attrs ...field.AssignExpr) *logOperDo {
+func (l logOpersDo) Attrs(attrs ...field.AssignExpr) *logOpersDo {
 	return l.withDO(l.DO.Attrs(attrs...))
 }
 
-func (l logOperDo) Assign(attrs ...field.AssignExpr) *logOperDo {
+func (l logOpersDo) Assign(attrs ...field.AssignExpr) *logOpersDo {
 	return l.withDO(l.DO.Assign(attrs...))
 }
 
-func (l logOperDo) Joins(fields ...field.RelationField) *logOperDo {
+func (l logOpersDo) Joins(fields ...field.RelationField) *logOpersDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Joins(_f))
 	}
 	return &l
 }
 
-func (l logOperDo) Preload(fields ...field.RelationField) *logOperDo {
+func (l logOpersDo) Preload(fields ...field.RelationField) *logOpersDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Preload(_f))
 	}
 	return &l
 }
 
-func (l logOperDo) FirstOrInit() (*model.LogOper, error) {
+func (l logOpersDo) FirstOrInit() (*model.LogOpers, error) {
 	if result, err := l.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogOper), nil
+		return result.(*model.LogOpers), nil
 	}
 }
 
-func (l logOperDo) FirstOrCreate() (*model.LogOper, error) {
+func (l logOpersDo) FirstOrCreate() (*model.LogOpers, error) {
 	if result, err := l.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogOper), nil
+		return result.(*model.LogOpers), nil
 	}
 }
 
-func (l logOperDo) FindByPage(offset int, limit int) (result []*model.LogOper, count int64, err error) {
+func (l logOpersDo) FindByPage(offset int, limit int) (result []*model.LogOpers, count int64, err error) {
 	result, err = l.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -364,7 +365,7 @@ func (l logOperDo) FindByPage(offset int, limit int) (result []*model.LogOper, c
 	return
 }
 
-func (l logOperDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (l logOpersDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = l.Count()
 	if err != nil {
 		return
@@ -374,15 +375,15 @@ func (l logOperDo) ScanByPage(result interface{}, offset int, limit int) (count 
 	return
 }
 
-func (l logOperDo) Scan(result interface{}) (err error) {
+func (l logOpersDo) Scan(result interface{}) (err error) {
 	return l.DO.Scan(result)
 }
 
-func (l logOperDo) Delete(models ...*model.LogOper) (result gen.ResultInfo, err error) {
+func (l logOpersDo) Delete(models ...*model.LogOpers) (result gen.ResultInfo, err error) {
 	return l.DO.Delete(models)
 }
 
-func (l *logOperDo) withDO(do gen.Dao) *logOperDo {
+func (l *logOpersDo) withDO(do gen.Dao) *logOpersDo {
 	l.DO = *do.(*gen.DO)
 	return l
 }

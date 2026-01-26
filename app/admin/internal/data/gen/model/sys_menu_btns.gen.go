@@ -4,17 +4,17 @@
 
 package model
 
-const TableNameSysMenuBtn = "sys_menu_btns"
+const TableNameSysMenuBtns = "sys_menu_btns"
 
-// SysMenuBtn mapped from table <sys_menu_btns>
-type SysMenuBtn struct {
-	ID     int64  `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	MenuID int64  `gorm:"column:menu_id;type:bigint(20);not null;comment:菜单ID" json:"menu_id"`
-	Name   string `gorm:"column:name;type:varchar(191);not null;comment:按钮关键key" json:"name"`
-	Desc   string `gorm:"column:desc;type:varchar(191);not null;comment:按钮描述" json:"desc"`
+// SysMenuBtns mapped from table <sys_menu_btns>
+type SysMenuBtns struct {
+	ID     int64  `gorm:"column:id;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	MenuID int64  `gorm:"column:menu_id;not null;comment:菜单ID" json:"menu_id"`
+	Name   string `gorm:"column:name;not null;comment:按钮关键key" json:"name"`
+	Desc   string `gorm:"column:desc;not null;comment:按钮描述" json:"desc"`
 }
 
-// TableName SysMenuBtn's table name
-func (*SysMenuBtn) TableName() string {
-	return TableNameSysMenuBtn
+// TableName SysMenuBtns's table name
+func (*SysMenuBtns) TableName() string {
+	return TableNameSysMenuBtns
 }

@@ -17,77 +17,80 @@ import (
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:           db,
-		CasbinRule:   newCasbinRule(db, opts...),
-		JwtBlacklist: newJwtBlacklist(db, opts...),
-		LogJob:       newLogJob(db, opts...),
-		LogLogin:     newLogLogin(db, opts...),
-		LogOper:      newLogOper(db, opts...),
-		SysAPI:       newSysAPI(db, opts...),
-		SysDept:      newSysDept(db, opts...),
-		SysDictDatum: newSysDictDatum(db, opts...),
-		SysDictType:  newSysDictType(db, opts...),
-		SysDiscovery: newSysDiscovery(db, opts...),
-		SysJob:       newSysJob(db, opts...),
-		SysMenu:      newSysMenu(db, opts...),
-		SysMenuBtn:   newSysMenuBtn(db, opts...),
-		SysPost:      newSysPost(db, opts...),
-		SysRole:      newSysRole(db, opts...),
-		SysRoleBtn:   newSysRoleBtn(db, opts...),
-		SysRoleDept:  newSysRoleDept(db, opts...),
-		SysRoleMenu:  newSysRoleMenu(db, opts...),
-		SysUser:      newSysUser(db, opts...),
+		db:            db,
+		CasbinRule:    newCasbinRule(db, opts...),
+		JwtBlacklists: newJwtBlacklists(db, opts...),
+		LogJobs:       newLogJobs(db, opts...),
+		LogLogins:     newLogLogins(db, opts...),
+		LogOpers:      newLogOpers(db, opts...),
+		SysApis:       newSysApis(db, opts...),
+		SysDepts:      newSysDepts(db, opts...),
+		SysDictData:   newSysDictData(db, opts...),
+		SysDictTypes:  newSysDictTypes(db, opts...),
+		SysDiscovery:  newSysDiscovery(db, opts...),
+		SysJobs:       newSysJobs(db, opts...),
+		SysLogs:       newSysLogs(db, opts...),
+		SysMenuBtns:   newSysMenuBtns(db, opts...),
+		SysMenus:      newSysMenus(db, opts...),
+		SysPosts:      newSysPosts(db, opts...),
+		SysRoleBtns:   newSysRoleBtns(db, opts...),
+		SysRoleDepts:  newSysRoleDepts(db, opts...),
+		SysRoleMenus:  newSysRoleMenus(db, opts...),
+		SysRoles:      newSysRoles(db, opts...),
+		SysUsers:      newSysUsers(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	CasbinRule   casbinRule
-	JwtBlacklist jwtBlacklist
-	LogJob       logJob
-	LogLogin     logLogin
-	LogOper      logOper
-	SysAPI       sysAPI
-	SysDept      sysDept
-	SysDictDatum sysDictDatum
-	SysDictType  sysDictType
-	SysDiscovery sysDiscovery
-	SysJob       sysJob
-	SysMenu      sysMenu
-	SysMenuBtn   sysMenuBtn
-	SysPost      sysPost
-	SysRole      sysRole
-	SysRoleBtn   sysRoleBtn
-	SysRoleDept  sysRoleDept
-	SysRoleMenu  sysRoleMenu
-	SysUser      sysUser
+	CasbinRule    casbinRule
+	JwtBlacklists jwtBlacklists
+	LogJobs       logJobs
+	LogLogins     logLogins
+	LogOpers      logOpers
+	SysApis       sysApis
+	SysDepts      sysDepts
+	SysDictData   sysDictData
+	SysDictTypes  sysDictTypes
+	SysDiscovery  sysDiscovery
+	SysJobs       sysJobs
+	SysLogs       sysLogs
+	SysMenuBtns   sysMenuBtns
+	SysMenus      sysMenus
+	SysPosts      sysPosts
+	SysRoleBtns   sysRoleBtns
+	SysRoleDepts  sysRoleDepts
+	SysRoleMenus  sysRoleMenus
+	SysRoles      sysRoles
+	SysUsers      sysUsers
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:           db,
-		CasbinRule:   q.CasbinRule.clone(db),
-		JwtBlacklist: q.JwtBlacklist.clone(db),
-		LogJob:       q.LogJob.clone(db),
-		LogLogin:     q.LogLogin.clone(db),
-		LogOper:      q.LogOper.clone(db),
-		SysAPI:       q.SysAPI.clone(db),
-		SysDept:      q.SysDept.clone(db),
-		SysDictDatum: q.SysDictDatum.clone(db),
-		SysDictType:  q.SysDictType.clone(db),
-		SysDiscovery: q.SysDiscovery.clone(db),
-		SysJob:       q.SysJob.clone(db),
-		SysMenu:      q.SysMenu.clone(db),
-		SysMenuBtn:   q.SysMenuBtn.clone(db),
-		SysPost:      q.SysPost.clone(db),
-		SysRole:      q.SysRole.clone(db),
-		SysRoleBtn:   q.SysRoleBtn.clone(db),
-		SysRoleDept:  q.SysRoleDept.clone(db),
-		SysRoleMenu:  q.SysRoleMenu.clone(db),
-		SysUser:      q.SysUser.clone(db),
+		db:            db,
+		CasbinRule:    q.CasbinRule.clone(db),
+		JwtBlacklists: q.JwtBlacklists.clone(db),
+		LogJobs:       q.LogJobs.clone(db),
+		LogLogins:     q.LogLogins.clone(db),
+		LogOpers:      q.LogOpers.clone(db),
+		SysApis:       q.SysApis.clone(db),
+		SysDepts:      q.SysDepts.clone(db),
+		SysDictData:   q.SysDictData.clone(db),
+		SysDictTypes:  q.SysDictTypes.clone(db),
+		SysDiscovery:  q.SysDiscovery.clone(db),
+		SysJobs:       q.SysJobs.clone(db),
+		SysLogs:       q.SysLogs.clone(db),
+		SysMenuBtns:   q.SysMenuBtns.clone(db),
+		SysMenus:      q.SysMenus.clone(db),
+		SysPosts:      q.SysPosts.clone(db),
+		SysRoleBtns:   q.SysRoleBtns.clone(db),
+		SysRoleDepts:  q.SysRoleDepts.clone(db),
+		SysRoleMenus:  q.SysRoleMenus.clone(db),
+		SysRoles:      q.SysRoles.clone(db),
+		SysUsers:      q.SysUsers.clone(db),
 	}
 }
 
@@ -101,72 +104,75 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:           db,
-		CasbinRule:   q.CasbinRule.replaceDB(db),
-		JwtBlacklist: q.JwtBlacklist.replaceDB(db),
-		LogJob:       q.LogJob.replaceDB(db),
-		LogLogin:     q.LogLogin.replaceDB(db),
-		LogOper:      q.LogOper.replaceDB(db),
-		SysAPI:       q.SysAPI.replaceDB(db),
-		SysDept:      q.SysDept.replaceDB(db),
-		SysDictDatum: q.SysDictDatum.replaceDB(db),
-		SysDictType:  q.SysDictType.replaceDB(db),
-		SysDiscovery: q.SysDiscovery.replaceDB(db),
-		SysJob:       q.SysJob.replaceDB(db),
-		SysMenu:      q.SysMenu.replaceDB(db),
-		SysMenuBtn:   q.SysMenuBtn.replaceDB(db),
-		SysPost:      q.SysPost.replaceDB(db),
-		SysRole:      q.SysRole.replaceDB(db),
-		SysRoleBtn:   q.SysRoleBtn.replaceDB(db),
-		SysRoleDept:  q.SysRoleDept.replaceDB(db),
-		SysRoleMenu:  q.SysRoleMenu.replaceDB(db),
-		SysUser:      q.SysUser.replaceDB(db),
+		db:            db,
+		CasbinRule:    q.CasbinRule.replaceDB(db),
+		JwtBlacklists: q.JwtBlacklists.replaceDB(db),
+		LogJobs:       q.LogJobs.replaceDB(db),
+		LogLogins:     q.LogLogins.replaceDB(db),
+		LogOpers:      q.LogOpers.replaceDB(db),
+		SysApis:       q.SysApis.replaceDB(db),
+		SysDepts:      q.SysDepts.replaceDB(db),
+		SysDictData:   q.SysDictData.replaceDB(db),
+		SysDictTypes:  q.SysDictTypes.replaceDB(db),
+		SysDiscovery:  q.SysDiscovery.replaceDB(db),
+		SysJobs:       q.SysJobs.replaceDB(db),
+		SysLogs:       q.SysLogs.replaceDB(db),
+		SysMenuBtns:   q.SysMenuBtns.replaceDB(db),
+		SysMenus:      q.SysMenus.replaceDB(db),
+		SysPosts:      q.SysPosts.replaceDB(db),
+		SysRoleBtns:   q.SysRoleBtns.replaceDB(db),
+		SysRoleDepts:  q.SysRoleDepts.replaceDB(db),
+		SysRoleMenus:  q.SysRoleMenus.replaceDB(db),
+		SysRoles:      q.SysRoles.replaceDB(db),
+		SysUsers:      q.SysUsers.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	CasbinRule   *casbinRuleDo
-	JwtBlacklist *jwtBlacklistDo
-	LogJob       *logJobDo
-	LogLogin     *logLoginDo
-	LogOper      *logOperDo
-	SysAPI       *sysAPIDo
-	SysDept      *sysDeptDo
-	SysDictDatum *sysDictDatumDo
-	SysDictType  *sysDictTypeDo
-	SysDiscovery *sysDiscoveryDo
-	SysJob       *sysJobDo
-	SysMenu      *sysMenuDo
-	SysMenuBtn   *sysMenuBtnDo
-	SysPost      *sysPostDo
-	SysRole      *sysRoleDo
-	SysRoleBtn   *sysRoleBtnDo
-	SysRoleDept  *sysRoleDeptDo
-	SysRoleMenu  *sysRoleMenuDo
-	SysUser      *sysUserDo
+	CasbinRule    *casbinRuleDo
+	JwtBlacklists *jwtBlacklistsDo
+	LogJobs       *logJobsDo
+	LogLogins     *logLoginsDo
+	LogOpers      *logOpersDo
+	SysApis       *sysApisDo
+	SysDepts      *sysDeptsDo
+	SysDictData   *sysDictDataDo
+	SysDictTypes  *sysDictTypesDo
+	SysDiscovery  *sysDiscoveryDo
+	SysJobs       *sysJobsDo
+	SysLogs       *sysLogsDo
+	SysMenuBtns   *sysMenuBtnsDo
+	SysMenus      *sysMenusDo
+	SysPosts      *sysPostsDo
+	SysRoleBtns   *sysRoleBtnsDo
+	SysRoleDepts  *sysRoleDeptsDo
+	SysRoleMenus  *sysRoleMenusDo
+	SysRoles      *sysRolesDo
+	SysUsers      *sysUsersDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		CasbinRule:   q.CasbinRule.WithContext(ctx),
-		JwtBlacklist: q.JwtBlacklist.WithContext(ctx),
-		LogJob:       q.LogJob.WithContext(ctx),
-		LogLogin:     q.LogLogin.WithContext(ctx),
-		LogOper:      q.LogOper.WithContext(ctx),
-		SysAPI:       q.SysAPI.WithContext(ctx),
-		SysDept:      q.SysDept.WithContext(ctx),
-		SysDictDatum: q.SysDictDatum.WithContext(ctx),
-		SysDictType:  q.SysDictType.WithContext(ctx),
-		SysDiscovery: q.SysDiscovery.WithContext(ctx),
-		SysJob:       q.SysJob.WithContext(ctx),
-		SysMenu:      q.SysMenu.WithContext(ctx),
-		SysMenuBtn:   q.SysMenuBtn.WithContext(ctx),
-		SysPost:      q.SysPost.WithContext(ctx),
-		SysRole:      q.SysRole.WithContext(ctx),
-		SysRoleBtn:   q.SysRoleBtn.WithContext(ctx),
-		SysRoleDept:  q.SysRoleDept.WithContext(ctx),
-		SysRoleMenu:  q.SysRoleMenu.WithContext(ctx),
-		SysUser:      q.SysUser.WithContext(ctx),
+		CasbinRule:    q.CasbinRule.WithContext(ctx),
+		JwtBlacklists: q.JwtBlacklists.WithContext(ctx),
+		LogJobs:       q.LogJobs.WithContext(ctx),
+		LogLogins:     q.LogLogins.WithContext(ctx),
+		LogOpers:      q.LogOpers.WithContext(ctx),
+		SysApis:       q.SysApis.WithContext(ctx),
+		SysDepts:      q.SysDepts.WithContext(ctx),
+		SysDictData:   q.SysDictData.WithContext(ctx),
+		SysDictTypes:  q.SysDictTypes.WithContext(ctx),
+		SysDiscovery:  q.SysDiscovery.WithContext(ctx),
+		SysJobs:       q.SysJobs.WithContext(ctx),
+		SysLogs:       q.SysLogs.WithContext(ctx),
+		SysMenuBtns:   q.SysMenuBtns.WithContext(ctx),
+		SysMenus:      q.SysMenus.WithContext(ctx),
+		SysPosts:      q.SysPosts.WithContext(ctx),
+		SysRoleBtns:   q.SysRoleBtns.WithContext(ctx),
+		SysRoleDepts:  q.SysRoleDepts.WithContext(ctx),
+		SysRoleMenus:  q.SysRoleMenus.WithContext(ctx),
+		SysRoles:      q.SysRoles.WithContext(ctx),
+		SysUsers:      q.SysUsers.WithContext(ctx),
 	}
 }
 

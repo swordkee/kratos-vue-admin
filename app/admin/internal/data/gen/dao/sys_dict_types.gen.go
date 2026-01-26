@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,34 +15,36 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysDictType(db *gorm.DB, opts ...gen.DOOption) sysDictType {
-	_sysDictType := sysDictType{}
+func newSysDictTypes(db *gorm.DB, opts ...gen.DOOption) sysDictTypes {
+	_sysDictTypes := sysDictTypes{}
 
-	_sysDictType.sysDictTypeDo.UseDB(db, opts...)
-	_sysDictType.sysDictTypeDo.UseModel(&model.SysDictType{})
+	_sysDictTypes.sysDictTypesDo.UseDB(db, opts...)
+	_sysDictTypes.sysDictTypesDo.UseModel(&model.SysDictTypes{})
 
-	tableName := _sysDictType.sysDictTypeDo.TableName()
-	_sysDictType.ALL = field.NewAsterisk(tableName)
-	_sysDictType.DictID = field.NewInt64(tableName, "dict_id")
-	_sysDictType.DictName = field.NewString(tableName, "dict_name")
-	_sysDictType.DictType = field.NewString(tableName, "dict_type")
-	_sysDictType.Status = field.NewInt32(tableName, "status")
-	_sysDictType.CreateBy = field.NewString(tableName, "create_by")
-	_sysDictType.UpdateBy = field.NewString(tableName, "update_by")
-	_sysDictType.Remark = field.NewString(tableName, "remark")
-	_sysDictType.CreateTime = field.NewTime(tableName, "create_time")
-	_sysDictType.UpdateTime = field.NewTime(tableName, "update_time")
-	_sysDictType.DeleteTime = field.NewTime(tableName, "delete_time")
+	tableName := _sysDictTypes.sysDictTypesDo.TableName()
+	_sysDictTypes.ALL = field.NewAsterisk(tableName)
+	_sysDictTypes.DictID = field.NewInt64(tableName, "dict_id")
+	_sysDictTypes.DictName = field.NewString(tableName, "dict_name")
+	_sysDictTypes.DictType = field.NewString(tableName, "dict_type")
+	_sysDictTypes.Status = field.NewInt32(tableName, "status")
+	_sysDictTypes.CreateBy = field.NewString(tableName, "create_by")
+	_sysDictTypes.UpdateBy = field.NewString(tableName, "update_by")
+	_sysDictTypes.Remark = field.NewString(tableName, "remark")
+	_sysDictTypes.CreateTime = field.NewTime(tableName, "create_time")
+	_sysDictTypes.UpdateTime = field.NewTime(tableName, "update_time")
+	_sysDictTypes.DeleteTime = field.NewTime(tableName, "delete_time")
 
-	_sysDictType.fillFieldMap()
+	_sysDictTypes.fillFieldMap()
 
-	return _sysDictType
+	return _sysDictTypes
 }
 
-type sysDictType struct {
-	sysDictTypeDo sysDictTypeDo
+type sysDictTypes struct {
+	sysDictTypesDo sysDictTypesDo
 
 	ALL        field.Asterisk
 	DictID     field.Int64
@@ -60,17 +61,17 @@ type sysDictType struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysDictType) Table(newTableName string) *sysDictType {
-	s.sysDictTypeDo.UseTable(newTableName)
+func (s sysDictTypes) Table(newTableName string) *sysDictTypes {
+	s.sysDictTypesDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysDictType) As(alias string) *sysDictType {
-	s.sysDictTypeDo.DO = *(s.sysDictTypeDo.As(alias).(*gen.DO))
+func (s sysDictTypes) As(alias string) *sysDictTypes {
+	s.sysDictTypesDo.DO = *(s.sysDictTypesDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysDictType) updateTableName(table string) *sysDictType {
+func (s *sysDictTypes) updateTableName(table string) *sysDictTypes {
 	s.ALL = field.NewAsterisk(table)
 	s.DictID = field.NewInt64(table, "dict_id")
 	s.DictName = field.NewString(table, "dict_name")
@@ -88,15 +89,15 @@ func (s *sysDictType) updateTableName(table string) *sysDictType {
 	return s
 }
 
-func (s *sysDictType) WithContext(ctx context.Context) *sysDictTypeDo {
-	return s.sysDictTypeDo.WithContext(ctx)
+func (s *sysDictTypes) WithContext(ctx context.Context) *sysDictTypesDo {
+	return s.sysDictTypesDo.WithContext(ctx)
 }
 
-func (s sysDictType) TableName() string { return s.sysDictTypeDo.TableName() }
+func (s sysDictTypes) TableName() string { return s.sysDictTypesDo.TableName() }
 
-func (s sysDictType) Alias() string { return s.sysDictTypeDo.Alias() }
+func (s sysDictTypes) Alias() string { return s.sysDictTypesDo.Alias() }
 
-func (s *sysDictType) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysDictTypes) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -105,7 +106,7 @@ func (s *sysDictType) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysDictType) fillFieldMap() {
+func (s *sysDictTypes) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 10)
 	s.fieldMap["dict_id"] = s.DictID
 	s.fieldMap["dict_name"] = s.DictName
@@ -119,165 +120,165 @@ func (s *sysDictType) fillFieldMap() {
 	s.fieldMap["delete_time"] = s.DeleteTime
 }
 
-func (s sysDictType) clone(db *gorm.DB) sysDictType {
-	s.sysDictTypeDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysDictTypes) clone(db *gorm.DB) sysDictTypes {
+	s.sysDictTypesDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysDictType) replaceDB(db *gorm.DB) sysDictType {
-	s.sysDictTypeDo.ReplaceDB(db)
+func (s sysDictTypes) replaceDB(db *gorm.DB) sysDictTypes {
+	s.sysDictTypesDo.ReplaceDB(db)
 	return s
 }
 
-type sysDictTypeDo struct{ gen.DO }
+type sysDictTypesDo struct{ gen.DO }
 
-func (s sysDictTypeDo) Debug() *sysDictTypeDo {
+func (s sysDictTypesDo) Debug() *sysDictTypesDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysDictTypeDo) WithContext(ctx context.Context) *sysDictTypeDo {
+func (s sysDictTypesDo) WithContext(ctx context.Context) *sysDictTypesDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysDictTypeDo) ReadDB() *sysDictTypeDo {
+func (s sysDictTypesDo) ReadDB() *sysDictTypesDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysDictTypeDo) WriteDB() *sysDictTypeDo {
+func (s sysDictTypesDo) WriteDB() *sysDictTypesDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysDictTypeDo) Session(config *gorm.Session) *sysDictTypeDo {
+func (s sysDictTypesDo) Session(config *gorm.Session) *sysDictTypesDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysDictTypeDo) Clauses(conds ...clause.Expression) *sysDictTypeDo {
+func (s sysDictTypesDo) Clauses(conds ...clause.Expression) *sysDictTypesDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysDictTypeDo) Returning(value interface{}, columns ...string) *sysDictTypeDo {
+func (s sysDictTypesDo) Returning(value interface{}, columns ...string) *sysDictTypesDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysDictTypeDo) Not(conds ...gen.Condition) *sysDictTypeDo {
+func (s sysDictTypesDo) Not(conds ...gen.Condition) *sysDictTypesDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysDictTypeDo) Or(conds ...gen.Condition) *sysDictTypeDo {
+func (s sysDictTypesDo) Or(conds ...gen.Condition) *sysDictTypesDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysDictTypeDo) Select(conds ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Select(conds ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysDictTypeDo) Where(conds ...gen.Condition) *sysDictTypeDo {
+func (s sysDictTypesDo) Where(conds ...gen.Condition) *sysDictTypesDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDictTypeDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDictTypeDo {
+func (s sysDictTypesDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDictTypesDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysDictTypeDo) Order(conds ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Order(conds ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysDictTypeDo) Distinct(cols ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Distinct(cols ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysDictTypeDo) Omit(cols ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Omit(cols ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysDictTypeDo) Join(table schema.Tabler, on ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Join(table schema.Tabler, on ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysDictTypeDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysDictTypeDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysDictTypeDo) Group(cols ...field.Expr) *sysDictTypeDo {
+func (s sysDictTypesDo) Group(cols ...field.Expr) *sysDictTypesDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysDictTypeDo) Having(conds ...gen.Condition) *sysDictTypeDo {
+func (s sysDictTypesDo) Having(conds ...gen.Condition) *sysDictTypesDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysDictTypeDo) Limit(limit int) *sysDictTypeDo {
+func (s sysDictTypesDo) Limit(limit int) *sysDictTypesDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysDictTypeDo) Offset(offset int) *sysDictTypeDo {
+func (s sysDictTypesDo) Offset(offset int) *sysDictTypesDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysDictTypeDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDictTypeDo {
+func (s sysDictTypesDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDictTypesDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysDictTypeDo) Unscoped() *sysDictTypeDo {
+func (s sysDictTypesDo) Unscoped() *sysDictTypesDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysDictTypeDo) Create(values ...*model.SysDictType) error {
+func (s sysDictTypesDo) Create(values ...*model.SysDictTypes) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysDictTypeDo) CreateInBatches(values []*model.SysDictType, batchSize int) error {
+func (s sysDictTypesDo) CreateInBatches(values []*model.SysDictTypes, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysDictTypeDo) Save(values ...*model.SysDictType) error {
+func (s sysDictTypesDo) Save(values ...*model.SysDictTypes) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysDictTypeDo) First() (*model.SysDictType, error) {
+func (s sysDictTypesDo) First() (*model.SysDictTypes, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictType), nil
+		return result.(*model.SysDictTypes), nil
 	}
 }
 
-func (s sysDictTypeDo) Take() (*model.SysDictType, error) {
+func (s sysDictTypesDo) Take() (*model.SysDictTypes, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictType), nil
+		return result.(*model.SysDictTypes), nil
 	}
 }
 
-func (s sysDictTypeDo) Last() (*model.SysDictType, error) {
+func (s sysDictTypesDo) Last() (*model.SysDictTypes, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictType), nil
+		return result.(*model.SysDictTypes), nil
 	}
 }
 
-func (s sysDictTypeDo) Find() ([]*model.SysDictType, error) {
+func (s sysDictTypesDo) Find() ([]*model.SysDictTypes, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysDictType), err
+	return result.([]*model.SysDictTypes), err
 }
 
-func (s sysDictTypeDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDictType, err error) {
-	buf := make([]*model.SysDictType, 0, batchSize)
+func (s sysDictTypesDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDictTypes, err error) {
+	buf := make([]*model.SysDictTypes, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -285,49 +286,49 @@ func (s sysDictTypeDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int)
 	return results, err
 }
 
-func (s sysDictTypeDo) FindInBatches(result *[]*model.SysDictType, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysDictTypesDo) FindInBatches(result *[]*model.SysDictTypes, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysDictTypeDo) Attrs(attrs ...field.AssignExpr) *sysDictTypeDo {
+func (s sysDictTypesDo) Attrs(attrs ...field.AssignExpr) *sysDictTypesDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysDictTypeDo) Assign(attrs ...field.AssignExpr) *sysDictTypeDo {
+func (s sysDictTypesDo) Assign(attrs ...field.AssignExpr) *sysDictTypesDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysDictTypeDo) Joins(fields ...field.RelationField) *sysDictTypeDo {
+func (s sysDictTypesDo) Joins(fields ...field.RelationField) *sysDictTypesDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysDictTypeDo) Preload(fields ...field.RelationField) *sysDictTypeDo {
+func (s sysDictTypesDo) Preload(fields ...field.RelationField) *sysDictTypesDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysDictTypeDo) FirstOrInit() (*model.SysDictType, error) {
+func (s sysDictTypesDo) FirstOrInit() (*model.SysDictTypes, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictType), nil
+		return result.(*model.SysDictTypes), nil
 	}
 }
 
-func (s sysDictTypeDo) FirstOrCreate() (*model.SysDictType, error) {
+func (s sysDictTypesDo) FirstOrCreate() (*model.SysDictTypes, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDictType), nil
+		return result.(*model.SysDictTypes), nil
 	}
 }
 
-func (s sysDictTypeDo) FindByPage(offset int, limit int) (result []*model.SysDictType, count int64, err error) {
+func (s sysDictTypesDo) FindByPage(offset int, limit int) (result []*model.SysDictTypes, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -342,7 +343,7 @@ func (s sysDictTypeDo) FindByPage(offset int, limit int) (result []*model.SysDic
 	return
 }
 
-func (s sysDictTypeDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysDictTypesDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -352,15 +353,15 @@ func (s sysDictTypeDo) ScanByPage(result interface{}, offset int, limit int) (co
 	return
 }
 
-func (s sysDictTypeDo) Scan(result interface{}) (err error) {
+func (s sysDictTypesDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysDictTypeDo) Delete(models ...*model.SysDictType) (result gen.ResultInfo, err error) {
+func (s sysDictTypesDo) Delete(models ...*model.SysDictTypes) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysDictTypeDo) withDO(do gen.Dao) *sysDictTypeDo {
+func (s *sysDictTypesDo) withDO(do gen.Dao) *sysDictTypesDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

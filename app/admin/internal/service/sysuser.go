@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/swordkee/kratos-vue-admin/pkg/common/constant"
 
@@ -43,7 +44,7 @@ func (s *SysuserService) CreateSysuser(ctx context.Context, req *pb.CreateSysuse
 		return nil, err
 	}
 
-	_, err := s.userCase.CreateSysUser(ctx, &model.SysUser{
+	_, err := s.userCase.CreateSysUser(ctx, &model.SysUsers{
 		NickName: req.NickName,
 		Phone:    req.Phone,
 		RoleID:   req.RoleId,
@@ -71,7 +72,7 @@ func (s *SysuserService) UpdateSysuser(ctx context.Context, req *pb.UpdateSysuse
 		return nil, err
 	}
 
-	err := s.userCase.UpdateSysUser(ctx, &model.SysUser{
+	err := s.userCase.UpdateSysUser(ctx, &model.SysUsers{
 		ID:       req.UserId,
 		NickName: req.NickName,
 		Phone:    req.Phone,
@@ -211,17 +212,17 @@ func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserReq
 		return nil, err
 	}
 
-	deptCache := util.NewCache(func(id int64) (*model.SysDept, error) {
+	deptCache := util.NewCache(func(id int64) (*model.SysDepts, error) {
 		d, err := s.deptCase.GetDept(ctx, id)
 		if d == nil {
-			d = &model.SysDept{}
+			d = &model.SysDepts{}
 		}
 		return d, err
 	})
-	roleCache := util.NewCache(func(id int64) (*model.SysRole, error) {
+	roleCache := util.NewCache(func(id int64) (*model.SysRoles, error) {
 		d, err := s.roleCase.GetRole(ctx, id)
 		if d == nil {
-			d = &model.SysRole{}
+			d = &model.SysRoles{}
 		}
 		return d, err
 	})

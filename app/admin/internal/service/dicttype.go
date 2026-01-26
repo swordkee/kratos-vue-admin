@@ -56,7 +56,7 @@ func (s *DictTypeService) CreateDictType(ctx context.Context, req *pb.CreateDict
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.CreateDictType(ctx, &model.SysDictType{
+	_, err := s.pc.CreateDictType(ctx, &model.SysDictTypes{
 		DictType: req.DictType,
 		DictName: req.DictName,
 		Status:   req.Status,
@@ -68,7 +68,7 @@ func (s *DictTypeService) UpdateDictType(ctx context.Context, req *pb.UpdateDict
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.UpdateDictType(ctx, &model.SysDictType{
+	_, err := s.pc.UpdateDictType(ctx, &model.SysDictTypes{
 		DictID:   int64(req.DictId),
 		DictName: req.DictName,
 		DictType: req.DictType,

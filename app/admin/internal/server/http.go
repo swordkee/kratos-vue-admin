@@ -3,12 +3,13 @@ package server
 import (
 	"context"
 	"encoding/json"
+	stdhttp "net/http"
+
 	"github.com/go-kratos/kratos/v2/transport/http/pprof"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/middleware"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
-	stdhttp "net/http"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -88,6 +89,8 @@ func NewHTTPServer(
 	sysUserService *service.SysuserService,
 	apiService *service.ApiService,
 	deptService *service.DeptService,
+	opRecordsCase *biz.SysLogsUseCase,
+	opRecordsService *service.SysLogsService,
 	menusService *service.MenusService,
 	postService *service.PostService,
 	dictTypeService *service.DictTypeService,
@@ -98,6 +101,7 @@ func NewHTTPServer(
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),
+			middleware.OperationRecord(opRecordsCase),
 			middleware.Auth(s, casbinRepo),
 		),
 		http.Filter(handlers.CORS(
@@ -122,6 +126,7 @@ func NewHTTPServer(
 	v1.RegisterSysuserHTTPServer(srv, sysUserService)
 	v1.RegisterApiHTTPServer(srv, apiService)
 	v1.RegisterDeptHTTPServer(srv, deptService)
+	v1.RegisterLogsServiceHTTPServer(srv, opRecordsService)
 	v1.RegisterMenusHTTPServer(srv, menusService)
 	v1.RegisterSysPostHTTPServer(srv, postService)
 	v1.RegisterDictTypeHTTPServer(srv, dictTypeService)

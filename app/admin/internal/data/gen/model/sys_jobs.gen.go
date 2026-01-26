@@ -10,29 +10,29 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameSysJob = "sys_jobs"
+const TableNameSysJobs = "sys_jobs"
 
-// SysJob mapped from table <sys_jobs>
-type SysJob struct {
-	ID             int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	JobName        string         `gorm:"column:job_name;type:varchar(255);not null;comment:任务名称" json:"job_name"`
-	JobGroup       string         `gorm:"column:job_group;type:varchar(255);comment:任务组" json:"job_group"`
-	JobType        int32          `gorm:"column:job_type;type:tinyint(2);comment:任务类型" json:"job_type"`
-	CronExpression string         `gorm:"column:cron_expression;type:varchar(255);comment:cron表达式" json:"cron_expression"`
-	InvokeTarget   string         `gorm:"column:invoke_target;type:varchar(255);comment:调用目标" json:"invoke_target"`
-	Args           string         `gorm:"column:args;type:varchar(255);comment:目标参数" json:"args"`
-	MisfirePolicy  int32          `gorm:"column:misfire_policy;type:tinyint(2);comment:执行策略" json:"misfire_policy"`
-	Concurrent     int32          `gorm:"column:concurrent;type:tinyint(2);default:2;comment:是否并发 1=是 2=否" json:"concurrent"`
-	Status         int32          `gorm:"column:status;type:tinyint(2);default:1;comment:1=正常 2=异常" json:"status"`
-	EntryID        int32          `gorm:"column:entry_id;type:int(11);comment:job启动时返回的id" json:"entry_id"`
-	CreateBy       string         `gorm:"column:create_by;type:varchar(128);comment:创建人" json:"create_by"`
-	UpdateBy       string         `gorm:"column:update_by;type:varchar(128);comment:更新者" json:"update_by"`
-	CreatedAt      time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt      time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt      gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+// SysJobs mapped from table <sys_jobs>
+type SysJobs struct {
+	ID             int64          `gorm:"column:id;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	JobName        string         `gorm:"column:job_name;not null;comment:任务名称" json:"job_name"`
+	JobGroup       string         `gorm:"column:job_group;comment:任务组" json:"job_group"`
+	JobType        int32          `gorm:"column:job_type;comment:任务类型" json:"job_type"`
+	CronExpression string         `gorm:"column:cron_expression;comment:cron表达式" json:"cron_expression"`
+	InvokeTarget   string         `gorm:"column:invoke_target;comment:调用目标" json:"invoke_target"`
+	Args           string         `gorm:"column:args;comment:目标参数" json:"args"`
+	MisfirePolicy  int32          `gorm:"column:misfire_policy;comment:执行策略" json:"misfire_policy"`
+	Concurrent     int32          `gorm:"column:concurrent;default:2;comment:是否并发 1=是 2=否" json:"concurrent"`
+	Status         int32          `gorm:"column:status;default:1;comment:1=正常 2=异常" json:"status"`
+	EntryID        int32          `gorm:"column:entry_id;comment:job启动时返回的id" json:"entry_id"`
+	CreateBy       string         `gorm:"column:create_by;comment:创建人" json:"create_by"`
+	UpdateBy       string         `gorm:"column:update_by;comment:更新者" json:"update_by"`
+	CreatedAt      time.Time      `gorm:"column:created_at;comment:创建时间" json:"created_at"`
+	UpdatedAt      time.Time      `gorm:"column:updated_at;comment:更新时间" json:"updated_at"`
+	DeletedAt      gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`
 }
 
-// TableName SysJob's table name
-func (*SysJob) TableName() string {
-	return TableNameSysJob
+// TableName SysJobs's table name
+func (*SysJobs) TableName() string {
+	return TableNameSysJobs
 }

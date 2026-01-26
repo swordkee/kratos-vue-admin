@@ -591,6 +591,32 @@ CREATE TABLE `sys_jobs`  (
 INSERT INTO `sys_jobs` VALUES (1, 'testcron', 'SYSTEM', 2, ' 0/10 * * * * ?', 'cronHandle', 'aaa', 0, 2, 1, 1, 'panda', '', '2021-12-24 16:06:09', '2022-01-22 08:11:24', NULL);
 
 -- ----------------------------
+-- Table structure for sys_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_logs`;
+CREATE TABLE `sys_logs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `ip` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求ip',
+  `method` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求方法',
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求路径',
+  `status` bigint DEFAULT NULL COMMENT '请求状态',
+  `latency` bigint DEFAULT NULL COMMENT '延迟',
+  `agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '代理',
+  `error_message` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '错误信息',
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '请求Body',
+  `resp` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '响应Body',
+  `user_id` bigint unsigned DEFAULT NULL COMMENT '用户id',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- ----------------------------
+-- Records of sys_logs
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_menu_btns
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu_btns`;

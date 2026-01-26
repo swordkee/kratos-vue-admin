@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -11,17 +12,17 @@ import (
 )
 
 type SysMenuRepo interface {
-	Create(ctx context.Context, menu *model.SysMenu) error
-	Save(ctx context.Context, menu *model.SysMenu) error
+	Create(ctx context.Context, menu *model.SysMenus) error
+	Save(ctx context.Context, menu *model.SysMenus) error
 	Delete(ctx context.Context, id int64) error
 	DeleteMultiple(ctx context.Context, ids []int64) error
 	GetAllChildren(ctx context.Context, id int64) ([]int64, error)
 
-	FindById(ctx context.Context, id int64) (*model.SysMenu, error)
-	ListAll(ctx context.Context) ([]*model.SysMenu, error)
-	FindByNameStatus(ctx context.Context, name string, status int32) ([]*model.SysMenu, error)
+	FindById(ctx context.Context, id int64) (*model.SysMenus, error)
+	ListAll(ctx context.Context) ([]*model.SysMenus, error)
+	FindByNameStatus(ctx context.Context, name string, status int32) ([]*model.SysMenus, error)
 	GetRoleMenuId(ctx context.Context, roleId int64) ([]int32, error)
-	SelectMenuLabel(data model.SysMenu) ([]*pb.MenuLabel, error)
+	SelectMenuLabel(ctx context.Context, data model.SysMenus) ([]*pb.MenuLabel, error)
 }
 
 type SysMenuUseCase struct {
@@ -33,7 +34,7 @@ func NewSysMenusUseCase(repo SysMenuRepo, logger log.Logger) *SysMenuUseCase {
 	return &SysMenuUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (m *SysMenuUseCase) CreateMenus(ctx context.Context, menu *model.SysMenu) (*model.SysMenu, error) {
+func (m *SysMenuUseCase) CreateMenus(ctx context.Context, menu *model.SysMenus) (*model.SysMenus, error) {
 	claims := authz.MustFromContext(ctx)
 	menu.CreateBy = claims.Nickname
 
@@ -41,7 +42,7 @@ func (m *SysMenuUseCase) CreateMenus(ctx context.Context, menu *model.SysMenu) (
 	return menu, err
 }
 
-func (m *SysMenuUseCase) UpdateMenus(ctx context.Context, menu *model.SysMenu) (*model.SysMenu, error) {
+func (m *SysMenuUseCase) UpdateMenus(ctx context.Context, menu *model.SysMenus) (*model.SysMenus, error) {
 	claims := authz.MustFromContext(ctx)
 	menu.UpdateBy = claims.Nickname
 
@@ -62,7 +63,7 @@ func (m *SysMenuUseCase) DeleteMenus(ctx context.Context, id int64) error {
 	return m.repo.Delete(ctx, id)
 }
 
-func (m *SysMenuUseCase) GetMenus(ctx context.Context, id int64) (*model.SysMenu, error) {
+func (m *SysMenuUseCase) GetMenus(ctx context.Context, id int64) (*model.SysMenus, error) {
 	return m.repo.FindById(ctx, id)
 }
 
@@ -73,17 +74,17 @@ type MenuSimpleTree struct {
 }
 
 type MenuTree struct {
-	model.SysMenu
+	model.SysMenus
 	Children []*MenuTree `json:"children,omitempty"`
 }
 
-func (m *SysMenuUseCase) ListByNameStatus(ctx context.Context, menuName string, status int32) ([]*model.SysMenu, error) {
+func (m *SysMenuUseCase) ListByNameStatus(ctx context.Context, menuName string, status int32) ([]*model.SysMenus, error) {
 	return m.repo.FindByNameStatus(ctx, menuName, status)
 }
 
 func (m *SysMenuUseCase) RoleMenuTreeSelect(ctx context.Context, req *pb.RoleMenuTreeSelectRequest) (*pb.RoleMenuTreeSelectReply, error) {
 	var err error
-	result, err := m.repo.SelectMenuLabel(model.SysMenu{})
+	result, err := m.repo.SelectMenuLabel(ctx, model.SysMenus{})
 	if err != nil {
 		return nil, err
 	}

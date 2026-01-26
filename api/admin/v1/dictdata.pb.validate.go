@@ -83,7 +83,7 @@ type CreateDictDataRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDictDataRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -185,7 +185,7 @@ type CreateDictDataReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDictDataReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -369,7 +369,7 @@ type UpdateDictDataRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDictDataRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -473,7 +473,7 @@ type UpdateDictDataReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDictDataReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -577,7 +577,7 @@ type DeleteDictDataRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDictDataRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -681,7 +681,7 @@ type DeleteDictDataReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDictDataReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -785,7 +785,7 @@ type GetDictDataRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDictDataRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -889,7 +889,7 @@ type GetDictDataReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDictDataReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -999,7 +999,7 @@ type ListDictDataRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDictDataRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1141,7 +1141,7 @@ type ListDictDataReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDictDataReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1325,7 +1325,7 @@ type DictDataContentMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DictDataContentMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

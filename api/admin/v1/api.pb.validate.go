@@ -73,7 +73,7 @@ type GetApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -201,7 +201,7 @@ type GetApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -305,7 +305,7 @@ type ListApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -444,7 +444,7 @@ type ListApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -544,7 +544,7 @@ type AllApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AllApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -677,7 +677,7 @@ type AllApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AllApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -785,7 +785,7 @@ type CreateApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -885,7 +885,7 @@ type CreateApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -995,7 +995,7 @@ type UpdateApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1095,7 +1095,7 @@ type UpdateApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1197,7 +1197,7 @@ type DeleteApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteApiRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1297,7 +1297,7 @@ type DeleteApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteApiReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1399,7 +1399,7 @@ type GetPolicyPathByRoleKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetPolicyPathByRoleKeyRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1536,7 +1536,7 @@ type GetPolicyPathByRoleKeyReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetPolicyPathByRoleKeyReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,38 +15,40 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysDept(db *gorm.DB, opts ...gen.DOOption) sysDept {
-	_sysDept := sysDept{}
+func newSysDepts(db *gorm.DB, opts ...gen.DOOption) sysDepts {
+	_sysDepts := sysDepts{}
 
-	_sysDept.sysDeptDo.UseDB(db, opts...)
-	_sysDept.sysDeptDo.UseModel(&model.SysDept{})
+	_sysDepts.sysDeptsDo.UseDB(db, opts...)
+	_sysDepts.sysDeptsDo.UseModel(&model.SysDepts{})
 
-	tableName := _sysDept.sysDeptDo.TableName()
-	_sysDept.ALL = field.NewAsterisk(tableName)
-	_sysDept.ID = field.NewInt64(tableName, "id")
-	_sysDept.ParentID = field.NewInt64(tableName, "parent_id")
-	_sysDept.DeptPath = field.NewString(tableName, "dept_path")
-	_sysDept.DeptName = field.NewString(tableName, "dept_name")
-	_sysDept.Sort = field.NewInt32(tableName, "sort")
-	_sysDept.Leader = field.NewString(tableName, "leader")
-	_sysDept.Phone = field.NewString(tableName, "phone")
-	_sysDept.Email = field.NewString(tableName, "email")
-	_sysDept.Status = field.NewInt32(tableName, "status")
-	_sysDept.CreateBy = field.NewString(tableName, "create_by")
-	_sysDept.UpdateBy = field.NewString(tableName, "update_by")
-	_sysDept.CreatedAt = field.NewTime(tableName, "created_at")
-	_sysDept.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_sysDept.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _sysDepts.sysDeptsDo.TableName()
+	_sysDepts.ALL = field.NewAsterisk(tableName)
+	_sysDepts.ID = field.NewInt64(tableName, "id")
+	_sysDepts.ParentID = field.NewInt64(tableName, "parent_id")
+	_sysDepts.DeptPath = field.NewString(tableName, "dept_path")
+	_sysDepts.DeptName = field.NewString(tableName, "dept_name")
+	_sysDepts.Sort = field.NewInt32(tableName, "sort")
+	_sysDepts.Leader = field.NewString(tableName, "leader")
+	_sysDepts.Phone = field.NewString(tableName, "phone")
+	_sysDepts.Email = field.NewString(tableName, "email")
+	_sysDepts.Status = field.NewInt32(tableName, "status")
+	_sysDepts.CreateBy = field.NewString(tableName, "create_by")
+	_sysDepts.UpdateBy = field.NewString(tableName, "update_by")
+	_sysDepts.CreatedAt = field.NewTime(tableName, "created_at")
+	_sysDepts.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_sysDepts.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_sysDept.fillFieldMap()
+	_sysDepts.fillFieldMap()
 
-	return _sysDept
+	return _sysDepts
 }
 
-type sysDept struct {
-	sysDeptDo sysDeptDo
+type sysDepts struct {
+	sysDeptsDo sysDeptsDo
 
 	ALL       field.Asterisk
 	ID        field.Int64  // 主键id
@@ -68,17 +69,17 @@ type sysDept struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysDept) Table(newTableName string) *sysDept {
-	s.sysDeptDo.UseTable(newTableName)
+func (s sysDepts) Table(newTableName string) *sysDepts {
+	s.sysDeptsDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysDept) As(alias string) *sysDept {
-	s.sysDeptDo.DO = *(s.sysDeptDo.As(alias).(*gen.DO))
+func (s sysDepts) As(alias string) *sysDepts {
+	s.sysDeptsDo.DO = *(s.sysDeptsDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysDept) updateTableName(table string) *sysDept {
+func (s *sysDepts) updateTableName(table string) *sysDepts {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.ParentID = field.NewInt64(table, "parent_id")
@@ -100,13 +101,13 @@ func (s *sysDept) updateTableName(table string) *sysDept {
 	return s
 }
 
-func (s *sysDept) WithContext(ctx context.Context) *sysDeptDo { return s.sysDeptDo.WithContext(ctx) }
+func (s *sysDepts) WithContext(ctx context.Context) *sysDeptsDo { return s.sysDeptsDo.WithContext(ctx) }
 
-func (s sysDept) TableName() string { return s.sysDeptDo.TableName() }
+func (s sysDepts) TableName() string { return s.sysDeptsDo.TableName() }
 
-func (s sysDept) Alias() string { return s.sysDeptDo.Alias() }
+func (s sysDepts) Alias() string { return s.sysDeptsDo.Alias() }
 
-func (s *sysDept) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysDepts) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -115,7 +116,7 @@ func (s *sysDept) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysDept) fillFieldMap() {
+func (s *sysDepts) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 14)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["parent_id"] = s.ParentID
@@ -133,165 +134,165 @@ func (s *sysDept) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 }
 
-func (s sysDept) clone(db *gorm.DB) sysDept {
-	s.sysDeptDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysDepts) clone(db *gorm.DB) sysDepts {
+	s.sysDeptsDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysDept) replaceDB(db *gorm.DB) sysDept {
-	s.sysDeptDo.ReplaceDB(db)
+func (s sysDepts) replaceDB(db *gorm.DB) sysDepts {
+	s.sysDeptsDo.ReplaceDB(db)
 	return s
 }
 
-type sysDeptDo struct{ gen.DO }
+type sysDeptsDo struct{ gen.DO }
 
-func (s sysDeptDo) Debug() *sysDeptDo {
+func (s sysDeptsDo) Debug() *sysDeptsDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysDeptDo) WithContext(ctx context.Context) *sysDeptDo {
+func (s sysDeptsDo) WithContext(ctx context.Context) *sysDeptsDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysDeptDo) ReadDB() *sysDeptDo {
+func (s sysDeptsDo) ReadDB() *sysDeptsDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysDeptDo) WriteDB() *sysDeptDo {
+func (s sysDeptsDo) WriteDB() *sysDeptsDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysDeptDo) Session(config *gorm.Session) *sysDeptDo {
+func (s sysDeptsDo) Session(config *gorm.Session) *sysDeptsDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysDeptDo) Clauses(conds ...clause.Expression) *sysDeptDo {
+func (s sysDeptsDo) Clauses(conds ...clause.Expression) *sysDeptsDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysDeptDo) Returning(value interface{}, columns ...string) *sysDeptDo {
+func (s sysDeptsDo) Returning(value interface{}, columns ...string) *sysDeptsDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysDeptDo) Not(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptsDo) Not(conds ...gen.Condition) *sysDeptsDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysDeptDo) Or(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptsDo) Or(conds ...gen.Condition) *sysDeptsDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysDeptDo) Select(conds ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Select(conds ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysDeptDo) Where(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptsDo) Where(conds ...gen.Condition) *sysDeptsDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDeptDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDeptDo {
+func (s sysDeptsDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDeptsDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysDeptDo) Order(conds ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Order(conds ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysDeptDo) Distinct(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Distinct(cols ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysDeptDo) Omit(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Omit(cols ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysDeptDo) Join(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Join(table schema.Tabler, on ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysDeptDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysDeptDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysDeptDo) Group(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptsDo) Group(cols ...field.Expr) *sysDeptsDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysDeptDo) Having(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptsDo) Having(conds ...gen.Condition) *sysDeptsDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysDeptDo) Limit(limit int) *sysDeptDo {
+func (s sysDeptsDo) Limit(limit int) *sysDeptsDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysDeptDo) Offset(offset int) *sysDeptDo {
+func (s sysDeptsDo) Offset(offset int) *sysDeptsDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysDeptDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDeptDo {
+func (s sysDeptsDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDeptsDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysDeptDo) Unscoped() *sysDeptDo {
+func (s sysDeptsDo) Unscoped() *sysDeptsDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysDeptDo) Create(values ...*model.SysDept) error {
+func (s sysDeptsDo) Create(values ...*model.SysDepts) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysDeptDo) CreateInBatches(values []*model.SysDept, batchSize int) error {
+func (s sysDeptsDo) CreateInBatches(values []*model.SysDepts, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysDeptDo) Save(values ...*model.SysDept) error {
+func (s sysDeptsDo) Save(values ...*model.SysDepts) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysDeptDo) First() (*model.SysDept, error) {
+func (s sysDeptsDo) First() (*model.SysDepts, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDept), nil
+		return result.(*model.SysDepts), nil
 	}
 }
 
-func (s sysDeptDo) Take() (*model.SysDept, error) {
+func (s sysDeptsDo) Take() (*model.SysDepts, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDept), nil
+		return result.(*model.SysDepts), nil
 	}
 }
 
-func (s sysDeptDo) Last() (*model.SysDept, error) {
+func (s sysDeptsDo) Last() (*model.SysDepts, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDept), nil
+		return result.(*model.SysDepts), nil
 	}
 }
 
-func (s sysDeptDo) Find() ([]*model.SysDept, error) {
+func (s sysDeptsDo) Find() ([]*model.SysDepts, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysDept), err
+	return result.([]*model.SysDepts), err
 }
 
-func (s sysDeptDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDept, err error) {
-	buf := make([]*model.SysDept, 0, batchSize)
+func (s sysDeptsDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDepts, err error) {
+	buf := make([]*model.SysDepts, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -299,49 +300,49 @@ func (s sysDeptDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (s sysDeptDo) FindInBatches(result *[]*model.SysDept, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysDeptsDo) FindInBatches(result *[]*model.SysDepts, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysDeptDo) Attrs(attrs ...field.AssignExpr) *sysDeptDo {
+func (s sysDeptsDo) Attrs(attrs ...field.AssignExpr) *sysDeptsDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysDeptDo) Assign(attrs ...field.AssignExpr) *sysDeptDo {
+func (s sysDeptsDo) Assign(attrs ...field.AssignExpr) *sysDeptsDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysDeptDo) Joins(fields ...field.RelationField) *sysDeptDo {
+func (s sysDeptsDo) Joins(fields ...field.RelationField) *sysDeptsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysDeptDo) Preload(fields ...field.RelationField) *sysDeptDo {
+func (s sysDeptsDo) Preload(fields ...field.RelationField) *sysDeptsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysDeptDo) FirstOrInit() (*model.SysDept, error) {
+func (s sysDeptsDo) FirstOrInit() (*model.SysDepts, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDept), nil
+		return result.(*model.SysDepts), nil
 	}
 }
 
-func (s sysDeptDo) FirstOrCreate() (*model.SysDept, error) {
+func (s sysDeptsDo) FirstOrCreate() (*model.SysDepts, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysDept), nil
+		return result.(*model.SysDepts), nil
 	}
 }
 
-func (s sysDeptDo) FindByPage(offset int, limit int) (result []*model.SysDept, count int64, err error) {
+func (s sysDeptsDo) FindByPage(offset int, limit int) (result []*model.SysDepts, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -356,7 +357,7 @@ func (s sysDeptDo) FindByPage(offset int, limit int) (result []*model.SysDept, c
 	return
 }
 
-func (s sysDeptDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysDeptsDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -366,15 +367,15 @@ func (s sysDeptDo) ScanByPage(result interface{}, offset int, limit int) (count 
 	return
 }
 
-func (s sysDeptDo) Scan(result interface{}) (err error) {
+func (s sysDeptsDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysDeptDo) Delete(models ...*model.SysDept) (result gen.ResultInfo, err error) {
+func (s sysDeptsDo) Delete(models ...*model.SysDepts) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysDeptDo) withDO(do gen.Dao) *sysDeptDo {
+func (s *sysDeptsDo) withDO(do gen.Dao) *sysDeptsDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

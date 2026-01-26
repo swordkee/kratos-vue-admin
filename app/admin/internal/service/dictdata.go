@@ -61,7 +61,7 @@ func (s *DictDataService) CreateDictData(ctx context.Context, req *pb.CreateDict
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.CreateDictData(ctx, &model.SysDictDatum{
+	_, err := s.pc.CreateDictData(ctx, &model.SysDictData{
 		DictType:  req.DictType,
 		DictLabel: req.DictLabel,
 		DictValue: req.DictValue,
@@ -75,7 +75,7 @@ func (s *DictDataService) UpdateDictData(ctx context.Context, req *pb.UpdateDict
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.UpdateDictData(ctx, &model.SysDictDatum{
+	_, err := s.pc.UpdateDictData(ctx, &model.SysDictData{
 		DictCode:  req.DictCode,
 		DictType:  req.DictType,
 		DictLabel: req.DictLabel,

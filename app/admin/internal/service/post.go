@@ -56,7 +56,7 @@ func (s *PostService) CreatePost(ctx context.Context, req *pb.CreatePostRequest)
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.CreatePost(ctx, &model.SysPost{
+	_, err := s.pc.CreatePost(ctx, &model.SysPosts{
 		PostName: req.PostName,
 		PostCode: req.PostCode,
 		Sort:     req.Sort,
@@ -69,7 +69,7 @@ func (s *PostService) UpdatePost(ctx context.Context, req *pb.UpdatePostRequest)
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := s.pc.UpdatePost(ctx, &model.SysPost{
+	_, err := s.pc.UpdatePost(ctx, &model.SysPosts{
 		ID:       req.PostId,
 		PostName: req.PostName,
 		PostCode: req.PostCode,

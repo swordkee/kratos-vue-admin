@@ -8,23 +8,23 @@ import (
 	"time"
 )
 
-const TableNameSysDictType = "sys_dict_types"
+const TableNameSysDictTypes = "sys_dict_types"
 
-// SysDictType mapped from table <sys_dict_types>
-type SysDictType struct {
-	DictID     int64     `gorm:"column:dict_id;type:bigint(20);primaryKey;autoIncrement:true" json:"dict_id"`
-	DictName   string    `gorm:"column:dict_name;type:varchar(64);comment:名称" json:"dict_name"`
-	DictType   string    `gorm:"column:dict_type;type:varchar(64);comment:类型" json:"dict_type"`
-	Status     int32     `gorm:"column:status;type:tinyint(2);comment:状态" json:"status"`
-	CreateBy   string    `gorm:"column:create_by;type:varchar(191)" json:"create_by"`
-	UpdateBy   string    `gorm:"column:update_by;type:varchar(191)" json:"update_by"`
-	Remark     string    `gorm:"column:remark;type:varchar(256);comment:备注" json:"remark"`
-	CreateTime time.Time `gorm:"column:create_time;type:datetime" json:"create_time"`
-	UpdateTime time.Time `gorm:"column:update_time;type:datetime" json:"update_time"`
-	DeleteTime time.Time `gorm:"column:delete_time;type:datetime" json:"delete_time"`
+// SysDictTypes mapped from table <sys_dict_types>
+type SysDictTypes struct {
+	DictID     int64     `gorm:"column:dict_id;primaryKey;autoIncrement:true" json:"dict_id"`
+	DictName   string    `gorm:"column:dict_name;comment:名称" json:"dict_name"`
+	DictType   string    `gorm:"column:dict_type;comment:类型" json:"dict_type"`
+	Status     int32     `gorm:"column:status;comment:状态" json:"status"`
+	CreateBy   string    `gorm:"column:create_by" json:"create_by"`
+	UpdateBy   string    `gorm:"column:update_by" json:"update_by"`
+	Remark     string    `gorm:"column:remark;comment:备注" json:"remark"`
+	CreateTime time.Time `gorm:"column:create_time" json:"create_time"`
+	UpdateTime time.Time `gorm:"column:update_time" json:"update_time"`
+	DeleteTime time.Time `gorm:"column:delete_time" json:"delete_time"`
 }
 
-// TableName SysDictType's table name
-func (*SysDictType) TableName() string {
-	return TableNameSysDictType
+// TableName SysDictTypes's table name
+func (*SysDictTypes) TableName() string {
+	return TableNameSysDictTypes
 }

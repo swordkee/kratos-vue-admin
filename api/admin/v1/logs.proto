@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package api.admin.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+
+service LogsService {
+  rpc ListLogs(ListLogsRequest) returns (ListLogsReply) {
+    option (google.api.http) = {get: "/system/logs/list"};
+  }
+  rpc GetLogs(GetLogsRequest) returns (GetLogsReply) {
+    option (google.api.http) = {get: "/system/logs/{id}"};
+  }
+
+  rpc CleanLogs(CleanLogsRequest) returns (CleanLogsReply) {
+    option (google.api.http) = {delete: "/system/logs/clean"};
+  }
+
+  rpc DeleteLogsByIds(DeleteLogsByIdsRequest) returns (DeleteLogsByIdsReply) {
+    option (google.api.http) = {delete: "/system/logs/deleteByIds"};
+  }
+}
+
+message SysLogs {
+  int64 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  int64 user_id = 4;
+  string username = 5;
+  string nickname = 6;
+  string operation = 7;
+  string method = 8;
+  string params = 9;
+  string ip = 10;
+  string location = 11;
+  int32 status = 12;
+  string remark = 13;
+}
+
+// Extended fields for detailed operation records (from SQL schema)
+message SysLogsDetail {
+  int64 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  string ip = 4;
+  string method = 5;
+  string path = 6;
+  int32 status = 7;
+  string latency = 8;
+  string agent = 9;
+  string error_message = 10;
+  string body = 11;
+  string resp = 12;
+  int64 user_id = 13;
+}
+
+message ListLogsRequest {
+  int32 page_num = 1;
+  int32 page_size = 2;
+  string username = 3;
+  string nickname = 4;
+  string operation = 5;
+  string method = 6;
+  string ip = 7;
+  int32 status = 8;
+  string start_time = 9;
+  string end_time = 10;
+}
+
+message ListLogsReply {
+  int32 total = 1;
+  repeated SysLogsDetail list = 2;
+}
+
+message GetLogsRequest {
+  int64 id = 1;
+}
+
+message GetLogsReply {
+  SysLogs data = 1;
+}
+
+message CleanLogsRequest {
+  string start_time = 1;
+  string end_time = 2;
+}
+
+message CleanLogsReply {
+  int64 deleted = 1;
+}
+
+message DeleteLogsByIdsRequest {
+  string ids = 1;
+}
+
+message DeleteLogsByIdsReply {}

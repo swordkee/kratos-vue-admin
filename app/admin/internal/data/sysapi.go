@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
@@ -20,24 +21,24 @@ func NewSysApiRepo(data *Data, logger log.Logger) biz.SysApiRepo {
 	}
 }
 
-func (a *sysApiRepo) Create(ctx context.Context, api *model.SysAPI) error {
-	q := a.data.Query(ctx).SysAPI
+func (a *sysApiRepo) Create(ctx context.Context, api *model.SysApis) error {
+	q := a.data.Query(ctx).SysApis
 	return q.WithContext(ctx).Create(api)
 }
 
-func (a *sysApiRepo) Save(ctx context.Context, api *model.SysAPI) error {
-	q := a.data.Query(ctx).SysAPI
+func (a *sysApiRepo) Save(ctx context.Context, api *model.SysApis) error {
+	q := a.data.Query(ctx).SysApis
 	return q.WithContext(ctx).Save(api)
 }
 
 func (a *sysApiRepo) Delete(ctx context.Context, id int64) error {
-	q := a.data.Query(ctx).SysAPI
+	q := a.data.Query(ctx).SysApis
 	_, err := q.WithContext(ctx).Where(q.ID.Eq(id)).Delete()
 	return err
 }
 
-func (a *sysApiRepo) ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, error) {
-	q := a.data.Query(ctx).SysAPI
+func (a *sysApiRepo) ListPage(ctx context.Context, page, size int32) ([]*model.SysApis, error) {
+	q := a.data.Query(ctx).SysApis
 	db := q.WithContext(ctx)
 
 	limit, offset := convertPageSize(page, size)
@@ -45,18 +46,18 @@ func (a *sysApiRepo) ListPage(ctx context.Context, page, size int32) ([]*model.S
 }
 
 func (a *sysApiRepo) ListPageCount(ctx context.Context) (int32, error) {
-	q := a.data.Query(ctx).SysAPI
+	q := a.data.Query(ctx).SysApis
 	db := q.WithContext(ctx)
 	count, err := db.Count()
 	return int32(count), err
 }
 
-func (a *sysApiRepo) FindAll(ctx context.Context) ([]*model.SysAPI, error) {
-	q := a.data.Query(ctx).SysAPI
+func (a *sysApiRepo) FindAll(ctx context.Context) ([]*model.SysApis, error) {
+	q := a.data.Query(ctx).SysApis
 	return q.WithContext(ctx).Find()
 }
 
-func (a *sysApiRepo) FindByID(ctx context.Context, id int64) (*model.SysAPI, error) {
-	q := a.data.Query(ctx).SysAPI
+func (a *sysApiRepo) FindByID(ctx context.Context, id int64) (*model.SysApis, error) {
+	q := a.data.Query(ctx).SysApis
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }

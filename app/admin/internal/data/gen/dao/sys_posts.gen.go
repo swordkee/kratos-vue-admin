@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,35 +15,37 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newSysPost(db *gorm.DB, opts ...gen.DOOption) sysPost {
-	_sysPost := sysPost{}
+func newSysPosts(db *gorm.DB, opts ...gen.DOOption) sysPosts {
+	_sysPosts := sysPosts{}
 
-	_sysPost.sysPostDo.UseDB(db, opts...)
-	_sysPost.sysPostDo.UseModel(&model.SysPost{})
+	_sysPosts.sysPostsDo.UseDB(db, opts...)
+	_sysPosts.sysPostsDo.UseModel(&model.SysPosts{})
 
-	tableName := _sysPost.sysPostDo.TableName()
-	_sysPost.ALL = field.NewAsterisk(tableName)
-	_sysPost.ID = field.NewInt64(tableName, "id")
-	_sysPost.PostName = field.NewString(tableName, "post_name")
-	_sysPost.PostCode = field.NewString(tableName, "post_code")
-	_sysPost.Sort = field.NewInt32(tableName, "sort")
-	_sysPost.Status = field.NewInt32(tableName, "status")
-	_sysPost.Remark = field.NewString(tableName, "remark")
-	_sysPost.CreateBy = field.NewString(tableName, "create_by")
-	_sysPost.UpdateBy = field.NewString(tableName, "update_by")
-	_sysPost.CreatedAt = field.NewTime(tableName, "created_at")
-	_sysPost.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_sysPost.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _sysPosts.sysPostsDo.TableName()
+	_sysPosts.ALL = field.NewAsterisk(tableName)
+	_sysPosts.ID = field.NewInt64(tableName, "id")
+	_sysPosts.PostName = field.NewString(tableName, "post_name")
+	_sysPosts.PostCode = field.NewString(tableName, "post_code")
+	_sysPosts.Sort = field.NewInt32(tableName, "sort")
+	_sysPosts.Status = field.NewInt32(tableName, "status")
+	_sysPosts.Remark = field.NewString(tableName, "remark")
+	_sysPosts.CreateBy = field.NewString(tableName, "create_by")
+	_sysPosts.UpdateBy = field.NewString(tableName, "update_by")
+	_sysPosts.CreatedAt = field.NewTime(tableName, "created_at")
+	_sysPosts.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_sysPosts.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_sysPost.fillFieldMap()
+	_sysPosts.fillFieldMap()
 
-	return _sysPost
+	return _sysPosts
 }
 
-type sysPost struct {
-	sysPostDo sysPostDo
+type sysPosts struct {
+	sysPostsDo sysPostsDo
 
 	ALL       field.Asterisk
 	ID        field.Int64  // 主键id
@@ -62,17 +63,17 @@ type sysPost struct {
 	fieldMap map[string]field.Expr
 }
 
-func (s sysPost) Table(newTableName string) *sysPost {
-	s.sysPostDo.UseTable(newTableName)
+func (s sysPosts) Table(newTableName string) *sysPosts {
+	s.sysPostsDo.UseTable(newTableName)
 	return s.updateTableName(newTableName)
 }
 
-func (s sysPost) As(alias string) *sysPost {
-	s.sysPostDo.DO = *(s.sysPostDo.As(alias).(*gen.DO))
+func (s sysPosts) As(alias string) *sysPosts {
+	s.sysPostsDo.DO = *(s.sysPostsDo.As(alias).(*gen.DO))
 	return s.updateTableName(alias)
 }
 
-func (s *sysPost) updateTableName(table string) *sysPost {
+func (s *sysPosts) updateTableName(table string) *sysPosts {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.PostName = field.NewString(table, "post_name")
@@ -91,13 +92,13 @@ func (s *sysPost) updateTableName(table string) *sysPost {
 	return s
 }
 
-func (s *sysPost) WithContext(ctx context.Context) *sysPostDo { return s.sysPostDo.WithContext(ctx) }
+func (s *sysPosts) WithContext(ctx context.Context) *sysPostsDo { return s.sysPostsDo.WithContext(ctx) }
 
-func (s sysPost) TableName() string { return s.sysPostDo.TableName() }
+func (s sysPosts) TableName() string { return s.sysPostsDo.TableName() }
 
-func (s sysPost) Alias() string { return s.sysPostDo.Alias() }
+func (s sysPosts) Alias() string { return s.sysPostsDo.Alias() }
 
-func (s *sysPost) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (s *sysPosts) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -106,7 +107,7 @@ func (s *sysPost) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (s *sysPost) fillFieldMap() {
+func (s *sysPosts) fillFieldMap() {
 	s.fieldMap = make(map[string]field.Expr, 11)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["post_name"] = s.PostName
@@ -121,165 +122,165 @@ func (s *sysPost) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 }
 
-func (s sysPost) clone(db *gorm.DB) sysPost {
-	s.sysPostDo.ReplaceConnPool(db.Statement.ConnPool)
+func (s sysPosts) clone(db *gorm.DB) sysPosts {
+	s.sysPostsDo.ReplaceConnPool(db.Statement.ConnPool)
 	return s
 }
 
-func (s sysPost) replaceDB(db *gorm.DB) sysPost {
-	s.sysPostDo.ReplaceDB(db)
+func (s sysPosts) replaceDB(db *gorm.DB) sysPosts {
+	s.sysPostsDo.ReplaceDB(db)
 	return s
 }
 
-type sysPostDo struct{ gen.DO }
+type sysPostsDo struct{ gen.DO }
 
-func (s sysPostDo) Debug() *sysPostDo {
+func (s sysPostsDo) Debug() *sysPostsDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysPostDo) WithContext(ctx context.Context) *sysPostDo {
+func (s sysPostsDo) WithContext(ctx context.Context) *sysPostsDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysPostDo) ReadDB() *sysPostDo {
+func (s sysPostsDo) ReadDB() *sysPostsDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysPostDo) WriteDB() *sysPostDo {
+func (s sysPostsDo) WriteDB() *sysPostsDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysPostDo) Session(config *gorm.Session) *sysPostDo {
+func (s sysPostsDo) Session(config *gorm.Session) *sysPostsDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysPostDo) Clauses(conds ...clause.Expression) *sysPostDo {
+func (s sysPostsDo) Clauses(conds ...clause.Expression) *sysPostsDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysPostDo) Returning(value interface{}, columns ...string) *sysPostDo {
+func (s sysPostsDo) Returning(value interface{}, columns ...string) *sysPostsDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysPostDo) Not(conds ...gen.Condition) *sysPostDo {
+func (s sysPostsDo) Not(conds ...gen.Condition) *sysPostsDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysPostDo) Or(conds ...gen.Condition) *sysPostDo {
+func (s sysPostsDo) Or(conds ...gen.Condition) *sysPostsDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysPostDo) Select(conds ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Select(conds ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysPostDo) Where(conds ...gen.Condition) *sysPostDo {
+func (s sysPostsDo) Where(conds ...gen.Condition) *sysPostsDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysPostDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysPostDo {
+func (s sysPostsDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysPostsDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysPostDo) Order(conds ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Order(conds ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysPostDo) Distinct(cols ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Distinct(cols ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysPostDo) Omit(cols ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Omit(cols ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysPostDo) Join(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Join(table schema.Tabler, on ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysPostDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostsDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysPostDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostsDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysPostDo) Group(cols ...field.Expr) *sysPostDo {
+func (s sysPostsDo) Group(cols ...field.Expr) *sysPostsDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysPostDo) Having(conds ...gen.Condition) *sysPostDo {
+func (s sysPostsDo) Having(conds ...gen.Condition) *sysPostsDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysPostDo) Limit(limit int) *sysPostDo {
+func (s sysPostsDo) Limit(limit int) *sysPostsDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysPostDo) Offset(offset int) *sysPostDo {
+func (s sysPostsDo) Offset(offset int) *sysPostsDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysPostDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysPostDo {
+func (s sysPostsDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysPostsDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysPostDo) Unscoped() *sysPostDo {
+func (s sysPostsDo) Unscoped() *sysPostsDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s sysPostDo) Create(values ...*model.SysPost) error {
+func (s sysPostsDo) Create(values ...*model.SysPosts) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s sysPostDo) CreateInBatches(values []*model.SysPost, batchSize int) error {
+func (s sysPostsDo) CreateInBatches(values []*model.SysPosts, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s sysPostDo) Save(values ...*model.SysPost) error {
+func (s sysPostsDo) Save(values ...*model.SysPosts) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s sysPostDo) First() (*model.SysPost, error) {
+func (s sysPostsDo) First() (*model.SysPosts, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysPost), nil
+		return result.(*model.SysPosts), nil
 	}
 }
 
-func (s sysPostDo) Take() (*model.SysPost, error) {
+func (s sysPostsDo) Take() (*model.SysPosts, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysPost), nil
+		return result.(*model.SysPosts), nil
 	}
 }
 
-func (s sysPostDo) Last() (*model.SysPost, error) {
+func (s sysPostsDo) Last() (*model.SysPosts, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysPost), nil
+		return result.(*model.SysPosts), nil
 	}
 }
 
-func (s sysPostDo) Find() ([]*model.SysPost, error) {
+func (s sysPostsDo) Find() ([]*model.SysPosts, error) {
 	result, err := s.DO.Find()
-	return result.([]*model.SysPost), err
+	return result.([]*model.SysPosts), err
 }
 
-func (s sysPostDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysPost, err error) {
-	buf := make([]*model.SysPost, 0, batchSize)
+func (s sysPostsDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysPosts, err error) {
+	buf := make([]*model.SysPosts, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -287,49 +288,49 @@ func (s sysPostDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (s sysPostDo) FindInBatches(result *[]*model.SysPost, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s sysPostsDo) FindInBatches(result *[]*model.SysPosts, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysPostDo) Attrs(attrs ...field.AssignExpr) *sysPostDo {
+func (s sysPostsDo) Attrs(attrs ...field.AssignExpr) *sysPostsDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysPostDo) Assign(attrs ...field.AssignExpr) *sysPostDo {
+func (s sysPostsDo) Assign(attrs ...field.AssignExpr) *sysPostsDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysPostDo) Joins(fields ...field.RelationField) *sysPostDo {
+func (s sysPostsDo) Joins(fields ...field.RelationField) *sysPostsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysPostDo) Preload(fields ...field.RelationField) *sysPostDo {
+func (s sysPostsDo) Preload(fields ...field.RelationField) *sysPostsDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}
 	return &s
 }
 
-func (s sysPostDo) FirstOrInit() (*model.SysPost, error) {
+func (s sysPostsDo) FirstOrInit() (*model.SysPosts, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysPost), nil
+		return result.(*model.SysPosts), nil
 	}
 }
 
-func (s sysPostDo) FirstOrCreate() (*model.SysPost, error) {
+func (s sysPostsDo) FirstOrCreate() (*model.SysPosts, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.SysPost), nil
+		return result.(*model.SysPosts), nil
 	}
 }
 
-func (s sysPostDo) FindByPage(offset int, limit int) (result []*model.SysPost, count int64, err error) {
+func (s sysPostsDo) FindByPage(offset int, limit int) (result []*model.SysPosts, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -344,7 +345,7 @@ func (s sysPostDo) FindByPage(offset int, limit int) (result []*model.SysPost, c
 	return
 }
 
-func (s sysPostDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (s sysPostsDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = s.Count()
 	if err != nil {
 		return
@@ -354,15 +355,15 @@ func (s sysPostDo) ScanByPage(result interface{}, offset int, limit int) (count 
 	return
 }
 
-func (s sysPostDo) Scan(result interface{}) (err error) {
+func (s sysPostsDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s sysPostDo) Delete(models ...*model.SysPost) (result gen.ResultInfo, err error) {
+func (s sysPostsDo) Delete(models ...*model.SysPosts) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 
-func (s *sysPostDo) withDO(do gen.Dao) *sysPostDo {
+func (s *sysPostsDo) withDO(do gen.Dao) *sysPostsDo {
 	s.DO = *do.(*gen.DO)
 	return s
 }

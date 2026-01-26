@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.admin.v1;
 
-option go_package = "fengyin/api/admin/v1;v1";
+option go_package = "https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";

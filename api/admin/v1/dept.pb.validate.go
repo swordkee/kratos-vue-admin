@@ -73,7 +73,7 @@ type RoleDeptTreeSelectRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleDeptTreeSelectRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -209,7 +209,7 @@ type RoleDeptTreeSelectReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleDeptTreeSelectReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -348,7 +348,7 @@ type DeptLabelMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeptLabelMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -454,7 +454,7 @@ type ListDeptRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDeptRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -588,7 +588,7 @@ type ListDeptReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDeptReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -694,7 +694,7 @@ type GetDeptTreeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDeptTreeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -830,7 +830,7 @@ type GetDeptTreeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDeptTreeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -944,7 +944,7 @@ type CreateDeptRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDeptRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1046,7 +1046,7 @@ type CreateDeptReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDeptReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1162,7 +1162,7 @@ type UpdateDeptRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDeptRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1264,7 +1264,7 @@ type UpdateDeptReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDeptReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1366,7 +1366,7 @@ type DeleteDeptRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDeptRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1468,7 +1468,7 @@ type DeleteDeptReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDeptReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

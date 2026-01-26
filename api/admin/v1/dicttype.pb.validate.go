@@ -79,7 +79,7 @@ type CreateDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDictTypeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -181,7 +181,7 @@ type CreateDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDictTypeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -355,7 +355,7 @@ type UpdateDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDictTypeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -459,7 +459,7 @@ type UpdateDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateDictTypeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -563,7 +563,7 @@ type DeleteDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDictTypeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -667,7 +667,7 @@ type DeleteDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDictTypeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -771,7 +771,7 @@ type GetDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDictTypeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -875,7 +875,7 @@ type GetDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDictTypeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -985,7 +985,7 @@ type ListDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDictTypeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1127,7 +1127,7 @@ type ListDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDictTypeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1301,7 +1301,7 @@ type DictTypeContentMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DictTypeContentMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1401,7 +1401,7 @@ type GetDesignateDictTypesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDesignateDictTypesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1504,7 +1504,7 @@ type GetDesignateDictTypesReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDesignateDictTypesReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

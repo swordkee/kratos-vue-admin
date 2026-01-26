@@ -199,8 +199,8 @@ func toCamelCase(s string) string {
 func getAllTables() []TableConfig {
 	tables := []TableConfig{}
 
-	tables = append(tables, TableConfig{TableName: "casbin_rule", StructName: "casbin", Description: "权限配置表"})
-	tables = append(tables, TableConfig{TableName: "jwt_blacklists", StructName: "blacklists", Description: "jwt黑名单"})
+	//tables = append(tables, TableConfig{TableName: "casbin_rule", StructName: "casbin", Description: "权限配置表"})
+	//tables = append(tables, TableConfig{TableName: "jwt_blacklists", StructName: "blacklists", Description: "jwt黑名单"})
 
 	return tables
 }

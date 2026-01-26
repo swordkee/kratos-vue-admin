@@ -6,7 +6,6 @@ package dao
 
 import (
 	"context"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,34 +15,36 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-func newLogJob(db *gorm.DB, opts ...gen.DOOption) logJob {
-	_logJob := logJob{}
+func newLogJobs(db *gorm.DB, opts ...gen.DOOption) logJobs {
+	_logJobs := logJobs{}
 
-	_logJob.logJobDo.UseDB(db, opts...)
-	_logJob.logJobDo.UseModel(&model.LogJob{})
+	_logJobs.logJobsDo.UseDB(db, opts...)
+	_logJobs.logJobsDo.UseModel(&model.LogJobs{})
 
-	tableName := _logJob.logJobDo.TableName()
-	_logJob.ALL = field.NewAsterisk(tableName)
-	_logJob.ID = field.NewInt64(tableName, "id")
-	_logJob.Name = field.NewString(tableName, "name")
-	_logJob.JobGroup = field.NewString(tableName, "job_group")
-	_logJob.EntryID = field.NewInt32(tableName, "entry_id")
-	_logJob.InvokeTarget = field.NewString(tableName, "invoke_target")
-	_logJob.LogInfo = field.NewString(tableName, "log_info")
-	_logJob.Status = field.NewInt32(tableName, "status")
-	_logJob.CreatedAt = field.NewTime(tableName, "created_at")
-	_logJob.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_logJob.DeletedAt = field.NewField(tableName, "deleted_at")
+	tableName := _logJobs.logJobsDo.TableName()
+	_logJobs.ALL = field.NewAsterisk(tableName)
+	_logJobs.ID = field.NewInt64(tableName, "id")
+	_logJobs.Name = field.NewString(tableName, "name")
+	_logJobs.JobGroup = field.NewString(tableName, "job_group")
+	_logJobs.EntryID = field.NewInt32(tableName, "entry_id")
+	_logJobs.InvokeTarget = field.NewString(tableName, "invoke_target")
+	_logJobs.LogInfo = field.NewString(tableName, "log_info")
+	_logJobs.Status = field.NewInt32(tableName, "status")
+	_logJobs.CreatedAt = field.NewTime(tableName, "created_at")
+	_logJobs.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_logJobs.DeletedAt = field.NewField(tableName, "deleted_at")
 
-	_logJob.fillFieldMap()
+	_logJobs.fillFieldMap()
 
-	return _logJob
+	return _logJobs
 }
 
-type logJob struct {
-	logJobDo logJobDo
+type logJobs struct {
+	logJobsDo logJobsDo
 
 	ALL          field.Asterisk
 	ID           field.Int64  // 主键id
@@ -60,17 +61,17 @@ type logJob struct {
 	fieldMap map[string]field.Expr
 }
 
-func (l logJob) Table(newTableName string) *logJob {
-	l.logJobDo.UseTable(newTableName)
+func (l logJobs) Table(newTableName string) *logJobs {
+	l.logJobsDo.UseTable(newTableName)
 	return l.updateTableName(newTableName)
 }
 
-func (l logJob) As(alias string) *logJob {
-	l.logJobDo.DO = *(l.logJobDo.As(alias).(*gen.DO))
+func (l logJobs) As(alias string) *logJobs {
+	l.logJobsDo.DO = *(l.logJobsDo.As(alias).(*gen.DO))
 	return l.updateTableName(alias)
 }
 
-func (l *logJob) updateTableName(table string) *logJob {
+func (l *logJobs) updateTableName(table string) *logJobs {
 	l.ALL = field.NewAsterisk(table)
 	l.ID = field.NewInt64(table, "id")
 	l.Name = field.NewString(table, "name")
@@ -88,13 +89,13 @@ func (l *logJob) updateTableName(table string) *logJob {
 	return l
 }
 
-func (l *logJob) WithContext(ctx context.Context) *logJobDo { return l.logJobDo.WithContext(ctx) }
+func (l *logJobs) WithContext(ctx context.Context) *logJobsDo { return l.logJobsDo.WithContext(ctx) }
 
-func (l logJob) TableName() string { return l.logJobDo.TableName() }
+func (l logJobs) TableName() string { return l.logJobsDo.TableName() }
 
-func (l logJob) Alias() string { return l.logJobDo.Alias() }
+func (l logJobs) Alias() string { return l.logJobsDo.Alias() }
 
-func (l *logJob) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+func (l *logJobs) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := l.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
@@ -103,7 +104,7 @@ func (l *logJob) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (l *logJob) fillFieldMap() {
+func (l *logJobs) fillFieldMap() {
 	l.fieldMap = make(map[string]field.Expr, 10)
 	l.fieldMap["id"] = l.ID
 	l.fieldMap["name"] = l.Name
@@ -117,165 +118,165 @@ func (l *logJob) fillFieldMap() {
 	l.fieldMap["deleted_at"] = l.DeletedAt
 }
 
-func (l logJob) clone(db *gorm.DB) logJob {
-	l.logJobDo.ReplaceConnPool(db.Statement.ConnPool)
+func (l logJobs) clone(db *gorm.DB) logJobs {
+	l.logJobsDo.ReplaceConnPool(db.Statement.ConnPool)
 	return l
 }
 
-func (l logJob) replaceDB(db *gorm.DB) logJob {
-	l.logJobDo.ReplaceDB(db)
+func (l logJobs) replaceDB(db *gorm.DB) logJobs {
+	l.logJobsDo.ReplaceDB(db)
 	return l
 }
 
-type logJobDo struct{ gen.DO }
+type logJobsDo struct{ gen.DO }
 
-func (l logJobDo) Debug() *logJobDo {
+func (l logJobsDo) Debug() *logJobsDo {
 	return l.withDO(l.DO.Debug())
 }
 
-func (l logJobDo) WithContext(ctx context.Context) *logJobDo {
+func (l logJobsDo) WithContext(ctx context.Context) *logJobsDo {
 	return l.withDO(l.DO.WithContext(ctx))
 }
 
-func (l logJobDo) ReadDB() *logJobDo {
+func (l logJobsDo) ReadDB() *logJobsDo {
 	return l.Clauses(dbresolver.Read)
 }
 
-func (l logJobDo) WriteDB() *logJobDo {
+func (l logJobsDo) WriteDB() *logJobsDo {
 	return l.Clauses(dbresolver.Write)
 }
 
-func (l logJobDo) Session(config *gorm.Session) *logJobDo {
+func (l logJobsDo) Session(config *gorm.Session) *logJobsDo {
 	return l.withDO(l.DO.Session(config))
 }
 
-func (l logJobDo) Clauses(conds ...clause.Expression) *logJobDo {
+func (l logJobsDo) Clauses(conds ...clause.Expression) *logJobsDo {
 	return l.withDO(l.DO.Clauses(conds...))
 }
 
-func (l logJobDo) Returning(value interface{}, columns ...string) *logJobDo {
+func (l logJobsDo) Returning(value interface{}, columns ...string) *logJobsDo {
 	return l.withDO(l.DO.Returning(value, columns...))
 }
 
-func (l logJobDo) Not(conds ...gen.Condition) *logJobDo {
+func (l logJobsDo) Not(conds ...gen.Condition) *logJobsDo {
 	return l.withDO(l.DO.Not(conds...))
 }
 
-func (l logJobDo) Or(conds ...gen.Condition) *logJobDo {
+func (l logJobsDo) Or(conds ...gen.Condition) *logJobsDo {
 	return l.withDO(l.DO.Or(conds...))
 }
 
-func (l logJobDo) Select(conds ...field.Expr) *logJobDo {
+func (l logJobsDo) Select(conds ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Select(conds...))
 }
 
-func (l logJobDo) Where(conds ...gen.Condition) *logJobDo {
+func (l logJobsDo) Where(conds ...gen.Condition) *logJobsDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logJobDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logJobDo {
+func (l logJobsDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logJobsDo {
 	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (l logJobDo) Order(conds ...field.Expr) *logJobDo {
+func (l logJobsDo) Order(conds ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Order(conds...))
 }
 
-func (l logJobDo) Distinct(cols ...field.Expr) *logJobDo {
+func (l logJobsDo) Distinct(cols ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Distinct(cols...))
 }
 
-func (l logJobDo) Omit(cols ...field.Expr) *logJobDo {
+func (l logJobsDo) Omit(cols ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Omit(cols...))
 }
 
-func (l logJobDo) Join(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobsDo) Join(table schema.Tabler, on ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Join(table, on...))
 }
 
-func (l logJobDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobsDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.LeftJoin(table, on...))
 }
 
-func (l logJobDo) RightJoin(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobsDo) RightJoin(table schema.Tabler, on ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.RightJoin(table, on...))
 }
 
-func (l logJobDo) Group(cols ...field.Expr) *logJobDo {
+func (l logJobsDo) Group(cols ...field.Expr) *logJobsDo {
 	return l.withDO(l.DO.Group(cols...))
 }
 
-func (l logJobDo) Having(conds ...gen.Condition) *logJobDo {
+func (l logJobsDo) Having(conds ...gen.Condition) *logJobsDo {
 	return l.withDO(l.DO.Having(conds...))
 }
 
-func (l logJobDo) Limit(limit int) *logJobDo {
+func (l logJobsDo) Limit(limit int) *logJobsDo {
 	return l.withDO(l.DO.Limit(limit))
 }
 
-func (l logJobDo) Offset(offset int) *logJobDo {
+func (l logJobsDo) Offset(offset int) *logJobsDo {
 	return l.withDO(l.DO.Offset(offset))
 }
 
-func (l logJobDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logJobDo {
+func (l logJobsDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logJobsDo {
 	return l.withDO(l.DO.Scopes(funcs...))
 }
 
-func (l logJobDo) Unscoped() *logJobDo {
+func (l logJobsDo) Unscoped() *logJobsDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
-func (l logJobDo) Create(values ...*model.LogJob) error {
+func (l logJobsDo) Create(values ...*model.LogJobs) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Create(values)
 }
 
-func (l logJobDo) CreateInBatches(values []*model.LogJob, batchSize int) error {
+func (l logJobsDo) CreateInBatches(values []*model.LogJobs, batchSize int) error {
 	return l.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (l logJobDo) Save(values ...*model.LogJob) error {
+func (l logJobsDo) Save(values ...*model.LogJobs) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Save(values)
 }
 
-func (l logJobDo) First() (*model.LogJob, error) {
+func (l logJobsDo) First() (*model.LogJobs, error) {
 	if result, err := l.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogJob), nil
+		return result.(*model.LogJobs), nil
 	}
 }
 
-func (l logJobDo) Take() (*model.LogJob, error) {
+func (l logJobsDo) Take() (*model.LogJobs, error) {
 	if result, err := l.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogJob), nil
+		return result.(*model.LogJobs), nil
 	}
 }
 
-func (l logJobDo) Last() (*model.LogJob, error) {
+func (l logJobsDo) Last() (*model.LogJobs, error) {
 	if result, err := l.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogJob), nil
+		return result.(*model.LogJobs), nil
 	}
 }
 
-func (l logJobDo) Find() ([]*model.LogJob, error) {
+func (l logJobsDo) Find() ([]*model.LogJobs, error) {
 	result, err := l.DO.Find()
-	return result.([]*model.LogJob), err
+	return result.([]*model.LogJobs), err
 }
 
-func (l logJobDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogJob, err error) {
-	buf := make([]*model.LogJob, 0, batchSize)
+func (l logJobsDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogJobs, err error) {
+	buf := make([]*model.LogJobs, 0, batchSize)
 	err = l.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -283,49 +284,49 @@ func (l logJobDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (l logJobDo) FindInBatches(result *[]*model.LogJob, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (l logJobsDo) FindInBatches(result *[]*model.LogJobs, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (l logJobDo) Attrs(attrs ...field.AssignExpr) *logJobDo {
+func (l logJobsDo) Attrs(attrs ...field.AssignExpr) *logJobsDo {
 	return l.withDO(l.DO.Attrs(attrs...))
 }
 
-func (l logJobDo) Assign(attrs ...field.AssignExpr) *logJobDo {
+func (l logJobsDo) Assign(attrs ...field.AssignExpr) *logJobsDo {
 	return l.withDO(l.DO.Assign(attrs...))
 }
 
-func (l logJobDo) Joins(fields ...field.RelationField) *logJobDo {
+func (l logJobsDo) Joins(fields ...field.RelationField) *logJobsDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Joins(_f))
 	}
 	return &l
 }
 
-func (l logJobDo) Preload(fields ...field.RelationField) *logJobDo {
+func (l logJobsDo) Preload(fields ...field.RelationField) *logJobsDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Preload(_f))
 	}
 	return &l
 }
 
-func (l logJobDo) FirstOrInit() (*model.LogJob, error) {
+func (l logJobsDo) FirstOrInit() (*model.LogJobs, error) {
 	if result, err := l.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogJob), nil
+		return result.(*model.LogJobs), nil
 	}
 }
 
-func (l logJobDo) FirstOrCreate() (*model.LogJob, error) {
+func (l logJobsDo) FirstOrCreate() (*model.LogJobs, error) {
 	if result, err := l.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.LogJob), nil
+		return result.(*model.LogJobs), nil
 	}
 }
 
-func (l logJobDo) FindByPage(offset int, limit int) (result []*model.LogJob, count int64, err error) {
+func (l logJobsDo) FindByPage(offset int, limit int) (result []*model.LogJobs, count int64, err error) {
 	result, err = l.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -340,7 +341,7 @@ func (l logJobDo) FindByPage(offset int, limit int) (result []*model.LogJob, cou
 	return
 }
 
-func (l logJobDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+func (l logJobsDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
 	count, err = l.Count()
 	if err != nil {
 		return
@@ -350,15 +351,15 @@ func (l logJobDo) ScanByPage(result interface{}, offset int, limit int) (count i
 	return
 }
 
-func (l logJobDo) Scan(result interface{}) (err error) {
+func (l logJobsDo) Scan(result interface{}) (err error) {
 	return l.DO.Scan(result)
 }
 
-func (l logJobDo) Delete(models ...*model.LogJob) (result gen.ResultInfo, err error) {
+func (l logJobsDo) Delete(models ...*model.LogJobs) (result gen.ResultInfo, err error) {
 	return l.DO.Delete(models)
 }
 
-func (l *logJobDo) withDO(do gen.Dao) *logJobDo {
+func (l *logJobsDo) withDO(do gen.Dao) *logJobsDo {
 	l.DO = *do.(*gen.DO)
 	return l
 }

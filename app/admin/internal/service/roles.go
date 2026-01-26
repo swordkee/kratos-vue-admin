@@ -87,7 +87,7 @@ func (r *RolesService) CreateRoles(ctx context.Context, req *pb.CreateRolesReque
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := r.rc.CreateRole(ctx, &model.SysRole{
+	_, err := r.rc.CreateRole(ctx, &model.SysRoles{
 		ParentID:      req.ParentId,
 		RoleName:      req.RoleName,
 		Status:        req.Status,
@@ -106,7 +106,7 @@ func (r *RolesService) UpdateRoles(ctx context.Context, req *pb.UpdateRolesReque
 		return nil, err
 	}
 
-	_, err := r.rc.UpdateRole(ctx, &model.SysRole{
+	_, err := r.rc.UpdateRole(ctx, &model.SysRoles{
 		ID:            req.RoleId,
 		ParentID:      req.ParentId,
 		RoleName:      req.RoleName,

@@ -54,6 +54,9 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	deptService := service.NewDeptService(sysDeptUseCase, logger)
 	sysMenuUseCase := biz.NewSysMenusUseCase(sysMenuRepo, logger)
 	menusService := service.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
+	sysLogsRepo := data.NewSysLogsRepo(dataData, logger)
+	sysLogsUseCase := biz.NewSysLogsUseCase(sysLogsRepo, logger)
+	sysLogsService := service.NewSysLogsService(sysLogsUseCase, logger)
 	postService := service.NewPostService(sysPostUseCase, logger)
 	sysDictTypeRepo := data.NewSysDictTypeRepo(dataData, logger)
 	sysDictTypeUseCase := biz.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
@@ -62,7 +65,7 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	sysDictDatumUseCase := biz.NewSysDictDatumUseCase(sysDictDatumRepo, logger)
 	dictDataService := service.NewDictDataService(sysDictDatumUseCase, logger)
 	rolesService := service.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
-	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, logger, sysuserService, apiService, deptService, menusService, postService, dictTypeService, dictDataService, rolesService)
+	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, logger, sysuserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService)
 	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()

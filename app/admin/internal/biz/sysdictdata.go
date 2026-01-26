@@ -9,14 +9,14 @@ import (
 )
 
 type SysDictDatumRepo interface {
-	Create(ctx context.Context, post *model.SysDictDatum) error
-	Save(ctx context.Context, post *model.SysDictDatum) error
+	Create(ctx context.Context, post *model.SysDictData) error
+	Save(ctx context.Context, post *model.SysDictData) error
 	Delete(ctx context.Context, ids []int64) error
-	FindByID(ctx context.Context, id int64) (*model.SysDictDatum, error)
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictDatum, error)
-	FindAll(ctx context.Context) ([]*model.SysDictDatum, error)
+	FindByID(ctx context.Context, id int64) (*model.SysDictData, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictData, error)
+	FindAll(ctx context.Context) ([]*model.SysDictData, error)
 
-	ListPage(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictDatum, error)
+	ListPage(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictData, error)
 	ListPageCount(ctx context.Context, dictLabel, dictType string, status int32) (int32, error)
 }
 
@@ -29,7 +29,7 @@ func NewSysDictDatumUseCase(repo SysDictDatumRepo, logger log.Logger) *SysDictDa
 	return &SysDictDatumUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (p *SysDictDatumUseCase) ListDictData(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictDatum, int32, error) {
+func (p *SysDictDatumUseCase) ListDictData(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictData, int32, error) {
 	total, err := p.repo.ListPageCount(ctx, dictLabel, dictType, status)
 	if err != nil {
 		return nil, 0, err
@@ -38,7 +38,7 @@ func (p *SysDictDatumUseCase) ListDictData(ctx context.Context, dictLabel, dictT
 	return posts, total, err
 }
 
-func (p *SysDictDatumUseCase) CreateDictData(ctx context.Context, post *model.SysDictDatum) (*model.SysDictDatum, error) {
+func (p *SysDictDatumUseCase) CreateDictData(ctx context.Context, post *model.SysDictData) (*model.SysDictData, error) {
 	claims := authz.MustFromContext(ctx)
 	post.CreateBy = claims.Nickname
 
@@ -46,7 +46,7 @@ func (p *SysDictDatumUseCase) CreateDictData(ctx context.Context, post *model.Sy
 	return post, err
 }
 
-func (p *SysDictDatumUseCase) UpdateDictData(ctx context.Context, post *model.SysDictDatum) (*model.SysDictDatum, error) {
+func (p *SysDictDatumUseCase) UpdateDictData(ctx context.Context, post *model.SysDictData) (*model.SysDictData, error) {
 	claims := authz.MustFromContext(ctx)
 	post.UpdateBy = claims.Nickname
 	err := p.repo.Save(ctx, post)
@@ -57,17 +57,17 @@ func (p *SysDictDatumUseCase) DeleteDictData(ctx context.Context, id []int64) er
 	return p.repo.Delete(ctx, id)
 }
 
-func (p *SysDictDatumUseCase) FindDictDataByIDList(ctx context.Context, ids []int64) ([]*model.SysDictDatum, error) {
+func (p *SysDictDatumUseCase) FindDictDataByIDList(ctx context.Context, ids []int64) ([]*model.SysDictData, error) {
 	if len(ids) == 0 {
-		return []*model.SysDictDatum{}, nil
+		return []*model.SysDictData{}, nil
 	}
 	return p.repo.FindByIDList(ctx, ids...)
 }
 
-func (p *SysDictDatumUseCase) FindDictDataByID(ctx context.Context, id int64) (*model.SysDictDatum, error) {
+func (p *SysDictDatumUseCase) FindDictDataByID(ctx context.Context, id int64) (*model.SysDictData, error) {
 	return p.repo.FindByID(ctx, id)
 }
 
-func (p *SysDictDatumUseCase) FindDictDataAll(ctx context.Context) ([]*model.SysDictDatum, error) {
+func (p *SysDictDatumUseCase) FindDictDataAll(ctx context.Context) ([]*model.SysDictData, error) {
 	return p.repo.FindAll(ctx)
 }

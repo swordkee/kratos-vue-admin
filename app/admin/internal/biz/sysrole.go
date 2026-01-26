@@ -12,15 +12,15 @@ import (
 )
 
 type SysRoleRepo interface {
-	Create(ctx context.Context, role *model.SysRole) error
-	Save(ctx context.Context, role *model.SysRole) error
+	Create(ctx context.Context, role *model.SysRoles) error
+	Save(ctx context.Context, role *model.SysRoles) error
 	Delete(ctx context.Context, id ...int64) error
-	FindByID(ctx context.Context, id int64) (*model.SysRole, error)
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysRole, error)
-	FindAll(ctx context.Context) ([]*model.SysRole, error)
-	ListPage(ctx context.Context, name, key string, status int32, page, size int32) ([]*model.SysRole, error)
+	FindByID(ctx context.Context, id int64) (*model.SysRoles, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysRoles, error)
+	FindAll(ctx context.Context) ([]*model.SysRoles, error)
+	ListPage(ctx context.Context, name, key string, status int32, page, size int32) ([]*model.SysRoles, error)
 	Count(ctx context.Context, name, key string, status int32) (int32, error)
-	Update(ctx context.Context, role *model.SysRole) error
+	Update(ctx context.Context, role *model.SysRoles) error
 }
 
 type SysRoleUseCase struct {
@@ -45,7 +45,7 @@ func NewSysRoleUseCase(repo SysRoleRepo, logger log.Logger, rmc *SysRoleMenuUseC
 	}
 }
 
-func (r *SysRoleUseCase) ListPage(ctx context.Context, roleName, roleKey string, status int32, page, size int32) ([]*model.SysRole, int32, error) {
+func (r *SysRoleUseCase) ListPage(ctx context.Context, roleName, roleKey string, status int32, page, size int32) ([]*model.SysRoles, int32, error) {
 	total, err := r.repo.Count(ctx, roleName, roleKey, status)
 	if err != nil {
 		return nil, 0, err
@@ -54,11 +54,11 @@ func (r *SysRoleUseCase) ListPage(ctx context.Context, roleName, roleKey string,
 	return roleList, total, err
 }
 
-func (r *SysRoleUseCase) GetRole(ctx context.Context, id int64) (*model.SysRole, error) {
+func (r *SysRoleUseCase) GetRole(ctx context.Context, id int64) (*model.SysRoles, error) {
 	return r.repo.FindByID(ctx, id)
 }
 
-func (r *SysRoleUseCase) CreateRole(ctx context.Context, role *model.SysRole, menuIds []int64, apis []*pb.ApiBase) (*model.SysRole, error) {
+func (r *SysRoleUseCase) CreateRole(ctx context.Context, role *model.SysRoles, menuIds []int64, apis []*pb.ApiBase) (*model.SysRoles, error) {
 	claim := authz.MustFromContext(ctx)
 	role.CreateBy = claim.Nickname
 	role.CreatedAt = time.Now()
@@ -81,7 +81,7 @@ func (r *SysRoleUseCase) CreateRole(ctx context.Context, role *model.SysRole, me
 	return role, err
 }
 
-func (r *SysRoleUseCase) UpdateRole(ctx context.Context, role *model.SysRole, menuIds []int64, apis []*pb.ApiBase) (*model.SysRole, error) {
+func (r *SysRoleUseCase) UpdateRole(ctx context.Context, role *model.SysRoles, menuIds []int64, apis []*pb.ApiBase) (*model.SysRoles, error) {
 	//claims := authz.MustFromContext(ctx)
 	oldRole, err := r.repo.FindByID(ctx, role.ID)
 	if err != nil {
@@ -150,7 +150,7 @@ func (r *SysRoleUseCase) DeleteRole(ctx context.Context, ids []int64) error {
 		return nil
 	}
 	delList := make([]int64, 0)
-	roleM := make(map[int64]*model.SysRole)
+	roleM := make(map[int64]*model.SysRoles)
 
 	for _, rid := range ids {
 		//  查询角色下有没有用户
@@ -195,14 +195,14 @@ func (r *SysRoleUseCase) DeleteRole(ctx context.Context, ids []int64) error {
 	return err
 }
 
-func (r *SysRoleUseCase) FindRoleByIDList(ctx context.Context, ids []int64) ([]*model.SysRole, error) {
+func (r *SysRoleUseCase) FindRoleByIDList(ctx context.Context, ids []int64) ([]*model.SysRoles, error) {
 	if len(ids) == 0 {
-		return []*model.SysRole{}, nil
+		return []*model.SysRoles{}, nil
 	}
 	return r.repo.FindByIDList(ctx, ids...)
 }
 
-func (r *SysRoleUseCase) FindRoleAll(ctx context.Context) ([]*model.SysRole, error) {
+func (r *SysRoleUseCase) FindRoleAll(ctx context.Context) ([]*model.SysRoles, error) {
 	return r.repo.FindAll(ctx)
 }
 

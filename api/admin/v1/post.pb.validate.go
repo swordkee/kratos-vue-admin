@@ -81,7 +81,7 @@ type ListPostRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListPostRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -221,7 +221,7 @@ type ListPostReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListPostReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -331,7 +331,7 @@ type CreatePostRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreatePostRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -433,7 +433,7 @@ type CreatePostReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreatePostReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -545,7 +545,7 @@ type UpdatePostRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdatePostRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -647,7 +647,7 @@ type UpdatePostReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdatePostReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -749,7 +749,7 @@ type DeletePostRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeletePostRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -851,7 +851,7 @@ type DeletePostReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeletePostReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

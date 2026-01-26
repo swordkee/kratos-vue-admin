@@ -1,10 +1,28 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "post.proto",
+    "title": "api.proto",
     "version": "version not set"
   },
   "tags": [
+    {
+      "name": "Api"
+    },
+    {
+      "name": "Dept"
+    },
+    {
+      "name": "DictData"
+    },
+    {
+      "name": "DictType"
+    },
+    {
+      "name": "LogsService"
+    },
+    {
+      "name": "Menus"
+    },
     {
       "name": "SysPost"
     },
@@ -12,22 +30,7 @@
       "name": "Roles"
     },
     {
-      "name": "Api"
-    },
-    {
-      "name": "DictType"
-    },
-    {
-      "name": "Menus"
-    },
-    {
       "name": "Sysuser"
-    },
-    {
-      "name": "DictData"
-    },
-    {
-      "name": "Dept"
     }
   ],
   "consumes": [
@@ -841,6 +844,190 @@
         ],
         "tags": [
           "DictType"
+        ]
+      }
+    },
+    "/system/logs/clean": {
+      "delete": {
+        "operationId": "LogsService_CleanLogs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CleanLogsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "LogsService"
+        ]
+      }
+    },
+    "/system/logs/deleteByIds": {
+      "delete": {
+        "operationId": "LogsService_DeleteLogsByIds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteLogsByIdsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "LogsService"
+        ]
+      }
+    },
+    "/system/logs/list": {
+      "get": {
+        "operationId": "LogsService_ListLogs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListLogsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page_num",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "nickname",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "LogsService"
+        ]
+      }
+    },
+    "/system/logs/{id}": {
+      "get": {
+        "operationId": "LogsService_GetLogs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetLogsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "LogsService"
         ]
       }
     },
@@ -2175,6 +2362,15 @@
         }
       }
     },
+    "v1CleanLogsReply": {
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1CreateApiReply": {
       "type": "object"
     },
@@ -2527,6 +2723,9 @@
         }
       }
     },
+    "v1DeleteLogsByIdsReply": {
+      "type": "object"
+    },
     "v1DeleteMenusReply": {
       "type": "object"
     },
@@ -2752,6 +2951,14 @@
         "dictId": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1GetLogsReply": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/v1SysLogs"
         }
       }
     },
@@ -3029,6 +3236,22 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1DictTypeContent"
+          }
+        }
+      }
+    },
+    "v1ListLogsReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysLogsDetail"
           }
         }
       }
@@ -3463,6 +3686,101 @@
           }
         }
       }
+    },
+    "v1SysLogs": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "params": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "remark": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SysLogsDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "latency": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "error_message": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "resp": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "Extended fields for detailed operation records (from SQL schema)"
     },
     "v1UpdateApiReply": {
       "type": "object"

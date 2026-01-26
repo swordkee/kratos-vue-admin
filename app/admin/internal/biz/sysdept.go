@@ -3,9 +3,10 @@ package biz
 import (
 	"context"
 	"errors"
+	"strconv"
+
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
-	"strconv"
 
 	"github.com/go-kratos/kratos/v2/log"
 
@@ -14,17 +15,17 @@ import (
 )
 
 type SysDeptRepo interface {
-	Create(ctx context.Context, dept *model.SysDept) error
-	Save(ctx context.Context, dept *model.SysDept) error
+	Create(ctx context.Context, dept *model.SysDepts) error
+	Save(ctx context.Context, dept *model.SysDepts) error
 
-	UpdateByID(ctx context.Context, id int64, dept *model.SysDept) error
+	UpdateByID(ctx context.Context, id int64, dept *model.SysDepts) error
 
 	Delete(ctx context.Context, id int64) error
 
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDept, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDepts, error)
 
-	FindByID(ctx context.Context, id int64) (*model.SysDept, error)
-	ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDept, error)
+	FindByID(ctx context.Context, id int64) (*model.SysDepts, error)
+	ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDepts, error)
 	GetRoleDeptId(ctx context.Context, roleId int32) ([]int32, error)
 	SelectDept(ctx context.Context) ([]*pb.DeptTree, error)
 	SelectDeptLabel(ctx context.Context) ([]*pb.DeptLabel, error)
@@ -39,11 +40,11 @@ func NewSysDeptUseCase(repo SysDeptRepo, logger log.Logger) *SysDeptUseCase {
 	return &SysDeptUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (d *SysDeptUseCase) ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDept, error) {
+func (d *SysDeptUseCase) ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDepts, error) {
 	return d.repo.ListByNameStatusId(ctx, deptName, status, id)
 }
 
-func (d *SysDeptUseCase) CreateDept(ctx context.Context, sysDept *model.SysDept) (*model.SysDept, error) {
+func (d *SysDeptUseCase) CreateDept(ctx context.Context, sysDept *model.SysDepts) (*model.SysDepts, error) {
 	claims := authz.MustFromContext(ctx)
 	sysDept.CreateBy = claims.Nickname
 
@@ -64,7 +65,7 @@ func (d *SysDeptUseCase) CreateDept(ctx context.Context, sysDept *model.SysDept)
 	return sysDept, nil
 }
 
-func (d *SysDeptUseCase) UpdateDept(ctx context.Context, sysDept *model.SysDept) (*model.SysDept, error) {
+func (d *SysDeptUseCase) UpdateDept(ctx context.Context, sysDept *model.SysDepts) (*model.SysDepts, error) {
 	oldDept, err := d.repo.FindByID(ctx, sysDept.ID)
 	if err != nil {
 		return nil, err
@@ -89,7 +90,7 @@ func (d *SysDeptUseCase) DeleteDept(ctx context.Context, id int64) error {
 	return d.repo.Delete(ctx, id)
 }
 
-func (d *SysDeptUseCase) buildDeptPath(ctx context.Context, dept *model.SysDept) (string, error) {
+func (d *SysDeptUseCase) buildDeptPath(ctx context.Context, dept *model.SysDepts) (string, error) {
 	deptPath := "/" + strconv.FormatInt(dept.ID, 10)
 	if dept.ParentID == 0 {
 		deptPath = "/0" + deptPath
@@ -103,7 +104,7 @@ func (d *SysDeptUseCase) buildDeptPath(ctx context.Context, dept *model.SysDept)
 	return deptPath, nil
 }
 
-func (d *SysDeptUseCase) GetDept(ctx context.Context, id int64) (*model.SysDept, error) {
+func (d *SysDeptUseCase) GetDept(ctx context.Context, id int64) (*model.SysDepts, error) {
 	return d.repo.FindByID(ctx, id)
 }
 
@@ -132,14 +133,14 @@ func (d *SysDeptUseCase) RoleDeptTreeSelect(ctx context.Context, roleId int32) (
 	return reply, nil
 }
 
-func (d *SysDeptUseCase) FindDeptByIDList(ctx context.Context, ids []int64) ([]*model.SysDept, error) {
+func (d *SysDeptUseCase) FindDeptByIDList(ctx context.Context, ids []int64) ([]*model.SysDepts, error) {
 	if len(ids) == 0 {
-		return []*model.SysDept{}, nil
+		return []*model.SysDepts{}, nil
 	}
 	return d.repo.FindByIDList(ctx, ids...)
 }
 
-func ConvertToDeptTree(deptList []*model.SysDept) []*pb.DeptTree {
+func ConvertToDeptTree(deptList []*model.SysDepts) []*pb.DeptTree {
 	menuMap := make(map[int64]*pb.DeptTree)
 
 	for _, dept := range deptList {

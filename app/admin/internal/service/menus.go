@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
 	"strings"
+
+	"github.com/go-kratos/kratos/v2/log"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
@@ -29,7 +30,7 @@ func NewMenusService(menuUseCase *biz.SysMenuUseCase, roleMenuUseCase *biz.SysRo
 
 func (s *MenusService) CreateMenus(ctx context.Context, req *pb.CreateMenusRequest) (*pb.CreateMenusReply, error) {
 
-	_, err := s.menuUseCase.CreateMenus(ctx, &model.SysMenu{
+	_, err := s.menuUseCase.CreateMenus(ctx, &model.SysMenus{
 		MenuName:   req.MenuName,
 		Title:      req.Title,
 		ParentID:   int64(req.ParentId),
@@ -68,7 +69,7 @@ func (s *MenusService) CreateMenus(ctx context.Context, req *pb.CreateMenusReque
 }
 func (s *MenusService) UpdateMenus(ctx context.Context, req *pb.UpdateMenusRequest) (*pb.UpdateMenusReply, error) {
 
-	_, err := s.menuUseCase.UpdateMenus(ctx, &model.SysMenu{
+	_, err := s.menuUseCase.UpdateMenus(ctx, &model.SysMenus{
 		ID:         req.MenuId,
 		MenuName:   req.MenuName,
 		Title:      req.Title,
@@ -153,7 +154,7 @@ func (s *MenusService) GetMenusTree(ctx context.Context, req *pb.GetMenusTreeReq
 	}, nil
 }
 
-func convertToSimpleMenu(sysMenus []*model.SysMenu) []*pb.SimpleMenu {
+func convertToSimpleMenu(sysMenus []*model.SysMenus) []*pb.SimpleMenu {
 	menuMap := make(map[int64]*pb.SimpleMenu)
 	var rootMenus []*pb.SimpleMenu
 
@@ -228,7 +229,7 @@ func (s *MenusService) RoleMenuTreeSelect(ctx context.Context, req *pb.RoleMenuT
 	return s.menuUseCase.RoleMenuTreeSelect(ctx, req)
 }
 
-func convertToMenuTree(sysMenus []*model.SysMenu) []*pb.MenuTree {
+func convertToMenuTree(sysMenus []*model.SysMenus) []*pb.MenuTree {
 	menuMap := make(map[int64]*pb.MenuTree)
 
 	// 创建 MenuTree 节点并将其存储在 menuMap 中

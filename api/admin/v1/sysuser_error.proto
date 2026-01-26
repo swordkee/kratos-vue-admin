@@ -3,7 +3,7 @@ package api.admin.v1;
 
 import "errors/errors.proto";
 
-option go_package = "fengyin/api/admin/v1;v1";
+option go_package = "https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
 
 
 enum SysUserErrorReason {

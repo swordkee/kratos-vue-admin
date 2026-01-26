@@ -73,7 +73,7 @@ type RoleMenuTreeSelectRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleMenuTreeSelectRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -209,7 +209,7 @@ type RoleMenuTreeSelectReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleMenuTreeSelectReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -348,7 +348,7 @@ type MenuLabelMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MenuLabelMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -480,7 +480,7 @@ type CreateMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateMenusRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -616,7 +616,7 @@ type CreateMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateMenusReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -750,7 +750,7 @@ type UpdateMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateMenusRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -886,7 +886,7 @@ type UpdateMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateMenusReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -988,7 +988,7 @@ type DeleteMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteMenusRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1090,7 +1090,7 @@ type DeleteMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteMenusReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1192,7 +1192,7 @@ type GetMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetMenusRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1388,7 +1388,7 @@ type GetMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetMenusReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1492,7 +1492,7 @@ type ListMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListMenusRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1626,7 +1626,7 @@ type ListMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListMenusReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1726,7 +1726,7 @@ type GetMenusTreeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetMenusTreeRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1862,7 +1862,7 @@ type GetMenusTreeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetMenusTreeReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
