@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	Api_ListApi_FullMethodName                = "/api.admin.v1.Api/ListApi"
-	Api_AllApi_FullMethodName                 = "/api.admin.v1.Api/AllApi"
-	Api_CreateApi_FullMethodName              = "/api.admin.v1.Api/CreateApi"
-	Api_UpdateApi_FullMethodName              = "/api.admin.v1.Api/UpdateApi"
-	Api_GetPolicyPathByRoleKey_FullMethodName = "/api.admin.v1.Api/GetPolicyPathByRoleKey"
-	Api_GetApi_FullMethodName                 = "/api.admin.v1.Api/GetApi"
-	Api_DeleteApi_FullMethodName              = "/api.admin.v1.Api/DeleteApi"
+	Api_ListApi_FullMethodName                  = "/api.admin.v1.Api/ListApi"
+	Api_AllApi_FullMethodName                   = "/api.admin.v1.Api/AllApi"
+	Api_CreateApi_FullMethodName                = "/api.admin.v1.Api/CreateApi"
+	Api_UpdateApi_FullMethodName                = "/api.admin.v1.Api/UpdateApi"
+	Api_QueryPolicyPathByRoleKey_FullMethodName = "/api.admin.v1.Api/QueryPolicyPathByRoleKey"
+	Api_FindApi_FullMethodName                  = "/api.admin.v1.Api/FindApi"
+	Api_DeleteApi_FullMethodName                = "/api.admin.v1.Api/DeleteApi"
 )
 
 // ApiClient is the client API for Api service.
@@ -43,9 +43,9 @@ type ApiClient interface {
 	// 更新api
 	UpdateApi(ctx context.Context, in *UpdateApiRequest, opts ...grpc.CallOption) (*UpdateApiReply, error)
 	// 获取角色拥有的api权限
-	GetPolicyPathByRoleKey(ctx context.Context, in *GetPolicyPathByRoleKeyRequest, opts ...grpc.CallOption) (*GetPolicyPathByRoleKeyReply, error)
+	QueryPolicyPathByRoleKey(ctx context.Context, in *QueryPolicyPathByRoleKeyRequest, opts ...grpc.CallOption) (*QueryPolicyPathByRoleKeyReply, error)
 	// 获取api
-	GetApi(ctx context.Context, in *GetApiRequest, opts ...grpc.CallOption) (*GetApiReply, error)
+	FindApi(ctx context.Context, in *FindApiRequest, opts ...grpc.CallOption) (*FindApiReply, error)
 	// 删除api
 	DeleteApi(ctx context.Context, in *DeleteApiRequest, opts ...grpc.CallOption) (*DeleteApiReply, error)
 }
@@ -98,20 +98,20 @@ func (c *apiClient) UpdateApi(ctx context.Context, in *UpdateApiRequest, opts ..
 	return out, nil
 }
 
-func (c *apiClient) GetPolicyPathByRoleKey(ctx context.Context, in *GetPolicyPathByRoleKeyRequest, opts ...grpc.CallOption) (*GetPolicyPathByRoleKeyReply, error) {
+func (c *apiClient) QueryPolicyPathByRoleKey(ctx context.Context, in *QueryPolicyPathByRoleKeyRequest, opts ...grpc.CallOption) (*QueryPolicyPathByRoleKeyReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetPolicyPathByRoleKeyReply)
-	err := c.cc.Invoke(ctx, Api_GetPolicyPathByRoleKey_FullMethodName, in, out, cOpts...)
+	out := new(QueryPolicyPathByRoleKeyReply)
+	err := c.cc.Invoke(ctx, Api_QueryPolicyPathByRoleKey_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *apiClient) GetApi(ctx context.Context, in *GetApiRequest, opts ...grpc.CallOption) (*GetApiReply, error) {
+func (c *apiClient) FindApi(ctx context.Context, in *FindApiRequest, opts ...grpc.CallOption) (*FindApiReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetApiReply)
-	err := c.cc.Invoke(ctx, Api_GetApi_FullMethodName, in, out, cOpts...)
+	out := new(FindApiReply)
+	err := c.cc.Invoke(ctx, Api_FindApi_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -143,9 +143,9 @@ type ApiServer interface {
 	// 更新api
 	UpdateApi(context.Context, *UpdateApiRequest) (*UpdateApiReply, error)
 	// 获取角色拥有的api权限
-	GetPolicyPathByRoleKey(context.Context, *GetPolicyPathByRoleKeyRequest) (*GetPolicyPathByRoleKeyReply, error)
+	QueryPolicyPathByRoleKey(context.Context, *QueryPolicyPathByRoleKeyRequest) (*QueryPolicyPathByRoleKeyReply, error)
 	// 获取api
-	GetApi(context.Context, *GetApiRequest) (*GetApiReply, error)
+	FindApi(context.Context, *FindApiRequest) (*FindApiReply, error)
 	// 删除api
 	DeleteApi(context.Context, *DeleteApiRequest) (*DeleteApiReply, error)
 	mustEmbedUnimplementedApiServer()
@@ -167,11 +167,11 @@ func (UnimplementedApiServer) CreateApi(context.Context, *CreateApiRequest) (*Cr
 func (UnimplementedApiServer) UpdateApi(context.Context, *UpdateApiRequest) (*UpdateApiReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateApi not implemented")
 }
-func (UnimplementedApiServer) GetPolicyPathByRoleKey(context.Context, *GetPolicyPathByRoleKeyRequest) (*GetPolicyPathByRoleKeyReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPolicyPathByRoleKey not implemented")
+func (UnimplementedApiServer) QueryPolicyPathByRoleKey(context.Context, *QueryPolicyPathByRoleKeyRequest) (*QueryPolicyPathByRoleKeyReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryPolicyPathByRoleKey not implemented")
 }
-func (UnimplementedApiServer) GetApi(context.Context, *GetApiRequest) (*GetApiReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetApi not implemented")
+func (UnimplementedApiServer) FindApi(context.Context, *FindApiRequest) (*FindApiReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindApi not implemented")
 }
 func (UnimplementedApiServer) DeleteApi(context.Context, *DeleteApiRequest) (*DeleteApiReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteApi not implemented")
@@ -261,38 +261,38 @@ func _Api_UpdateApi_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Api_GetPolicyPathByRoleKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPolicyPathByRoleKeyRequest)
+func _Api_QueryPolicyPathByRoleKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPolicyPathByRoleKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ApiServer).GetPolicyPathByRoleKey(ctx, in)
+		return srv.(ApiServer).QueryPolicyPathByRoleKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Api_GetPolicyPathByRoleKey_FullMethodName,
+		FullMethod: Api_QueryPolicyPathByRoleKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServer).GetPolicyPathByRoleKey(ctx, req.(*GetPolicyPathByRoleKeyRequest))
+		return srv.(ApiServer).QueryPolicyPathByRoleKey(ctx, req.(*QueryPolicyPathByRoleKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Api_GetApi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetApiRequest)
+func _Api_FindApi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindApiRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ApiServer).GetApi(ctx, in)
+		return srv.(ApiServer).FindApi(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Api_GetApi_FullMethodName,
+		FullMethod: Api_FindApi_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServer).GetApi(ctx, req.(*GetApiRequest))
+		return srv.(ApiServer).FindApi(ctx, req.(*FindApiRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -339,12 +339,12 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Api_UpdateApi_Handler,
 		},
 		{
-			MethodName: "GetPolicyPathByRoleKey",
-			Handler:    _Api_GetPolicyPathByRoleKey_Handler,
+			MethodName: "QueryPolicyPathByRoleKey",
+			Handler:    _Api_QueryPolicyPathByRoleKey_Handler,
 		},
 		{
-			MethodName: "GetApi",
-			Handler:    _Api_GetApi_Handler,
+			MethodName: "FindApi",
+			Handler:    _Api_FindApi_Handler,
 		},
 		{
 			MethodName: "DeleteApi",

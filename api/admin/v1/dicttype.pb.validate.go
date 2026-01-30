@@ -733,22 +733,22 @@ var _ interface {
 	ErrorName() string
 } = DeleteDictTypeReplyValidationError{}
 
-// Validate checks the field values on GetDictTypeRequest with the rules
+// Validate checks the field values on FindDictTypeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetDictTypeRequest) Validate() error {
+func (m *FindDictTypeRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetDictTypeRequest with the rules
+// ValidateAll checks the field values on FindDictTypeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetDictTypeRequestMultiError, or nil if none found.
-func (m *GetDictTypeRequest) ValidateAll() error {
+// FindDictTypeRequestMultiError, or nil if none found.
+func (m *FindDictTypeRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetDictTypeRequest) validate(all bool) error {
+func (m *FindDictTypeRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -758,19 +758,19 @@ func (m *GetDictTypeRequest) validate(all bool) error {
 	// no validation rules for DictId
 
 	if len(errors) > 0 {
-		return GetDictTypeRequestMultiError(errors)
+		return FindDictTypeRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetDictTypeRequestMultiError is an error wrapping multiple validation errors
-// returned by GetDictTypeRequest.ValidateAll() if the designated constraints
-// aren't met.
-type GetDictTypeRequestMultiError []error
+// FindDictTypeRequestMultiError is an error wrapping multiple validation
+// errors returned by FindDictTypeRequest.ValidateAll() if the designated
+// constraints aren't met.
+type FindDictTypeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetDictTypeRequestMultiError) Error() string {
+func (m FindDictTypeRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -779,11 +779,11 @@ func (m GetDictTypeRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetDictTypeRequestMultiError) AllErrors() []error { return m }
+func (m FindDictTypeRequestMultiError) AllErrors() []error { return m }
 
-// GetDictTypeRequestValidationError is the validation error returned by
-// GetDictTypeRequest.Validate if the designated constraints aren't met.
-type GetDictTypeRequestValidationError struct {
+// FindDictTypeRequestValidationError is the validation error returned by
+// FindDictTypeRequest.Validate if the designated constraints aren't met.
+type FindDictTypeRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -791,24 +791,24 @@ type GetDictTypeRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetDictTypeRequestValidationError) Field() string { return e.field }
+func (e FindDictTypeRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetDictTypeRequestValidationError) Reason() string { return e.reason }
+func (e FindDictTypeRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetDictTypeRequestValidationError) Cause() error { return e.cause }
+func (e FindDictTypeRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetDictTypeRequestValidationError) Key() bool { return e.key }
+func (e FindDictTypeRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetDictTypeRequestValidationError) ErrorName() string {
-	return "GetDictTypeRequestValidationError"
+func (e FindDictTypeRequestValidationError) ErrorName() string {
+	return "FindDictTypeRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetDictTypeRequestValidationError) Error() string {
+func (e FindDictTypeRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -820,14 +820,14 @@ func (e GetDictTypeRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetDictTypeRequest.%s: %s%s",
+		"invalid %sFindDictTypeRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetDictTypeRequestValidationError{}
+var _ error = FindDictTypeRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -835,24 +835,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetDictTypeRequestValidationError{}
+} = FindDictTypeRequestValidationError{}
 
-// Validate checks the field values on GetDictTypeReply with the rules defined
+// Validate checks the field values on FindDictTypeReply with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *GetDictTypeReply) Validate() error {
+func (m *FindDictTypeReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetDictTypeReply with the rules
+// ValidateAll checks the field values on FindDictTypeReply with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetDictTypeReplyMultiError, or nil if none found.
-func (m *GetDictTypeReply) ValidateAll() error {
+// FindDictTypeReplyMultiError, or nil if none found.
+func (m *FindDictTypeReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetDictTypeReply) validate(all bool) error {
+func (m *FindDictTypeReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -862,19 +862,19 @@ func (m *GetDictTypeReply) validate(all bool) error {
 	// no validation rules for DictId
 
 	if len(errors) > 0 {
-		return GetDictTypeReplyMultiError(errors)
+		return FindDictTypeReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetDictTypeReplyMultiError is an error wrapping multiple validation errors
-// returned by GetDictTypeReply.ValidateAll() if the designated constraints
+// FindDictTypeReplyMultiError is an error wrapping multiple validation errors
+// returned by FindDictTypeReply.ValidateAll() if the designated constraints
 // aren't met.
-type GetDictTypeReplyMultiError []error
+type FindDictTypeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetDictTypeReplyMultiError) Error() string {
+func (m FindDictTypeReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -883,11 +883,11 @@ func (m GetDictTypeReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetDictTypeReplyMultiError) AllErrors() []error { return m }
+func (m FindDictTypeReplyMultiError) AllErrors() []error { return m }
 
-// GetDictTypeReplyValidationError is the validation error returned by
-// GetDictTypeReply.Validate if the designated constraints aren't met.
-type GetDictTypeReplyValidationError struct {
+// FindDictTypeReplyValidationError is the validation error returned by
+// FindDictTypeReply.Validate if the designated constraints aren't met.
+type FindDictTypeReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -895,22 +895,24 @@ type GetDictTypeReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetDictTypeReplyValidationError) Field() string { return e.field }
+func (e FindDictTypeReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetDictTypeReplyValidationError) Reason() string { return e.reason }
+func (e FindDictTypeReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetDictTypeReplyValidationError) Cause() error { return e.cause }
+func (e FindDictTypeReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetDictTypeReplyValidationError) Key() bool { return e.key }
+func (e FindDictTypeReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetDictTypeReplyValidationError) ErrorName() string { return "GetDictTypeReplyValidationError" }
+func (e FindDictTypeReplyValidationError) ErrorName() string {
+	return "FindDictTypeReplyValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e GetDictTypeReplyValidationError) Error() string {
+func (e FindDictTypeReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -922,14 +924,14 @@ func (e GetDictTypeReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetDictTypeReply.%s: %s%s",
+		"invalid %sFindDictTypeReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetDictTypeReplyValidationError{}
+var _ error = FindDictTypeReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -937,7 +939,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetDictTypeReplyValidationError{}
+} = FindDictTypeReplyValidationError{}
 
 // Validate checks the field values on ListDictTypeRequest with the rules
 // defined in the proto definition for this message. If any rules are

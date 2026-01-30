@@ -471,27 +471,27 @@ func (x *ListLogsReply) GetList() []*SysLogsDetail {
 	return nil
 }
 
-type GetLogsRequest struct {
+type FindLogsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetLogsRequest) Reset() {
-	*x = GetLogsRequest{}
+func (x *FindLogsRequest) Reset() {
+	*x = FindLogsRequest{}
 	mi := &file_logs_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetLogsRequest) String() string {
+func (x *FindLogsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetLogsRequest) ProtoMessage() {}
+func (*FindLogsRequest) ProtoMessage() {}
 
-func (x *GetLogsRequest) ProtoReflect() protoreflect.Message {
+func (x *FindLogsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_logs_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -503,39 +503,39 @@ func (x *GetLogsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetLogsRequest.ProtoReflect.Descriptor instead.
-func (*GetLogsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindLogsRequest.ProtoReflect.Descriptor instead.
+func (*FindLogsRequest) Descriptor() ([]byte, []int) {
 	return file_logs_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetLogsRequest) GetId() int64 {
+func (x *FindLogsRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetLogsReply struct {
+type FindLogsReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Data          *SysLogs               `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetLogsReply) Reset() {
-	*x = GetLogsReply{}
+func (x *FindLogsReply) Reset() {
+	*x = FindLogsReply{}
 	mi := &file_logs_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetLogsReply) String() string {
+func (x *FindLogsReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetLogsReply) ProtoMessage() {}
+func (*FindLogsReply) ProtoMessage() {}
 
-func (x *GetLogsReply) ProtoReflect() protoreflect.Message {
+func (x *FindLogsReply) ProtoReflect() protoreflect.Message {
 	mi := &file_logs_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -547,12 +547,12 @@ func (x *GetLogsReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetLogsReply.ProtoReflect.Descriptor instead.
-func (*GetLogsReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindLogsReply.ProtoReflect.Descriptor instead.
+func (*FindLogsReply) Descriptor() ([]byte, []int) {
 	return file_logs_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetLogsReply) GetData() *SysLogs {
+func (x *FindLogsReply) GetData() *SysLogs {
 	if x != nil {
 		return x.Data
 	}
@@ -790,10 +790,10 @@ const file_logs_proto_rawDesc = "" +
 	" \x01(\tR\aendTime\"V\n" +
 	"\rListLogsReply\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12/\n" +
-	"\x04list\x18\x02 \x03(\v2\x1b.api.admin.v1.SysLogsDetailR\x04list\" \n" +
-	"\x0eGetLogsRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"9\n" +
-	"\fGetLogsReply\x12)\n" +
+	"\x04list\x18\x02 \x03(\v2\x1b.api.admin.v1.SysLogsDetailR\x04list\"!\n" +
+	"\x0fFindLogsRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\":\n" +
+	"\rFindLogsReply\x12)\n" +
 	"\x04data\x18\x01 \x01(\v2\x15.api.admin.v1.SysLogsR\x04data\"L\n" +
 	"\x10CleanLogsRequest\x12\x1d\n" +
 	"\n" +
@@ -803,10 +803,10 @@ const file_logs_proto_rawDesc = "" +
 	"\adeleted\x18\x01 \x01(\x03R\adeleted\"*\n" +
 	"\x16DeleteLogsByIdsRequest\x12\x10\n" +
 	"\x03ids\x18\x01 \x01(\tR\x03ids\"\x16\n" +
-	"\x14DeleteLogsByIdsReply2\xb6\x03\n" +
+	"\x14DeleteLogsByIdsReply2\xb9\x03\n" +
 	"\vLogsService\x12a\n" +
-	"\bListLogs\x12\x1d.api.admin.v1.ListLogsRequest\x1a\x1b.api.admin.v1.ListLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/list\x12^\n" +
-	"\aGetLogs\x12\x1c.api.admin.v1.GetLogsRequest\x1a\x1a.api.admin.v1.GetLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/{id}\x12e\n" +
+	"\bListLogs\x12\x1d.api.admin.v1.ListLogsRequest\x1a\x1b.api.admin.v1.ListLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/list\x12a\n" +
+	"\bFindLogs\x12\x1d.api.admin.v1.FindLogsRequest\x1a\x1b.api.admin.v1.FindLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/{id}\x12e\n" +
 	"\tCleanLogs\x12\x1e.api.admin.v1.CleanLogsRequest\x1a\x1c.api.admin.v1.CleanLogsReply\"\x1a\x82\xd3\xe4\x93\x02\x14*\x12/system/logs/clean\x12}\n" +
 	"\x0fDeleteLogsByIds\x12$.api.admin.v1.DeleteLogsByIdsRequest\x1a\".api.admin.v1.DeleteLogsByIdsReply\" \x82\xd3\xe4\x93\x02\x1a*\x18/system/logs/deleteByIdsB>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
@@ -828,8 +828,8 @@ var file_logs_proto_goTypes = []any{
 	(*SysLogsDetail)(nil),          // 1: api.admin.v1.SysLogsDetail
 	(*ListLogsRequest)(nil),        // 2: api.admin.v1.ListLogsRequest
 	(*ListLogsReply)(nil),          // 3: api.admin.v1.ListLogsReply
-	(*GetLogsRequest)(nil),         // 4: api.admin.v1.GetLogsRequest
-	(*GetLogsReply)(nil),           // 5: api.admin.v1.GetLogsReply
+	(*FindLogsRequest)(nil),        // 4: api.admin.v1.FindLogsRequest
+	(*FindLogsReply)(nil),          // 5: api.admin.v1.FindLogsReply
 	(*CleanLogsRequest)(nil),       // 6: api.admin.v1.CleanLogsRequest
 	(*CleanLogsReply)(nil),         // 7: api.admin.v1.CleanLogsReply
 	(*DeleteLogsByIdsRequest)(nil), // 8: api.admin.v1.DeleteLogsByIdsRequest
@@ -837,13 +837,13 @@ var file_logs_proto_goTypes = []any{
 }
 var file_logs_proto_depIdxs = []int32{
 	1, // 0: api.admin.v1.ListLogsReply.list:type_name -> api.admin.v1.SysLogsDetail
-	0, // 1: api.admin.v1.GetLogsReply.data:type_name -> api.admin.v1.SysLogs
+	0, // 1: api.admin.v1.FindLogsReply.data:type_name -> api.admin.v1.SysLogs
 	2, // 2: api.admin.v1.LogsService.ListLogs:input_type -> api.admin.v1.ListLogsRequest
-	4, // 3: api.admin.v1.LogsService.GetLogs:input_type -> api.admin.v1.GetLogsRequest
+	4, // 3: api.admin.v1.LogsService.FindLogs:input_type -> api.admin.v1.FindLogsRequest
 	6, // 4: api.admin.v1.LogsService.CleanLogs:input_type -> api.admin.v1.CleanLogsRequest
 	8, // 5: api.admin.v1.LogsService.DeleteLogsByIds:input_type -> api.admin.v1.DeleteLogsByIdsRequest
 	3, // 6: api.admin.v1.LogsService.ListLogs:output_type -> api.admin.v1.ListLogsReply
-	5, // 7: api.admin.v1.LogsService.GetLogs:output_type -> api.admin.v1.GetLogsReply
+	5, // 7: api.admin.v1.LogsService.FindLogs:output_type -> api.admin.v1.FindLogsReply
 	7, // 8: api.admin.v1.LogsService.CleanLogs:output_type -> api.admin.v1.CleanLogsReply
 	9, // 9: api.admin.v1.LogsService.DeleteLogsByIds:output_type -> api.admin.v1.DeleteLogsByIdsReply
 	6, // [6:10] is the sub-list for method output_type

@@ -85,10 +85,9 @@ message DeleteDictDataReply {
 	int64 dictCode = 1;
 }
 
-message GetDictDataRequest {
-	int64 dictCode = 1;
-}
-message GetDictDataReply {
+message FindDictDataRequest {
+  int64 dictCode = 1;
+}message FindDictDataReply {
 	int64 dictCode = 1;
 }
 

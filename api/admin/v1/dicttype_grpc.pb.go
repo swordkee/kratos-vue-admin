@@ -23,23 +23,23 @@ const (
 	DictType_CreateDictType_FullMethodName = "/api.admin.v1.DictType/CreateDictType"
 	DictType_UpdateDictType_FullMethodName = "/api.admin.v1.DictType/UpdateDictType"
 	DictType_DeleteDictType_FullMethodName = "/api.admin.v1.DictType/DeleteDictType"
-	DictType_GetDictType_FullMethodName    = "/api.admin.v1.DictType/GetDictType"
+	DictType_FindDictType_FullMethodName   = "/api.admin.v1.DictType/FindDictType"
 )
 
 // DictTypeClient is the client API for DictType service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DictTypeClient interface {
-	//列表信息
+	// 列表信息
 	ListDictType(ctx context.Context, in *ListDictTypeRequest, opts ...grpc.CallOption) (*ListDictTypeReply, error)
-	//创建
+	// 创建
 	CreateDictType(ctx context.Context, in *CreateDictTypeRequest, opts ...grpc.CallOption) (*CreateDictTypeReply, error)
-	//更新
+	// 更新
 	UpdateDictType(ctx context.Context, in *UpdateDictTypeRequest, opts ...grpc.CallOption) (*UpdateDictTypeReply, error)
-	//删除
+	// 删除
 	DeleteDictType(ctx context.Context, in *DeleteDictTypeRequest, opts ...grpc.CallOption) (*DeleteDictTypeReply, error)
-	//获取信息
-	GetDictType(ctx context.Context, in *GetDictTypeRequest, opts ...grpc.CallOption) (*GetDictTypeReply, error)
+	// 获取信息
+	FindDictType(ctx context.Context, in *FindDictTypeRequest, opts ...grpc.CallOption) (*FindDictTypeReply, error)
 }
 
 type dictTypeClient struct {
@@ -90,10 +90,10 @@ func (c *dictTypeClient) DeleteDictType(ctx context.Context, in *DeleteDictTypeR
 	return out, nil
 }
 
-func (c *dictTypeClient) GetDictType(ctx context.Context, in *GetDictTypeRequest, opts ...grpc.CallOption) (*GetDictTypeReply, error) {
+func (c *dictTypeClient) FindDictType(ctx context.Context, in *FindDictTypeRequest, opts ...grpc.CallOption) (*FindDictTypeReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetDictTypeReply)
-	err := c.cc.Invoke(ctx, DictType_GetDictType_FullMethodName, in, out, cOpts...)
+	out := new(FindDictTypeReply)
+	err := c.cc.Invoke(ctx, DictType_FindDictType_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,16 +104,16 @@ func (c *dictTypeClient) GetDictType(ctx context.Context, in *GetDictTypeRequest
 // All implementations must embed UnimplementedDictTypeServer
 // for forward compatibility
 type DictTypeServer interface {
-	//列表信息
+	// 列表信息
 	ListDictType(context.Context, *ListDictTypeRequest) (*ListDictTypeReply, error)
-	//创建
+	// 创建
 	CreateDictType(context.Context, *CreateDictTypeRequest) (*CreateDictTypeReply, error)
-	//更新
+	// 更新
 	UpdateDictType(context.Context, *UpdateDictTypeRequest) (*UpdateDictTypeReply, error)
-	//删除
+	// 删除
 	DeleteDictType(context.Context, *DeleteDictTypeRequest) (*DeleteDictTypeReply, error)
-	//获取信息
-	GetDictType(context.Context, *GetDictTypeRequest) (*GetDictTypeReply, error)
+	// 获取信息
+	FindDictType(context.Context, *FindDictTypeRequest) (*FindDictTypeReply, error)
 	mustEmbedUnimplementedDictTypeServer()
 }
 
@@ -133,8 +133,8 @@ func (UnimplementedDictTypeServer) UpdateDictType(context.Context, *UpdateDictTy
 func (UnimplementedDictTypeServer) DeleteDictType(context.Context, *DeleteDictTypeRequest) (*DeleteDictTypeReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDictType not implemented")
 }
-func (UnimplementedDictTypeServer) GetDictType(context.Context, *GetDictTypeRequest) (*GetDictTypeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDictType not implemented")
+func (UnimplementedDictTypeServer) FindDictType(context.Context, *FindDictTypeRequest) (*FindDictTypeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindDictType not implemented")
 }
 func (UnimplementedDictTypeServer) mustEmbedUnimplementedDictTypeServer() {}
 
@@ -221,20 +221,20 @@ func _DictType_DeleteDictType_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DictType_GetDictType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDictTypeRequest)
+func _DictType_FindDictType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindDictTypeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DictTypeServer).GetDictType(ctx, in)
+		return srv.(DictTypeServer).FindDictType(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DictType_GetDictType_FullMethodName,
+		FullMethod: DictType_FindDictType_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DictTypeServer).GetDictType(ctx, req.(*GetDictTypeRequest))
+		return srv.(DictTypeServer).FindDictType(ctx, req.(*FindDictTypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -263,8 +263,8 @@ var DictType_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DictType_DeleteDictType_Handler,
 		},
 		{
-			MethodName: "GetDictType",
-			Handler:    _DictType_GetDictType_Handler,
+			MethodName: "FindDictType",
+			Handler:    _DictType_FindDictType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

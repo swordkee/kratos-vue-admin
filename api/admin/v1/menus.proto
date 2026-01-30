@@ -127,10 +127,10 @@ message DeleteMenusRequest {
 message DeleteMenusReply {
 }
 
-message GetMenusRequest {
+message FindMenusRequest {
   int64 id = 1;
 }
-message GetMenusReply {
+message FindMenusReply {
   int32 menuId = 1;
   string menuName = 2;
   string title = 3;
@@ -162,7 +162,7 @@ message ListMenusReply {
   repeated MenuTree list = 1;
 }
 
-message GetMenusTreeRequest{};
-message GetMenusTreeReply{
+message QueryMenusTreeRequest{};
+message QueryMenusTreeReply{
   repeated SimpleMenu list = 1;
 };

@@ -699,27 +699,27 @@ func (*DeleteMenusReply) Descriptor() ([]byte, []int) {
 	return file_menus_proto_rawDescGZIP(), []int{8}
 }
 
-type GetMenusRequest struct {
+type FindMenusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMenusRequest) Reset() {
-	*x = GetMenusRequest{}
+func (x *FindMenusRequest) Reset() {
+	*x = FindMenusRequest{}
 	mi := &file_menus_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetMenusRequest) String() string {
+func (x *FindMenusRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetMenusRequest) ProtoMessage() {}
+func (*FindMenusRequest) ProtoMessage() {}
 
-func (x *GetMenusRequest) ProtoReflect() protoreflect.Message {
+func (x *FindMenusRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_menus_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -731,19 +731,19 @@ func (x *GetMenusRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetMenusRequest.ProtoReflect.Descriptor instead.
-func (*GetMenusRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindMenusRequest.ProtoReflect.Descriptor instead.
+func (*FindMenusRequest) Descriptor() ([]byte, []int) {
 	return file_menus_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *GetMenusRequest) GetId() int64 {
+func (x *FindMenusRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetMenusReply struct {
+type FindMenusReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MenuId        int32                  `protobuf:"varint,1,opt,name=menuId,proto3" json:"menuId,omitempty"`
 	MenuName      string                 `protobuf:"bytes,2,opt,name=menuName,proto3" json:"menuName,omitempty"`
@@ -770,20 +770,20 @@ type GetMenusReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMenusReply) Reset() {
-	*x = GetMenusReply{}
+func (x *FindMenusReply) Reset() {
+	*x = FindMenusReply{}
 	mi := &file_menus_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetMenusReply) String() string {
+func (x *FindMenusReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetMenusReply) ProtoMessage() {}
+func (*FindMenusReply) ProtoMessage() {}
 
-func (x *GetMenusReply) ProtoReflect() protoreflect.Message {
+func (x *FindMenusReply) ProtoReflect() protoreflect.Message {
 	mi := &file_menus_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -795,152 +795,152 @@ func (x *GetMenusReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetMenusReply.ProtoReflect.Descriptor instead.
-func (*GetMenusReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindMenusReply.ProtoReflect.Descriptor instead.
+func (*FindMenusReply) Descriptor() ([]byte, []int) {
 	return file_menus_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *GetMenusReply) GetMenuId() int32 {
+func (x *FindMenusReply) GetMenuId() int32 {
 	if x != nil {
 		return x.MenuId
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetMenuName() string {
+func (x *FindMenusReply) GetMenuName() string {
 	if x != nil {
 		return x.MenuName
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetTitle() string {
+func (x *FindMenusReply) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetParentId() int32 {
+func (x *FindMenusReply) GetParentId() int32 {
 	if x != nil {
 		return x.ParentId
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetSort() int32 {
+func (x *FindMenusReply) GetSort() int32 {
 	if x != nil {
 		return x.Sort
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetIcon() string {
+func (x *FindMenusReply) GetIcon() string {
 	if x != nil {
 		return x.Icon
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetPath() string {
+func (x *FindMenusReply) GetPath() string {
 	if x != nil {
 		return x.Path
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetComponent() string {
+func (x *FindMenusReply) GetComponent() string {
 	if x != nil {
 		return x.Component
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetIsIframe() int32 {
+func (x *FindMenusReply) GetIsIframe() int32 {
 	if x != nil {
 		return x.IsIframe
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetIsLink() string {
+func (x *FindMenusReply) GetIsLink() string {
 	if x != nil {
 		return x.IsLink
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetMenuType() string {
+func (x *FindMenusReply) GetMenuType() string {
 	if x != nil {
 		return x.MenuType
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetIsHide() int64 {
+func (x *FindMenusReply) GetIsHide() int64 {
 	if x != nil {
 		return x.IsHide
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetIsKeepAlive() int32 {
+func (x *FindMenusReply) GetIsKeepAlive() int32 {
 	if x != nil {
 		return x.IsKeepAlive
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetIsAffix() int32 {
+func (x *FindMenusReply) GetIsAffix() int32 {
 	if x != nil {
 		return x.IsAffix
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetPermission() string {
+func (x *FindMenusReply) GetPermission() string {
 	if x != nil {
 		return x.Permission
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetStatus() int32 {
+func (x *FindMenusReply) GetStatus() int32 {
 	if x != nil {
 		return x.Status
 	}
 	return 0
 }
 
-func (x *GetMenusReply) GetCreateBy() string {
+func (x *FindMenusReply) GetCreateBy() string {
 	if x != nil {
 		return x.CreateBy
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetUpdateBy() string {
+func (x *FindMenusReply) GetUpdateBy() string {
 	if x != nil {
 		return x.UpdateBy
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetRemark() string {
+func (x *FindMenusReply) GetRemark() string {
 	if x != nil {
 		return x.Remark
 	}
 	return ""
 }
 
-func (x *GetMenusReply) GetCreatedAt() *timestamppb.Timestamp {
+func (x *FindMenusReply) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *GetMenusReply) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *FindMenusReply) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
@@ -1043,26 +1043,26 @@ func (x *ListMenusReply) GetList() []*MenuTree {
 	return nil
 }
 
-type GetMenusTreeRequest struct {
+type QueryMenusTreeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMenusTreeRequest) Reset() {
-	*x = GetMenusTreeRequest{}
+func (x *QueryMenusTreeRequest) Reset() {
+	*x = QueryMenusTreeRequest{}
 	mi := &file_menus_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetMenusTreeRequest) String() string {
+func (x *QueryMenusTreeRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetMenusTreeRequest) ProtoMessage() {}
+func (*QueryMenusTreeRequest) ProtoMessage() {}
 
-func (x *GetMenusTreeRequest) ProtoReflect() protoreflect.Message {
+func (x *QueryMenusTreeRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_menus_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1074,32 +1074,32 @@ func (x *GetMenusTreeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetMenusTreeRequest.ProtoReflect.Descriptor instead.
-func (*GetMenusTreeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryMenusTreeRequest.ProtoReflect.Descriptor instead.
+func (*QueryMenusTreeRequest) Descriptor() ([]byte, []int) {
 	return file_menus_proto_rawDescGZIP(), []int{13}
 }
 
-type GetMenusTreeReply struct {
+type QueryMenusTreeReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	List          []*SimpleMenu          `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMenusTreeReply) Reset() {
-	*x = GetMenusTreeReply{}
+func (x *QueryMenusTreeReply) Reset() {
+	*x = QueryMenusTreeReply{}
 	mi := &file_menus_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetMenusTreeReply) String() string {
+func (x *QueryMenusTreeReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetMenusTreeReply) ProtoMessage() {}
+func (*QueryMenusTreeReply) ProtoMessage() {}
 
-func (x *GetMenusTreeReply) ProtoReflect() protoreflect.Message {
+func (x *QueryMenusTreeReply) ProtoReflect() protoreflect.Message {
 	mi := &file_menus_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1111,12 +1111,12 @@ func (x *GetMenusTreeReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetMenusTreeReply.ProtoReflect.Descriptor instead.
-func (*GetMenusTreeReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryMenusTreeReply.ProtoReflect.Descriptor instead.
+func (*QueryMenusTreeReply) Descriptor() ([]byte, []int) {
 	return file_menus_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *GetMenusTreeReply) GetList() []*SimpleMenu {
+func (x *QueryMenusTreeReply) GetList() []*SimpleMenu {
 	if x != nil {
 		return x.List
 	}
@@ -1187,10 +1187,10 @@ const file_menus_proto_rawDesc = "" +
 	"\vpermissions\x18\x02 \x03(\tR\vpermissions\"$\n" +
 	"\x12DeleteMenusRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x12\n" +
-	"\x10DeleteMenusReply\"!\n" +
-	"\x0fGetMenusRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\xef\x04\n" +
-	"\rGetMenusReply\x12\x16\n" +
+	"\x10DeleteMenusReply\"\"\n" +
+	"\x10FindMenusRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\xf0\x04\n" +
+	"\x0eFindMenusReply\x12\x16\n" +
 	"\x06menuId\x18\x01 \x01(\x05R\x06menuId\x12\x1a\n" +
 	"\bmenuName\x18\x02 \x01(\tR\bmenuName\x12\x14\n" +
 	"\x05title\x18\x03 \x01(\tR\x05title\x12\x1a\n" +
@@ -1219,17 +1219,17 @@ const file_menus_proto_rawDesc = "" +
 	"\bmenuName\x18\x01 \x01(\tR\bmenuName\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\x05R\x06status\"<\n" +
 	"\x0eListMenusReply\x12*\n" +
-	"\x04list\x18\x01 \x03(\v2\x16.api.admin.v1.MenuTreeR\x04list\"\x15\n" +
-	"\x13GetMenusTreeRequest\"A\n" +
-	"\x11GetMenusTreeReply\x12,\n" +
-	"\x04list\x18\x01 \x03(\v2\x18.api.admin.v1.SimpleMenuR\x04list2\xa2\x06\n" +
+	"\x04list\x18\x01 \x03(\v2\x16.api.admin.v1.MenuTreeR\x04list\"\x17\n" +
+	"\x15QueryMenusTreeRequest\"C\n" +
+	"\x13QueryMenusTreeReply\x12,\n" +
+	"\x04list\x18\x01 \x03(\v2\x18.api.admin.v1.SimpleMenuR\x04list2\xab\x06\n" +
 	"\x05Menus\x12h\n" +
 	"\vCreateMenus\x12 .api.admin.v1.CreateMenusRequest\x1a\x1e.api.admin.v1.CreateMenusReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/menu\x12d\n" +
-	"\tListMenus\x12\x1e.api.admin.v1.ListMenusRequest\x1a\x1c.api.admin.v1.ListMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/menu/list\x12w\n" +
-	"\fGetMenusTree\x12!.api.admin.v1.GetMenusTreeRequest\x1a\x1f.api.admin.v1.GetMenusTreeReply\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/system/menu/menuTreeSelect\x12h\n" +
+	"\tListMenus\x12\x1e.api.admin.v1.ListMenusRequest\x1a\x1c.api.admin.v1.ListMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/menu/list\x12}\n" +
+	"\x0eQueryMenusTree\x12#.api.admin.v1.QueryMenusTreeRequest\x1a!.api.admin.v1.QueryMenusTreeReply\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/system/menu/menuTreeSelect\x12h\n" +
 	"\vUpdateMenus\x12 .api.admin.v1.UpdateMenusRequest\x1a\x1e.api.admin.v1.UpdateMenusReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/menu\x12j\n" +
-	"\vDeleteMenus\x12 .api.admin.v1.DeleteMenusRequest\x1a\x1e.api.admin.v1.DeleteMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/menu/{id}\x12a\n" +
-	"\bGetMenus\x12\x1d.api.admin.v1.GetMenusRequest\x1a\x1b.api.admin.v1.GetMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/menu/{id}\x12\x96\x01\n" +
+	"\vDeleteMenus\x12 .api.admin.v1.DeleteMenusRequest\x1a\x1e.api.admin.v1.DeleteMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/menu/{id}\x12d\n" +
+	"\tFindMenus\x12\x1e.api.admin.v1.FindMenusRequest\x1a\x1c.api.admin.v1.FindMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/menu/{id}\x12\x96\x01\n" +
 	"\x12RoleMenuTreeSelect\x12'.api.admin.v1.RoleMenuTreeSelectRequest\x1a%.api.admin.v1.RoleMenuTreeSelectReply\"0\x82\xd3\xe4\x93\x02*\x12(/system/menu/roleMenuTreeSelect/{roleId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
@@ -1255,12 +1255,12 @@ var file_menus_proto_goTypes = []any{
 	(*UpdateMenusReply)(nil),          // 6: api.admin.v1.UpdateMenusReply
 	(*DeleteMenusRequest)(nil),        // 7: api.admin.v1.DeleteMenusRequest
 	(*DeleteMenusReply)(nil),          // 8: api.admin.v1.DeleteMenusReply
-	(*GetMenusRequest)(nil),           // 9: api.admin.v1.GetMenusRequest
-	(*GetMenusReply)(nil),             // 10: api.admin.v1.GetMenusReply
+	(*FindMenusRequest)(nil),          // 9: api.admin.v1.FindMenusRequest
+	(*FindMenusReply)(nil),            // 10: api.admin.v1.FindMenusReply
 	(*ListMenusRequest)(nil),          // 11: api.admin.v1.ListMenusRequest
 	(*ListMenusReply)(nil),            // 12: api.admin.v1.ListMenusReply
-	(*GetMenusTreeRequest)(nil),       // 13: api.admin.v1.GetMenusTreeRequest
-	(*GetMenusTreeReply)(nil),         // 14: api.admin.v1.GetMenusTreeReply
+	(*QueryMenusTreeRequest)(nil),     // 13: api.admin.v1.QueryMenusTreeRequest
+	(*QueryMenusTreeReply)(nil),       // 14: api.admin.v1.QueryMenusTreeReply
 	(*MenuTree)(nil),                  // 15: api.admin.v1.MenuTree
 	(*timestamppb.Timestamp)(nil),     // 16: google.protobuf.Timestamp
 	(*SimpleMenu)(nil),                // 17: api.admin.v1.SimpleMenu
@@ -1270,23 +1270,23 @@ var file_menus_proto_depIdxs = []int32{
 	2,  // 1: api.admin.v1.MenuLabel.children:type_name -> api.admin.v1.MenuLabel
 	15, // 2: api.admin.v1.CreateMenusReply.menus:type_name -> api.admin.v1.MenuTree
 	15, // 3: api.admin.v1.UpdateMenusReply.menus:type_name -> api.admin.v1.MenuTree
-	16, // 4: api.admin.v1.GetMenusReply.createdAt:type_name -> google.protobuf.Timestamp
-	16, // 5: api.admin.v1.GetMenusReply.updatedAt:type_name -> google.protobuf.Timestamp
+	16, // 4: api.admin.v1.FindMenusReply.createdAt:type_name -> google.protobuf.Timestamp
+	16, // 5: api.admin.v1.FindMenusReply.updatedAt:type_name -> google.protobuf.Timestamp
 	15, // 6: api.admin.v1.ListMenusReply.list:type_name -> api.admin.v1.MenuTree
-	17, // 7: api.admin.v1.GetMenusTreeReply.list:type_name -> api.admin.v1.SimpleMenu
+	17, // 7: api.admin.v1.QueryMenusTreeReply.list:type_name -> api.admin.v1.SimpleMenu
 	3,  // 8: api.admin.v1.Menus.CreateMenus:input_type -> api.admin.v1.CreateMenusRequest
 	11, // 9: api.admin.v1.Menus.ListMenus:input_type -> api.admin.v1.ListMenusRequest
-	13, // 10: api.admin.v1.Menus.GetMenusTree:input_type -> api.admin.v1.GetMenusTreeRequest
+	13, // 10: api.admin.v1.Menus.QueryMenusTree:input_type -> api.admin.v1.QueryMenusTreeRequest
 	5,  // 11: api.admin.v1.Menus.UpdateMenus:input_type -> api.admin.v1.UpdateMenusRequest
 	7,  // 12: api.admin.v1.Menus.DeleteMenus:input_type -> api.admin.v1.DeleteMenusRequest
-	9,  // 13: api.admin.v1.Menus.GetMenus:input_type -> api.admin.v1.GetMenusRequest
+	9,  // 13: api.admin.v1.Menus.FindMenus:input_type -> api.admin.v1.FindMenusRequest
 	0,  // 14: api.admin.v1.Menus.RoleMenuTreeSelect:input_type -> api.admin.v1.RoleMenuTreeSelectRequest
 	4,  // 15: api.admin.v1.Menus.CreateMenus:output_type -> api.admin.v1.CreateMenusReply
 	12, // 16: api.admin.v1.Menus.ListMenus:output_type -> api.admin.v1.ListMenusReply
-	14, // 17: api.admin.v1.Menus.GetMenusTree:output_type -> api.admin.v1.GetMenusTreeReply
+	14, // 17: api.admin.v1.Menus.QueryMenusTree:output_type -> api.admin.v1.QueryMenusTreeReply
 	6,  // 18: api.admin.v1.Menus.UpdateMenus:output_type -> api.admin.v1.UpdateMenusReply
 	8,  // 19: api.admin.v1.Menus.DeleteMenus:output_type -> api.admin.v1.DeleteMenusReply
-	10, // 20: api.admin.v1.Menus.GetMenus:output_type -> api.admin.v1.GetMenusReply
+	10, // 20: api.admin.v1.Menus.FindMenus:output_type -> api.admin.v1.FindMenusReply
 	1,  // 21: api.admin.v1.Menus.RoleMenuTreeSelect:output_type -> api.admin.v1.RoleMenuTreeSelectReply
 	15, // [15:22] is the sub-list for method output_type
 	8,  // [8:15] is the sub-list for method input_type

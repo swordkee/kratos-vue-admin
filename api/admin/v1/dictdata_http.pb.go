@@ -21,7 +21,7 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationDictDataCreateDictData = "/api.admin.v1.DictData/CreateDictData"
 const OperationDictDataDeleteDictData = "/api.admin.v1.DictData/DeleteDictData"
-const OperationDictDataGetDictData = "/api.admin.v1.DictData/GetDictData"
+const OperationDictDataFindDictData = "/api.admin.v1.DictData/FindDictData"
 const OperationDictDataListDictData = "/api.admin.v1.DictData/ListDictData"
 const OperationDictDataUpdateDictData = "/api.admin.v1.DictData/UpdateDictData"
 
@@ -30,8 +30,8 @@ type DictDataHTTPServer interface {
 	CreateDictData(context.Context, *CreateDictDataRequest) (*CreateDictDataReply, error)
 	// DeleteDictData删除
 	DeleteDictData(context.Context, *DeleteDictDataRequest) (*DeleteDictDataReply, error)
-	// GetDictData获取信息
-	GetDictData(context.Context, *GetDictDataRequest) (*GetDictDataReply, error)
+	// FindDictData获取信息
+	FindDictData(context.Context, *FindDictDataRequest) (*FindDictDataReply, error)
 	// ListDictData列表信息
 	ListDictData(context.Context, *ListDictDataRequest) (*ListDictDataReply, error)
 	// UpdateDictData更新
@@ -44,7 +44,7 @@ func RegisterDictDataHTTPServer(s *http.Server, srv DictDataHTTPServer) {
 	r.POST("/system/dict/data", _DictData_CreateDictData0_HTTP_Handler(srv))
 	r.PUT("/system/dict/data", _DictData_UpdateDictData0_HTTP_Handler(srv))
 	r.DELETE("/system/dict/data/{dictCode}", _DictData_DeleteDictData0_HTTP_Handler(srv))
-	r.GET("/system/dict/data/info/{dictCode}", _DictData_GetDictData0_HTTP_Handler(srv))
+	r.GET("/system/dict/data/info/{dictCode}", _DictData_FindDictData0_HTTP_Handler(srv))
 }
 
 func _DictData_ListDictData0_HTTP_Handler(srv DictDataHTTPServer) func(ctx http.Context) error {
@@ -132,24 +132,24 @@ func _DictData_DeleteDictData0_HTTP_Handler(srv DictDataHTTPServer) func(ctx htt
 	}
 }
 
-func _DictData_GetDictData0_HTTP_Handler(srv DictDataHTTPServer) func(ctx http.Context) error {
+func _DictData_FindDictData0_HTTP_Handler(srv DictDataHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetDictDataRequest
+		var in FindDictDataRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationDictDataGetDictData)
+		http.SetOperation(ctx, OperationDictDataFindDictData)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetDictData(ctx, req.(*GetDictDataRequest))
+			return srv.FindDictData(ctx, req.(*FindDictDataRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetDictDataReply)
+		reply := out.(*FindDictDataReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -159,8 +159,8 @@ type DictDataHTTPClient interface {
 	CreateDictData(ctx context.Context, req *CreateDictDataRequest, opts ...http.CallOption) (rsp *CreateDictDataReply, err error)
 	// DeleteDictData删除
 	DeleteDictData(ctx context.Context, req *DeleteDictDataRequest, opts ...http.CallOption) (rsp *DeleteDictDataReply, err error)
-	// GetDictData获取信息
-	GetDictData(ctx context.Context, req *GetDictDataRequest, opts ...http.CallOption) (rsp *GetDictDataReply, err error)
+	// FindDictData获取信息
+	FindDictData(ctx context.Context, req *FindDictDataRequest, opts ...http.CallOption) (rsp *FindDictDataReply, err error)
 	// ListDictData列表信息
 	ListDictData(ctx context.Context, req *ListDictDataRequest, opts ...http.CallOption) (rsp *ListDictDataReply, err error)
 	// UpdateDictData更新
@@ -203,12 +203,12 @@ func (c *DictDataHTTPClientImpl) DeleteDictData(ctx context.Context, in *DeleteD
 	return &out, nil
 }
 
-// GetDictData获取信息
-func (c *DictDataHTTPClientImpl) GetDictData(ctx context.Context, in *GetDictDataRequest, opts ...http.CallOption) (*GetDictDataReply, error) {
-	var out GetDictDataReply
+// FindDictData获取信息
+func (c *DictDataHTTPClientImpl) FindDictData(ctx context.Context, in *FindDictDataRequest, opts ...http.CallOption) (*FindDictDataReply, error) {
+	var out FindDictDataReply
 	pattern := "/system/dict/data/info/{dictCode}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationDictDataGetDictData))
+	opts = append(opts, http.Operation(OperationDictDataFindDictData))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

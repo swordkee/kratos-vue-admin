@@ -74,11 +74,11 @@ message ListLogsReply {
   repeated SysLogsDetail list = 2;
 }
 
-message GetLogsRequest {
+message FindLogsRequest {
   int64 id = 1;
 }
 
-message GetLogsReply {
+message FindLogsReply {
   SysLogs data = 1;
 }
 

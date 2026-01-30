@@ -21,20 +21,20 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationLogsServiceCleanLogs = "/api.admin.v1.LogsService/CleanLogs"
 const OperationLogsServiceDeleteLogsByIds = "/api.admin.v1.LogsService/DeleteLogsByIds"
-const OperationLogsServiceGetLogs = "/api.admin.v1.LogsService/GetLogs"
+const OperationLogsServiceFindLogs = "/api.admin.v1.LogsService/FindLogs"
 const OperationLogsServiceListLogs = "/api.admin.v1.LogsService/ListLogs"
 
 type LogsServiceHTTPServer interface {
 	CleanLogs(context.Context, *CleanLogsRequest) (*CleanLogsReply, error)
 	DeleteLogsByIds(context.Context, *DeleteLogsByIdsRequest) (*DeleteLogsByIdsReply, error)
-	GetLogs(context.Context, *GetLogsRequest) (*GetLogsReply, error)
+	FindLogs(context.Context, *FindLogsRequest) (*FindLogsReply, error)
 	ListLogs(context.Context, *ListLogsRequest) (*ListLogsReply, error)
 }
 
 func RegisterLogsServiceHTTPServer(s *http.Server, srv LogsServiceHTTPServer) {
 	r := s.Route("/")
 	r.GET("/system/logs/list", _LogsService_ListLogs0_HTTP_Handler(srv))
-	r.GET("/system/logs/{id}", _LogsService_GetLogs0_HTTP_Handler(srv))
+	r.GET("/system/logs/{id}", _LogsService_FindLogs0_HTTP_Handler(srv))
 	r.DELETE("/system/logs/clean", _LogsService_CleanLogs0_HTTP_Handler(srv))
 	r.DELETE("/system/logs/deleteByIds", _LogsService_DeleteLogsByIds0_HTTP_Handler(srv))
 }
@@ -58,24 +58,24 @@ func _LogsService_ListLogs0_HTTP_Handler(srv LogsServiceHTTPServer) func(ctx htt
 	}
 }
 
-func _LogsService_GetLogs0_HTTP_Handler(srv LogsServiceHTTPServer) func(ctx http.Context) error {
+func _LogsService_FindLogs0_HTTP_Handler(srv LogsServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetLogsRequest
+		var in FindLogsRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationLogsServiceGetLogs)
+		http.SetOperation(ctx, OperationLogsServiceFindLogs)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetLogs(ctx, req.(*GetLogsRequest))
+			return srv.FindLogs(ctx, req.(*FindLogsRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetLogsReply)
+		reply := out.(*FindLogsReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -121,7 +121,7 @@ func _LogsService_DeleteLogsByIds0_HTTP_Handler(srv LogsServiceHTTPServer) func(
 type LogsServiceHTTPClient interface {
 	CleanLogs(ctx context.Context, req *CleanLogsRequest, opts ...http.CallOption) (rsp *CleanLogsReply, err error)
 	DeleteLogsByIds(ctx context.Context, req *DeleteLogsByIdsRequest, opts ...http.CallOption) (rsp *DeleteLogsByIdsReply, err error)
-	GetLogs(ctx context.Context, req *GetLogsRequest, opts ...http.CallOption) (rsp *GetLogsReply, err error)
+	FindLogs(ctx context.Context, req *FindLogsRequest, opts ...http.CallOption) (rsp *FindLogsReply, err error)
 	ListLogs(ctx context.Context, req *ListLogsRequest, opts ...http.CallOption) (rsp *ListLogsReply, err error)
 }
 
@@ -159,11 +159,11 @@ func (c *LogsServiceHTTPClientImpl) DeleteLogsByIds(ctx context.Context, in *Del
 	return &out, nil
 }
 
-func (c *LogsServiceHTTPClientImpl) GetLogs(ctx context.Context, in *GetLogsRequest, opts ...http.CallOption) (*GetLogsReply, error) {
-	var out GetLogsReply
+func (c *LogsServiceHTTPClientImpl) FindLogs(ctx context.Context, in *FindLogsRequest, opts ...http.CallOption) (*FindLogsReply, error) {
+	var out FindLogsReply
 	pattern := "/system/logs/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationLogsServiceGetLogs))
+	opts = append(opts, http.Operation(OperationLogsServiceFindLogs))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

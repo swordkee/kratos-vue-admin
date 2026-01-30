@@ -282,7 +282,7 @@ func (x *ListDeptReply) GetData() []*DeptTree {
 	return nil
 }
 
-type GetDeptTreeRequest struct {
+type QueryDeptTreeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DeptName      string                 `protobuf:"bytes,1,opt,name=deptName,proto3" json:"deptName,omitempty"`
 	Status        int32                  `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"`
@@ -291,20 +291,20 @@ type GetDeptTreeRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDeptTreeRequest) Reset() {
-	*x = GetDeptTreeRequest{}
+func (x *QueryDeptTreeRequest) Reset() {
+	*x = QueryDeptTreeRequest{}
 	mi := &file_dept_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDeptTreeRequest) String() string {
+func (x *QueryDeptTreeRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDeptTreeRequest) ProtoMessage() {}
+func (*QueryDeptTreeRequest) ProtoMessage() {}
 
-func (x *GetDeptTreeRequest) ProtoReflect() protoreflect.Message {
+func (x *QueryDeptTreeRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_dept_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -316,53 +316,53 @@ func (x *GetDeptTreeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDeptTreeRequest.ProtoReflect.Descriptor instead.
-func (*GetDeptTreeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryDeptTreeRequest.ProtoReflect.Descriptor instead.
+func (*QueryDeptTreeRequest) Descriptor() ([]byte, []int) {
 	return file_dept_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetDeptTreeRequest) GetDeptName() string {
+func (x *QueryDeptTreeRequest) GetDeptName() string {
 	if x != nil {
 		return x.DeptName
 	}
 	return ""
 }
 
-func (x *GetDeptTreeRequest) GetStatus() int32 {
+func (x *QueryDeptTreeRequest) GetStatus() int32 {
 	if x != nil {
 		return x.Status
 	}
 	return 0
 }
 
-func (x *GetDeptTreeRequest) GetDeptId() int64 {
+func (x *QueryDeptTreeRequest) GetDeptId() int64 {
 	if x != nil {
 		return x.DeptId
 	}
 	return 0
 }
 
-type GetDeptTreeReply struct {
+type QueryDeptTreeReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Data          []*DeptTree            `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDeptTreeReply) Reset() {
-	*x = GetDeptTreeReply{}
+func (x *QueryDeptTreeReply) Reset() {
+	*x = QueryDeptTreeReply{}
 	mi := &file_dept_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDeptTreeReply) String() string {
+func (x *QueryDeptTreeReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDeptTreeReply) ProtoMessage() {}
+func (*QueryDeptTreeReply) ProtoMessage() {}
 
-func (x *GetDeptTreeReply) ProtoReflect() protoreflect.Message {
+func (x *QueryDeptTreeReply) ProtoReflect() protoreflect.Message {
 	mi := &file_dept_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -374,12 +374,12 @@ func (x *GetDeptTreeReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDeptTreeReply.ProtoReflect.Descriptor instead.
-func (*GetDeptTreeReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryDeptTreeReply.ProtoReflect.Descriptor instead.
+func (*QueryDeptTreeReply) Descriptor() ([]byte, []int) {
 	return file_dept_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetDeptTreeReply) GetData() []*DeptTree {
+func (x *QueryDeptTreeReply) GetData() []*DeptTree {
 	if x != nil {
 		return x.Data
 	}
@@ -751,12 +751,12 @@ const file_dept_proto_rawDesc = "" +
 	"\x06status\x18\x02 \x01(\x05R\x06status\x12\x16\n" +
 	"\x06deptId\x18\x03 \x01(\x03R\x06deptId\";\n" +
 	"\rListDeptReply\x12*\n" +
-	"\x04data\x18\x01 \x03(\v2\x16.api.admin.v1.DeptTreeR\x04data\"`\n" +
-	"\x12GetDeptTreeRequest\x12\x1a\n" +
+	"\x04data\x18\x01 \x03(\v2\x16.api.admin.v1.DeptTreeR\x04data\"b\n" +
+	"\x14QueryDeptTreeRequest\x12\x1a\n" +
 	"\bdeptName\x18\x01 \x01(\tR\bdeptName\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\x05R\x06status\x12\x16\n" +
-	"\x06deptId\x18\x03 \x01(\x03R\x06deptId\">\n" +
-	"\x10GetDeptTreeReply\x12*\n" +
+	"\x06deptId\x18\x03 \x01(\x03R\x06deptId\"@\n" +
+	"\x12QueryDeptTreeReply\x12*\n" +
 	"\x04data\x18\x03 \x03(\v2\x16.api.admin.v1.DeptTreeR\x04data\"\xbb\x01\n" +
 	"\x11CreateDeptRequest\x12\x1a\n" +
 	"\bparentId\x18\x01 \x01(\x03R\bparentId\x12\x1a\n" +
@@ -779,10 +779,10 @@ const file_dept_proto_rawDesc = "" +
 	"\x0fUpdateDeptReply\"#\n" +
 	"\x11DeleteDeptRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x11\n" +
-	"\x0fDeleteDeptReply2\xa9\x05\n" +
+	"\x0fDeleteDeptReply2\xaf\x05\n" +
 	"\x04Dept\x12a\n" +
-	"\bListDept\x12\x1d.api.admin.v1.ListDeptRequest\x1a\x1b.api.admin.v1.ListDeptReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/dept/list\x12n\n" +
-	"\vGetDeptTree\x12 .api.admin.v1.GetDeptTreeRequest\x1a\x1e.api.admin.v1.GetDeptTreeReply\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/system/dept/deptTree\x12e\n" +
+	"\bListDept\x12\x1d.api.admin.v1.ListDeptRequest\x1a\x1b.api.admin.v1.ListDeptReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/dept/list\x12t\n" +
+	"\rQueryDeptTree\x12\".api.admin.v1.QueryDeptTreeRequest\x1a .api.admin.v1.QueryDeptTreeReply\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/system/dept/deptTree\x12e\n" +
 	"\n" +
 	"CreateDept\x12\x1f.api.admin.v1.CreateDeptRequest\x1a\x1d.api.admin.v1.CreateDeptReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/dept\x12e\n" +
 	"\n" +
@@ -810,8 +810,8 @@ var file_dept_proto_goTypes = []any{
 	(*DeptLabel)(nil),                 // 2: api.admin.v1.DeptLabel
 	(*ListDeptRequest)(nil),           // 3: api.admin.v1.ListDeptRequest
 	(*ListDeptReply)(nil),             // 4: api.admin.v1.ListDeptReply
-	(*GetDeptTreeRequest)(nil),        // 5: api.admin.v1.GetDeptTreeRequest
-	(*GetDeptTreeReply)(nil),          // 6: api.admin.v1.GetDeptTreeReply
+	(*QueryDeptTreeRequest)(nil),      // 5: api.admin.v1.QueryDeptTreeRequest
+	(*QueryDeptTreeReply)(nil),        // 6: api.admin.v1.QueryDeptTreeReply
 	(*CreateDeptRequest)(nil),         // 7: api.admin.v1.CreateDeptRequest
 	(*CreateDeptReply)(nil),           // 8: api.admin.v1.CreateDeptReply
 	(*UpdateDeptRequest)(nil),         // 9: api.admin.v1.UpdateDeptRequest
@@ -824,15 +824,15 @@ var file_dept_proto_depIdxs = []int32{
 	2,  // 0: api.admin.v1.RoleDeptTreeSelectReply.depts:type_name -> api.admin.v1.DeptLabel
 	2,  // 1: api.admin.v1.DeptLabel.children:type_name -> api.admin.v1.DeptLabel
 	13, // 2: api.admin.v1.ListDeptReply.data:type_name -> api.admin.v1.DeptTree
-	13, // 3: api.admin.v1.GetDeptTreeReply.data:type_name -> api.admin.v1.DeptTree
+	13, // 3: api.admin.v1.QueryDeptTreeReply.data:type_name -> api.admin.v1.DeptTree
 	3,  // 4: api.admin.v1.Dept.ListDept:input_type -> api.admin.v1.ListDeptRequest
-	5,  // 5: api.admin.v1.Dept.GetDeptTree:input_type -> api.admin.v1.GetDeptTreeRequest
+	5,  // 5: api.admin.v1.Dept.QueryDeptTree:input_type -> api.admin.v1.QueryDeptTreeRequest
 	7,  // 6: api.admin.v1.Dept.CreateDept:input_type -> api.admin.v1.CreateDeptRequest
 	9,  // 7: api.admin.v1.Dept.UpdateDept:input_type -> api.admin.v1.UpdateDeptRequest
 	11, // 8: api.admin.v1.Dept.DeleteDept:input_type -> api.admin.v1.DeleteDeptRequest
 	0,  // 9: api.admin.v1.Dept.RoleDeptTreeSelect:input_type -> api.admin.v1.RoleDeptTreeSelectRequest
 	4,  // 10: api.admin.v1.Dept.ListDept:output_type -> api.admin.v1.ListDeptReply
-	6,  // 11: api.admin.v1.Dept.GetDeptTree:output_type -> api.admin.v1.GetDeptTreeReply
+	6,  // 11: api.admin.v1.Dept.QueryDeptTree:output_type -> api.admin.v1.QueryDeptTreeReply
 	8,  // 12: api.admin.v1.Dept.CreateDept:output_type -> api.admin.v1.CreateDeptReply
 	10, // 13: api.admin.v1.Dept.UpdateDept:output_type -> api.admin.v1.UpdateDeptReply
 	12, // 14: api.admin.v1.Dept.DeleteDept:output_type -> api.admin.v1.DeleteDeptReply

@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion8
 
 const (
 	LogsService_ListLogs_FullMethodName        = "/api.admin.v1.LogsService/ListLogs"
-	LogsService_GetLogs_FullMethodName         = "/api.admin.v1.LogsService/GetLogs"
+	LogsService_FindLogs_FullMethodName        = "/api.admin.v1.LogsService/FindLogs"
 	LogsService_CleanLogs_FullMethodName       = "/api.admin.v1.LogsService/CleanLogs"
 	LogsService_DeleteLogsByIds_FullMethodName = "/api.admin.v1.LogsService/DeleteLogsByIds"
 )
@@ -30,7 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LogsServiceClient interface {
 	ListLogs(ctx context.Context, in *ListLogsRequest, opts ...grpc.CallOption) (*ListLogsReply, error)
-	GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsReply, error)
+	FindLogs(ctx context.Context, in *FindLogsRequest, opts ...grpc.CallOption) (*FindLogsReply, error)
 	CleanLogs(ctx context.Context, in *CleanLogsRequest, opts ...grpc.CallOption) (*CleanLogsReply, error)
 	DeleteLogsByIds(ctx context.Context, in *DeleteLogsByIdsRequest, opts ...grpc.CallOption) (*DeleteLogsByIdsReply, error)
 }
@@ -53,10 +53,10 @@ func (c *logsServiceClient) ListLogs(ctx context.Context, in *ListLogsRequest, o
 	return out, nil
 }
 
-func (c *logsServiceClient) GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsReply, error) {
+func (c *logsServiceClient) FindLogs(ctx context.Context, in *FindLogsRequest, opts ...grpc.CallOption) (*FindLogsReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetLogsReply)
-	err := c.cc.Invoke(ctx, LogsService_GetLogs_FullMethodName, in, out, cOpts...)
+	out := new(FindLogsReply)
+	err := c.cc.Invoke(ctx, LogsService_FindLogs_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (c *logsServiceClient) DeleteLogsByIds(ctx context.Context, in *DeleteLogsB
 // for forward compatibility
 type LogsServiceServer interface {
 	ListLogs(context.Context, *ListLogsRequest) (*ListLogsReply, error)
-	GetLogs(context.Context, *GetLogsRequest) (*GetLogsReply, error)
+	FindLogs(context.Context, *FindLogsRequest) (*FindLogsReply, error)
 	CleanLogs(context.Context, *CleanLogsRequest) (*CleanLogsReply, error)
 	DeleteLogsByIds(context.Context, *DeleteLogsByIdsRequest) (*DeleteLogsByIdsReply, error)
 	mustEmbedUnimplementedLogsServiceServer()
@@ -101,8 +101,8 @@ type UnimplementedLogsServiceServer struct {
 func (UnimplementedLogsServiceServer) ListLogs(context.Context, *ListLogsRequest) (*ListLogsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListLogs not implemented")
 }
-func (UnimplementedLogsServiceServer) GetLogs(context.Context, *GetLogsRequest) (*GetLogsReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLogs not implemented")
+func (UnimplementedLogsServiceServer) FindLogs(context.Context, *FindLogsRequest) (*FindLogsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindLogs not implemented")
 }
 func (UnimplementedLogsServiceServer) CleanLogs(context.Context, *CleanLogsRequest) (*CleanLogsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CleanLogs not implemented")
@@ -141,20 +141,20 @@ func _LogsService_ListLogs_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LogsService_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLogsRequest)
+func _LogsService_FindLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindLogsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LogsServiceServer).GetLogs(ctx, in)
+		return srv.(LogsServiceServer).FindLogs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: LogsService_GetLogs_FullMethodName,
+		FullMethod: LogsService_FindLogs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogsServiceServer).GetLogs(ctx, req.(*GetLogsRequest))
+		return srv.(LogsServiceServer).FindLogs(ctx, req.(*FindLogsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -207,8 +207,8 @@ var LogsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _LogsService_ListLogs_Handler,
 		},
 		{
-			MethodName: "GetLogs",
-			Handler:    _LogsService_GetLogs_Handler,
+			MethodName: "FindLogs",
+			Handler:    _LogsService_FindLogs_Handler,
 		},
 		{
 			MethodName: "CleanLogs",

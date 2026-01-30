@@ -1154,22 +1154,22 @@ var _ interface {
 	ErrorName() string
 } = DeleteMenusReplyValidationError{}
 
-// Validate checks the field values on GetMenusRequest with the rules defined
+// Validate checks the field values on FindMenusRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *GetMenusRequest) Validate() error {
+func (m *FindMenusRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMenusRequest with the rules
+// ValidateAll checks the field values on FindMenusRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetMenusRequestMultiError, or nil if none found.
-func (m *GetMenusRequest) ValidateAll() error {
+// FindMenusRequestMultiError, or nil if none found.
+func (m *FindMenusRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMenusRequest) validate(all bool) error {
+func (m *FindMenusRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1179,19 +1179,19 @@ func (m *GetMenusRequest) validate(all bool) error {
 	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return GetMenusRequestMultiError(errors)
+		return FindMenusRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMenusRequestMultiError is an error wrapping multiple validation errors
-// returned by GetMenusRequest.ValidateAll() if the designated constraints
+// FindMenusRequestMultiError is an error wrapping multiple validation errors
+// returned by FindMenusRequest.ValidateAll() if the designated constraints
 // aren't met.
-type GetMenusRequestMultiError []error
+type FindMenusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMenusRequestMultiError) Error() string {
+func (m FindMenusRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1200,11 +1200,11 @@ func (m GetMenusRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMenusRequestMultiError) AllErrors() []error { return m }
+func (m FindMenusRequestMultiError) AllErrors() []error { return m }
 
-// GetMenusRequestValidationError is the validation error returned by
-// GetMenusRequest.Validate if the designated constraints aren't met.
-type GetMenusRequestValidationError struct {
+// FindMenusRequestValidationError is the validation error returned by
+// FindMenusRequest.Validate if the designated constraints aren't met.
+type FindMenusRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1212,22 +1212,22 @@ type GetMenusRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMenusRequestValidationError) Field() string { return e.field }
+func (e FindMenusRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMenusRequestValidationError) Reason() string { return e.reason }
+func (e FindMenusRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMenusRequestValidationError) Cause() error { return e.cause }
+func (e FindMenusRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMenusRequestValidationError) Key() bool { return e.key }
+func (e FindMenusRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMenusRequestValidationError) ErrorName() string { return "GetMenusRequestValidationError" }
+func (e FindMenusRequestValidationError) ErrorName() string { return "FindMenusRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetMenusRequestValidationError) Error() string {
+func (e FindMenusRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1239,14 +1239,14 @@ func (e GetMenusRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMenusRequest.%s: %s%s",
+		"invalid %sFindMenusRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMenusRequestValidationError{}
+var _ error = FindMenusRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1254,24 +1254,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMenusRequestValidationError{}
+} = FindMenusRequestValidationError{}
 
-// Validate checks the field values on GetMenusReply with the rules defined in
+// Validate checks the field values on FindMenusReply with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *GetMenusReply) Validate() error {
+func (m *FindMenusReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMenusReply with the rules defined
+// ValidateAll checks the field values on FindMenusReply with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in GetMenusReplyMultiError, or
-// nil if none found.
-func (m *GetMenusReply) ValidateAll() error {
+// result is a list of violation errors wrapped in FindMenusReplyMultiError,
+// or nil if none found.
+func (m *FindMenusReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMenusReply) validate(all bool) error {
+func (m *FindMenusReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1320,7 +1320,7 @@ func (m *GetMenusReply) validate(all bool) error {
 		switch v := interface{}(m.GetCreatedAt()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetMenusReplyValidationError{
+				errors = append(errors, FindMenusReplyValidationError{
 					field:  "CreatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1328,7 +1328,7 @@ func (m *GetMenusReply) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetMenusReplyValidationError{
+				errors = append(errors, FindMenusReplyValidationError{
 					field:  "CreatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1337,7 +1337,7 @@ func (m *GetMenusReply) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return GetMenusReplyValidationError{
+			return FindMenusReplyValidationError{
 				field:  "CreatedAt",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1349,7 +1349,7 @@ func (m *GetMenusReply) validate(all bool) error {
 		switch v := interface{}(m.GetUpdatedAt()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetMenusReplyValidationError{
+				errors = append(errors, FindMenusReplyValidationError{
 					field:  "UpdatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1357,7 +1357,7 @@ func (m *GetMenusReply) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetMenusReplyValidationError{
+				errors = append(errors, FindMenusReplyValidationError{
 					field:  "UpdatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1366,7 +1366,7 @@ func (m *GetMenusReply) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetUpdatedAt()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return GetMenusReplyValidationError{
+			return FindMenusReplyValidationError{
 				field:  "UpdatedAt",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1375,19 +1375,19 @@ func (m *GetMenusReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetMenusReplyMultiError(errors)
+		return FindMenusReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMenusReplyMultiError is an error wrapping multiple validation errors
-// returned by GetMenusReply.ValidateAll() if the designated constraints
+// FindMenusReplyMultiError is an error wrapping multiple validation errors
+// returned by FindMenusReply.ValidateAll() if the designated constraints
 // aren't met.
-type GetMenusReplyMultiError []error
+type FindMenusReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMenusReplyMultiError) Error() string {
+func (m FindMenusReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1396,11 +1396,11 @@ func (m GetMenusReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMenusReplyMultiError) AllErrors() []error { return m }
+func (m FindMenusReplyMultiError) AllErrors() []error { return m }
 
-// GetMenusReplyValidationError is the validation error returned by
-// GetMenusReply.Validate if the designated constraints aren't met.
-type GetMenusReplyValidationError struct {
+// FindMenusReplyValidationError is the validation error returned by
+// FindMenusReply.Validate if the designated constraints aren't met.
+type FindMenusReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1408,22 +1408,22 @@ type GetMenusReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMenusReplyValidationError) Field() string { return e.field }
+func (e FindMenusReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMenusReplyValidationError) Reason() string { return e.reason }
+func (e FindMenusReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMenusReplyValidationError) Cause() error { return e.cause }
+func (e FindMenusReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMenusReplyValidationError) Key() bool { return e.key }
+func (e FindMenusReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMenusReplyValidationError) ErrorName() string { return "GetMenusReplyValidationError" }
+func (e FindMenusReplyValidationError) ErrorName() string { return "FindMenusReplyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetMenusReplyValidationError) Error() string {
+func (e FindMenusReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1435,14 +1435,14 @@ func (e GetMenusReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMenusReply.%s: %s%s",
+		"invalid %sFindMenusReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMenusReplyValidationError{}
+var _ error = FindMenusReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1450,7 +1450,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMenusReplyValidationError{}
+} = FindMenusReplyValidationError{}
 
 // Validate checks the field values on ListMenusRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1690,22 +1690,22 @@ var _ interface {
 	ErrorName() string
 } = ListMenusReplyValidationError{}
 
-// Validate checks the field values on GetMenusTreeRequest with the rules
+// Validate checks the field values on QueryMenusTreeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetMenusTreeRequest) Validate() error {
+func (m *QueryMenusTreeRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMenusTreeRequest with the rules
+// ValidateAll checks the field values on QueryMenusTreeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetMenusTreeRequestMultiError, or nil if none found.
-func (m *GetMenusTreeRequest) ValidateAll() error {
+// QueryMenusTreeRequestMultiError, or nil if none found.
+func (m *QueryMenusTreeRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMenusTreeRequest) validate(all bool) error {
+func (m *QueryMenusTreeRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1713,19 +1713,19 @@ func (m *GetMenusTreeRequest) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return GetMenusTreeRequestMultiError(errors)
+		return QueryMenusTreeRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMenusTreeRequestMultiError is an error wrapping multiple validation
-// errors returned by GetMenusTreeRequest.ValidateAll() if the designated
+// QueryMenusTreeRequestMultiError is an error wrapping multiple validation
+// errors returned by QueryMenusTreeRequest.ValidateAll() if the designated
 // constraints aren't met.
-type GetMenusTreeRequestMultiError []error
+type QueryMenusTreeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMenusTreeRequestMultiError) Error() string {
+func (m QueryMenusTreeRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1734,11 +1734,11 @@ func (m GetMenusTreeRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMenusTreeRequestMultiError) AllErrors() []error { return m }
+func (m QueryMenusTreeRequestMultiError) AllErrors() []error { return m }
 
-// GetMenusTreeRequestValidationError is the validation error returned by
-// GetMenusTreeRequest.Validate if the designated constraints aren't met.
-type GetMenusTreeRequestValidationError struct {
+// QueryMenusTreeRequestValidationError is the validation error returned by
+// QueryMenusTreeRequest.Validate if the designated constraints aren't met.
+type QueryMenusTreeRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1746,24 +1746,24 @@ type GetMenusTreeRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMenusTreeRequestValidationError) Field() string { return e.field }
+func (e QueryMenusTreeRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMenusTreeRequestValidationError) Reason() string { return e.reason }
+func (e QueryMenusTreeRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMenusTreeRequestValidationError) Cause() error { return e.cause }
+func (e QueryMenusTreeRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMenusTreeRequestValidationError) Key() bool { return e.key }
+func (e QueryMenusTreeRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMenusTreeRequestValidationError) ErrorName() string {
-	return "GetMenusTreeRequestValidationError"
+func (e QueryMenusTreeRequestValidationError) ErrorName() string {
+	return "QueryMenusTreeRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetMenusTreeRequestValidationError) Error() string {
+func (e QueryMenusTreeRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1775,14 +1775,14 @@ func (e GetMenusTreeRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMenusTreeRequest.%s: %s%s",
+		"invalid %sQueryMenusTreeRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMenusTreeRequestValidationError{}
+var _ error = QueryMenusTreeRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1790,24 +1790,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMenusTreeRequestValidationError{}
+} = QueryMenusTreeRequestValidationError{}
 
-// Validate checks the field values on GetMenusTreeReply with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *GetMenusTreeReply) Validate() error {
+// Validate checks the field values on QueryMenusTreeReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *QueryMenusTreeReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMenusTreeReply with the rules
+// ValidateAll checks the field values on QueryMenusTreeReply with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetMenusTreeReplyMultiError, or nil if none found.
-func (m *GetMenusTreeReply) ValidateAll() error {
+// QueryMenusTreeReplyMultiError, or nil if none found.
+func (m *QueryMenusTreeReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMenusTreeReply) validate(all bool) error {
+func (m *QueryMenusTreeReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1821,7 +1821,7 @@ func (m *GetMenusTreeReply) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetMenusTreeReplyValidationError{
+					errors = append(errors, QueryMenusTreeReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1829,7 +1829,7 @@ func (m *GetMenusTreeReply) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, GetMenusTreeReplyValidationError{
+					errors = append(errors, QueryMenusTreeReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1838,7 +1838,7 @@ func (m *GetMenusTreeReply) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return GetMenusTreeReplyValidationError{
+				return QueryMenusTreeReplyValidationError{
 					field:  fmt.Sprintf("List[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1849,19 +1849,19 @@ func (m *GetMenusTreeReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetMenusTreeReplyMultiError(errors)
+		return QueryMenusTreeReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMenusTreeReplyMultiError is an error wrapping multiple validation errors
-// returned by GetMenusTreeReply.ValidateAll() if the designated constraints
-// aren't met.
-type GetMenusTreeReplyMultiError []error
+// QueryMenusTreeReplyMultiError is an error wrapping multiple validation
+// errors returned by QueryMenusTreeReply.ValidateAll() if the designated
+// constraints aren't met.
+type QueryMenusTreeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMenusTreeReplyMultiError) Error() string {
+func (m QueryMenusTreeReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1870,11 +1870,11 @@ func (m GetMenusTreeReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMenusTreeReplyMultiError) AllErrors() []error { return m }
+func (m QueryMenusTreeReplyMultiError) AllErrors() []error { return m }
 
-// GetMenusTreeReplyValidationError is the validation error returned by
-// GetMenusTreeReply.Validate if the designated constraints aren't met.
-type GetMenusTreeReplyValidationError struct {
+// QueryMenusTreeReplyValidationError is the validation error returned by
+// QueryMenusTreeReply.Validate if the designated constraints aren't met.
+type QueryMenusTreeReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1882,24 +1882,24 @@ type GetMenusTreeReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMenusTreeReplyValidationError) Field() string { return e.field }
+func (e QueryMenusTreeReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMenusTreeReplyValidationError) Reason() string { return e.reason }
+func (e QueryMenusTreeReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMenusTreeReplyValidationError) Cause() error { return e.cause }
+func (e QueryMenusTreeReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMenusTreeReplyValidationError) Key() bool { return e.key }
+func (e QueryMenusTreeReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMenusTreeReplyValidationError) ErrorName() string {
-	return "GetMenusTreeReplyValidationError"
+func (e QueryMenusTreeReplyValidationError) ErrorName() string {
+	return "QueryMenusTreeReplyValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetMenusTreeReplyValidationError) Error() string {
+func (e QueryMenusTreeReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1911,14 +1911,14 @@ func (e GetMenusTreeReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMenusTreeReply.%s: %s%s",
+		"invalid %sQueryMenusTreeReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMenusTreeReplyValidationError{}
+var _ error = QueryMenusTreeReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1926,4 +1926,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMenusTreeReplyValidationError{}
+} = QueryMenusTreeReplyValidationError{}

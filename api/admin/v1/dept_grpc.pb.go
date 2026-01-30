@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion8
 
 const (
 	Dept_ListDept_FullMethodName           = "/api.admin.v1.Dept/ListDept"
-	Dept_GetDeptTree_FullMethodName        = "/api.admin.v1.Dept/GetDeptTree"
+	Dept_QueryDeptTree_FullMethodName      = "/api.admin.v1.Dept/QueryDeptTree"
 	Dept_CreateDept_FullMethodName         = "/api.admin.v1.Dept/CreateDept"
 	Dept_UpdateDept_FullMethodName         = "/api.admin.v1.Dept/UpdateDept"
 	Dept_DeleteDept_FullMethodName         = "/api.admin.v1.Dept/DeleteDept"
@@ -36,7 +36,7 @@ type DeptClient interface {
 	// 部门列表
 	ListDept(ctx context.Context, in *ListDeptRequest, opts ...grpc.CallOption) (*ListDeptReply, error)
 	// 获取部门关系结构
-	GetDeptTree(ctx context.Context, in *GetDeptTreeRequest, opts ...grpc.CallOption) (*GetDeptTreeReply, error)
+	QueryDeptTree(ctx context.Context, in *QueryDeptTreeRequest, opts ...grpc.CallOption) (*QueryDeptTreeReply, error)
 	// 创建部门
 	CreateDept(ctx context.Context, in *CreateDeptRequest, opts ...grpc.CallOption) (*CreateDeptReply, error)
 	// 更新部门
@@ -65,10 +65,10 @@ func (c *deptClient) ListDept(ctx context.Context, in *ListDeptRequest, opts ...
 	return out, nil
 }
 
-func (c *deptClient) GetDeptTree(ctx context.Context, in *GetDeptTreeRequest, opts ...grpc.CallOption) (*GetDeptTreeReply, error) {
+func (c *deptClient) QueryDeptTree(ctx context.Context, in *QueryDeptTreeRequest, opts ...grpc.CallOption) (*QueryDeptTreeReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetDeptTreeReply)
-	err := c.cc.Invoke(ctx, Dept_GetDeptTree_FullMethodName, in, out, cOpts...)
+	out := new(QueryDeptTreeReply)
+	err := c.cc.Invoke(ctx, Dept_QueryDeptTree_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +124,7 @@ type DeptServer interface {
 	// 部门列表
 	ListDept(context.Context, *ListDeptRequest) (*ListDeptReply, error)
 	// 获取部门关系结构
-	GetDeptTree(context.Context, *GetDeptTreeRequest) (*GetDeptTreeReply, error)
+	QueryDeptTree(context.Context, *QueryDeptTreeRequest) (*QueryDeptTreeReply, error)
 	// 创建部门
 	CreateDept(context.Context, *CreateDeptRequest) (*CreateDeptReply, error)
 	// 更新部门
@@ -143,8 +143,8 @@ type UnimplementedDeptServer struct {
 func (UnimplementedDeptServer) ListDept(context.Context, *ListDeptRequest) (*ListDeptReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDept not implemented")
 }
-func (UnimplementedDeptServer) GetDeptTree(context.Context, *GetDeptTreeRequest) (*GetDeptTreeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDeptTree not implemented")
+func (UnimplementedDeptServer) QueryDeptTree(context.Context, *QueryDeptTreeRequest) (*QueryDeptTreeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryDeptTree not implemented")
 }
 func (UnimplementedDeptServer) CreateDept(context.Context, *CreateDeptRequest) (*CreateDeptReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDept not implemented")
@@ -189,20 +189,20 @@ func _Dept_ListDept_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Dept_GetDeptTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDeptTreeRequest)
+func _Dept_QueryDeptTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDeptTreeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DeptServer).GetDeptTree(ctx, in)
+		return srv.(DeptServer).QueryDeptTree(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Dept_GetDeptTree_FullMethodName,
+		FullMethod: Dept_QueryDeptTree_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DeptServer).GetDeptTree(ctx, req.(*GetDeptTreeRequest))
+		return srv.(DeptServer).QueryDeptTree(ctx, req.(*QueryDeptTreeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -291,8 +291,8 @@ var Dept_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dept_ListDept_Handler,
 		},
 		{
-			MethodName: "GetDeptTree",
-			Handler:    _Dept_GetDeptTree_Handler,
+			MethodName: "QueryDeptTree",
+			Handler:    _Dept_QueryDeptTree_Handler,
 		},
 		{
 			MethodName: "CreateDept",

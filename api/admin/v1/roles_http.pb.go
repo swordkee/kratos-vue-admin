@@ -23,7 +23,7 @@ const OperationRolesChangeRoleStatus = "/api.admin.v1.Roles/ChangeRoleStatus"
 const OperationRolesCreateRoles = "/api.admin.v1.Roles/CreateRoles"
 const OperationRolesDataScope = "/api.admin.v1.Roles/DataScope"
 const OperationRolesDeleteRoles = "/api.admin.v1.Roles/DeleteRoles"
-const OperationRolesGetRoles = "/api.admin.v1.Roles/GetRoles"
+const OperationRolesFindRoles = "/api.admin.v1.Roles/FindRoles"
 const OperationRolesListRoles = "/api.admin.v1.Roles/ListRoles"
 const OperationRolesUpdateRoles = "/api.admin.v1.Roles/UpdateRoles"
 
@@ -36,8 +36,8 @@ type RolesHTTPServer interface {
 	DataScope(context.Context, *DataScopeRequest) (*DataScopeReply, error)
 	// DeleteRoles 删除角色
 	DeleteRoles(context.Context, *DeleteRolesRequest) (*DeleteRolesReply, error)
-	// GetRoles 获取角色
-	GetRoles(context.Context, *GetRolesRequest) (*GetRolesReply, error)
+	// FindRoles 获取角色
+	FindRoles(context.Context, *FindRolesRequest) (*FindRolesReply, error)
 	// ListRoles 角色列表
 	ListRoles(context.Context, *ListRolesRequest) (*ListRolesReply, error)
 	// UpdateRoles 更新角色
@@ -52,7 +52,7 @@ func RegisterRolesHTTPServer(s *http.Server, srv RolesHTTPServer) {
 	r.PUT("/system/role/changeStatus", _Roles_ChangeRoleStatus0_HTTP_Handler(srv))
 	r.PUT("/system/role/dataScope", _Roles_DataScope0_HTTP_Handler(srv))
 	r.DELETE("/system/role/{id}", _Roles_DeleteRoles0_HTTP_Handler(srv))
-	r.GET("/system/role/{id}", _Roles_GetRoles0_HTTP_Handler(srv))
+	r.GET("/system/role/{id}", _Roles_FindRoles0_HTTP_Handler(srv))
 }
 
 func _Roles_CreateRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) error {
@@ -184,24 +184,24 @@ func _Roles_DeleteRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context
 	}
 }
 
-func _Roles_GetRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) error {
+func _Roles_FindRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetRolesRequest
+		var in FindRolesRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRolesGetRoles)
+		http.SetOperation(ctx, OperationRolesFindRoles)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetRoles(ctx, req.(*GetRolesRequest))
+			return srv.FindRoles(ctx, req.(*FindRolesRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetRolesReply)
+		reply := out.(*FindRolesReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -215,8 +215,8 @@ type RolesHTTPClient interface {
 	DataScope(ctx context.Context, req *DataScopeRequest, opts ...http.CallOption) (rsp *DataScopeReply, err error)
 	// DeleteRoles 删除角色
 	DeleteRoles(ctx context.Context, req *DeleteRolesRequest, opts ...http.CallOption) (rsp *DeleteRolesReply, err error)
-	// GetRoles 获取角色
-	GetRoles(ctx context.Context, req *GetRolesRequest, opts ...http.CallOption) (rsp *GetRolesReply, err error)
+	// FindRoles 获取角色
+	FindRoles(ctx context.Context, req *FindRolesRequest, opts ...http.CallOption) (rsp *FindRolesReply, err error)
 	// ListRoles 角色列表
 	ListRoles(ctx context.Context, req *ListRolesRequest, opts ...http.CallOption) (rsp *ListRolesReply, err error)
 	// UpdateRoles 更新角色
@@ -287,12 +287,12 @@ func (c *RolesHTTPClientImpl) DeleteRoles(ctx context.Context, in *DeleteRolesRe
 	return &out, nil
 }
 
-// GetRoles 获取角色
-func (c *RolesHTTPClientImpl) GetRoles(ctx context.Context, in *GetRolesRequest, opts ...http.CallOption) (*GetRolesReply, error) {
-	var out GetRolesReply
+// FindRoles 获取角色
+func (c *RolesHTTPClientImpl) FindRoles(ctx context.Context, in *FindRolesRequest, opts ...http.CallOption) (*FindRolesReply, error) {
+	var out FindRolesReply
 	pattern := "/system/role/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationRolesGetRoles))
+	opts = append(opts, http.Operation(OperationRolesFindRoles))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

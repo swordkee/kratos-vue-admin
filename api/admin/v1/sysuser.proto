@@ -183,7 +183,7 @@ message ListSysuserReply {
 }
 
 message FindCaptchaRequest{}
-message GetCaptchaReply{
+message FindCaptchaReply{
   string base64Captcha = 1;
   string captchaId = 2;
   string content = 3;
@@ -266,22 +266,22 @@ message UpdatePasswordRequest{
 };
 message UpdatePasswordReply{};
 
-message GetPostInitRequest{};
-message GetPostInitReply{
+message FindPostInitRequest{};
+message FindPostInitReply{
   repeated RoleData roles = 1;
   repeated PostData posts = 2;
 };
 
-message GetUserRolePostRequest{};
-message GetUserRolePostReply{
+message FindUserRolePostRequest{};
+message FindUserRolePostReply{
   repeated RoleData roles = 1;
   repeated PostData posts = 2;
 };
 
-message GetUserGoogleSecretRequest {
+message FindUserGoogleSecretRequest {
 }
 
-message GetUserGoogleSecretReply {
+message FindUserGoogleSecretReply {
   string secret = 1;
   string qrcode = 2;
 }

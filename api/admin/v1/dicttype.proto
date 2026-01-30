@@ -76,10 +76,9 @@ message DeleteDictTypeReply {
 	int64 dictId = 1;
 }
 
-message GetDictTypeRequest {
-	int64 dictId = 1;
-}
-message GetDictTypeReply {
+message FindDictTypeRequest {
+  int64 dictId = 1;
+}message FindDictTypeReply {
 	int64 dictId = 1;
 }
 

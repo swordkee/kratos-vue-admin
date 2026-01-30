@@ -22,27 +22,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type GetApiRequest struct {
+type FindApiRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetApiRequest) Reset() {
-	*x = GetApiRequest{}
+func (x *FindApiRequest) Reset() {
+	*x = FindApiRequest{}
 	mi := &file_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetApiRequest) String() string {
+func (x *FindApiRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetApiRequest) ProtoMessage() {}
+func (*FindApiRequest) ProtoMessage() {}
 
-func (x *GetApiRequest) ProtoReflect() protoreflect.Message {
+func (x *FindApiRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,39 +54,39 @@ func (x *GetApiRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetApiRequest.ProtoReflect.Descriptor instead.
-func (*GetApiRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindApiRequest.ProtoReflect.Descriptor instead.
+func (*FindApiRequest) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetApiRequest) GetId() int64 {
+func (x *FindApiRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetApiReply struct {
+type FindApiReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Api           *ApiData               `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetApiReply) Reset() {
-	*x = GetApiReply{}
+func (x *FindApiReply) Reset() {
+	*x = FindApiReply{}
 	mi := &file_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetApiReply) String() string {
+func (x *FindApiReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetApiReply) ProtoMessage() {}
+func (*FindApiReply) ProtoMessage() {}
 
-func (x *GetApiReply) ProtoReflect() protoreflect.Message {
+func (x *FindApiReply) ProtoReflect() protoreflect.Message {
 	mi := &file_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -98,12 +98,12 @@ func (x *GetApiReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetApiReply.ProtoReflect.Descriptor instead.
-func (*GetApiReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindApiReply.ProtoReflect.Descriptor instead.
+func (*FindApiReply) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetApiReply) GetApi() *ApiData {
+func (x *FindApiReply) GetApi() *ApiData {
 	if x != nil {
 		return x.Api
 	}
@@ -606,27 +606,27 @@ func (*DeleteApiReply) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{11}
 }
 
-type GetPolicyPathByRoleKeyRequest struct {
+type QueryPolicyPathByRoleKeyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RoleKey       string                 `protobuf:"bytes,1,opt,name=roleKey,proto3" json:"roleKey,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPolicyPathByRoleKeyRequest) Reset() {
-	*x = GetPolicyPathByRoleKeyRequest{}
+func (x *QueryPolicyPathByRoleKeyRequest) Reset() {
+	*x = QueryPolicyPathByRoleKeyRequest{}
 	mi := &file_api_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPolicyPathByRoleKeyRequest) String() string {
+func (x *QueryPolicyPathByRoleKeyRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPolicyPathByRoleKeyRequest) ProtoMessage() {}
+func (*QueryPolicyPathByRoleKeyRequest) ProtoMessage() {}
 
-func (x *GetPolicyPathByRoleKeyRequest) ProtoReflect() protoreflect.Message {
+func (x *QueryPolicyPathByRoleKeyRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -638,39 +638,39 @@ func (x *GetPolicyPathByRoleKeyRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPolicyPathByRoleKeyRequest.ProtoReflect.Descriptor instead.
-func (*GetPolicyPathByRoleKeyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPolicyPathByRoleKeyRequest.ProtoReflect.Descriptor instead.
+func (*QueryPolicyPathByRoleKeyRequest) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *GetPolicyPathByRoleKeyRequest) GetRoleKey() string {
+func (x *QueryPolicyPathByRoleKeyRequest) GetRoleKey() string {
 	if x != nil {
 		return x.RoleKey
 	}
 	return ""
 }
 
-type GetPolicyPathByRoleKeyReply struct {
+type QueryPolicyPathByRoleKeyReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Apis          []*ApiBase             `protobuf:"bytes,1,rep,name=apis,proto3" json:"apis,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPolicyPathByRoleKeyReply) Reset() {
-	*x = GetPolicyPathByRoleKeyReply{}
+func (x *QueryPolicyPathByRoleKeyReply) Reset() {
+	*x = QueryPolicyPathByRoleKeyReply{}
 	mi := &file_api_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPolicyPathByRoleKeyReply) String() string {
+func (x *QueryPolicyPathByRoleKeyReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPolicyPathByRoleKeyReply) ProtoMessage() {}
+func (*QueryPolicyPathByRoleKeyReply) ProtoMessage() {}
 
-func (x *GetPolicyPathByRoleKeyReply) ProtoReflect() protoreflect.Message {
+func (x *QueryPolicyPathByRoleKeyReply) ProtoReflect() protoreflect.Message {
 	mi := &file_api_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -682,12 +682,12 @@ func (x *GetPolicyPathByRoleKeyReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPolicyPathByRoleKeyReply.ProtoReflect.Descriptor instead.
-func (*GetPolicyPathByRoleKeyReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPolicyPathByRoleKeyReply.ProtoReflect.Descriptor instead.
+func (*QueryPolicyPathByRoleKeyReply) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *GetPolicyPathByRoleKeyReply) GetApis() []*ApiBase {
+func (x *QueryPolicyPathByRoleKeyReply) GetApis() []*ApiBase {
 	if x != nil {
 		return x.Apis
 	}
@@ -699,10 +699,10 @@ var File_api_proto protoreflect.FileDescriptor
 const file_api_proto_rawDesc = "" +
 	"\n" +
 	"\tapi.proto\x12\fapi.admin.v1\x1a\x1cgoogle/api/annotations.proto\x1a\n" +
-	"base.proto\"\x1f\n" +
-	"\rGetApiRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"6\n" +
-	"\vGetApiReply\x12'\n" +
+	"base.proto\" \n" +
+	"\x0eFindApiRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"7\n" +
+	"\fFindApiReply\x12'\n" +
 	"\x03api\x18\x01 \x01(\v2\x15.api.admin.v1.ApiDataR\x03api\"F\n" +
 	"\x0eListApiRequest\x12\x18\n" +
 	"\apageNum\x18\x01 \x01(\x05R\apageNum\x12\x1a\n" +
@@ -730,18 +730,18 @@ const file_api_proto_rawDesc = "" +
 	"\x0eUpdateApiReply\"\"\n" +
 	"\x10DeleteApiRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
-	"\x0eDeleteApiReply\"9\n" +
-	"\x1dGetPolicyPathByRoleKeyRequest\x12\x18\n" +
-	"\aroleKey\x18\x01 \x01(\tR\aroleKey\"H\n" +
-	"\x1bGetPolicyPathByRoleKeyReply\x12)\n" +
-	"\x04apis\x18\x01 \x03(\v2\x15.api.admin.v1.ApiBaseR\x04apis2\xe4\x05\n" +
+	"\x0eDeleteApiReply\";\n" +
+	"\x1fQueryPolicyPathByRoleKeyRequest\x12\x18\n" +
+	"\aroleKey\x18\x01 \x01(\tR\aroleKey\"J\n" +
+	"\x1dQueryPolicyPathByRoleKeyReply\x12)\n" +
+	"\x04apis\x18\x01 \x03(\v2\x15.api.admin.v1.ApiBaseR\x04apis2\xed\x05\n" +
 	"\x03Api\x12]\n" +
 	"\aListApi\x12\x1c.api.admin.v1.ListApiRequest\x1a\x1a.api.admin.v1.ListApiReply\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/system/api/list\x12Y\n" +
 	"\x06AllApi\x12\x1b.api.admin.v1.AllApiRequest\x1a\x19.api.admin.v1.AllApiReply\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/system/api/all\x12a\n" +
 	"\tCreateApi\x12\x1e.api.admin.v1.CreateApiRequest\x1a\x1c.api.admin.v1.CreateApiReply\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/system/api\x12a\n" +
-	"\tUpdateApi\x12\x1e.api.admin.v1.UpdateApiRequest\x1a\x1c.api.admin.v1.UpdateApiReply\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\x1a\v/system/api\x12\x9b\x01\n" +
-	"\x16GetPolicyPathByRoleKey\x12+.api.admin.v1.GetPolicyPathByRoleKeyRequest\x1a).api.admin.v1.GetPolicyPathByRoleKeyReply\")\x82\xd3\xe4\x93\x02#\x12!/system/api/getPolicyPathByRoleId\x12Z\n" +
-	"\x06GetApi\x12\x1b.api.admin.v1.GetApiRequest\x1a\x19.api.admin.v1.GetApiReply\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/system/api/{id}\x12c\n" +
+	"\tUpdateApi\x12\x1e.api.admin.v1.UpdateApiRequest\x1a\x1c.api.admin.v1.UpdateApiReply\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\x1a\v/system/api\x12\xa1\x01\n" +
+	"\x18QueryPolicyPathByRoleKey\x12-.api.admin.v1.QueryPolicyPathByRoleKeyRequest\x1a+.api.admin.v1.QueryPolicyPathByRoleKeyReply\")\x82\xd3\xe4\x93\x02#\x12!/system/api/getPolicyPathByRoleId\x12]\n" +
+	"\aFindApi\x12\x1c.api.admin.v1.FindApiRequest\x1a\x1a.api.admin.v1.FindApiReply\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/system/api/{id}\x12c\n" +
 	"\tDeleteApi\x12\x1e.api.admin.v1.DeleteApiRequest\x1a\x1c.api.admin.v1.DeleteApiReply\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/system/api/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
@@ -758,41 +758,41 @@ func file_api_proto_rawDescGZIP() []byte {
 
 var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_api_proto_goTypes = []any{
-	(*GetApiRequest)(nil),                 // 0: api.admin.v1.GetApiRequest
-	(*GetApiReply)(nil),                   // 1: api.admin.v1.GetApiReply
-	(*ListApiRequest)(nil),                // 2: api.admin.v1.ListApiRequest
-	(*ListApiReply)(nil),                  // 3: api.admin.v1.ListApiReply
-	(*AllApiRequest)(nil),                 // 4: api.admin.v1.AllApiRequest
-	(*AllApiReply)(nil),                   // 5: api.admin.v1.AllApiReply
-	(*CreateApiRequest)(nil),              // 6: api.admin.v1.CreateApiRequest
-	(*CreateApiReply)(nil),                // 7: api.admin.v1.CreateApiReply
-	(*UpdateApiRequest)(nil),              // 8: api.admin.v1.UpdateApiRequest
-	(*UpdateApiReply)(nil),                // 9: api.admin.v1.UpdateApiReply
-	(*DeleteApiRequest)(nil),              // 10: api.admin.v1.DeleteApiRequest
-	(*DeleteApiReply)(nil),                // 11: api.admin.v1.DeleteApiReply
-	(*GetPolicyPathByRoleKeyRequest)(nil), // 12: api.admin.v1.GetPolicyPathByRoleKeyRequest
-	(*GetPolicyPathByRoleKeyReply)(nil),   // 13: api.admin.v1.GetPolicyPathByRoleKeyReply
-	(*ApiData)(nil),                       // 14: api.admin.v1.ApiData
-	(*ApiBase)(nil),                       // 15: api.admin.v1.ApiBase
+	(*FindApiRequest)(nil),                  // 0: api.admin.v1.FindApiRequest
+	(*FindApiReply)(nil),                    // 1: api.admin.v1.FindApiReply
+	(*ListApiRequest)(nil),                  // 2: api.admin.v1.ListApiRequest
+	(*ListApiReply)(nil),                    // 3: api.admin.v1.ListApiReply
+	(*AllApiRequest)(nil),                   // 4: api.admin.v1.AllApiRequest
+	(*AllApiReply)(nil),                     // 5: api.admin.v1.AllApiReply
+	(*CreateApiRequest)(nil),                // 6: api.admin.v1.CreateApiRequest
+	(*CreateApiReply)(nil),                  // 7: api.admin.v1.CreateApiReply
+	(*UpdateApiRequest)(nil),                // 8: api.admin.v1.UpdateApiRequest
+	(*UpdateApiReply)(nil),                  // 9: api.admin.v1.UpdateApiReply
+	(*DeleteApiRequest)(nil),                // 10: api.admin.v1.DeleteApiRequest
+	(*DeleteApiReply)(nil),                  // 11: api.admin.v1.DeleteApiReply
+	(*QueryPolicyPathByRoleKeyRequest)(nil), // 12: api.admin.v1.QueryPolicyPathByRoleKeyRequest
+	(*QueryPolicyPathByRoleKeyReply)(nil),   // 13: api.admin.v1.QueryPolicyPathByRoleKeyReply
+	(*ApiData)(nil),                         // 14: api.admin.v1.ApiData
+	(*ApiBase)(nil),                         // 15: api.admin.v1.ApiBase
 }
 var file_api_proto_depIdxs = []int32{
-	14, // 0: api.admin.v1.GetApiReply.api:type_name -> api.admin.v1.ApiData
+	14, // 0: api.admin.v1.FindApiReply.api:type_name -> api.admin.v1.ApiData
 	14, // 1: api.admin.v1.ListApiReply.data:type_name -> api.admin.v1.ApiData
 	14, // 2: api.admin.v1.AllApiReply.data:type_name -> api.admin.v1.ApiData
-	15, // 3: api.admin.v1.GetPolicyPathByRoleKeyReply.apis:type_name -> api.admin.v1.ApiBase
+	15, // 3: api.admin.v1.QueryPolicyPathByRoleKeyReply.apis:type_name -> api.admin.v1.ApiBase
 	2,  // 4: api.admin.v1.Api.ListApi:input_type -> api.admin.v1.ListApiRequest
 	4,  // 5: api.admin.v1.Api.AllApi:input_type -> api.admin.v1.AllApiRequest
 	6,  // 6: api.admin.v1.Api.CreateApi:input_type -> api.admin.v1.CreateApiRequest
 	8,  // 7: api.admin.v1.Api.UpdateApi:input_type -> api.admin.v1.UpdateApiRequest
-	12, // 8: api.admin.v1.Api.GetPolicyPathByRoleKey:input_type -> api.admin.v1.GetPolicyPathByRoleKeyRequest
-	0,  // 9: api.admin.v1.Api.GetApi:input_type -> api.admin.v1.GetApiRequest
+	12, // 8: api.admin.v1.Api.QueryPolicyPathByRoleKey:input_type -> api.admin.v1.QueryPolicyPathByRoleKeyRequest
+	0,  // 9: api.admin.v1.Api.FindApi:input_type -> api.admin.v1.FindApiRequest
 	10, // 10: api.admin.v1.Api.DeleteApi:input_type -> api.admin.v1.DeleteApiRequest
 	3,  // 11: api.admin.v1.Api.ListApi:output_type -> api.admin.v1.ListApiReply
 	5,  // 12: api.admin.v1.Api.AllApi:output_type -> api.admin.v1.AllApiReply
 	7,  // 13: api.admin.v1.Api.CreateApi:output_type -> api.admin.v1.CreateApiReply
 	9,  // 14: api.admin.v1.Api.UpdateApi:output_type -> api.admin.v1.UpdateApiReply
-	13, // 15: api.admin.v1.Api.GetPolicyPathByRoleKey:output_type -> api.admin.v1.GetPolicyPathByRoleKeyReply
-	1,  // 16: api.admin.v1.Api.GetApi:output_type -> api.admin.v1.GetApiReply
+	13, // 15: api.admin.v1.Api.QueryPolicyPathByRoleKey:output_type -> api.admin.v1.QueryPolicyPathByRoleKeyReply
+	1,  // 16: api.admin.v1.Api.FindApi:output_type -> api.admin.v1.FindApiReply
 	11, // 17: api.admin.v1.Api.DeleteApi:output_type -> api.admin.v1.DeleteApiReply
 	11, // [11:18] is the sub-list for method output_type
 	4,  // [4:11] is the sub-list for method input_type

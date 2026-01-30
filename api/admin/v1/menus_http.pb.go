@@ -21,9 +21,9 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationMenusCreateMenus = "/api.admin.v1.Menus/CreateMenus"
 const OperationMenusDeleteMenus = "/api.admin.v1.Menus/DeleteMenus"
-const OperationMenusGetMenus = "/api.admin.v1.Menus/GetMenus"
-const OperationMenusGetMenusTree = "/api.admin.v1.Menus/GetMenusTree"
+const OperationMenusFindMenus = "/api.admin.v1.Menus/FindMenus"
 const OperationMenusListMenus = "/api.admin.v1.Menus/ListMenus"
+const OperationMenusQueryMenusTree = "/api.admin.v1.Menus/QueryMenusTree"
 const OperationMenusRoleMenuTreeSelect = "/api.admin.v1.Menus/RoleMenuTreeSelect"
 const OperationMenusUpdateMenus = "/api.admin.v1.Menus/UpdateMenus"
 
@@ -32,12 +32,12 @@ type MenusHTTPServer interface {
 	CreateMenus(context.Context, *CreateMenusRequest) (*CreateMenusReply, error)
 	// DeleteMenus 删除菜单
 	DeleteMenus(context.Context, *DeleteMenusRequest) (*DeleteMenusReply, error)
-	// GetMenus 获取菜单
-	GetMenus(context.Context, *GetMenusRequest) (*GetMenusReply, error)
-	// GetMenusTree 获取菜单关系结构
-	GetMenusTree(context.Context, *GetMenusTreeRequest) (*GetMenusTreeReply, error)
+	// FindMenus 获取菜单
+	FindMenus(context.Context, *FindMenusRequest) (*FindMenusReply, error)
 	// ListMenus 菜单列表
 	ListMenus(context.Context, *ListMenusRequest) (*ListMenusReply, error)
+	// QueryMenusTree 获取菜单关系结构
+	QueryMenusTree(context.Context, *QueryMenusTreeRequest) (*QueryMenusTreeReply, error)
 	// RoleMenuTreeSelect 获取角色菜单树
 	RoleMenuTreeSelect(context.Context, *RoleMenuTreeSelectRequest) (*RoleMenuTreeSelectReply, error)
 	// UpdateMenus 更新菜单
@@ -48,10 +48,10 @@ func RegisterMenusHTTPServer(s *http.Server, srv MenusHTTPServer) {
 	r := s.Route("/")
 	r.POST("/system/menu", _Menus_CreateMenus0_HTTP_Handler(srv))
 	r.GET("/system/menu/list", _Menus_ListMenus0_HTTP_Handler(srv))
-	r.GET("/system/menu/menuTreeSelect", _Menus_GetMenusTree0_HTTP_Handler(srv))
+	r.GET("/system/menu/menuTreeSelect", _Menus_QueryMenusTree0_HTTP_Handler(srv))
 	r.PUT("/system/menu", _Menus_UpdateMenus0_HTTP_Handler(srv))
 	r.DELETE("/system/menu/{id}", _Menus_DeleteMenus0_HTTP_Handler(srv))
-	r.GET("/system/menu/{id}", _Menus_GetMenus0_HTTP_Handler(srv))
+	r.GET("/system/menu/{id}", _Menus_FindMenus0_HTTP_Handler(srv))
 	r.GET("/system/menu/roleMenuTreeSelect/{roleId}", _Menus_RoleMenuTreeSelect0_HTTP_Handler(srv))
 }
 
@@ -96,21 +96,21 @@ func _Menus_ListMenus0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context) 
 	}
 }
 
-func _Menus_GetMenusTree0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context) error {
+func _Menus_QueryMenusTree0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetMenusTreeRequest
+		var in QueryMenusTreeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationMenusGetMenusTree)
+		http.SetOperation(ctx, OperationMenusQueryMenusTree)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetMenusTree(ctx, req.(*GetMenusTreeRequest))
+			return srv.QueryMenusTree(ctx, req.(*QueryMenusTreeRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetMenusTreeReply)
+		reply := out.(*QueryMenusTreeReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -159,24 +159,24 @@ func _Menus_DeleteMenus0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context
 	}
 }
 
-func _Menus_GetMenus0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context) error {
+func _Menus_FindMenus0_HTTP_Handler(srv MenusHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetMenusRequest
+		var in FindMenusRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationMenusGetMenus)
+		http.SetOperation(ctx, OperationMenusFindMenus)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetMenus(ctx, req.(*GetMenusRequest))
+			return srv.FindMenus(ctx, req.(*FindMenusRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetMenusReply)
+		reply := out.(*FindMenusReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -208,12 +208,12 @@ type MenusHTTPClient interface {
 	CreateMenus(ctx context.Context, req *CreateMenusRequest, opts ...http.CallOption) (rsp *CreateMenusReply, err error)
 	// DeleteMenus 删除菜单
 	DeleteMenus(ctx context.Context, req *DeleteMenusRequest, opts ...http.CallOption) (rsp *DeleteMenusReply, err error)
-	// GetMenus 获取菜单
-	GetMenus(ctx context.Context, req *GetMenusRequest, opts ...http.CallOption) (rsp *GetMenusReply, err error)
-	// GetMenusTree 获取菜单关系结构
-	GetMenusTree(ctx context.Context, req *GetMenusTreeRequest, opts ...http.CallOption) (rsp *GetMenusTreeReply, err error)
+	// FindMenus 获取菜单
+	FindMenus(ctx context.Context, req *FindMenusRequest, opts ...http.CallOption) (rsp *FindMenusReply, err error)
 	// ListMenus 菜单列表
 	ListMenus(ctx context.Context, req *ListMenusRequest, opts ...http.CallOption) (rsp *ListMenusReply, err error)
+	// QueryMenusTree 获取菜单关系结构
+	QueryMenusTree(ctx context.Context, req *QueryMenusTreeRequest, opts ...http.CallOption) (rsp *QueryMenusTreeReply, err error)
 	// RoleMenuTreeSelect 获取角色菜单树
 	RoleMenuTreeSelect(ctx context.Context, req *RoleMenuTreeSelectRequest, opts ...http.CallOption) (rsp *RoleMenuTreeSelectReply, err error)
 	// UpdateMenus 更新菜单
@@ -256,26 +256,12 @@ func (c *MenusHTTPClientImpl) DeleteMenus(ctx context.Context, in *DeleteMenusRe
 	return &out, nil
 }
 
-// GetMenus 获取菜单
-func (c *MenusHTTPClientImpl) GetMenus(ctx context.Context, in *GetMenusRequest, opts ...http.CallOption) (*GetMenusReply, error) {
-	var out GetMenusReply
+// FindMenus 获取菜单
+func (c *MenusHTTPClientImpl) FindMenus(ctx context.Context, in *FindMenusRequest, opts ...http.CallOption) (*FindMenusReply, error) {
+	var out FindMenusReply
 	pattern := "/system/menu/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationMenusGetMenus))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-// GetMenusTree 获取菜单关系结构
-func (c *MenusHTTPClientImpl) GetMenusTree(ctx context.Context, in *GetMenusTreeRequest, opts ...http.CallOption) (*GetMenusTreeReply, error) {
-	var out GetMenusTreeReply
-	pattern := "/system/menu/menuTreeSelect"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationMenusGetMenusTree))
+	opts = append(opts, http.Operation(OperationMenusFindMenus))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -290,6 +276,20 @@ func (c *MenusHTTPClientImpl) ListMenus(ctx context.Context, in *ListMenusReques
 	pattern := "/system/menu/list"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationMenusListMenus))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// QueryMenusTree 获取菜单关系结构
+func (c *MenusHTTPClientImpl) QueryMenusTree(ctx context.Context, in *QueryMenusTreeRequest, opts ...http.CallOption) (*QueryMenusTreeReply, error) {
+	var out QueryMenusTreeReply
+	pattern := "/system/menu/menuTreeSelect"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationMenusQueryMenusTree))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

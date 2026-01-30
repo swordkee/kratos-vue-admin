@@ -23,23 +23,23 @@ const (
 	DictData_CreateDictData_FullMethodName = "/api.admin.v1.DictData/CreateDictData"
 	DictData_UpdateDictData_FullMethodName = "/api.admin.v1.DictData/UpdateDictData"
 	DictData_DeleteDictData_FullMethodName = "/api.admin.v1.DictData/DeleteDictData"
-	DictData_GetDictData_FullMethodName    = "/api.admin.v1.DictData/GetDictData"
+	DictData_FindDictData_FullMethodName   = "/api.admin.v1.DictData/FindDictData"
 )
 
 // DictDataClient is the client API for DictData service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DictDataClient interface {
-	//列表信息
+	// 列表信息
 	ListDictData(ctx context.Context, in *ListDictDataRequest, opts ...grpc.CallOption) (*ListDictDataReply, error)
-	//创建
+	// 创建
 	CreateDictData(ctx context.Context, in *CreateDictDataRequest, opts ...grpc.CallOption) (*CreateDictDataReply, error)
-	//更新
+	// 更新
 	UpdateDictData(ctx context.Context, in *UpdateDictDataRequest, opts ...grpc.CallOption) (*UpdateDictDataReply, error)
-	//删除
+	// 删除
 	DeleteDictData(ctx context.Context, in *DeleteDictDataRequest, opts ...grpc.CallOption) (*DeleteDictDataReply, error)
-	//获取信息
-	GetDictData(ctx context.Context, in *GetDictDataRequest, opts ...grpc.CallOption) (*GetDictDataReply, error)
+	// 获取信息
+	FindDictData(ctx context.Context, in *FindDictDataRequest, opts ...grpc.CallOption) (*FindDictDataReply, error)
 }
 
 type dictDataClient struct {
@@ -90,10 +90,10 @@ func (c *dictDataClient) DeleteDictData(ctx context.Context, in *DeleteDictDataR
 	return out, nil
 }
 
-func (c *dictDataClient) GetDictData(ctx context.Context, in *GetDictDataRequest, opts ...grpc.CallOption) (*GetDictDataReply, error) {
+func (c *dictDataClient) FindDictData(ctx context.Context, in *FindDictDataRequest, opts ...grpc.CallOption) (*FindDictDataReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetDictDataReply)
-	err := c.cc.Invoke(ctx, DictData_GetDictData_FullMethodName, in, out, cOpts...)
+	out := new(FindDictDataReply)
+	err := c.cc.Invoke(ctx, DictData_FindDictData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,16 +104,16 @@ func (c *dictDataClient) GetDictData(ctx context.Context, in *GetDictDataRequest
 // All implementations must embed UnimplementedDictDataServer
 // for forward compatibility
 type DictDataServer interface {
-	//列表信息
+	// 列表信息
 	ListDictData(context.Context, *ListDictDataRequest) (*ListDictDataReply, error)
-	//创建
+	// 创建
 	CreateDictData(context.Context, *CreateDictDataRequest) (*CreateDictDataReply, error)
-	//更新
+	// 更新
 	UpdateDictData(context.Context, *UpdateDictDataRequest) (*UpdateDictDataReply, error)
-	//删除
+	// 删除
 	DeleteDictData(context.Context, *DeleteDictDataRequest) (*DeleteDictDataReply, error)
-	//获取信息
-	GetDictData(context.Context, *GetDictDataRequest) (*GetDictDataReply, error)
+	// 获取信息
+	FindDictData(context.Context, *FindDictDataRequest) (*FindDictDataReply, error)
 	mustEmbedUnimplementedDictDataServer()
 }
 
@@ -133,8 +133,8 @@ func (UnimplementedDictDataServer) UpdateDictData(context.Context, *UpdateDictDa
 func (UnimplementedDictDataServer) DeleteDictData(context.Context, *DeleteDictDataRequest) (*DeleteDictDataReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDictData not implemented")
 }
-func (UnimplementedDictDataServer) GetDictData(context.Context, *GetDictDataRequest) (*GetDictDataReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDictData not implemented")
+func (UnimplementedDictDataServer) FindDictData(context.Context, *FindDictDataRequest) (*FindDictDataReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindDictData not implemented")
 }
 func (UnimplementedDictDataServer) mustEmbedUnimplementedDictDataServer() {}
 
@@ -221,20 +221,20 @@ func _DictData_DeleteDictData_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DictData_GetDictData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDictDataRequest)
+func _DictData_FindDictData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindDictDataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DictDataServer).GetDictData(ctx, in)
+		return srv.(DictDataServer).FindDictData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DictData_GetDictData_FullMethodName,
+		FullMethod: DictData_FindDictData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DictDataServer).GetDictData(ctx, req.(*GetDictDataRequest))
+		return srv.(DictDataServer).FindDictData(ctx, req.(*FindDictDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -263,8 +263,8 @@ var DictData_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DictData_DeleteDictData_Handler,
 		},
 		{
-			MethodName: "GetDictData",
-			Handler:    _DictData_GetDictData_Handler,
+			MethodName: "FindDictData",
+			Handler:    _DictData_FindDictData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

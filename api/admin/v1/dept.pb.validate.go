@@ -652,22 +652,22 @@ var _ interface {
 	ErrorName() string
 } = ListDeptReplyValidationError{}
 
-// Validate checks the field values on GetDeptTreeRequest with the rules
+// Validate checks the field values on QueryDeptTreeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetDeptTreeRequest) Validate() error {
+func (m *QueryDeptTreeRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetDeptTreeRequest with the rules
+// ValidateAll checks the field values on QueryDeptTreeRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetDeptTreeRequestMultiError, or nil if none found.
-func (m *GetDeptTreeRequest) ValidateAll() error {
+// QueryDeptTreeRequestMultiError, or nil if none found.
+func (m *QueryDeptTreeRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetDeptTreeRequest) validate(all bool) error {
+func (m *QueryDeptTreeRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -681,19 +681,19 @@ func (m *GetDeptTreeRequest) validate(all bool) error {
 	// no validation rules for DeptId
 
 	if len(errors) > 0 {
-		return GetDeptTreeRequestMultiError(errors)
+		return QueryDeptTreeRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetDeptTreeRequestMultiError is an error wrapping multiple validation errors
-// returned by GetDeptTreeRequest.ValidateAll() if the designated constraints
-// aren't met.
-type GetDeptTreeRequestMultiError []error
+// QueryDeptTreeRequestMultiError is an error wrapping multiple validation
+// errors returned by QueryDeptTreeRequest.ValidateAll() if the designated
+// constraints aren't met.
+type QueryDeptTreeRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetDeptTreeRequestMultiError) Error() string {
+func (m QueryDeptTreeRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -702,11 +702,11 @@ func (m GetDeptTreeRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetDeptTreeRequestMultiError) AllErrors() []error { return m }
+func (m QueryDeptTreeRequestMultiError) AllErrors() []error { return m }
 
-// GetDeptTreeRequestValidationError is the validation error returned by
-// GetDeptTreeRequest.Validate if the designated constraints aren't met.
-type GetDeptTreeRequestValidationError struct {
+// QueryDeptTreeRequestValidationError is the validation error returned by
+// QueryDeptTreeRequest.Validate if the designated constraints aren't met.
+type QueryDeptTreeRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -714,24 +714,24 @@ type GetDeptTreeRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetDeptTreeRequestValidationError) Field() string { return e.field }
+func (e QueryDeptTreeRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetDeptTreeRequestValidationError) Reason() string { return e.reason }
+func (e QueryDeptTreeRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetDeptTreeRequestValidationError) Cause() error { return e.cause }
+func (e QueryDeptTreeRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetDeptTreeRequestValidationError) Key() bool { return e.key }
+func (e QueryDeptTreeRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetDeptTreeRequestValidationError) ErrorName() string {
-	return "GetDeptTreeRequestValidationError"
+func (e QueryDeptTreeRequestValidationError) ErrorName() string {
+	return "QueryDeptTreeRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetDeptTreeRequestValidationError) Error() string {
+func (e QueryDeptTreeRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -743,14 +743,14 @@ func (e GetDeptTreeRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetDeptTreeRequest.%s: %s%s",
+		"invalid %sQueryDeptTreeRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetDeptTreeRequestValidationError{}
+var _ error = QueryDeptTreeRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -758,24 +758,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetDeptTreeRequestValidationError{}
+} = QueryDeptTreeRequestValidationError{}
 
-// Validate checks the field values on GetDeptTreeReply with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *GetDeptTreeReply) Validate() error {
+// Validate checks the field values on QueryDeptTreeReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *QueryDeptTreeReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetDeptTreeReply with the rules
+// ValidateAll checks the field values on QueryDeptTreeReply with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetDeptTreeReplyMultiError, or nil if none found.
-func (m *GetDeptTreeReply) ValidateAll() error {
+// QueryDeptTreeReplyMultiError, or nil if none found.
+func (m *QueryDeptTreeReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetDeptTreeReply) validate(all bool) error {
+func (m *QueryDeptTreeReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -789,7 +789,7 @@ func (m *GetDeptTreeReply) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetDeptTreeReplyValidationError{
+					errors = append(errors, QueryDeptTreeReplyValidationError{
 						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -797,7 +797,7 @@ func (m *GetDeptTreeReply) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, GetDeptTreeReplyValidationError{
+					errors = append(errors, QueryDeptTreeReplyValidationError{
 						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -806,7 +806,7 @@ func (m *GetDeptTreeReply) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return GetDeptTreeReplyValidationError{
+				return QueryDeptTreeReplyValidationError{
 					field:  fmt.Sprintf("Data[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -817,19 +817,19 @@ func (m *GetDeptTreeReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetDeptTreeReplyMultiError(errors)
+		return QueryDeptTreeReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetDeptTreeReplyMultiError is an error wrapping multiple validation errors
-// returned by GetDeptTreeReply.ValidateAll() if the designated constraints
+// QueryDeptTreeReplyMultiError is an error wrapping multiple validation errors
+// returned by QueryDeptTreeReply.ValidateAll() if the designated constraints
 // aren't met.
-type GetDeptTreeReplyMultiError []error
+type QueryDeptTreeReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetDeptTreeReplyMultiError) Error() string {
+func (m QueryDeptTreeReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -838,11 +838,11 @@ func (m GetDeptTreeReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetDeptTreeReplyMultiError) AllErrors() []error { return m }
+func (m QueryDeptTreeReplyMultiError) AllErrors() []error { return m }
 
-// GetDeptTreeReplyValidationError is the validation error returned by
-// GetDeptTreeReply.Validate if the designated constraints aren't met.
-type GetDeptTreeReplyValidationError struct {
+// QueryDeptTreeReplyValidationError is the validation error returned by
+// QueryDeptTreeReply.Validate if the designated constraints aren't met.
+type QueryDeptTreeReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -850,22 +850,24 @@ type GetDeptTreeReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetDeptTreeReplyValidationError) Field() string { return e.field }
+func (e QueryDeptTreeReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetDeptTreeReplyValidationError) Reason() string { return e.reason }
+func (e QueryDeptTreeReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetDeptTreeReplyValidationError) Cause() error { return e.cause }
+func (e QueryDeptTreeReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetDeptTreeReplyValidationError) Key() bool { return e.key }
+func (e QueryDeptTreeReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetDeptTreeReplyValidationError) ErrorName() string { return "GetDeptTreeReplyValidationError" }
+func (e QueryDeptTreeReplyValidationError) ErrorName() string {
+	return "QueryDeptTreeReplyValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e GetDeptTreeReplyValidationError) Error() string {
+func (e QueryDeptTreeReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -877,14 +879,14 @@ func (e GetDeptTreeReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetDeptTreeReply.%s: %s%s",
+		"invalid %sQueryDeptTreeReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetDeptTreeReplyValidationError{}
+var _ error = QueryDeptTreeReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -892,7 +894,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetDeptTreeReplyValidationError{}
+} = QueryDeptTreeReplyValidationError{}
 
 // Validate checks the field values on CreateDeptRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the

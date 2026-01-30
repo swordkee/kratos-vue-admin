@@ -35,22 +35,22 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on GetApiRequest with the rules defined in
+// Validate checks the field values on FindApiRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *GetApiRequest) Validate() error {
+func (m *FindApiRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetApiRequest with the rules defined
+// ValidateAll checks the field values on FindApiRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in GetApiRequestMultiError, or
-// nil if none found.
-func (m *GetApiRequest) ValidateAll() error {
+// result is a list of violation errors wrapped in FindApiRequestMultiError,
+// or nil if none found.
+func (m *FindApiRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetApiRequest) validate(all bool) error {
+func (m *FindApiRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -60,19 +60,19 @@ func (m *GetApiRequest) validate(all bool) error {
 	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return GetApiRequestMultiError(errors)
+		return FindApiRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetApiRequestMultiError is an error wrapping multiple validation errors
-// returned by GetApiRequest.ValidateAll() if the designated constraints
+// FindApiRequestMultiError is an error wrapping multiple validation errors
+// returned by FindApiRequest.ValidateAll() if the designated constraints
 // aren't met.
-type GetApiRequestMultiError []error
+type FindApiRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetApiRequestMultiError) Error() string {
+func (m FindApiRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -81,11 +81,11 @@ func (m GetApiRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetApiRequestMultiError) AllErrors() []error { return m }
+func (m FindApiRequestMultiError) AllErrors() []error { return m }
 
-// GetApiRequestValidationError is the validation error returned by
-// GetApiRequest.Validate if the designated constraints aren't met.
-type GetApiRequestValidationError struct {
+// FindApiRequestValidationError is the validation error returned by
+// FindApiRequest.Validate if the designated constraints aren't met.
+type FindApiRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -93,22 +93,22 @@ type GetApiRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetApiRequestValidationError) Field() string { return e.field }
+func (e FindApiRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetApiRequestValidationError) Reason() string { return e.reason }
+func (e FindApiRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetApiRequestValidationError) Cause() error { return e.cause }
+func (e FindApiRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetApiRequestValidationError) Key() bool { return e.key }
+func (e FindApiRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetApiRequestValidationError) ErrorName() string { return "GetApiRequestValidationError" }
+func (e FindApiRequestValidationError) ErrorName() string { return "FindApiRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetApiRequestValidationError) Error() string {
+func (e FindApiRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -120,14 +120,14 @@ func (e GetApiRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetApiRequest.%s: %s%s",
+		"invalid %sFindApiRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetApiRequestValidationError{}
+var _ error = FindApiRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -135,24 +135,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetApiRequestValidationError{}
+} = FindApiRequestValidationError{}
 
-// Validate checks the field values on GetApiReply with the rules defined in
+// Validate checks the field values on FindApiReply with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *GetApiReply) Validate() error {
+func (m *FindApiReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetApiReply with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in GetApiReplyMultiError, or
+// ValidateAll checks the field values on FindApiReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FindApiReplyMultiError, or
 // nil if none found.
-func (m *GetApiReply) ValidateAll() error {
+func (m *FindApiReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetApiReply) validate(all bool) error {
+func (m *FindApiReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -163,7 +163,7 @@ func (m *GetApiReply) validate(all bool) error {
 		switch v := interface{}(m.GetApi()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetApiReplyValidationError{
+				errors = append(errors, FindApiReplyValidationError{
 					field:  "Api",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -171,7 +171,7 @@ func (m *GetApiReply) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetApiReplyValidationError{
+				errors = append(errors, FindApiReplyValidationError{
 					field:  "Api",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -180,7 +180,7 @@ func (m *GetApiReply) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetApi()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return GetApiReplyValidationError{
+			return FindApiReplyValidationError{
 				field:  "Api",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -189,18 +189,18 @@ func (m *GetApiReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetApiReplyMultiError(errors)
+		return FindApiReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetApiReplyMultiError is an error wrapping multiple validation errors
-// returned by GetApiReply.ValidateAll() if the designated constraints aren't met.
-type GetApiReplyMultiError []error
+// FindApiReplyMultiError is an error wrapping multiple validation errors
+// returned by FindApiReply.ValidateAll() if the designated constraints aren't met.
+type FindApiReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetApiReplyMultiError) Error() string {
+func (m FindApiReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -209,11 +209,11 @@ func (m GetApiReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetApiReplyMultiError) AllErrors() []error { return m }
+func (m FindApiReplyMultiError) AllErrors() []error { return m }
 
-// GetApiReplyValidationError is the validation error returned by
-// GetApiReply.Validate if the designated constraints aren't met.
-type GetApiReplyValidationError struct {
+// FindApiReplyValidationError is the validation error returned by
+// FindApiReply.Validate if the designated constraints aren't met.
+type FindApiReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -221,22 +221,22 @@ type GetApiReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetApiReplyValidationError) Field() string { return e.field }
+func (e FindApiReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetApiReplyValidationError) Reason() string { return e.reason }
+func (e FindApiReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetApiReplyValidationError) Cause() error { return e.cause }
+func (e FindApiReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetApiReplyValidationError) Key() bool { return e.key }
+func (e FindApiReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetApiReplyValidationError) ErrorName() string { return "GetApiReplyValidationError" }
+func (e FindApiReplyValidationError) ErrorName() string { return "FindApiReplyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetApiReplyValidationError) Error() string {
+func (e FindApiReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -248,14 +248,14 @@ func (e GetApiReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetApiReply.%s: %s%s",
+		"invalid %sFindApiReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetApiReplyValidationError{}
+var _ error = FindApiReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -263,7 +263,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetApiReplyValidationError{}
+} = FindApiReplyValidationError{}
 
 // Validate checks the field values on ListApiRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -1361,22 +1361,22 @@ var _ interface {
 	ErrorName() string
 } = DeleteApiReplyValidationError{}
 
-// Validate checks the field values on GetPolicyPathByRoleKeyRequest with the
+// Validate checks the field values on QueryPolicyPathByRoleKeyRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetPolicyPathByRoleKeyRequest) Validate() error {
+func (m *QueryPolicyPathByRoleKeyRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetPolicyPathByRoleKeyRequest with
+// ValidateAll checks the field values on QueryPolicyPathByRoleKeyRequest with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the result is a list of violation errors wrapped in
-// GetPolicyPathByRoleKeyRequestMultiError, or nil if none found.
-func (m *GetPolicyPathByRoleKeyRequest) ValidateAll() error {
+// QueryPolicyPathByRoleKeyRequestMultiError, or nil if none found.
+func (m *QueryPolicyPathByRoleKeyRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetPolicyPathByRoleKeyRequest) validate(all bool) error {
+func (m *QueryPolicyPathByRoleKeyRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1386,19 +1386,19 @@ func (m *GetPolicyPathByRoleKeyRequest) validate(all bool) error {
 	// no validation rules for RoleKey
 
 	if len(errors) > 0 {
-		return GetPolicyPathByRoleKeyRequestMultiError(errors)
+		return QueryPolicyPathByRoleKeyRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetPolicyPathByRoleKeyRequestMultiError is an error wrapping multiple
-// validation errors returned by GetPolicyPathByRoleKeyRequest.ValidateAll()
+// QueryPolicyPathByRoleKeyRequestMultiError is an error wrapping multiple
+// validation errors returned by QueryPolicyPathByRoleKeyRequest.ValidateAll()
 // if the designated constraints aren't met.
-type GetPolicyPathByRoleKeyRequestMultiError []error
+type QueryPolicyPathByRoleKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetPolicyPathByRoleKeyRequestMultiError) Error() string {
+func (m QueryPolicyPathByRoleKeyRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1407,12 +1407,12 @@ func (m GetPolicyPathByRoleKeyRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetPolicyPathByRoleKeyRequestMultiError) AllErrors() []error { return m }
+func (m QueryPolicyPathByRoleKeyRequestMultiError) AllErrors() []error { return m }
 
-// GetPolicyPathByRoleKeyRequestValidationError is the validation error
-// returned by GetPolicyPathByRoleKeyRequest.Validate if the designated
+// QueryPolicyPathByRoleKeyRequestValidationError is the validation error
+// returned by QueryPolicyPathByRoleKeyRequest.Validate if the designated
 // constraints aren't met.
-type GetPolicyPathByRoleKeyRequestValidationError struct {
+type QueryPolicyPathByRoleKeyRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1420,24 +1420,24 @@ type GetPolicyPathByRoleKeyRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetPolicyPathByRoleKeyRequestValidationError) Field() string { return e.field }
+func (e QueryPolicyPathByRoleKeyRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetPolicyPathByRoleKeyRequestValidationError) Reason() string { return e.reason }
+func (e QueryPolicyPathByRoleKeyRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetPolicyPathByRoleKeyRequestValidationError) Cause() error { return e.cause }
+func (e QueryPolicyPathByRoleKeyRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetPolicyPathByRoleKeyRequestValidationError) Key() bool { return e.key }
+func (e QueryPolicyPathByRoleKeyRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetPolicyPathByRoleKeyRequestValidationError) ErrorName() string {
-	return "GetPolicyPathByRoleKeyRequestValidationError"
+func (e QueryPolicyPathByRoleKeyRequestValidationError) ErrorName() string {
+	return "QueryPolicyPathByRoleKeyRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetPolicyPathByRoleKeyRequestValidationError) Error() string {
+func (e QueryPolicyPathByRoleKeyRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1449,14 +1449,14 @@ func (e GetPolicyPathByRoleKeyRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetPolicyPathByRoleKeyRequest.%s: %s%s",
+		"invalid %sQueryPolicyPathByRoleKeyRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetPolicyPathByRoleKeyRequestValidationError{}
+var _ error = QueryPolicyPathByRoleKeyRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1464,24 +1464,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetPolicyPathByRoleKeyRequestValidationError{}
+} = QueryPolicyPathByRoleKeyRequestValidationError{}
 
-// Validate checks the field values on GetPolicyPathByRoleKeyReply with the
+// Validate checks the field values on QueryPolicyPathByRoleKeyReply with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetPolicyPathByRoleKeyReply) Validate() error {
+func (m *QueryPolicyPathByRoleKeyReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetPolicyPathByRoleKeyReply with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// GetPolicyPathByRoleKeyReplyMultiError, or nil if none found.
-func (m *GetPolicyPathByRoleKeyReply) ValidateAll() error {
+// ValidateAll checks the field values on QueryPolicyPathByRoleKeyReply with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// QueryPolicyPathByRoleKeyReplyMultiError, or nil if none found.
+func (m *QueryPolicyPathByRoleKeyReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetPolicyPathByRoleKeyReply) validate(all bool) error {
+func (m *QueryPolicyPathByRoleKeyReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1495,7 +1495,7 @@ func (m *GetPolicyPathByRoleKeyReply) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetPolicyPathByRoleKeyReplyValidationError{
+					errors = append(errors, QueryPolicyPathByRoleKeyReplyValidationError{
 						field:  fmt.Sprintf("Apis[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1503,7 +1503,7 @@ func (m *GetPolicyPathByRoleKeyReply) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, GetPolicyPathByRoleKeyReplyValidationError{
+					errors = append(errors, QueryPolicyPathByRoleKeyReplyValidationError{
 						field:  fmt.Sprintf("Apis[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1512,7 +1512,7 @@ func (m *GetPolicyPathByRoleKeyReply) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return GetPolicyPathByRoleKeyReplyValidationError{
+				return QueryPolicyPathByRoleKeyReplyValidationError{
 					field:  fmt.Sprintf("Apis[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1523,19 +1523,19 @@ func (m *GetPolicyPathByRoleKeyReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetPolicyPathByRoleKeyReplyMultiError(errors)
+		return QueryPolicyPathByRoleKeyReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetPolicyPathByRoleKeyReplyMultiError is an error wrapping multiple
-// validation errors returned by GetPolicyPathByRoleKeyReply.ValidateAll() if
-// the designated constraints aren't met.
-type GetPolicyPathByRoleKeyReplyMultiError []error
+// QueryPolicyPathByRoleKeyReplyMultiError is an error wrapping multiple
+// validation errors returned by QueryPolicyPathByRoleKeyReply.ValidateAll()
+// if the designated constraints aren't met.
+type QueryPolicyPathByRoleKeyReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetPolicyPathByRoleKeyReplyMultiError) Error() string {
+func (m QueryPolicyPathByRoleKeyReplyMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1544,12 +1544,12 @@ func (m GetPolicyPathByRoleKeyReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetPolicyPathByRoleKeyReplyMultiError) AllErrors() []error { return m }
+func (m QueryPolicyPathByRoleKeyReplyMultiError) AllErrors() []error { return m }
 
-// GetPolicyPathByRoleKeyReplyValidationError is the validation error returned
-// by GetPolicyPathByRoleKeyReply.Validate if the designated constraints
-// aren't met.
-type GetPolicyPathByRoleKeyReplyValidationError struct {
+// QueryPolicyPathByRoleKeyReplyValidationError is the validation error
+// returned by QueryPolicyPathByRoleKeyReply.Validate if the designated
+// constraints aren't met.
+type QueryPolicyPathByRoleKeyReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1557,24 +1557,24 @@ type GetPolicyPathByRoleKeyReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetPolicyPathByRoleKeyReplyValidationError) Field() string { return e.field }
+func (e QueryPolicyPathByRoleKeyReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetPolicyPathByRoleKeyReplyValidationError) Reason() string { return e.reason }
+func (e QueryPolicyPathByRoleKeyReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetPolicyPathByRoleKeyReplyValidationError) Cause() error { return e.cause }
+func (e QueryPolicyPathByRoleKeyReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetPolicyPathByRoleKeyReplyValidationError) Key() bool { return e.key }
+func (e QueryPolicyPathByRoleKeyReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetPolicyPathByRoleKeyReplyValidationError) ErrorName() string {
-	return "GetPolicyPathByRoleKeyReplyValidationError"
+func (e QueryPolicyPathByRoleKeyReplyValidationError) ErrorName() string {
+	return "QueryPolicyPathByRoleKeyReplyValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetPolicyPathByRoleKeyReplyValidationError) Error() string {
+func (e QueryPolicyPathByRoleKeyReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1586,14 +1586,14 @@ func (e GetPolicyPathByRoleKeyReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetPolicyPathByRoleKeyReply.%s: %s%s",
+		"invalid %sQueryPolicyPathByRoleKeyReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetPolicyPathByRoleKeyReplyValidationError{}
+var _ error = QueryPolicyPathByRoleKeyReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1601,4 +1601,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetPolicyPathByRoleKeyReplyValidationError{}
+} = QueryPolicyPathByRoleKeyReplyValidationError{}

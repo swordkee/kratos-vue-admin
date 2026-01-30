@@ -93,13 +93,12 @@ message DeleteRolesRequest {
 }
 message DeleteRolesReply {}
 
-message GetRolesRequest {
+message FindRolesRequest {
   int64 id = 1;
 }
-message GetRolesReply {
-    RoleData role = 1;
+message FindRolesReply {
+  RoleData role = 1;
 }
-
 message ListRolesRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;

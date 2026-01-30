@@ -61,7 +61,7 @@ paths:
             tags:
                 - Api
             description: 获取角色拥有的api权限
-            operationId: Api_GetPolicyPathByRoleKey
+            operationId: Api_QueryPolicyPathByRoleKey
             parameters:
                 - name: roleKey
                   in: query
@@ -73,7 +73,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetPolicyPathByRoleKeyReply'
+                                $ref: '#/components/schemas/api.admin.v1.QueryPolicyPathByRoleKeyReply'
     /system/api/list:
         get:
             tags:
@@ -103,7 +103,7 @@ paths:
             tags:
                 - Api
             description: 获取api
-            operationId: Api_GetApi
+            operationId: Api_FindApi
             parameters:
                 - name: id
                   in: path
@@ -116,7 +116,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetApiReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindApiReply'
         delete:
             tags:
                 - Api
@@ -177,7 +177,7 @@ paths:
             tags:
                 - Dept
             description: 获取部门关系结构
-            operationId: Dept_GetDeptTree
+            operationId: Dept_QueryDeptTree
             parameters:
                 - name: deptName
                   in: query
@@ -198,7 +198,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetDeptTreeReply'
+                                $ref: '#/components/schemas/api.admin.v1.QueryDeptTreeReply'
     /system/dept/list:
         get:
             tags:
@@ -307,7 +307,7 @@ paths:
             tags:
                 - DictData
             description: 获取信息
-            operationId: DictData_GetDictData
+            operationId: DictData_FindDictData
             parameters:
                 - name: dictCode
                   in: path
@@ -320,7 +320,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetDictDataReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindDictDataReply'
     /system/dict/data/type:
         get:
             tags:
@@ -456,7 +456,7 @@ paths:
             tags:
                 - DictType
             description: 获取信息
-            operationId: DictType_GetDictType
+            operationId: DictType_FindDictType
             parameters:
                 - name: dictId
                   in: path
@@ -469,7 +469,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetDictTypeReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindDictTypeReply'
         delete:
             tags:
                 - DictType
@@ -586,7 +586,7 @@ paths:
         get:
             tags:
                 - LogsService
-            operationId: LogsService_GetLogs
+            operationId: LogsService_FindLogs
             parameters:
                 - name: id
                   in: path
@@ -599,7 +599,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetLogsReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindLogsReply'
     /system/menu:
         put:
             tags:
@@ -665,14 +665,14 @@ paths:
             tags:
                 - Menus
             description: 获取菜单关系结构
-            operationId: Menus_GetMenusTree
+            operationId: Menus_QueryMenusTree
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetMenusTreeReply'
+                                $ref: '#/components/schemas/api.admin.v1.QueryMenusTreeReply'
     /system/menu/roleMenuTreeSelect/{roleId}:
         get:
             tags:
@@ -697,7 +697,7 @@ paths:
             tags:
                 - Menus
             description: 获取菜单
-            operationId: Menus_GetMenus
+            operationId: Menus_FindMenus
             parameters:
                 - name: id
                   in: path
@@ -710,7 +710,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetMenusReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindMenusReply'
         delete:
             tags:
                 - Menus
@@ -939,7 +939,7 @@ paths:
             tags:
                 - Roles
             description: 获取角色
-            operationId: Roles_GetRoles
+            operationId: Roles_FindRoles
             parameters:
                 - name: id
                   in: path
@@ -952,7 +952,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetRolesReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindRolesReply'
         delete:
             tags:
                 - Roles
@@ -1050,7 +1050,7 @@ paths:
             tags:
                 - Sysuser
             description: 获取用户
-            operationId: Sysuser_GetSysuser
+            operationId: Sysuser_FindSysuser
             parameters:
                 - name: id
                   in: path
@@ -1063,46 +1063,46 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindSysuserReply'
     /system/user/getCaptcha:
         get:
             tags:
                 - Sysuser
             description: 获取验证码
-            operationId: Sysuser_GetCaptcha
+            operationId: Sysuser_FindCaptcha
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetCaptchaReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindCaptchaReply'
     /system/user/getInit:
         get:
             tags:
                 - Sysuser
             description: 获取岗位
-            operationId: Sysuser_GetPostInit
+            operationId: Sysuser_FindPostInit
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetPostInitReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindPostInitReply'
     /system/user/getRoPo:
         get:
             tags:
                 - Sysuser
             description: 获取RoPo
-            operationId: Sysuser_GetUserRolePost
+            operationId: Sysuser_FindUserRolePost
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetUserRolePostReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindUserRolePostReply'
     /system/user/list:
         get:
             tags:
@@ -1202,14 +1202,14 @@ paths:
             tags:
                 - Sysuser
             description: 生成密钥和二维码
-            operationId: Sysuser_GetUserGoogleSecret
+            operationId: Sysuser_FindUserGoogleSecret
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.GetUserGoogleSecretReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindUserGoogleSecretReply'
     /system/user/{id}:
         delete:
             tags:
@@ -1756,12 +1756,12 @@ components:
                 updateTime:
                     type: string
                     format: date-time
-        api.admin.v1.GetApiReply:
+        api.admin.v1.FindApiReply:
             type: object
             properties:
                 api:
                     $ref: '#/components/schemas/api.admin.v1.ApiData'
-        api.admin.v1.GetCaptchaReply:
+        api.admin.v1.FindCaptchaReply:
             type: object
             properties:
                 base64Captcha:
@@ -1770,29 +1770,22 @@ components:
                     type: string
                 content:
                     type: string
-        api.admin.v1.GetDeptTreeReply:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.admin.v1.DeptTree'
-        api.admin.v1.GetDictDataReply:
+        api.admin.v1.FindDictDataReply:
             type: object
             properties:
                 dictCode:
                     type: string
-        api.admin.v1.GetDictTypeReply:
+        api.admin.v1.FindDictTypeReply:
             type: object
             properties:
                 dictId:
                     type: string
-        api.admin.v1.GetLogsReply:
+        api.admin.v1.FindLogsReply:
             type: object
             properties:
                 data:
                     $ref: '#/components/schemas/api.admin.v1.SysLogs'
-        api.admin.v1.GetMenusReply:
+        api.admin.v1.FindMenusReply:
             type: object
             properties:
                 menuId:
@@ -1846,21 +1839,7 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-        api.admin.v1.GetMenusTreeReply:
-            type: object
-            properties:
-                list:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.admin.v1.SimpleMenu'
-        api.admin.v1.GetPolicyPathByRoleKeyReply:
-            type: object
-            properties:
-                apis:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.admin.v1.ApiBase'
-        api.admin.v1.GetPostInitReply:
+        api.admin.v1.FindPostInitReply:
             type: object
             properties:
                 roles:
@@ -1871,12 +1850,12 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.PostData'
-        api.admin.v1.GetRolesReply:
+        api.admin.v1.FindRolesReply:
             type: object
             properties:
                 role:
                     $ref: '#/components/schemas/api.admin.v1.RoleData'
-        api.admin.v1.GetSysuserReply:
+        api.admin.v1.FindSysuserReply:
             type: object
             properties:
                 user:
@@ -1897,14 +1876,14 @@ components:
                     type: string
                 roleIds:
                     type: string
-        api.admin.v1.GetUserGoogleSecretReply:
+        api.admin.v1.FindUserGoogleSecretReply:
             type: object
             properties:
                 secret:
                     type: string
                 qrcode:
                     type: string
-        api.admin.v1.GetUserRolePostReply:
+        api.admin.v1.FindUserRolePostReply:
             type: object
             properties:
                 roles:
@@ -2193,6 +2172,27 @@ components:
                 updateTime:
                     type: string
                     format: date-time
+        api.admin.v1.QueryDeptTreeReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.admin.v1.DeptTree'
+        api.admin.v1.QueryMenusTreeReply:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.admin.v1.SimpleMenu'
+        api.admin.v1.QueryPolicyPathByRoleKeyReply:
+            type: object
+            properties:
+                apis:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.admin.v1.ApiBase'
         api.admin.v1.RoleData:
             type: object
             properties:

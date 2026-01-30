@@ -63,10 +63,12 @@ service Api {
   };
 }
 
-message GetApiRequest{
+message FindApiRequest {
+
   int64 id = 1;
+
 };
-message GetApiReply{
+message FindApiReply {
   ApiData api = 1;
 };
 
@@ -108,10 +110,12 @@ message DeleteApiRequest{
 };
 message DeleteApiReply{};
 
-message GetPolicyPathByRoleKeyRequest{
+message QueryPolicyPathByRoleKeyRequest {
+
   string roleKey = 1;
+
 };
-message GetPolicyPathByRoleKeyReply{
-    repeated ApiBase apis = 1;
+message QueryPolicyPathByRoleKeyReply {
+  repeated ApiBase apis = 1;
 };
 

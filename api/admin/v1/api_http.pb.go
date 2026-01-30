@@ -22,9 +22,9 @@ const _ = http.SupportPackageIsVersion1
 const OperationApiAllApi = "/api.admin.v1.Api/AllApi"
 const OperationApiCreateApi = "/api.admin.v1.Api/CreateApi"
 const OperationApiDeleteApi = "/api.admin.v1.Api/DeleteApi"
-const OperationApiGetApi = "/api.admin.v1.Api/GetApi"
-const OperationApiGetPolicyPathByRoleKey = "/api.admin.v1.Api/GetPolicyPathByRoleKey"
+const OperationApiFindApi = "/api.admin.v1.Api/FindApi"
 const OperationApiListApi = "/api.admin.v1.Api/ListApi"
+const OperationApiQueryPolicyPathByRoleKey = "/api.admin.v1.Api/QueryPolicyPathByRoleKey"
 const OperationApiUpdateApi = "/api.admin.v1.Api/UpdateApi"
 
 type ApiHTTPServer interface {
@@ -34,12 +34,12 @@ type ApiHTTPServer interface {
 	CreateApi(context.Context, *CreateApiRequest) (*CreateApiReply, error)
 	// DeleteApi 删除api
 	DeleteApi(context.Context, *DeleteApiRequest) (*DeleteApiReply, error)
-	// GetApi 获取api
-	GetApi(context.Context, *GetApiRequest) (*GetApiReply, error)
-	// GetPolicyPathByRoleKey 获取角色拥有的api权限
-	GetPolicyPathByRoleKey(context.Context, *GetPolicyPathByRoleKeyRequest) (*GetPolicyPathByRoleKeyReply, error)
+	// FindApi 获取api
+	FindApi(context.Context, *FindApiRequest) (*FindApiReply, error)
 	// ListApi api列表
 	ListApi(context.Context, *ListApiRequest) (*ListApiReply, error)
+	// QueryPolicyPathByRoleKey 获取角色拥有的api权限
+	QueryPolicyPathByRoleKey(context.Context, *QueryPolicyPathByRoleKeyRequest) (*QueryPolicyPathByRoleKeyReply, error)
 	// UpdateApi 更新api
 	UpdateApi(context.Context, *UpdateApiRequest) (*UpdateApiReply, error)
 }
@@ -50,8 +50,8 @@ func RegisterApiHTTPServer(s *http.Server, srv ApiHTTPServer) {
 	r.GET("/system/api/all", _Api_AllApi0_HTTP_Handler(srv))
 	r.POST("/system/api", _Api_CreateApi0_HTTP_Handler(srv))
 	r.PUT("/system/api", _Api_UpdateApi0_HTTP_Handler(srv))
-	r.GET("/system/api/getPolicyPathByRoleId", _Api_GetPolicyPathByRoleKey0_HTTP_Handler(srv))
-	r.GET("/system/api/{id}", _Api_GetApi0_HTTP_Handler(srv))
+	r.GET("/system/api/getPolicyPathByRoleId", _Api_QueryPolicyPathByRoleKey0_HTTP_Handler(srv))
+	r.GET("/system/api/{id}", _Api_FindApi0_HTTP_Handler(srv))
 	r.DELETE("/system/api/{id}", _Api_DeleteApi0_HTTP_Handler(srv))
 }
 
@@ -137,43 +137,43 @@ func _Api_UpdateApi0_HTTP_Handler(srv ApiHTTPServer) func(ctx http.Context) erro
 	}
 }
 
-func _Api_GetPolicyPathByRoleKey0_HTTP_Handler(srv ApiHTTPServer) func(ctx http.Context) error {
+func _Api_QueryPolicyPathByRoleKey0_HTTP_Handler(srv ApiHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetPolicyPathByRoleKeyRequest
+		var in QueryPolicyPathByRoleKeyRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationApiGetPolicyPathByRoleKey)
+		http.SetOperation(ctx, OperationApiQueryPolicyPathByRoleKey)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetPolicyPathByRoleKey(ctx, req.(*GetPolicyPathByRoleKeyRequest))
+			return srv.QueryPolicyPathByRoleKey(ctx, req.(*QueryPolicyPathByRoleKeyRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetPolicyPathByRoleKeyReply)
+		reply := out.(*QueryPolicyPathByRoleKeyReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Api_GetApi0_HTTP_Handler(srv ApiHTTPServer) func(ctx http.Context) error {
+func _Api_FindApi0_HTTP_Handler(srv ApiHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetApiRequest
+		var in FindApiRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationApiGetApi)
+		http.SetOperation(ctx, OperationApiFindApi)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetApi(ctx, req.(*GetApiRequest))
+			return srv.FindApi(ctx, req.(*FindApiRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetApiReply)
+		reply := out.(*FindApiReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -207,12 +207,12 @@ type ApiHTTPClient interface {
 	CreateApi(ctx context.Context, req *CreateApiRequest, opts ...http.CallOption) (rsp *CreateApiReply, err error)
 	// DeleteApi 删除api
 	DeleteApi(ctx context.Context, req *DeleteApiRequest, opts ...http.CallOption) (rsp *DeleteApiReply, err error)
-	// GetApi 获取api
-	GetApi(ctx context.Context, req *GetApiRequest, opts ...http.CallOption) (rsp *GetApiReply, err error)
-	// GetPolicyPathByRoleKey 获取角色拥有的api权限
-	GetPolicyPathByRoleKey(ctx context.Context, req *GetPolicyPathByRoleKeyRequest, opts ...http.CallOption) (rsp *GetPolicyPathByRoleKeyReply, err error)
+	// FindApi 获取api
+	FindApi(ctx context.Context, req *FindApiRequest, opts ...http.CallOption) (rsp *FindApiReply, err error)
 	// ListApi api列表
 	ListApi(ctx context.Context, req *ListApiRequest, opts ...http.CallOption) (rsp *ListApiReply, err error)
+	// QueryPolicyPathByRoleKey 获取角色拥有的api权限
+	QueryPolicyPathByRoleKey(ctx context.Context, req *QueryPolicyPathByRoleKeyRequest, opts ...http.CallOption) (rsp *QueryPolicyPathByRoleKeyReply, err error)
 	// UpdateApi 更新api
 	UpdateApi(ctx context.Context, req *UpdateApiRequest, opts ...http.CallOption) (rsp *UpdateApiReply, err error)
 }
@@ -267,26 +267,12 @@ func (c *ApiHTTPClientImpl) DeleteApi(ctx context.Context, in *DeleteApiRequest,
 	return &out, nil
 }
 
-// GetApi 获取api
-func (c *ApiHTTPClientImpl) GetApi(ctx context.Context, in *GetApiRequest, opts ...http.CallOption) (*GetApiReply, error) {
-	var out GetApiReply
+// FindApi 获取api
+func (c *ApiHTTPClientImpl) FindApi(ctx context.Context, in *FindApiRequest, opts ...http.CallOption) (*FindApiReply, error) {
+	var out FindApiReply
 	pattern := "/system/api/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationApiGetApi))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-// GetPolicyPathByRoleKey 获取角色拥有的api权限
-func (c *ApiHTTPClientImpl) GetPolicyPathByRoleKey(ctx context.Context, in *GetPolicyPathByRoleKeyRequest, opts ...http.CallOption) (*GetPolicyPathByRoleKeyReply, error) {
-	var out GetPolicyPathByRoleKeyReply
-	pattern := "/system/api/getPolicyPathByRoleId"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationApiGetPolicyPathByRoleKey))
+	opts = append(opts, http.Operation(OperationApiFindApi))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -301,6 +287,20 @@ func (c *ApiHTTPClientImpl) ListApi(ctx context.Context, in *ListApiRequest, opt
 	pattern := "/system/api/list"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationApiListApi))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// QueryPolicyPathByRoleKey 获取角色拥有的api权限
+func (c *ApiHTTPClientImpl) QueryPolicyPathByRoleKey(ctx context.Context, in *QueryPolicyPathByRoleKeyRequest, opts ...http.CallOption) (*QueryPolicyPathByRoleKeyReply, error) {
+	var out QueryPolicyPathByRoleKeyReply
+	pattern := "/system/api/getPolicyPathByRoleId"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationApiQueryPolicyPathByRoleKey))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

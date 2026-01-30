@@ -77,12 +77,12 @@ message ListDeptReply{
   repeated DeptTree data = 1;
 };
 
-message GetDeptTreeRequest{
+message QueryDeptTreeRequest{
   string deptName = 1;
   int32 status = 2;
   int64 deptId = 3;
 };
-message GetDeptTreeReply{
+message QueryDeptTreeReply{
   repeated DeptTree data = 3;
 };
 

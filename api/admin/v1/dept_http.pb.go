@@ -21,8 +21,8 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationDeptCreateDept = "/api.admin.v1.Dept/CreateDept"
 const OperationDeptDeleteDept = "/api.admin.v1.Dept/DeleteDept"
-const OperationDeptGetDeptTree = "/api.admin.v1.Dept/GetDeptTree"
 const OperationDeptListDept = "/api.admin.v1.Dept/ListDept"
+const OperationDeptQueryDeptTree = "/api.admin.v1.Dept/QueryDeptTree"
 const OperationDeptRoleDeptTreeSelect = "/api.admin.v1.Dept/RoleDeptTreeSelect"
 const OperationDeptUpdateDept = "/api.admin.v1.Dept/UpdateDept"
 
@@ -31,10 +31,10 @@ type DeptHTTPServer interface {
 	CreateDept(context.Context, *CreateDeptRequest) (*CreateDeptReply, error)
 	// DeleteDept 删除部门
 	DeleteDept(context.Context, *DeleteDeptRequest) (*DeleteDeptReply, error)
-	// GetDeptTree 获取部门关系结构
-	GetDeptTree(context.Context, *GetDeptTreeRequest) (*GetDeptTreeReply, error)
 	// ListDept 部门列表
 	ListDept(context.Context, *ListDeptRequest) (*ListDeptReply, error)
+	// QueryDeptTree 获取部门关系结构
+	QueryDeptTree(context.Context, *QueryDeptTreeRequest) (*QueryDeptTreeReply, error)
 	// RoleDeptTreeSelect 获取角色部门树
 	RoleDeptTreeSelect(context.Context, *RoleDeptTreeSelectRequest) (*RoleDeptTreeSelectReply, error)
 	// UpdateDept 更新部门
@@ -44,7 +44,7 @@ type DeptHTTPServer interface {
 func RegisterDeptHTTPServer(s *http.Server, srv DeptHTTPServer) {
 	r := s.Route("/")
 	r.GET("/system/dept/list", _Dept_ListDept0_HTTP_Handler(srv))
-	r.GET("/system/dept/deptTree", _Dept_GetDeptTree0_HTTP_Handler(srv))
+	r.GET("/system/dept/deptTree", _Dept_QueryDeptTree0_HTTP_Handler(srv))
 	r.POST("/system/dept", _Dept_CreateDept0_HTTP_Handler(srv))
 	r.PUT("/system/dept", _Dept_UpdateDept0_HTTP_Handler(srv))
 	r.DELETE("/system/dept/{id}", _Dept_DeleteDept0_HTTP_Handler(srv))
@@ -70,21 +70,21 @@ func _Dept_ListDept0_HTTP_Handler(srv DeptHTTPServer) func(ctx http.Context) err
 	}
 }
 
-func _Dept_GetDeptTree0_HTTP_Handler(srv DeptHTTPServer) func(ctx http.Context) error {
+func _Dept_QueryDeptTree0_HTTP_Handler(srv DeptHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetDeptTreeRequest
+		var in QueryDeptTreeRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationDeptGetDeptTree)
+		http.SetOperation(ctx, OperationDeptQueryDeptTree)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetDeptTree(ctx, req.(*GetDeptTreeRequest))
+			return srv.QueryDeptTree(ctx, req.(*QueryDeptTreeRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetDeptTreeReply)
+		reply := out.(*QueryDeptTreeReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -182,10 +182,10 @@ type DeptHTTPClient interface {
 	CreateDept(ctx context.Context, req *CreateDeptRequest, opts ...http.CallOption) (rsp *CreateDeptReply, err error)
 	// DeleteDept 删除部门
 	DeleteDept(ctx context.Context, req *DeleteDeptRequest, opts ...http.CallOption) (rsp *DeleteDeptReply, err error)
-	// GetDeptTree 获取部门关系结构
-	GetDeptTree(ctx context.Context, req *GetDeptTreeRequest, opts ...http.CallOption) (rsp *GetDeptTreeReply, err error)
 	// ListDept 部门列表
 	ListDept(ctx context.Context, req *ListDeptRequest, opts ...http.CallOption) (rsp *ListDeptReply, err error)
+	// QueryDeptTree 获取部门关系结构
+	QueryDeptTree(ctx context.Context, req *QueryDeptTreeRequest, opts ...http.CallOption) (rsp *QueryDeptTreeReply, err error)
 	// RoleDeptTreeSelect 获取角色部门树
 	RoleDeptTreeSelect(ctx context.Context, req *RoleDeptTreeSelectRequest, opts ...http.CallOption) (rsp *RoleDeptTreeSelectReply, err error)
 	// UpdateDept 更新部门
@@ -228,12 +228,12 @@ func (c *DeptHTTPClientImpl) DeleteDept(ctx context.Context, in *DeleteDeptReque
 	return &out, nil
 }
 
-// GetDeptTree 获取部门关系结构
-func (c *DeptHTTPClientImpl) GetDeptTree(ctx context.Context, in *GetDeptTreeRequest, opts ...http.CallOption) (*GetDeptTreeReply, error) {
-	var out GetDeptTreeReply
-	pattern := "/system/dept/deptTree"
+// ListDept 部门列表
+func (c *DeptHTTPClientImpl) ListDept(ctx context.Context, in *ListDeptRequest, opts ...http.CallOption) (*ListDeptReply, error) {
+	var out ListDeptReply
+	pattern := "/system/dept/list"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationDeptGetDeptTree))
+	opts = append(opts, http.Operation(OperationDeptListDept))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -242,12 +242,12 @@ func (c *DeptHTTPClientImpl) GetDeptTree(ctx context.Context, in *GetDeptTreeReq
 	return &out, nil
 }
 
-// ListDept 部门列表
-func (c *DeptHTTPClientImpl) ListDept(ctx context.Context, in *ListDeptRequest, opts ...http.CallOption) (*ListDeptReply, error) {
-	var out ListDeptReply
-	pattern := "/system/dept/list"
+// QueryDeptTree 获取部门关系结构
+func (c *DeptHTTPClientImpl) QueryDeptTree(ctx context.Context, in *QueryDeptTreeRequest, opts ...http.CallOption) (*QueryDeptTreeReply, error) {
+	var out QueryDeptTreeReply
+	pattern := "/system/dept/deptTree"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationDeptListDept))
+	opts = append(opts, http.Operation(OperationDeptQueryDeptTree))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

@@ -414,27 +414,27 @@ func (*DeleteRolesReply) Descriptor() ([]byte, []int) {
 	return file_roles_proto_rawDescGZIP(), []int{5}
 }
 
-type GetRolesRequest struct {
+type FindRolesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetRolesRequest) Reset() {
-	*x = GetRolesRequest{}
+func (x *FindRolesRequest) Reset() {
+	*x = FindRolesRequest{}
 	mi := &file_roles_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetRolesRequest) String() string {
+func (x *FindRolesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetRolesRequest) ProtoMessage() {}
+func (*FindRolesRequest) ProtoMessage() {}
 
-func (x *GetRolesRequest) ProtoReflect() protoreflect.Message {
+func (x *FindRolesRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_roles_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -446,39 +446,39 @@ func (x *GetRolesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRolesRequest.ProtoReflect.Descriptor instead.
-func (*GetRolesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindRolesRequest.ProtoReflect.Descriptor instead.
+func (*FindRolesRequest) Descriptor() ([]byte, []int) {
 	return file_roles_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetRolesRequest) GetId() int64 {
+func (x *FindRolesRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetRolesReply struct {
+type FindRolesReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Role          *RoleData              `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetRolesReply) Reset() {
-	*x = GetRolesReply{}
+func (x *FindRolesReply) Reset() {
+	*x = FindRolesReply{}
 	mi := &file_roles_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetRolesReply) String() string {
+func (x *FindRolesReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetRolesReply) ProtoMessage() {}
+func (*FindRolesReply) ProtoMessage() {}
 
-func (x *GetRolesReply) ProtoReflect() protoreflect.Message {
+func (x *FindRolesReply) ProtoReflect() protoreflect.Message {
 	mi := &file_roles_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -490,12 +490,12 @@ func (x *GetRolesReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRolesReply.ProtoReflect.Descriptor instead.
-func (*GetRolesReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindRolesReply.ProtoReflect.Descriptor instead.
+func (*FindRolesReply) Descriptor() ([]byte, []int) {
 	return file_roles_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetRolesReply) GetRole() *RoleData {
+func (x *FindRolesReply) GetRole() *RoleData {
 	if x != nil {
 		return x.Role
 	}
@@ -857,10 +857,10 @@ const file_roles_proto_rawDesc = "" +
 	"\x10UpdateRolesReply\"$\n" +
 	"\x12DeleteRolesRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\x12\n" +
-	"\x10DeleteRolesReply\"!\n" +
-	"\x0fGetRolesRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\";\n" +
-	"\rGetRolesReply\x12*\n" +
+	"\x10DeleteRolesReply\"\"\n" +
+	"\x10FindRolesRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"<\n" +
+	"\x0eFindRolesReply\x12*\n" +
 	"\x04role\x18\x01 \x01(\v2\x16.api.admin.v1.RoleDataR\x04role\"\x96\x01\n" +
 	"\x10ListRolesRequest\x12\x18\n" +
 	"\apageNum\x18\x01 \x01(\x05R\apageNum\x12\x1a\n" +
@@ -880,15 +880,15 @@ const file_roles_proto_rawDesc = "" +
 	"\x10DataScopeRequest\x12\x16\n" +
 	"\x06roleId\x18\x01 \x01(\x03R\x06roleId\x12\x1c\n" +
 	"\tdataScope\x18\x02 \x01(\x05R\tdataScope\"\x10\n" +
-	"\x0eDataScopeReply2\x85\x06\n" +
+	"\x0eDataScopeReply2\x88\x06\n" +
 	"\x05Roles\x12h\n" +
 	"\vCreateRoles\x12 .api.admin.v1.CreateRolesRequest\x1a\x1e.api.admin.v1.CreateRolesReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/role\x12h\n" +
 	"\vUpdateRoles\x12 .api.admin.v1.UpdateRolesRequest\x1a\x1e.api.admin.v1.UpdateRolesReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/role\x12d\n" +
 	"\tListRoles\x12\x1e.api.admin.v1.ListRolesRequest\x1a\x1c.api.admin.v1.ListRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/role/list\x12\x84\x01\n" +
 	"\x10ChangeRoleStatus\x12%.api.admin.v1.ChangeRoleStatusRequest\x1a#.api.admin.v1.ChangeRoleStatusReply\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\x1a\x19/system/role/changeStatus\x12l\n" +
 	"\tDataScope\x12\x1e.api.admin.v1.DataScopeRequest\x1a\x1c.api.admin.v1.DataScopeReply\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/system/role/dataScope\x12j\n" +
-	"\vDeleteRoles\x12 .api.admin.v1.DeleteRolesRequest\x1a\x1e.api.admin.v1.DeleteRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/role/{id}\x12a\n" +
-	"\bGetRoles\x12\x1d.api.admin.v1.GetRolesRequest\x1a\x1b.api.admin.v1.GetRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/role/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\vDeleteRoles\x12 .api.admin.v1.DeleteRolesRequest\x1a\x1e.api.admin.v1.DeleteRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/role/{id}\x12d\n" +
+	"\tFindRoles\x12\x1e.api.admin.v1.FindRolesRequest\x1a\x1c.api.admin.v1.FindRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/role/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_roles_proto_rawDescOnce sync.Once
@@ -910,8 +910,8 @@ var file_roles_proto_goTypes = []any{
 	(*UpdateRolesReply)(nil),        // 3: api.admin.v1.UpdateRolesReply
 	(*DeleteRolesRequest)(nil),      // 4: api.admin.v1.DeleteRolesRequest
 	(*DeleteRolesReply)(nil),        // 5: api.admin.v1.DeleteRolesReply
-	(*GetRolesRequest)(nil),         // 6: api.admin.v1.GetRolesRequest
-	(*GetRolesReply)(nil),           // 7: api.admin.v1.GetRolesReply
+	(*FindRolesRequest)(nil),        // 6: api.admin.v1.FindRolesRequest
+	(*FindRolesReply)(nil),          // 7: api.admin.v1.FindRolesReply
 	(*ListRolesRequest)(nil),        // 8: api.admin.v1.ListRolesRequest
 	(*ListRolesReply)(nil),          // 9: api.admin.v1.ListRolesReply
 	(*ChangeRoleStatusRequest)(nil), // 10: api.admin.v1.ChangeRoleStatusRequest
@@ -924,7 +924,7 @@ var file_roles_proto_goTypes = []any{
 var file_roles_proto_depIdxs = []int32{
 	14, // 0: api.admin.v1.CreateRolesRequest.apiIds:type_name -> api.admin.v1.ApiBase
 	14, // 1: api.admin.v1.UpdateRolesRequest.apiIds:type_name -> api.admin.v1.ApiBase
-	15, // 2: api.admin.v1.GetRolesReply.role:type_name -> api.admin.v1.RoleData
+	15, // 2: api.admin.v1.FindRolesReply.role:type_name -> api.admin.v1.RoleData
 	15, // 3: api.admin.v1.ListRolesReply.data:type_name -> api.admin.v1.RoleData
 	0,  // 4: api.admin.v1.Roles.CreateRoles:input_type -> api.admin.v1.CreateRolesRequest
 	2,  // 5: api.admin.v1.Roles.UpdateRoles:input_type -> api.admin.v1.UpdateRolesRequest
@@ -932,14 +932,14 @@ var file_roles_proto_depIdxs = []int32{
 	10, // 7: api.admin.v1.Roles.ChangeRoleStatus:input_type -> api.admin.v1.ChangeRoleStatusRequest
 	12, // 8: api.admin.v1.Roles.DataScope:input_type -> api.admin.v1.DataScopeRequest
 	4,  // 9: api.admin.v1.Roles.DeleteRoles:input_type -> api.admin.v1.DeleteRolesRequest
-	6,  // 10: api.admin.v1.Roles.GetRoles:input_type -> api.admin.v1.GetRolesRequest
+	6,  // 10: api.admin.v1.Roles.FindRoles:input_type -> api.admin.v1.FindRolesRequest
 	1,  // 11: api.admin.v1.Roles.CreateRoles:output_type -> api.admin.v1.CreateRolesReply
 	3,  // 12: api.admin.v1.Roles.UpdateRoles:output_type -> api.admin.v1.UpdateRolesReply
 	9,  // 13: api.admin.v1.Roles.ListRoles:output_type -> api.admin.v1.ListRolesReply
 	11, // 14: api.admin.v1.Roles.ChangeRoleStatus:output_type -> api.admin.v1.ChangeRoleStatusReply
 	13, // 15: api.admin.v1.Roles.DataScope:output_type -> api.admin.v1.DataScopeReply
 	5,  // 16: api.admin.v1.Roles.DeleteRoles:output_type -> api.admin.v1.DeleteRolesReply
-	7,  // 17: api.admin.v1.Roles.GetRoles:output_type -> api.admin.v1.GetRolesReply
+	7,  // 17: api.admin.v1.Roles.FindRoles:output_type -> api.admin.v1.FindRolesReply
 	11, // [11:18] is the sub-list for method output_type
 	4,  // [4:11] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

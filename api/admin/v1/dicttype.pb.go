@@ -367,27 +367,27 @@ func (x *DeleteDictTypeReply) GetDictId() int64 {
 	return 0
 }
 
-type GetDictTypeRequest struct {
+type FindDictTypeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DictId        int64                  `protobuf:"varint,1,opt,name=dictId,proto3" json:"dictId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDictTypeRequest) Reset() {
-	*x = GetDictTypeRequest{}
+func (x *FindDictTypeRequest) Reset() {
+	*x = FindDictTypeRequest{}
 	mi := &file_dicttype_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDictTypeRequest) String() string {
+func (x *FindDictTypeRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDictTypeRequest) ProtoMessage() {}
+func (*FindDictTypeRequest) ProtoMessage() {}
 
-func (x *GetDictTypeRequest) ProtoReflect() protoreflect.Message {
+func (x *FindDictTypeRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_dicttype_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -399,39 +399,39 @@ func (x *GetDictTypeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDictTypeRequest.ProtoReflect.Descriptor instead.
-func (*GetDictTypeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindDictTypeRequest.ProtoReflect.Descriptor instead.
+func (*FindDictTypeRequest) Descriptor() ([]byte, []int) {
 	return file_dicttype_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetDictTypeRequest) GetDictId() int64 {
+func (x *FindDictTypeRequest) GetDictId() int64 {
 	if x != nil {
 		return x.DictId
 	}
 	return 0
 }
 
-type GetDictTypeReply struct {
+type FindDictTypeReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DictId        int64                  `protobuf:"varint,1,opt,name=dictId,proto3" json:"dictId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDictTypeReply) Reset() {
-	*x = GetDictTypeReply{}
+func (x *FindDictTypeReply) Reset() {
+	*x = FindDictTypeReply{}
 	mi := &file_dicttype_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDictTypeReply) String() string {
+func (x *FindDictTypeReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDictTypeReply) ProtoMessage() {}
+func (*FindDictTypeReply) ProtoMessage() {}
 
-func (x *GetDictTypeReply) ProtoReflect() protoreflect.Message {
+func (x *FindDictTypeReply) ProtoReflect() protoreflect.Message {
 	mi := &file_dicttype_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -443,12 +443,12 @@ func (x *GetDictTypeReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDictTypeReply.ProtoReflect.Descriptor instead.
-func (*GetDictTypeReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindDictTypeReply.ProtoReflect.Descriptor instead.
+func (*FindDictTypeReply) Descriptor() ([]byte, []int) {
 	return file_dicttype_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetDictTypeReply) GetDictId() int64 {
+func (x *FindDictTypeReply) GetDictId() int64 {
 	if x != nil {
 		return x.DictId
 	}
@@ -817,10 +817,10 @@ const file_dicttype_proto_rawDesc = "" +
 	"\x15DeleteDictTypeRequest\x12\x16\n" +
 	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\"-\n" +
 	"\x13DeleteDictTypeReply\x12\x16\n" +
-	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\",\n" +
-	"\x12GetDictTypeRequest\x12\x16\n" +
-	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\"*\n" +
-	"\x10GetDictTypeReply\x12\x16\n" +
+	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\"-\n" +
+	"\x13FindDictTypeRequest\x12\x16\n" +
+	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\"+\n" +
+	"\x11FindDictTypeReply\x12\x16\n" +
 	"\x06dictId\x18\x01 \x01(\x03R\x06dictId\"\x9b\x01\n" +
 	"\x13ListDictTypeRequest\x12\x1a\n" +
 	"\bdictName\x18\x01 \x01(\tR\bdictName\x12\x1a\n" +
@@ -849,13 +849,13 @@ const file_dicttype_proto_rawDesc = "" +
 	"updateTime\"8\n" +
 	"\x1cGetDesignateDictTypesRequest\x12\x18\n" +
 	"\adictIDs\x18\x01 \x03(\tR\adictIDs\"\x1c\n" +
-	"\x1aGetDesignateDictTypesReply2\xe1\x04\n" +
+	"\x1aGetDesignateDictTypesReply2\xe4\x04\n" +
 	"\bDictType\x12r\n" +
 	"\fListDictType\x12!.api.admin.v1.ListDictTypeRequest\x1a\x1f.api.admin.v1.ListDictTypeReply\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/system/dict/type/list\x12v\n" +
 	"\x0eCreateDictType\x12#.api.admin.v1.CreateDictTypeRequest\x1a!.api.admin.v1.CreateDictTypeReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/system/dict/type\x12v\n" +
 	"\x0eUpdateDictType\x12#.api.admin.v1.UpdateDictTypeRequest\x1a!.api.admin.v1.UpdateDictTypeReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\x1a\x11/system/dict/type\x12|\n" +
-	"\x0eDeleteDictType\x12#.api.admin.v1.DeleteDictTypeRequest\x1a!.api.admin.v1.DeleteDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/system/dict/type/{dictId}\x12s\n" +
-	"\vGetDictType\x12 .api.admin.v1.GetDictTypeRequest\x1a\x1e.api.admin.v1.GetDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/system/dict/type/{dictId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x0eDeleteDictType\x12#.api.admin.v1.DeleteDictTypeRequest\x1a!.api.admin.v1.DeleteDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/system/dict/type/{dictId}\x12v\n" +
+	"\fFindDictType\x12!.api.admin.v1.FindDictTypeRequest\x1a\x1f.api.admin.v1.FindDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/system/dict/type/{dictId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_dicttype_proto_rawDescOnce sync.Once
@@ -877,8 +877,8 @@ var file_dicttype_proto_goTypes = []any{
 	(*UpdateDictTypeReply)(nil),          // 3: api.admin.v1.UpdateDictTypeReply
 	(*DeleteDictTypeRequest)(nil),        // 4: api.admin.v1.DeleteDictTypeRequest
 	(*DeleteDictTypeReply)(nil),          // 5: api.admin.v1.DeleteDictTypeReply
-	(*GetDictTypeRequest)(nil),           // 6: api.admin.v1.GetDictTypeRequest
-	(*GetDictTypeReply)(nil),             // 7: api.admin.v1.GetDictTypeReply
+	(*FindDictTypeRequest)(nil),          // 6: api.admin.v1.FindDictTypeRequest
+	(*FindDictTypeReply)(nil),            // 7: api.admin.v1.FindDictTypeReply
 	(*ListDictTypeRequest)(nil),          // 8: api.admin.v1.ListDictTypeRequest
 	(*ListDictTypeReply)(nil),            // 9: api.admin.v1.ListDictTypeReply
 	(*DictTypeContent)(nil),              // 10: api.admin.v1.DictTypeContent
@@ -896,12 +896,12 @@ var file_dicttype_proto_depIdxs = []int32{
 	0,  // 6: api.admin.v1.DictType.CreateDictType:input_type -> api.admin.v1.CreateDictTypeRequest
 	2,  // 7: api.admin.v1.DictType.UpdateDictType:input_type -> api.admin.v1.UpdateDictTypeRequest
 	4,  // 8: api.admin.v1.DictType.DeleteDictType:input_type -> api.admin.v1.DeleteDictTypeRequest
-	6,  // 9: api.admin.v1.DictType.GetDictType:input_type -> api.admin.v1.GetDictTypeRequest
+	6,  // 9: api.admin.v1.DictType.FindDictType:input_type -> api.admin.v1.FindDictTypeRequest
 	9,  // 10: api.admin.v1.DictType.ListDictType:output_type -> api.admin.v1.ListDictTypeReply
 	1,  // 11: api.admin.v1.DictType.CreateDictType:output_type -> api.admin.v1.CreateDictTypeReply
 	3,  // 12: api.admin.v1.DictType.UpdateDictType:output_type -> api.admin.v1.UpdateDictTypeReply
 	5,  // 13: api.admin.v1.DictType.DeleteDictType:output_type -> api.admin.v1.DeleteDictTypeReply
-	7,  // 14: api.admin.v1.DictType.GetDictType:output_type -> api.admin.v1.GetDictTypeReply
+	7,  // 14: api.admin.v1.DictType.FindDictType:output_type -> api.admin.v1.FindDictTypeReply
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name

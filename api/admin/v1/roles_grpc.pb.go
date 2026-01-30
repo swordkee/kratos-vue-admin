@@ -25,7 +25,7 @@ const (
 	Roles_ChangeRoleStatus_FullMethodName = "/api.admin.v1.Roles/ChangeRoleStatus"
 	Roles_DataScope_FullMethodName        = "/api.admin.v1.Roles/DataScope"
 	Roles_DeleteRoles_FullMethodName      = "/api.admin.v1.Roles/DeleteRoles"
-	Roles_GetRoles_FullMethodName         = "/api.admin.v1.Roles/GetRoles"
+	Roles_FindRoles_FullMethodName        = "/api.admin.v1.Roles/FindRoles"
 )
 
 // RolesClient is the client API for Roles service.
@@ -47,7 +47,7 @@ type RolesClient interface {
 	// 删除角色
 	DeleteRoles(ctx context.Context, in *DeleteRolesRequest, opts ...grpc.CallOption) (*DeleteRolesReply, error)
 	// 获取角色
-	GetRoles(ctx context.Context, in *GetRolesRequest, opts ...grpc.CallOption) (*GetRolesReply, error)
+	FindRoles(ctx context.Context, in *FindRolesRequest, opts ...grpc.CallOption) (*FindRolesReply, error)
 }
 
 type rolesClient struct {
@@ -118,10 +118,10 @@ func (c *rolesClient) DeleteRoles(ctx context.Context, in *DeleteRolesRequest, o
 	return out, nil
 }
 
-func (c *rolesClient) GetRoles(ctx context.Context, in *GetRolesRequest, opts ...grpc.CallOption) (*GetRolesReply, error) {
+func (c *rolesClient) FindRoles(ctx context.Context, in *FindRolesRequest, opts ...grpc.CallOption) (*FindRolesReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetRolesReply)
-	err := c.cc.Invoke(ctx, Roles_GetRoles_FullMethodName, in, out, cOpts...)
+	out := new(FindRolesReply)
+	err := c.cc.Invoke(ctx, Roles_FindRoles_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ type RolesServer interface {
 	// 删除角色
 	DeleteRoles(context.Context, *DeleteRolesRequest) (*DeleteRolesReply, error)
 	// 获取角色
-	GetRoles(context.Context, *GetRolesRequest) (*GetRolesReply, error)
+	FindRoles(context.Context, *FindRolesRequest) (*FindRolesReply, error)
 	mustEmbedUnimplementedRolesServer()
 }
 
@@ -173,8 +173,8 @@ func (UnimplementedRolesServer) DataScope(context.Context, *DataScopeRequest) (*
 func (UnimplementedRolesServer) DeleteRoles(context.Context, *DeleteRolesRequest) (*DeleteRolesReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoles not implemented")
 }
-func (UnimplementedRolesServer) GetRoles(context.Context, *GetRolesRequest) (*GetRolesReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetRoles not implemented")
+func (UnimplementedRolesServer) FindRoles(context.Context, *FindRolesRequest) (*FindRolesReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindRoles not implemented")
 }
 func (UnimplementedRolesServer) mustEmbedUnimplementedRolesServer() {}
 
@@ -297,20 +297,20 @@ func _Roles_DeleteRoles_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Roles_GetRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRolesRequest)
+func _Roles_FindRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindRolesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RolesServer).GetRoles(ctx, in)
+		return srv.(RolesServer).FindRoles(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Roles_GetRoles_FullMethodName,
+		FullMethod: Roles_FindRoles_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RolesServer).GetRoles(ctx, req.(*GetRolesRequest))
+		return srv.(RolesServer).FindRoles(ctx, req.(*FindRolesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -347,8 +347,8 @@ var Roles_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Roles_DeleteRoles_Handler,
 		},
 		{
-			MethodName: "GetRoles",
-			Handler:    _Roles_GetRoles_Handler,
+			MethodName: "FindRoles",
+			Handler:    _Roles_FindRoles_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

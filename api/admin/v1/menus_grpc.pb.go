@@ -21,10 +21,10 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	Menus_CreateMenus_FullMethodName        = "/api.admin.v1.Menus/CreateMenus"
 	Menus_ListMenus_FullMethodName          = "/api.admin.v1.Menus/ListMenus"
-	Menus_GetMenusTree_FullMethodName       = "/api.admin.v1.Menus/GetMenusTree"
+	Menus_QueryMenusTree_FullMethodName     = "/api.admin.v1.Menus/QueryMenusTree"
 	Menus_UpdateMenus_FullMethodName        = "/api.admin.v1.Menus/UpdateMenus"
 	Menus_DeleteMenus_FullMethodName        = "/api.admin.v1.Menus/DeleteMenus"
-	Menus_GetMenus_FullMethodName           = "/api.admin.v1.Menus/GetMenus"
+	Menus_FindMenus_FullMethodName          = "/api.admin.v1.Menus/FindMenus"
 	Menus_RoleMenuTreeSelect_FullMethodName = "/api.admin.v1.Menus/RoleMenuTreeSelect"
 )
 
@@ -39,13 +39,13 @@ type MenusClient interface {
 	// 菜单列表
 	ListMenus(ctx context.Context, in *ListMenusRequest, opts ...grpc.CallOption) (*ListMenusReply, error)
 	// 获取菜单关系结构
-	GetMenusTree(ctx context.Context, in *GetMenusTreeRequest, opts ...grpc.CallOption) (*GetMenusTreeReply, error)
+	QueryMenusTree(ctx context.Context, in *QueryMenusTreeRequest, opts ...grpc.CallOption) (*QueryMenusTreeReply, error)
 	// 更新菜单
 	UpdateMenus(ctx context.Context, in *UpdateMenusRequest, opts ...grpc.CallOption) (*UpdateMenusReply, error)
 	// 删除菜单
 	DeleteMenus(ctx context.Context, in *DeleteMenusRequest, opts ...grpc.CallOption) (*DeleteMenusReply, error)
 	// 获取菜单
-	GetMenus(ctx context.Context, in *GetMenusRequest, opts ...grpc.CallOption) (*GetMenusReply, error)
+	FindMenus(ctx context.Context, in *FindMenusRequest, opts ...grpc.CallOption) (*FindMenusReply, error)
 	// 获取角色菜单树
 	RoleMenuTreeSelect(ctx context.Context, in *RoleMenuTreeSelectRequest, opts ...grpc.CallOption) (*RoleMenuTreeSelectReply, error)
 }
@@ -78,10 +78,10 @@ func (c *menusClient) ListMenus(ctx context.Context, in *ListMenusRequest, opts 
 	return out, nil
 }
 
-func (c *menusClient) GetMenusTree(ctx context.Context, in *GetMenusTreeRequest, opts ...grpc.CallOption) (*GetMenusTreeReply, error) {
+func (c *menusClient) QueryMenusTree(ctx context.Context, in *QueryMenusTreeRequest, opts ...grpc.CallOption) (*QueryMenusTreeReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMenusTreeReply)
-	err := c.cc.Invoke(ctx, Menus_GetMenusTree_FullMethodName, in, out, cOpts...)
+	out := new(QueryMenusTreeReply)
+	err := c.cc.Invoke(ctx, Menus_QueryMenusTree_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,10 +108,10 @@ func (c *menusClient) DeleteMenus(ctx context.Context, in *DeleteMenusRequest, o
 	return out, nil
 }
 
-func (c *menusClient) GetMenus(ctx context.Context, in *GetMenusRequest, opts ...grpc.CallOption) (*GetMenusReply, error) {
+func (c *menusClient) FindMenus(ctx context.Context, in *FindMenusRequest, opts ...grpc.CallOption) (*FindMenusReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMenusReply)
-	err := c.cc.Invoke(ctx, Menus_GetMenus_FullMethodName, in, out, cOpts...)
+	out := new(FindMenusReply)
+	err := c.cc.Invoke(ctx, Menus_FindMenus_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,13 +139,13 @@ type MenusServer interface {
 	// 菜单列表
 	ListMenus(context.Context, *ListMenusRequest) (*ListMenusReply, error)
 	// 获取菜单关系结构
-	GetMenusTree(context.Context, *GetMenusTreeRequest) (*GetMenusTreeReply, error)
+	QueryMenusTree(context.Context, *QueryMenusTreeRequest) (*QueryMenusTreeReply, error)
 	// 更新菜单
 	UpdateMenus(context.Context, *UpdateMenusRequest) (*UpdateMenusReply, error)
 	// 删除菜单
 	DeleteMenus(context.Context, *DeleteMenusRequest) (*DeleteMenusReply, error)
 	// 获取菜单
-	GetMenus(context.Context, *GetMenusRequest) (*GetMenusReply, error)
+	FindMenus(context.Context, *FindMenusRequest) (*FindMenusReply, error)
 	// 获取角色菜单树
 	RoleMenuTreeSelect(context.Context, *RoleMenuTreeSelectRequest) (*RoleMenuTreeSelectReply, error)
 	mustEmbedUnimplementedMenusServer()
@@ -161,8 +161,8 @@ func (UnimplementedMenusServer) CreateMenus(context.Context, *CreateMenusRequest
 func (UnimplementedMenusServer) ListMenus(context.Context, *ListMenusRequest) (*ListMenusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMenus not implemented")
 }
-func (UnimplementedMenusServer) GetMenusTree(context.Context, *GetMenusTreeRequest) (*GetMenusTreeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMenusTree not implemented")
+func (UnimplementedMenusServer) QueryMenusTree(context.Context, *QueryMenusTreeRequest) (*QueryMenusTreeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryMenusTree not implemented")
 }
 func (UnimplementedMenusServer) UpdateMenus(context.Context, *UpdateMenusRequest) (*UpdateMenusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMenus not implemented")
@@ -170,8 +170,8 @@ func (UnimplementedMenusServer) UpdateMenus(context.Context, *UpdateMenusRequest
 func (UnimplementedMenusServer) DeleteMenus(context.Context, *DeleteMenusRequest) (*DeleteMenusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMenus not implemented")
 }
-func (UnimplementedMenusServer) GetMenus(context.Context, *GetMenusRequest) (*GetMenusReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMenus not implemented")
+func (UnimplementedMenusServer) FindMenus(context.Context, *FindMenusRequest) (*FindMenusReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindMenus not implemented")
 }
 func (UnimplementedMenusServer) RoleMenuTreeSelect(context.Context, *RoleMenuTreeSelectRequest) (*RoleMenuTreeSelectReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleMenuTreeSelect not implemented")
@@ -225,20 +225,20 @@ func _Menus_ListMenus_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Menus_GetMenusTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMenusTreeRequest)
+func _Menus_QueryMenusTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryMenusTreeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MenusServer).GetMenusTree(ctx, in)
+		return srv.(MenusServer).QueryMenusTree(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Menus_GetMenusTree_FullMethodName,
+		FullMethod: Menus_QueryMenusTree_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).GetMenusTree(ctx, req.(*GetMenusTreeRequest))
+		return srv.(MenusServer).QueryMenusTree(ctx, req.(*QueryMenusTreeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -279,20 +279,20 @@ func _Menus_DeleteMenus_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Menus_GetMenus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMenusRequest)
+func _Menus_FindMenus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindMenusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MenusServer).GetMenus(ctx, in)
+		return srv.(MenusServer).FindMenus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Menus_GetMenus_FullMethodName,
+		FullMethod: Menus_FindMenus_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenusServer).GetMenus(ctx, req.(*GetMenusRequest))
+		return srv.(MenusServer).FindMenus(ctx, req.(*FindMenusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -331,8 +331,8 @@ var Menus_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Menus_ListMenus_Handler,
 		},
 		{
-			MethodName: "GetMenusTree",
-			Handler:    _Menus_GetMenusTree_Handler,
+			MethodName: "QueryMenusTree",
+			Handler:    _Menus_QueryMenusTree_Handler,
 		},
 		{
 			MethodName: "UpdateMenus",
@@ -343,8 +343,8 @@ var Menus_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Menus_DeleteMenus_Handler,
 		},
 		{
-			MethodName: "GetMenus",
-			Handler:    _Menus_GetMenus_Handler,
+			MethodName: "FindMenus",
+			Handler:    _Menus_FindMenus_Handler,
 		},
 		{
 			MethodName: "RoleMenuTreeSelect",
