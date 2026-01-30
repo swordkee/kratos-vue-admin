@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 
@@ -14,11 +15,11 @@ import (
 type ApiService struct {
 	pb.UnimplementedApiServer
 	apiUseCase    *biz.SysApiUseCase
-	casbinUseCase *biz.CasbinRuleUseCase
+	casbinUseCase *admin.CasbinRuleUseCase
 	log           *log.Helper
 }
 
-func NewApiService(ac *biz.SysApiUseCase, logger log.Logger, casbinUseCase *biz.CasbinRuleUseCase) *ApiService {
+func NewApiService(ac *biz.SysApiUseCase, logger log.Logger, casbinUseCase *admin.CasbinRuleUseCase) *ApiService {
 	return &ApiService{
 		apiUseCase:    ac,
 		log:           log.NewHelper(log.With(logger, "module", "service/api")),

@@ -36,7 +36,7 @@ func Auth(s *conf.Auth, repo biz.CasbinRuleRepo) middleware.Middleware {
 			jwt.WithClaims(func() jwtV5.Claims { return &authz.TokenClaims{} }),
 		),
 		casbin.Server(
-			casbin.WithCasbinModel(repo.GetModel()),
+			casbin.WithCasbinModel(repo.GetCasbinModel()),
 			casbin.WithCasbinPolicy(repo.GetAdapter()),
 			casbin.WithSecurityUserCreator(authz.NewSecurityUser),
 			casbin.WithAutoLoadPolicy(true, 30*time.Second),

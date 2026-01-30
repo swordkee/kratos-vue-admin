@@ -1,62 +1,42 @@
-package data
+package admin
 
 import (
 	"context"
-	"errors"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
-	"gorm.io/gorm"
 )
 
 type sysLogsRepo struct {
-	data *Data
-	log  *log.Helper
+	query *dao.Query
+	log   *log.Helper
 }
 
-func NewSysLogsRepo(data *Data, logger log.Logger) biz.SysLogsRepo {
-	return &sysLogsRepo{data: data, log: log.NewHelper(logger)}
+func NewSysLogsRepo(query *dao.Query, logger log.Logger) admin.SysLogsRepo {
+	return &sysLogsRepo{query: query, log: log.NewHelper(logger)}
 }
 
-func (r *sysLogsRepo) Create(ctx context.Context, g *model.SysLogs) (*model.SysLogs, error) {
-	err := r.data.db.WithContext(ctx).Create(g).Error
-	return g, err
+func (s *sysLogsRepo) Create(ctx context.Context, g *model.SysLogs) error {
+	q := s.query.SysLogs
+	return q.WithContext(ctx).Create(g)
 }
 
-func (r *sysLogsRepo) First(ctx context.Context, id int64) (*model.SysLogs, error) {
-	var record model.SysLogs
-	err := r.data.db.WithContext(ctx).
-		Where("id = ?", id).
-		First(&record).Error
-
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, err
-	}
-	return &record, nil
+func (s *sysLogsRepo) FindByID(ctx context.Context, id int64) (*model.SysLogs, error) {
+	q := s.query.SysLogs
+	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
 
 func (r *sysLogsRepo) Find(ctx context.Context, offset, limit int) ([]*model.SysLogs, error) {
 	var records []*model.SysLogs
-	err := r.data.db.WithContext(ctx).
+	err := r.query.WithContext(ctx).
 		Offset(offset).
 		Limit(limit).
 		Order("id DESC").
 		Find(&records).Error
 
 	return records, err
-}
-
-func (r *sysLogsRepo) Count(ctx context.Context) (int64, error) {
-	var count int64
-	err := r.data.db.WithContext(ctx).
-		Model(&model.SysLogs{}).
-		Count(&count).Error
-
-	return count, err
 }
 
 func (r *sysLogsRepo) FindByPage(ctx context.Context, offset, limit int) (result []*model.SysLogs, count int64, err error) {
@@ -75,28 +55,30 @@ func (r *sysLogsRepo) FindByPage(ctx context.Context, offset, limit int) (result
 	return result, count, nil
 }
 
-func (r *sysLogsRepo) Delete(ctx context.Context, id int64) error {
-	return r.data.db.WithContext(ctx).
-		Where("id = ?", id).
-		Delete(&model.SysLogs{}).Error
+func (s *sysLogsRepo) Delete(ctx context.Context, id int64) error {
+	q := s.query.SysLogs
+	_, err := q.WithContext(ctx).Where(q.ID.Eq(id)).Delete()
+	return err
 }
 
 // DeleteByIds deletes operation records by ids
-func (r *sysLogsRepo) DeleteByIds(ctx context.Context, ids []int64) error {
+func (s *sysLogsRepo) DeleteByIds(ctx context.Context, ids []int64) error {
 	if len(ids) == 0 {
 		return nil
 	}
-	return r.data.db.WithContext(ctx).
+	q := s.query.SysLogs
+	return q.WithContext(ctx).
 		Where("id IN ?", ids).
 		Delete(&model.SysLogs{}).Error
 }
 
 // DeleteByTimeRange deletes all operation records within the specified time range
-func (r *sysLogsRepo) DeleteByTimeRange(ctx context.Context, startTime, endTime string) error {
-	return r.data.db.WithContext(ctx).
+func (s *sysLogsRepo) DeleteByTimeRange(ctx context.Context, startTime, endTime string) error {
+	q := s.query.SysLogs
+	return q.WithContext(ctx).
 		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
 		Unscoped().
-		Delete(&model.SysLogs{}).Error
+		Delete(&model.SysLogs{})
 }
 
 // FindByTimeRange finds operation records within the specified time range
@@ -105,7 +87,7 @@ func (r *sysLogsRepo) FindByTimeRange(ctx context.Context, startTime, endTime st
 	var count int64
 
 	// Get total count within time range
-	err := r.data.db.WithContext(ctx).
+	err := r.query.WithContext(ctx).
 		Model(&model.SysLogs{}).
 		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
 		Count(&count).Error
@@ -115,7 +97,7 @@ func (r *sysLogsRepo) FindByTimeRange(ctx context.Context, startTime, endTime st
 	}
 
 	// Get records within time range
-	err = r.data.db.WithContext(ctx).
+	err = r.query.WithContext(ctx).
 		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
 		Offset(offset).
 		Limit(limit).

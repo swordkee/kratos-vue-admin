@@ -1,4 +1,4 @@
-package data
+package admin
 
 import (
 	"context"
@@ -10,13 +10,13 @@ import (
 	"github.com/casbin/casbin/v3/persist"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"gorm.io/gorm"
-
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 )
 
 type casbinRuleRepo struct {
-	data           *Data
+	query          *dao.Query
 	log            *log.Helper
 	syncedEnforcer *casbin.SyncedCachedEnforcer
 }
@@ -44,7 +44,7 @@ var (
 	once                 sync.Once
 )
 
-func NewCasbinRuleRepo(data *Data, db *gorm.DB, logger log.Logger) biz.CasbinRuleRepo {
+func NewCasbinRuleRepo(db *gorm.DB, logger log.Logger) admin.CasbinRuleRepo {
 	once.Do(func() {
 		adapter, err := gormadapter.NewAdapterByDB(db)
 		if err != nil {
@@ -66,7 +66,7 @@ func NewCasbinRuleRepo(data *Data, db *gorm.DB, logger log.Logger) biz.CasbinRul
 	})
 
 	return &casbinRuleRepo{
-		data:           data,
+		query:          dao.Use(db),
 		log:            log.NewHelper(logger),
 		syncedEnforcer: syncedCachedEnforcer,
 	}
@@ -92,7 +92,7 @@ func (c *casbinRuleRepo) UpdateCasbin(ctx context.Context, roleKey string, rules
 
 // UpdateCasbinApi 更新 API 路径
 func (c *casbinRuleRepo) UpdateCasbinApi(ctx context.Context, oldPath string, newPath string, oldMethod string, newMethod string) error {
-	q := c.data.Query(ctx).CasbinRule
+	q := c.query.CasbinRule
 	_, err := q.WithContext(ctx).Where(q.V1.Eq(oldPath), q.V2.Eq(oldMethod)).UpdateColumns(map[string]any{
 		"v1": newPath,
 		"v2": newMethod,

@@ -1,16 +1,18 @@
-package biz
+package admin
 
 import (
 	"context"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
+// SysRoleRepo 接口定义
 type SysRoleRepo interface {
 	Create(ctx context.Context, role *model.SysRoles) error
 	Save(ctx context.Context, role *model.SysRoles) error
@@ -28,12 +30,12 @@ type SysRoleUseCase struct {
 	menuRepo     SysMenuRepo
 	log          *log.Helper
 	roleMenuCase *SysRoleMenuUseCase
-	casbinCase   *CasbinRuleUseCase
+	casbinCase   CasbinRuleUseCase
 	userUseCase  *SysUserUseCase
-	tx           Transaction
+	tx           biz.Transaction
 }
 
-func NewSysRoleUseCase(repo SysRoleRepo, logger log.Logger, rmc *SysRoleMenuUseCase, casbin *CasbinRuleUseCase, userUseCase *SysUserUseCase, tx Transaction, menuRepo SysMenuRepo) *SysRoleUseCase {
+func NewSysRoleUseCase(repo SysRoleRepo, logger log.Logger, rmc *SysRoleMenuUseCase, casbin CasbinRuleUseCase, userUseCase *SysUserUseCase, tx biz.Transaction, menuRepo SysMenuRepo) *SysRoleUseCase {
 	return &SysRoleUseCase{
 		repo:         repo,
 		log:          log.NewHelper(logger),

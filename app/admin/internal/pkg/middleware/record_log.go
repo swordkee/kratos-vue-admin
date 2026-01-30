@@ -83,7 +83,7 @@ func OperationRecord(opRecordsCase *biz.SysLogsUseCase) middleware.Middleware {
 			// 3. Async operation needs independent context that won't be canceled
 			go func() {
 				bgCtx := context.Background()
-				_, saveErr := opRecordsCase.CreateOperationRecord(bgCtx, record)
+				saveErr := opRecordsCase.CreateOperationRecord(bgCtx, record)
 				if saveErr != nil {
 					// In production, use a proper logger here
 				}

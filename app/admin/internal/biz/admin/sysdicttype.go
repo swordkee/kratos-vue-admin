@@ -1,22 +1,21 @@
-package biz
+package admin
 
 import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
+// SysDictTypeRepo 接口定义
 type SysDictTypeRepo interface {
-	Create(ctx context.Context, post *model.SysDictTypes) error
-	Save(ctx context.Context, post *model.SysDictTypes) error
-	Delete(ctx context.Context, ids []int64) error
+	Save(ctx context.Context, dictType *model.SysDictTypes) error
+	Create(ctx context.Context, dictType *model.SysDictTypes) error
+	Delete(ctx context.Context, id []int64) error
 	FindByID(ctx context.Context, id int64) (*model.SysDictTypes, error)
 	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictTypes, error)
 	FindAll(ctx context.Context) ([]*model.SysDictTypes, error)
-
 	ListPage(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictTypes, error)
 	ListPageCount(ctx context.Context, dictName, dictType string, status int32) (int32, error)
 }

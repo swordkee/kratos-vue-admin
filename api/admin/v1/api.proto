@@ -42,14 +42,14 @@ service Api {
   };
 
   // 获取角色拥有的api权限
-  rpc GetPolicyPathByRoleKey (GetPolicyPathByRoleKeyRequest) returns (GetPolicyPathByRoleKeyReply) {
+  rpc QueryPolicyPathByRoleKey (QueryPolicyPathByRoleKeyRequest) returns (QueryPolicyPathByRoleKeyReply) {
     option (google.api.http) = {
       get: "/system/api/getPolicyPathByRoleId"
     };
   };
 
   // 获取api
-  rpc GetApi (GetApiRequest) returns (GetApiReply) {
+  rpc FindApi (FindApiRequest) returns (FindApiReply) {
     option (google.api.http) = {
       get: "/system/api/{id}"
     };

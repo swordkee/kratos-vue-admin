@@ -1,4 +1,4 @@
-package biz
+package admin
 
 import (
 	"context"
@@ -14,21 +14,18 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
+// SysDeptRepo 接口定义
 type SysDeptRepo interface {
-	Create(ctx context.Context, dept *model.SysDepts) error
 	Save(ctx context.Context, dept *model.SysDepts) error
-
-	UpdateByID(ctx context.Context, id int64, dept *model.SysDepts) error
-
+	Create(ctx context.Context, dept *model.SysDepts) error
 	Delete(ctx context.Context, id int64) error
-
-	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDepts, error)
-
+	UpdateByID(ctx context.Context, id int64, dept *model.SysDepts) error
 	FindByID(ctx context.Context, id int64) (*model.SysDepts, error)
 	ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDepts, error)
-	GetRoleDeptId(ctx context.Context, roleId int32) ([]int32, error)
+	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDepts, error)
 	SelectDept(ctx context.Context) ([]*pb.DeptTree, error)
 	SelectDeptLabel(ctx context.Context) ([]*pb.DeptLabel, error)
+	GetRoleDeptId(ctx context.Context, roleId int32) ([]int32, error)
 }
 
 type SysDeptUseCase struct {

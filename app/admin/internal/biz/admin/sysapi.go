@@ -1,13 +1,13 @@
-package biz
+package admin
 
 import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
+// SysApiRepo 接口定义
 type SysApiRepo interface {
 	FindByID(ctx context.Context, id int64) (*model.SysApis, error)
 	Create(ctx context.Context, api *model.SysApis) error

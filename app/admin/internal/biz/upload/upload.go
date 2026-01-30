@@ -1,4 +1,4 @@
-package biz
+package upload
 
 import (
 	"mime/multipart"

@@ -1,48 +1,49 @@
-package data
+package admin
 
 import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
 type sysDictTypeRepo struct {
-	data *Data
-	log  *log.Helper
+	query *dao.Query
+	log   *log.Helper
 }
 
-func NewSysDictTypeRepo(data *Data, logger log.Logger) biz.SysDictTypeRepo {
+func NewSysDictTypeRepo(query *dao.Query, logger log.Logger) admin.SysDictTypeRepo {
 	return &sysDictTypeRepo{
-		data: data,
-		log:  log.NewHelper(logger),
+		query: query,
+		log:   log.NewHelper(logger),
 	}
 }
 
 func (p *sysDictTypeRepo) Create(ctx context.Context, post *model.SysDictTypes) error {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	return q.WithContext(ctx).Create(post)
 }
 
 func (p *sysDictTypeRepo) Save(ctx context.Context, post *model.SysDictTypes) error {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	return q.WithContext(ctx).Save(post)
 }
 
 func (p *sysDictTypeRepo) Delete(ctx context.Context, ids []int64) error {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	_, err := q.WithContext(ctx).Where(q.DictID.In(ids...)).Delete()
 	return err
 }
 
 func (p *sysDictTypeRepo) FindByID(ctx context.Context, id int64) (*model.SysDictTypes, error) {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	return q.WithContext(ctx).Where(q.DictID.Eq(id)).First()
 }
 
 func (p *sysDictTypeRepo) ListPage(ctx context.Context, dictName, dictType string, status int32, page, size int32) ([]*model.SysDictTypes, error) {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	db := q.WithContext(ctx)
 	if dictName != "" {
 		db = db.Where(q.DictName.Like(buildLikeValue(dictName)))
@@ -58,7 +59,7 @@ func (p *sysDictTypeRepo) ListPage(ctx context.Context, dictName, dictType strin
 }
 
 func (p *sysDictTypeRepo) ListPageCount(ctx context.Context, dictName, dictType string, status int32) (int32, error) {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	db := q.WithContext(ctx)
 	if dictName != "" {
 		db = db.Where(q.DictName.Like(buildLikeValue(dictName)))
@@ -74,11 +75,11 @@ func (p *sysDictTypeRepo) ListPageCount(ctx context.Context, dictName, dictType 
 }
 
 func (p *sysDictTypeRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictTypes, error) {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	return q.WithContext(ctx).Where(q.DictID.In(ids...)).Find()
 }
 
 func (p *sysDictTypeRepo) FindAll(ctx context.Context) ([]*model.SysDictTypes, error) {
-	q := p.data.Query(ctx).SysDictTypes
+	q := p.query.SysDictTypes
 	return q.WithContext(ctx).Find()
 }

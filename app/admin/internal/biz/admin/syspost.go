@@ -1,24 +1,24 @@
-package biz
+package admin
 
 import (
 	"context"
 	"errors"
 
 	"github.com/go-kratos/kratos/v2/log"
-
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
+// SysPostRepo 接口定义
 type SysPostRepo interface {
-	Create(ctx context.Context, post *model.SysPosts) error
 	Save(ctx context.Context, post *model.SysPosts) error
-	Delete(ctx context.Context, ids []int64) error
+	Create(ctx context.Context, post *model.SysPosts) error
+	Delete(ctx context.Context, id []int64) error
 	FindByID(ctx context.Context, id int64) (*model.SysPosts, error)
 	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPosts, error)
 	FindAll(ctx context.Context) ([]*model.SysPosts, error)
-
 	ListPage(ctx context.Context, postName, postCode string, status int32, page, size int32) ([]*model.SysPosts, error)
+	Count(ctx context.Context, postName, postCode string, status int32) (int32, error)
 	ListPageCount(ctx context.Context, postName, postCode string, status int32) (int32, error)
 }
 

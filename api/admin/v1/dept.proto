@@ -17,7 +17,7 @@ service Dept {
   };
 
   // 获取部门关系结构
-  rpc GetDeptTree (GetDeptTreeRequest) returns (GetDeptTreeReply){
+  rpc QueryDeptTree (QueryDeptTreeRequest) returns (QueryDeptTreeReply){
     option (google.api.http) = {
       get: "/system/dept/deptTree"
     };

@@ -1,28 +1,30 @@
-package biz
+package admin
 
 import (
 	"context"
 
-	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
-
 	"github.com/go-kratos/kratos/v2/log"
-
+	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
+// SysMenuRepo 接口定义
 type SysMenuRepo interface {
-	Create(ctx context.Context, menu *model.SysMenus) error
 	Save(ctx context.Context, menu *model.SysMenus) error
+	Create(ctx context.Context, menu *model.SysMenus) error
 	Delete(ctx context.Context, id int64) error
-	DeleteMultiple(ctx context.Context, ids []int64) error
-	GetAllChildren(ctx context.Context, id int64) ([]int64, error)
-
+	DeleteMultiple(ctx context.Context, menus []*model.SysMenus) error
+	FindByID(ctx context.Context, id int64) (*model.SysMenus, error)
 	FindById(ctx context.Context, id int64) (*model.SysMenus, error)
-	ListAll(ctx context.Context) ([]*model.SysMenus, error)
-	FindByNameStatus(ctx context.Context, name string, status int32) ([]*model.SysMenus, error)
+	FindAll(ctx context.Context) ([]*model.SysMenus, error)
+	ListPage(ctx context.Context, name string, status int32, page, size int32) ([]*model.SysMenus, error)
+	Count(ctx context.Context, name string, status int32) (int32, error)
+	FindByRoleID(ctx context.Context, roleId int64) ([]*model.SysMenus, error)
+	GetAllChildren(ctx context.Context, id int64) ([]*model.SysMenus, error)
+	FindByNameStatus(ctx context.Context, menuName string, status int32) ([]*model.SysMenus, error)
+	SelectMenuLabel(ctx context.Context, menu model.SysMenus) ([]*pb.MenuLabel, error)
 	GetRoleMenuId(ctx context.Context, roleId int64) ([]int32, error)
-	SelectMenuLabel(ctx context.Context, data model.SysMenus) ([]*pb.MenuLabel, error)
 }
 
 type SysMenuUseCase struct {

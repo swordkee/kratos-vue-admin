@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 
@@ -14,11 +15,11 @@ import (
 type RolesService struct {
 	pb.UnimplementedRolesServer
 	rc     *biz.SysRoleUseCase
-	casbin *biz.CasbinRuleUseCase
+	casbin *admin.CasbinRuleUseCase
 	log    *log.Helper
 }
 
-func NewRolesService(rc *biz.SysRoleUseCase, logger log.Logger, casbin *biz.CasbinRuleUseCase) *RolesService {
+func NewRolesService(rc *biz.SysRoleUseCase, logger log.Logger, casbin *admin.CasbinRuleUseCase) *RolesService {
 	return &RolesService{
 		rc:     rc,
 		casbin: casbin,

@@ -1,4 +1,4 @@
-package biz
+package admin
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"github.com/casbin/casbin/v3/model"
 	"github.com/casbin/casbin/v3/persist"
 	"github.com/go-kratos/kratos/v2/log"
-
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 )
 
@@ -19,7 +18,6 @@ type CasbinRuleRepo interface {
 	UpdateCasbinApi(ctx context.Context, oldPath string, newPath string, oldMethod string, newMethod string) error
 	GetPolicyPathByRoleId(roleKey string) [][]string
 }
-
 type CasbinRuleUseCase struct {
 	repo CasbinRuleRepo
 	log  *log.Helper

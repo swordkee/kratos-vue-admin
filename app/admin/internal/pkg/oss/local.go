@@ -1,6 +1,8 @@
 package oss
 
 import (
+	"context"
+	"errors"
 	"io"
 	"mime/multipart"
 	"os"
@@ -35,4 +37,8 @@ func (c *localClient) UploadFile(file multipart.File, path string) (string, erro
 
 	_, err = io.Copy(out, file)
 	return "/", err
+}
+
+func (c *localClient) Upload(ctx context.Context, file []byte) (string, error) {
+	return "/", errors.New("not implemented")
 }

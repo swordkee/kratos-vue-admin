@@ -1,4 +1,4 @@
-package biz
+package admin
 
 import (
 	"context"
@@ -24,20 +24,19 @@ var (
 	ErrPasswordInvalid = errors.New(400, "password invalid", "user not found")
 )
 
-// SysUserRepo is a Greater repo.
-
+// UserListCondition is a condition for user list query.
 type UserListCondition struct {
 	UserName string
 	Phone    string
 	Status   int32
 }
 
+// SysUserRepo 接口定义
 type SysUserRepo interface {
 	Save(ctx context.Context, user *model.SysUsers) (*model.SysUsers, error)
 	Delete(ctx context.Context, id int64) error
 	UpdateByID(ctx context.Context, id int64, user *model.SysUsers) error
 	Create(ctx context.Context, g *model.SysUsers) (*model.SysUsers, error)
-
 	FindByID(ctx context.Context, id int64) (*model.SysUsers, error)
 	FindByUsername(ctx context.Context, username string) (*model.SysUsers, error)
 	FindByPostId(ctx context.Context, postId int64) ([]*model.SysUsers, error)
@@ -45,6 +44,11 @@ type SysUserRepo interface {
 	Count(ctx context.Context, condition UserListCondition) (int32, error)
 	CountByRoleId(ctx context.Context, roleId int64) (int64, error)
 	FindAll(ctx context.Context) ([]*model.SysUsers, error)
+}
+
+// OssRepo 接口定义
+type OssRepo interface {
+	UploadFile(file interface{}, filePath string) (string, error)
 }
 
 // SysUserUseCase is a SysUser use case.

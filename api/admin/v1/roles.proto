@@ -52,7 +52,7 @@ service Roles{
     };
   };
   // 获取角色
-  rpc GetRoles (GetRolesRequest) returns (GetRolesReply){
+  rpc FindRoles (FindRolesRequest) returns (FindRolesReply){
     option (google.api.http) = {
       get: "/system/role/{id}"
     };

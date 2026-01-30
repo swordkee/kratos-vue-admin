@@ -26,7 +26,7 @@ service Menus {
   };
 
   // 获取菜单关系结构
-  rpc GetMenusTree (GetMenusTreeRequest) returns (GetMenusTreeReply){
+  rpc QueryMenusTree (QueryMenusTreeRequest) returns (QueryMenusTreeReply){
     option (google.api.http) = {
       get: "/system/menu/menuTreeSelect"
     };
@@ -47,7 +47,7 @@ service Menus {
     };
   };
   // 获取菜单
-  rpc GetMenus (GetMenusRequest) returns (GetMenusReply){
+  rpc FindMenus (FindMenusRequest) returns (FindMenusReply){
     option (google.api.http) = {
       get: "/system/menu/{id}"
     };

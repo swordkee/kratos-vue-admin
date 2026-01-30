@@ -1,20 +1,17 @@
-package biz
+package admin
 
 import (
 	"context"
 
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
-
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
-// SysLogsRepo is a Greater repo.
+// SysLogsRepo 接口定义
 type SysLogsRepo interface {
-	Create(ctx context.Context, g *model.SysLogs) (*model.SysLogs, error)
-	First(ctx context.Context, id int64) (*model.SysLogs, error)
-	Find(ctx context.Context, offset, limit int) ([]*model.SysLogs, error)
-	Count(ctx context.Context) (int64, error)
-	FindByPage(ctx context.Context, offset, limit int) (result []*model.SysLogs, count int64, err error)
+	Create(ctx context.Context, g *model.SysLogs) error
+	FindByID(ctx context.Context, id int64) (*model.SysLogs, error)
+	FindByPage(ctx context.Context, offset, limit int) ([]*model.SysLogs, int64, error)
 	Delete(ctx context.Context, id int64) error
 	DeleteByIds(ctx context.Context, ids []int64) error
 	DeleteByTimeRange(ctx context.Context, startTime, endTime string) error
@@ -36,13 +33,13 @@ func NewSysLogsUseCase(opRepo SysLogsRepo, logger log.Logger) *SysLogsUseCase {
 }
 
 // CreateOperationRecord creates a SysOperationRecords, and returns the new SysOperationRecords.
-func (uc *SysLogsUseCase) CreateOperationRecord(ctx context.Context, g *model.SysLogs) (*model.SysLogs, error) {
+func (uc *SysLogsUseCase) CreateOperationRecord(ctx context.Context, g *model.SysLogs) error {
 	return uc.opRepo.Create(ctx, g)
 }
 
 // FindOperationRecordById finds a SysOperationRecords by id.
 func (uc *SysLogsUseCase) FindOperationRecordById(ctx context.Context, id int64) (*model.SysLogs, error) {
-	return uc.opRepo.First(ctx, id)
+	return uc.opRepo.FindByID(ctx, id)
 }
 
 // ListPage lists SysOperationRecords by page.

@@ -1,4 +1,4 @@
-package data
+package admin
 
 import (
 	"context"
@@ -7,7 +7,8 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
@@ -17,24 +18,24 @@ type DeptIdList struct {
 }
 
 type sysDeptRepo struct {
-	data *Data
-	log  *log.Helper
+	query *dao.Query
+	log   *log.Helper
 }
 
-func NewSysDeptRepo(data *Data, logger log.Logger) biz.SysDeptRepo {
+func NewSysDeptRepo(query *dao.Query, logger log.Logger) admin.SysDeptRepo {
 	return &sysDeptRepo{
-		data: data,
-		log:  log.NewHelper(logger),
+		query: query,
+		log:   log.NewHelper(logger),
 	}
 }
 
 func (d *sysDeptRepo) Create(ctx context.Context, dept *model.SysDepts) error {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	return q.WithContext(ctx).Create(dept)
 }
 
 func (d *sysDeptRepo) Save(ctx context.Context, dept *model.SysDepts) error {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	return q.WithContext(ctx).Save(dept)
 }
 
@@ -42,7 +43,7 @@ func (d *sysDeptRepo) UpdateByID(ctx context.Context, id int64, dept *model.SysD
 	if id == 0 {
 		return errors.New("user can not update without id")
 	}
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	dataMap := make(map[string]interface{})
 	dataMap["parent_id"] = dept.ParentID
 	dataMap["dept_name"] = dept.DeptName
@@ -56,19 +57,19 @@ func (d *sysDeptRepo) UpdateByID(ctx context.Context, id int64, dept *model.SysD
 }
 
 func (d *sysDeptRepo) Delete(ctx context.Context, id int64) error {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	_, err := q.WithContext(ctx).Where(q.ID.Eq(id)).Delete()
 	return err
 
 }
 
 func (d *sysDeptRepo) FindByID(ctx context.Context, id int64) (*model.SysDepts, error) {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
 
 func (d *sysDeptRepo) ListByNameStatusId(ctx context.Context, deptName string, status int32, id int64) ([]*model.SysDepts, error) {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	db := q.WithContext(ctx)
 	if deptName != "" {
 		db = db.Where(q.DeptName.Like(fmt.Sprintf("%%%s%%", deptName)))
@@ -86,8 +87,8 @@ func (d *sysDeptRepo) GetRoleDeptId(ctx context.Context, roleId int32) ([]int32,
 	deptIds := make([]int32, 0)
 
 	// 使用 gorm gen 替代 Table
-	roleDeptsQ := d.data.Query(ctx).SysRoleDepts
-	sysDeptQ := d.data.Query(ctx).SysDepts
+	roleDeptsQ := d.query.SysRoleDepts
+	sysDeptQ := d.query.SysDepts
 
 	// 获取角色关联的部门
 	roleDepts, err := roleDeptsQ.WithContext(ctx).
@@ -128,12 +129,12 @@ func (d *sysDeptRepo) GetRoleDeptId(ctx context.Context, roleId int32) ([]int32,
 }
 
 func (d *sysDeptRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDepts, error) {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	return q.WithContext(ctx).Where(q.ID.In(ids...)).Find()
 }
 
 func (d *sysDeptRepo) SelectDept(ctx context.Context) ([]*pb.DeptTree, error) {
-	q := d.data.Query(ctx).SysDepts
+	q := d.query.SysDepts
 	deptList, err := q.WithContext(ctx).Find()
 
 	if err != nil {

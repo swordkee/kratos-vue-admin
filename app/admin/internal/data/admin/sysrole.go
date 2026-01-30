@@ -1,55 +1,57 @@
-package data
+package admin
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
+
+	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
 type sysRoleRepo struct {
-	data *Data
-	log  *log.Helper
+	query *dao.Query
+	log   *log.Helper
 }
 
-func NewSysRoleRepo(data *Data, logger log.Logger) biz.SysRoleRepo {
+func NewSysRoleRepo(query *dao.Query, logger log.Logger) admin.SysRoleRepo {
 	return &sysRoleRepo{
-		data: data,
-		log:  log.NewHelper(logger),
+		query: query,
+		log:   log.NewHelper(logger),
 	}
 }
 
 func (r *sysRoleRepo) Create(ctx context.Context, role *model.SysRoles) error {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	return q.WithContext(ctx).Create(role)
 }
 
 func (r *sysRoleRepo) Save(ctx context.Context, role *model.SysRoles) error {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	return q.WithContext(ctx).Save(role)
 }
 
 func (r *sysRoleRepo) Delete(ctx context.Context, ids ...int64) error {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	_, err := q.WithContext(ctx).Where(q.ID.In(ids...)).Delete()
 	return err
 }
 
 func (r *sysRoleRepo) Update(ctx context.Context, role *model.SysRoles) error {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	_, err := q.WithContext(ctx).Select(q.UpdatedAt, q.RoleSort, q.DefaultRouter, q.RoleName, q.RoleKey, q.Status, q.DataScope, q.Remark).Where(q.ID.Eq(role.ID)).Updates(role)
 	return err
 }
 
 func (r *sysRoleRepo) FindByID(ctx context.Context, id int64) (*model.SysRoles, error) {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 
 }
 
 func (r *sysRoleRepo) ListPage(ctx context.Context, name, key string, status int32, page, size int32) ([]*model.SysRoles, error) {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	db := q.WithContext(ctx)
 	if name != "" {
 		db = db.Where(q.RoleName.Like(buildLikeValue(name)))
@@ -65,7 +67,7 @@ func (r *sysRoleRepo) ListPage(ctx context.Context, name, key string, status int
 }
 
 func (r *sysRoleRepo) Count(ctx context.Context, name, key string, status int32) (int32, error) {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	db := q.WithContext(ctx)
 	if name != "" {
 		db = db.Where(q.RoleName.Like(buildLikeValue(name)))
@@ -81,11 +83,11 @@ func (r *sysRoleRepo) Count(ctx context.Context, name, key string, status int32)
 }
 
 func (r *sysRoleRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysRoles, error) {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	return q.WithContext(ctx).Where(q.ID.In(ids...)).Find()
 }
 
 func (r *sysRoleRepo) FindAll(ctx context.Context) ([]*model.SysRoles, error) {
-	q := r.data.Query(ctx).SysRoles
+	q := r.query.SysRoles
 	return q.WithContext(ctx).Find()
 }

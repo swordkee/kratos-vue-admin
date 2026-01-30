@@ -1,14 +1,14 @@
-package biz
+package admin
 
 import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
-
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
+// SysRoleMenuRepo 接口定义
 type SysRoleMenuRepo interface {
 	Create(ctx context.Context, roleMenus ...*model.SysRoleMenus) error
 	DeleteByRoleId(ctx context.Context, roleIDs ...int64) error

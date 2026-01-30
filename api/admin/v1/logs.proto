@@ -10,7 +10,7 @@ service LogsService {
   rpc ListLogs(ListLogsRequest) returns (ListLogsReply) {
     option (google.api.http) = {get: "/system/logs/list"};
   }
-  rpc GetLogs(GetLogsRequest) returns (GetLogsReply) {
+  rpc FindLogs(FindLogsRequest) returns (FindLogsReply) {
     option (google.api.http) = {get: "/system/logs/{id}"};
   }
 

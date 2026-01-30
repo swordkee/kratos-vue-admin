@@ -1,6 +1,8 @@
 package oss
 
 import (
+	"context"
+	"errors"
 	"mime/multipart"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -37,4 +39,8 @@ func newAliyunClient(log *log.Helper, config *conf.OssConfig) (*aliyunClient, er
 func (c *aliyunClient) UploadFile(file multipart.File, path string) (string, error) {
 	err := c.bucket.PutObject(path, file)
 	return c.domain, err
+}
+
+func (c *aliyunClient) Upload(ctx context.Context, file []byte) (string, error) {
+	return c.domain, errors.New("not implemented")
 }

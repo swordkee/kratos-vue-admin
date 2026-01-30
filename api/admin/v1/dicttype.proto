@@ -36,7 +36,7 @@ service DictType {
 		};
 	};
 	//获取信息
-	rpc GetDictType (GetDictTypeRequest) returns (GetDictTypeReply){
+	rpc FindDictType (FindDictTypeRequest) returns (FindDictTypeReply){
 		option (google.api.http) = {
 			get: "/system/dict/type/{dictId}"
 		};

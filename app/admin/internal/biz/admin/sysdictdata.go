@@ -1,31 +1,33 @@
-package biz
+package admin
 
 import (
 	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
-type SysDictDatumRepo interface {
-	Create(ctx context.Context, post *model.SysDictData) error
-	Save(ctx context.Context, post *model.SysDictData) error
-	Delete(ctx context.Context, ids []int64) error
+// SysDictDataRepo 接口定义
+type SysDictDataRepo interface {
+	Save(ctx context.Context, dict *model.SysDictData) error
+	Create(ctx context.Context, dict *model.SysDictData) error
+	Delete(ctx context.Context, id []int64) error
 	FindByID(ctx context.Context, id int64) (*model.SysDictData, error)
 	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictData, error)
 	FindAll(ctx context.Context) ([]*model.SysDictData, error)
-
 	ListPage(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictData, error)
+	Count(ctx context.Context, label string, status int32) (int32, error)
 	ListPageCount(ctx context.Context, dictLabel, dictType string, status int32) (int32, error)
 }
 
 type SysDictDatumUseCase struct {
-	repo SysDictDatumRepo
+	repo SysDictDataRepo
 	log  *log.Helper
 }
 
-func NewSysDictDatumUseCase(repo SysDictDatumRepo, logger log.Logger) *SysDictDatumUseCase {
+func NewSysDictDatumUseCase(repo SysDictDataRepo, logger log.Logger) *SysDictDatumUseCase {
 	return &SysDictDatumUseCase{repo: repo, log: log.NewHelper(logger)}
 }
 

@@ -1,4 +1,4 @@
-package data
+package admin
 
 import (
 	"context"
@@ -6,7 +6,8 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
@@ -16,35 +17,35 @@ type MenuIdList struct {
 }
 
 type sysMenuRepo struct {
-	data *Data
-	log  *log.Helper
+	query *dao.Query
+	log   *log.Helper
 }
 
-func NewSysMenuRepo(data *Data, logger log.Logger) biz.SysMenuRepo {
+func NewSysMenuRepo(query *dao.Query, logger log.Logger) admin.SysMenuRepo {
 	return &sysMenuRepo{
-		data: data,
-		log:  log.NewHelper(logger),
+		query: query,
+		log:   log.NewHelper(logger),
 	}
 }
 
 func (m *sysMenuRepo) Create(ctx context.Context, menu *model.SysMenus) error {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	return q.WithContext(ctx).Create(menu)
 }
 
 func (m *sysMenuRepo) Save(ctx context.Context, menu *model.SysMenus) error {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	return q.WithContext(ctx).Save(menu)
 }
 
 func (m *sysMenuRepo) Delete(ctx context.Context, id int64) error {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	_, err := q.WithContext(ctx).Where(q.ID.Eq(id)).Delete()
 	return err
 }
 
 func (m *sysMenuRepo) GetAllChildren(ctx context.Context, id int64) ([]int64, error) {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	// 要返回的子集菜单
 	var allChildrenMenusIds []int64
 	nextParentIds := []int64{id}
@@ -63,23 +64,23 @@ func (m *sysMenuRepo) GetAllChildren(ctx context.Context, id int64) ([]int64, er
 }
 
 func (m *sysMenuRepo) DeleteMultiple(ctx context.Context, ids []int64) error {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	_, err := q.WithContext(ctx).Where(q.ID.In(ids...)).Delete()
 	return err
 }
 
 func (m *sysMenuRepo) FindById(ctx context.Context, id int64) (*model.SysMenus, error) {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
 
 func (m *sysMenuRepo) ListAll(ctx context.Context) ([]*model.SysMenus, error) {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	return q.WithContext(ctx).Find()
 }
 
 func (m *sysMenuRepo) FindByNameStatus(ctx context.Context, name string, status int32) ([]*model.SysMenus, error) {
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	db := q.WithContext(ctx)
 	if name != "" {
 		db = db.Where(q.MenuName.Like(fmt.Sprintf("%%%s%%", name)))
@@ -94,7 +95,7 @@ func (m *sysMenuRepo) FindByNameStatus(ctx context.Context, name string, status 
 func (m *sysMenuRepo) GetRoleMenuId(ctx context.Context, roleId int64) ([]int32, error) {
 	menuIds := make([]int32, 0)
 
-	query := m.data.Query(ctx)
+	query := m.query
 	roleMenu := query.SysRoleMenus
 	menu := query.SysMenus
 
@@ -139,7 +140,7 @@ func (m *sysMenuRepo) SelectMenuLabel(ctx context.Context, data model.SysMenus) 
 func (m *sysMenuRepo) FindList(ctx context.Context, data model.SysMenus) ([]*model.SysMenus, error) {
 	list := make([]*model.SysMenus, 0)
 
-	q := m.data.Query(ctx).SysMenus
+	q := m.query.SysMenus
 	db := q.WithContext(ctx)
 	// 此处填写 where参数判断
 	if data.MenuName != "" {

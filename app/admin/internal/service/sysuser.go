@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/pkg/common/constant"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
@@ -18,7 +19,7 @@ type SysuserService struct {
 	pb.UnimplementedSysuserServer
 	serverConf   *conf.Server
 	userCase     *biz.SysUserUseCase
-	authCase     *biz.AuthUseCase
+	authCase     *admin.AuthUseCase
 	roleCase     *biz.SysRoleUseCase
 	roleMenuCase *biz.SysRoleMenuUseCase
 	postCase     *biz.SysPostUseCase
@@ -26,7 +27,7 @@ type SysuserService struct {
 	log          *log.Helper
 }
 
-func NewSysuserService(serverConf *conf.Server, userCase *biz.SysUserUseCase, authCase *biz.AuthUseCase, roleCase *biz.SysRoleUseCase, roleMenuCase *biz.SysRoleMenuUseCase, postCase *biz.SysPostUseCase, deptCase *biz.SysDeptUseCase, logger log.Logger) *SysuserService {
+func NewSysuserService(serverConf *conf.Server, userCase *biz.SysUserUseCase, authCase *admin.AuthUseCase, roleCase *biz.SysRoleUseCase, roleMenuCase *biz.SysRoleMenuUseCase, postCase *biz.SysPostUseCase, deptCase *biz.SysDeptUseCase, logger log.Logger) *SysuserService {
 	return &SysuserService{
 		serverConf:   serverConf,
 		userCase:     userCase,

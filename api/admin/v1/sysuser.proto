@@ -33,7 +33,7 @@ service Sysuser {
     };
   };
   // 获取用户
-  rpc GetSysuser (GetSysuserRequest) returns (GetSysuserReply){
+  rpc FindSysuser (FindSysuserRequest) returns (FindSysuserReply){
     option (google.api.http) = {
       get: "/system/user/getById/{id}"
     };
@@ -45,7 +45,7 @@ service Sysuser {
     };
   };
   // 获取验证码
-  rpc GetCaptcha (GetCaptchaRequest) returns (GetCaptchaReply){
+  rpc FindCaptcha (FindCaptchaRequest) returns (FindCaptchaReply){
     option (google.api.http) = {
       get: "/system/user/getCaptcha"
     };
@@ -86,19 +86,19 @@ service Sysuser {
     };
   };
   // 获取岗位
-  rpc GetPostInit (GetPostInitRequest) returns (GetPostInitReply){
+  rpc FindPostInit (FindPostInitRequest) returns (FindPostInitReply){
     option (google.api.http) = {
       get: "/system/user/getInit"
     };
   };
   // 获取RoPo
-  rpc GetUserRolePost (GetUserRolePostRequest) returns (GetUserRolePostReply){
+  rpc FindUserRolePost (FindUserRolePostRequest) returns (FindUserRolePostReply){
     option (google.api.http) = {
       get: "/system/user/getRoPo"
     };
   };
   // 生成密钥和二维码
-  rpc GetUserGoogleSecret (GetUserGoogleSecretRequest) returns (GetUserGoogleSecretReply){
+  rpc FindUserGoogleSecret (FindUserGoogleSecretRequest) returns (FindUserGoogleSecretReply){
     option (google.api.http) = {
       get: "/system/user/secret"
     };
@@ -156,10 +156,10 @@ message DeleteSysuserRequest {
 }
 message DeleteSysuserReply {}
 
-message GetSysuserRequest {
+message FindSysuserRequest {
   int64 id = 1;
 }
-message GetSysuserReply {
+message FindSysuserReply {
   UserData user = 1;
   repeated RoleData roles = 2;
   repeated PostData posts = 3;
@@ -182,7 +182,7 @@ message ListSysuserReply {
   repeated UserData data = 4;
 }
 
-message GetCaptchaRequest{}
+message FindCaptchaRequest{}
 message GetCaptchaReply{
   string base64Captcha = 1;
   string captchaId = 2;

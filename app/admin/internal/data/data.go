@@ -10,6 +10,7 @@ import (
 	go_redis "github.com/redis/go-redis/v9"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -20,19 +21,19 @@ import (
 var ProviderSet = wire.NewSet(
 	NewData,
 	NewDB,
-	NewSysUserRepo,
-	NewSysMenuRepo,
-	NewSysDeptRepo,
-	NewSysPostRepo,
-	NewSysApiRepo,
-	NewSysRoleRepo,
-	NewSysRoleMenuRepo,
 	NewTransaction,
-	NewCasbinRuleRepo,
 	NewRedis,
-	NewSysDictDataRepo,
-	NewSysDictTypeRepo,
 	NewRedisRepo,
+	admin.NewSysUserRepo,
+	admin.NewSysMenuRepo,
+	admin.NewSysDeptRepo,
+	admin.NewSysPostRepo,
+	admin.NewSysApiRepo,
+	admin.NewSysRoleRepo,
+	admin.NewSysRoleMenuRepo,
+	admin.NewCasbinRuleRepo,
+	admin.NewSysDictDataRepo,
+	admin.NewSysDictTypeRepo,
 )
 
 // Data .
