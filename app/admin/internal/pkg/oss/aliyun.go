@@ -3,7 +3,7 @@ package oss
 import (
 	"context"
 	"errors"
-	"mime/multipart"
+	"io"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/go-kratos/kratos/v2/log"
@@ -36,8 +36,12 @@ func newAliyunClient(log *log.Helper, config *conf.OssConfig) (*aliyunClient, er
 	}, nil
 }
 
-func (c *aliyunClient) UploadFile(file multipart.File, path string) (string, error) {
-	err := c.bucket.PutObject(path, file)
+func (c *aliyunClient) UploadFile(file interface{}, path string) (string, error) {
+	reader, ok := file.(io.Reader)
+	if !ok {
+		return "", errors.New("file must be io.Reader")
+	}
+	err := c.bucket.PutObject(path, reader)
 	return c.domain, err
 }
 

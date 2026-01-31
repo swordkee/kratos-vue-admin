@@ -59,10 +59,10 @@ func (a *SysApiUseCase) DeleteApi(ctx context.Context, id int64) error {
 	return a.apiRepo.Delete(ctx, id)
 }
 
-func (a *SysApiUseCase) GetPolicyPathByRoleKey(ctx context.Context, roleKey string) ([][]string, error) {
+func (a *SysApiUseCase) FindPolicyPathByRoleKey(ctx context.Context, roleKey string) ([][]string, error) {
 	return a.casbinRepo.GetPolicyPathByRoleId(roleKey), nil
 }
 
-func (a *SysApiUseCase) GetApiByID(ctx context.Context, id int64) (*model.SysApis, error) {
+func (a *SysApiUseCase) FindApiByID(ctx context.Context, id int64) (*model.SysApis, error) {
 	return a.apiRepo.FindByID(ctx, id)
 }

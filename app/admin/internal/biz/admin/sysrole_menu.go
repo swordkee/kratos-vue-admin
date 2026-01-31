@@ -42,7 +42,7 @@ func (r *SysRoleMenuUseCase) DeleteByRoleId(ctx context.Context, roleIDs ...int6
 	return r.repo.DeleteByRoleId(ctx, roleIDs...)
 }
 
-func (r *SysRoleMenuUseCase) GetPermission(ctx context.Context, roleID int64) ([]string, error) {
+func (r *SysRoleMenuUseCase) FindPermission(ctx context.Context, roleID int64) ([]string, error) {
 	return r.repo.GetPermission(ctx, roleID)
 }
 

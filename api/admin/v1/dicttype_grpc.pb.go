@@ -30,15 +30,15 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DictTypeClient interface {
-	// 列表信息
+	//列表信息
 	ListDictType(ctx context.Context, in *ListDictTypeRequest, opts ...grpc.CallOption) (*ListDictTypeReply, error)
-	// 创建
+	//创建
 	CreateDictType(ctx context.Context, in *CreateDictTypeRequest, opts ...grpc.CallOption) (*CreateDictTypeReply, error)
-	// 更新
+	//更新
 	UpdateDictType(ctx context.Context, in *UpdateDictTypeRequest, opts ...grpc.CallOption) (*UpdateDictTypeReply, error)
-	// 删除
+	//删除
 	DeleteDictType(ctx context.Context, in *DeleteDictTypeRequest, opts ...grpc.CallOption) (*DeleteDictTypeReply, error)
-	// 获取信息
+	//获取信息
 	FindDictType(ctx context.Context, in *FindDictTypeRequest, opts ...grpc.CallOption) (*FindDictTypeReply, error)
 }
 
@@ -104,15 +104,15 @@ func (c *dictTypeClient) FindDictType(ctx context.Context, in *FindDictTypeReque
 // All implementations must embed UnimplementedDictTypeServer
 // for forward compatibility
 type DictTypeServer interface {
-	// 列表信息
+	//列表信息
 	ListDictType(context.Context, *ListDictTypeRequest) (*ListDictTypeReply, error)
-	// 创建
+	//创建
 	CreateDictType(context.Context, *CreateDictTypeRequest) (*CreateDictTypeReply, error)
-	// 更新
+	//更新
 	UpdateDictType(context.Context, *UpdateDictTypeRequest) (*UpdateDictTypeReply, error)
-	// 删除
+	//删除
 	DeleteDictType(context.Context, *DeleteDictTypeRequest) (*DeleteDictTypeReply, error)
-	// 获取信息
+	//获取信息
 	FindDictType(context.Context, *FindDictTypeRequest) (*FindDictTypeReply, error)
 	mustEmbedUnimplementedDictTypeServer()
 }

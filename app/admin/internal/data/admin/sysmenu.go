@@ -69,7 +69,7 @@ func (m *sysMenuRepo) DeleteMultiple(ctx context.Context, ids []int64) error {
 	return err
 }
 
-func (m *sysMenuRepo) FindById(ctx context.Context, id int64) (*model.SysMenus, error) {
+func (m *sysMenuRepo) FindByID(ctx context.Context, id int64) (*model.SysMenus, error) {
 	q := m.query.SysMenus
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
@@ -89,6 +89,21 @@ func (m *sysMenuRepo) FindByNameStatus(ctx context.Context, name string, status 
 		db = db.Where(q.Status.Eq(status))
 	}
 	return db.Order(q.Sort).Find()
+}
+
+// Count counts menus by name and status
+func (m *sysMenuRepo) Count(ctx context.Context, name string, status int32) (int32, error) {
+	q := m.query.SysMenus
+	db := q.WithContext(ctx)
+	if name != "" {
+		db = db.Where(q.MenuName.Like(fmt.Sprintf("%%%s%%", name)))
+	}
+	if status != 0 {
+		db = db.Where(q.Status.Eq(status))
+	}
+	db = db.Where(q.DeletedAt.IsNull())
+	count, err := db.Count()
+	return int32(count), err
 }
 
 // GetRoleMenuId 获取角色对应的菜单ids

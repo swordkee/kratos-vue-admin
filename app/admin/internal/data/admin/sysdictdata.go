@@ -15,7 +15,7 @@ type sysDictDataRepo struct {
 	log   *log.Helper
 }
 
-func NewSysDictDataRepo(query *dao.Query, logger log.Logger) admin.SysDictDatumRepo {
+func NewSysDictDataRepo(query *dao.Query, logger log.Logger) admin.SysDictDataRepo {
 	return &sysDictDataRepo{
 		query: query,
 		log:   log.NewHelper(logger),

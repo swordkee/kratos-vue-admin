@@ -53,7 +53,7 @@ func (s *MenusService) CreateMenus(ctx context.Context, req *pb.CreateMenusReque
 	}
 	claims := authz.MustFromContext(ctx)
 
-	permissions, err := s.roleMenuUseCase.GetPermission(ctx, claims.RoleID)
+	permissions, err := s.roleMenuUseCase.FindPermission(ctx, claims.RoleID)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (s *MenusService) UpdateMenus(ctx context.Context, req *pb.UpdateMenusReque
 	}
 	claims := authz.MustFromContext(ctx)
 
-	permissions, err := s.roleMenuUseCase.GetPermission(ctx, claims.RoleID)
+	permissions, err := s.roleMenuUseCase.FindPermission(ctx, claims.RoleID)
 	if err != nil {
 		return nil, err
 	}
@@ -113,13 +113,13 @@ func (s *MenusService) DeleteMenus(ctx context.Context, req *pb.DeleteMenusReque
 	}
 	return &pb.DeleteMenusReply{}, nil
 }
-func (s *MenusService) GetMenus(ctx context.Context, req *pb.GetMenusRequest) (*pb.GetMenusReply, error) {
-	menu, err := s.menuUseCase.GetMenus(ctx, req.Id)
+func (s *MenusService) FindMenus(ctx context.Context, req *pb.FindMenusRequest) (*pb.FindMenusReply, error) {
+	menu, err := s.menuUseCase.FindMenus(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetMenusReply{
+	return &pb.FindMenusReply{
 		MenuId:      int32(menu.ID),
 		MenuName:    menu.MenuName,
 		Title:       menu.Title,
@@ -143,13 +143,13 @@ func (s *MenusService) GetMenus(ctx context.Context, req *pb.GetMenusRequest) (*
 		UpdatedAt:   util.NewTimestamp(menu.UpdatedAt),
 	}, nil
 }
-func (s *MenusService) GetMenusTree(ctx context.Context, req *pb.GetMenusTreeRequest) (*pb.GetMenusTreeReply, error) {
+func (s *MenusService) QueryMenusTree(ctx context.Context, req *pb.QueryMenusTreeRequest) (*pb.QueryMenusTreeReply, error) {
 	menuList, err := s.menuUseCase.ListByNameStatus(ctx, "", 0)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetMenusTreeReply{
+	return &pb.QueryMenusTreeReply{
 		List: convertToSimpleMenu(menuList),
 	}, nil
 }

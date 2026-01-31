@@ -10,7 +10,7 @@ import (
 	jwtV5 "github.com/golang-jwt/jwt/v5"
 	"github.com/swordkee/kratos-casbin/authz/casbin"
 
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
@@ -28,7 +28,7 @@ func AuthWhiteListMatcher() selector.MatchFunc {
 	}
 }
 
-func Auth(s *conf.Auth, repo biz.CasbinRuleRepo) middleware.Middleware {
+func Auth(s *conf.Auth, repo admin.CasbinRuleRepo) middleware.Middleware {
 	return selector.Server(
 		jwt.Server(
 			func(token *jwtV5.Token) (interface{}, error) { return []byte(s.JwtKey), nil },
@@ -36,7 +36,7 @@ func Auth(s *conf.Auth, repo biz.CasbinRuleRepo) middleware.Middleware {
 			jwt.WithClaims(func() jwtV5.Claims { return &authz.TokenClaims{} }),
 		),
 		casbin.Server(
-			casbin.WithCasbinModel(repo.GetCasbinModel()),
+			casbin.WithCasbinModel(repo.GetModel()),
 			casbin.WithCasbinPolicy(repo.GetAdapter()),
 			casbin.WithSecurityUserCreator(authz.NewSecurityUser),
 			casbin.WithAutoLoadPolicy(true, 30*time.Second),

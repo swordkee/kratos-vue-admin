@@ -102,7 +102,7 @@ func (s *SysuserService) DeleteSysuser(ctx context.Context, req *pb.DeleteSysuse
 	return &pb.DeleteSysuserReply{}, err
 }
 
-func (s *SysuserService) GetSysuser(ctx context.Context, req *pb.GetSysuserRequest) (*pb.GetSysuserReply, error) {
+func (s *SysuserService) FindSysuser(ctx context.Context, req *pb.FindSysuserRequest) (*pb.FindSysuserReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (s *SysuserService) GetSysuser(ctx context.Context, req *pb.GetSysuserReque
 	if err != nil {
 		return nil, err
 	}
-	role, err := s.roleCase.GetRole(ctx, user.RoleID)
+	role, err := s.roleCase.FindRole(ctx, user.RoleID)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func (s *SysuserService) GetSysuser(ctx context.Context, req *pb.GetSysuserReque
 		return nil, err
 	}
 
-	deptList, err := s.deptCase.GetDeptList(ctx)
+	deptList, err := s.deptCase.QueryDeptList(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (s *SysuserService) GetSysuser(ctx context.Context, req *pb.GetSysuserReque
 	}
 
 	replyDepts := biz.ConvertToDeptTreeChildren(deptList)
-	reply := &pb.GetSysuserReply{
+	reply := &pb.FindSysuserReply{
 		User:    replyUser,
 		Roles:   replyRole,
 		Posts:   replyPost,
@@ -214,14 +214,14 @@ func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserReq
 	}
 
 	deptCache := util.NewCache(func(id int64) (*model.SysDepts, error) {
-		d, err := s.deptCase.GetDept(ctx, id)
+		d, err := s.deptCase.FindDept(ctx, id)
 		if d == nil {
 			d = &model.SysDepts{}
 		}
 		return d, err
 	})
 	roleCache := util.NewCache(func(id int64) (*model.SysRoles, error) {
-		d, err := s.roleCase.GetRole(ctx, id)
+		d, err := s.roleCase.FindRole(ctx, id)
 		if d == nil {
 			d = &model.SysRoles{}
 		}
@@ -267,12 +267,12 @@ func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserReq
 	}, nil
 }
 
-func (s *SysuserService) GetCaptcha(context.Context, *pb.GetCaptchaRequest) (*pb.GetCaptchaReply, error) {
+func (s *SysuserService) GetCaptcha(context.Context, *pb.FindCaptchaRequest) (*pb.FindCaptchaReply, error) {
 	id, content, image := util.Generate()
 	if s.serverConf.GetEnv() != conf.Env_dev {
 		content = ""
 	}
-	return &pb.GetCaptchaReply{
+	return &pb.FindCaptchaReply{
 		Base64Captcha: image,
 		CaptchaId:     id,
 		Content:       content,
@@ -309,12 +309,12 @@ func (s *SysuserService) Auth(ctx context.Context, req *pb.AuthRequest) (*pb.Aut
 	if err != nil {
 		return nil, err
 	}
-	role, err := s.roleCase.GetRole(ctx, user.RoleID)
+	role, err := s.roleCase.FindRole(ctx, user.RoleID)
 	if err != nil {
 		return nil, err
 	}
 
-	permits, err := s.roleMenuCase.GetPermission(ctx, role.ID)
+	permits, err := s.roleMenuCase.FindPermission(ctx, role.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -399,7 +399,7 @@ func (s *SysuserService) UpdatePassword(ctx context.Context, req *pb.UpdatePassw
 }
 
 // GetPostInit 获取初始化角色岗位信息
-func (s *SysuserService) GetPostInit(ctx context.Context, req *pb.GetPostInitRequest) (*pb.GetPostInitReply, error) {
+func (s *SysuserService) GetPostInit(ctx context.Context, req *pb.FindPostInitRequest) (*pb.FindPostInitReply, error) {
 	// 获取所有角色
 	roleList, err := s.roleCase.FindRoleAll(ctx)
 	if err != nil {
@@ -444,14 +444,14 @@ func (s *SysuserService) GetPostInit(ctx context.Context, req *pb.GetPostInitReq
 		}
 	}
 
-	return &pb.GetPostInitReply{
+	return &pb.FindPostInitReply{
 		Roles: replyRoles,
 		Posts: replyPosts,
 	}, nil
 }
 
 // GetUserRolePost 获取用户角色岗位信息
-func (s *SysuserService) GetUserRolePost(ctx context.Context, req *pb.GetUserRolePostRequest) (*pb.GetUserRolePostReply, error) {
+func (s *SysuserService) GetUserRolePost(ctx context.Context, req *pb.FindUserRolePostRequest) (*pb.FindUserRolePostReply, error) {
 	claims := authz.MustFromContext(ctx)
 	user, err := s.userCase.FindSysUserById(ctx, claims.UserID)
 	if err != nil {
@@ -502,17 +502,17 @@ func (s *SysuserService) GetUserRolePost(ctx context.Context, req *pb.GetUserRol
 		}
 	}
 
-	return &pb.GetUserRolePostReply{
+	return &pb.FindUserRolePostReply{
 		Roles: replyRoles,
 		Posts: replyPosts,
 	}, err
 }
 
-func (s *SysuserService) GetUserGoogleSecret(ctx context.Context, req *pb.GetUserGoogleSecretRequest) (*pb.GetUserGoogleSecretReply, error) {
+func (s *SysuserService) GetUserGoogleSecret(ctx context.Context, req *pb.FindUserGoogleSecretRequest) (*pb.FindUserGoogleSecretReply, error) {
 	gAuth := util.NewGoogleAuth()
 	secret := gAuth.GetSecret()
 	qrcode := gAuth.GetQrcode(secret)
-	var rep = &pb.GetUserGoogleSecretReply{}
+	var rep = &pb.FindUserGoogleSecretReply{}
 	rep.Secret = secret
 	rep.Qrcode = qrcode
 	return rep, nil

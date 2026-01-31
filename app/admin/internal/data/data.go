@@ -44,6 +44,7 @@ type Data struct {
 	rdb   go_redis.UniversalClient
 }
 
+// contextTxKey 用于在 context 中传递 GORM Gen 的事务 Query
 type contextTxKey struct{}
 
 func toGormLogLevel(d conf.GormLogLevel) gormLogger.LogLevel {
@@ -98,9 +99,15 @@ func NewTransaction(d *Data) biz.Transaction {
 	return d
 }
 
+// Transaction 使用 GORM Gen 自带的事务方式，通过 context 传递带事务的 tx (dao.Query)
+// 这样所有 repo 操作都会自动使用同一个事务，实现原子性操作
 func (d *Data) Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
-	return d.query.Transaction(func(tx *dao.Query) error {
-		ctx = context.WithValue(ctx, contextTxKey{}, tx)
+	// 使用 GORM Gen 的事务模式，通过 WithContext 传递事务上下文
+	return d.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// 创建带事务的 dao.Query
+		txQuery := dao.Use(tx)
+		// 将带事务的 Query 存入 context，供后续 repo 操作使用
+		ctx = context.WithValue(ctx, contextTxKey{}, txQuery)
 		return fn(ctx)
 	})
 }

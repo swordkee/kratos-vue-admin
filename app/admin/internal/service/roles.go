@@ -57,16 +57,16 @@ func (r *RolesService) ListRoles(ctx context.Context, req *pb.ListRolesRequest) 
 	}, nil
 }
 
-func (r *RolesService) GetRoles(ctx context.Context, req *pb.GetRolesRequest) (*pb.GetRolesReply, error) {
-	role, err := r.rc.GetRole(ctx, req.Id)
+func (r *RolesService) FindRoles(ctx context.Context, req *pb.FindRolesRequest) (*pb.FindRolesReply, error) {
+	role, err := r.rc.FindRole(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
-	menuIds, err := r.rc.GetRoleMenuId(ctx, role.ID)
+	menuIds, err := r.rc.QueryRoleMenuIds(ctx, role.ID)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.GetRolesReply{
+	return &pb.FindRolesReply{
 		Role: &pb.RoleData{
 			RoleId:     role.ID,
 			RoleName:   role.RoleName,

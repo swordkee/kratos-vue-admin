@@ -18,7 +18,6 @@ type SysDictDataRepo interface {
 	FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysDictData, error)
 	FindAll(ctx context.Context) ([]*model.SysDictData, error)
 	ListPage(ctx context.Context, dictLabel, dictType string, status int32, page, size int32) ([]*model.SysDictData, error)
-	Count(ctx context.Context, label string, status int32) (int32, error)
 	ListPageCount(ctx context.Context, dictLabel, dictType string, status int32) (int32, error)
 }
 

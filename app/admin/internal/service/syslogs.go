@@ -24,8 +24,8 @@ func NewSysLogsService(opRecordsCase *biz.SysLogsUseCase, logger log.Logger) *Sy
 	}
 }
 
-// GetOperationRecords 获取单条操作记录
-func (s *SysLogsService) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.GetLogsReply, error) {
+// FindLogs 获取单条操作记录
+func (s *SysLogsService) FindLogs(ctx context.Context, req *pb.FindLogsRequest) (*pb.FindLogsReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (s *SysLogsService) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*
 		return nil, errors.InternalServer("OPERATION_RECORD_GET_FAILED", "failed to get operation record")
 	}
 
-	return &pb.GetLogsReply{
+	return &pb.FindLogsReply{
 		Data: &pb.SysLogs{
 			Id:        record.ID,
 			CreatedAt: record.CreatedAt.Format("2006-01-02 15:04:05"),

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
@@ -30,12 +29,12 @@ type SysRoleUseCase struct {
 	menuRepo     SysMenuRepo
 	log          *log.Helper
 	roleMenuCase *SysRoleMenuUseCase
-	casbinCase   CasbinRuleUseCase
+	casbinCase   *CasbinRuleUseCase
 	userUseCase  *SysUserUseCase
-	tx           biz.Transaction
+	tx           Transaction
 }
 
-func NewSysRoleUseCase(repo SysRoleRepo, logger log.Logger, rmc *SysRoleMenuUseCase, casbin CasbinRuleUseCase, userUseCase *SysUserUseCase, tx biz.Transaction, menuRepo SysMenuRepo) *SysRoleUseCase {
+func NewSysRoleUseCase(repo SysRoleRepo, logger log.Logger, rmc *SysRoleMenuUseCase, casbin *CasbinRuleUseCase, userUseCase *SysUserUseCase, tx Transaction, menuRepo SysMenuRepo) *SysRoleUseCase {
 	return &SysRoleUseCase{
 		repo:         repo,
 		log:          log.NewHelper(logger),
@@ -56,7 +55,7 @@ func (r *SysRoleUseCase) ListPage(ctx context.Context, roleName, roleKey string,
 	return roleList, total, err
 }
 
-func (r *SysRoleUseCase) GetRole(ctx context.Context, id int64) (*model.SysRoles, error) {
+func (r *SysRoleUseCase) FindRole(ctx context.Context, id int64) (*model.SysRoles, error) {
 	return r.repo.FindByID(ctx, id)
 }
 
@@ -208,6 +207,6 @@ func (r *SysRoleUseCase) FindRoleAll(ctx context.Context) ([]*model.SysRoles, er
 	return r.repo.FindAll(ctx)
 }
 
-func (r *SysRoleUseCase) GetRoleMenuId(ctx context.Context, roleId int64) ([]int32, error) {
+func (r *SysRoleUseCase) QueryRoleMenuIds(ctx context.Context, roleId int64) ([]int32, error) {
 	return r.menuRepo.GetRoleMenuId(ctx, roleId)
 }

@@ -27,8 +27,8 @@ func NewApiService(ac *biz.SysApiUseCase, logger log.Logger, casbinUseCase *admi
 	}
 }
 
-func (a *ApiService) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.GetApiReply, error) {
-	api, err := a.apiUseCase.GetApiByID(ctx, req.Id)
+func (a *ApiService) FindApi(ctx context.Context, req *pb.FindApiRequest) (*pb.FindApiReply, error) {
+	api, err := a.apiUseCase.FindApiByID(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (a *ApiService) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Get
 		CreateTime:  util.NewTimestamp(api.CreatedAt),
 		UpdateTime:  util.NewTimestamp(api.UpdatedAt),
 	}
-	return &pb.GetApiReply{
+	return &pb.FindApiReply{
 		Api: data,
 	}, nil
 }
@@ -102,16 +102,16 @@ func (a *ApiService) AllApi(ctx context.Context, _ *pb.AllApiRequest) (*pb.AllAp
 	}, nil
 }
 
-func (a *ApiService) GetPolicyPathByRoleKey(ctx context.Context, req *pb.GetPolicyPathByRoleKeyRequest) (*pb.GetPolicyPathByRoleKeyReply, error) {
+func (a *ApiService) GetPolicyPathByRoleKey(ctx context.Context, req *pb.QueryPolicyPathByRoleKeyRequest) (*pb.QueryPolicyPathByRoleKeyReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
 
-	policyList := a.casbinUseCase.GetPolicyPathByRoleId(req.RoleKey)
+	policyList := a.casbinUseCase.FindPolicyPathByRoleId(req.RoleKey)
 
 	apis := ConvertApiBaseFromList(policyList)
 
-	return &pb.GetPolicyPathByRoleKeyReply{
+	return &pb.QueryPolicyPathByRoleKeyReply{
 		Apis: apis,
 	}, nil
 }

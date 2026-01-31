@@ -9,9 +9,11 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	biz "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/oss"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
@@ -31,37 +33,38 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	if err != nil {
 		return nil, nil, err
 	}
-	casbinRuleRepo := data.NewCasbinRuleRepo(dataData, db, logger)
-	sysUserRepo := data.NewSysUserRepo(dataData, logger)
+	query := dao.Use(db)
+	casbinRuleRepo := admin.NewCasbinRuleRepo(db, logger)
+	sysUserRepo := admin.NewSysUserRepo(query, logger)
 	ossRepo := oss.NewOssRepo(confOss, logger)
 	sysUserUseCase := biz.NewSysUserUseCase(sysUserRepo, ossRepo, confServer, logger)
-	sysRoleRepo := data.NewSysRoleRepo(dataData, logger)
+	sysRoleRepo := admin.NewSysRoleRepo(query, logger)
 	authUseCase := biz.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, logger)
-	sysRoleMenuRepo := data.NewSysRoleMenuRepo(dataData, logger)
+	sysRoleMenuRepo := admin.NewSysRoleMenuRepo(query, logger)
 	sysRoleMenuUseCase := biz.NewSysRoleMenuUseCase(sysRoleMenuRepo, logger)
 	casbinRuleUseCase := biz.NewCasbinRuleUseCase(casbinRuleRepo, logger)
 	transaction := data.NewTransaction(dataData)
-	sysMenuRepo := data.NewSysMenuRepo(dataData, logger)
+	sysMenuRepo := admin.NewSysMenuRepo(query, logger)
 	sysRoleUseCase := biz.NewSysRoleUseCase(sysRoleRepo, logger, sysRoleMenuUseCase, casbinRuleUseCase, sysUserUseCase, transaction, sysMenuRepo)
-	sysPostRepo := data.NewSysPostRepo(dataData, logger)
+	sysPostRepo := admin.NewSysPostRepo(query, logger)
 	sysPostUseCase := biz.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
-	sysDeptRepo := data.NewSysDeptRepo(dataData, logger)
+	sysDeptRepo := admin.NewSysDeptRepo(query, logger)
 	sysDeptUseCase := biz.NewSysDeptUseCase(sysDeptRepo, logger)
 	sysuserService := service.NewSysuserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
-	sysApiRepo := data.NewSysApiRepo(dataData, logger)
+	sysApiRepo := admin.NewSysApiRepo(query, logger)
 	sysApiUseCase := biz.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
 	apiService := service.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
 	deptService := service.NewDeptService(sysDeptUseCase, logger)
 	sysMenuUseCase := biz.NewSysMenusUseCase(sysMenuRepo, logger)
 	menusService := service.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
-	sysLogsRepo := data.NewSysLogsRepo(dataData, logger)
+	sysLogsRepo := admin.NewSysLogsRepo(query, logger)
 	sysLogsUseCase := biz.NewSysLogsUseCase(sysLogsRepo, logger)
 	sysLogsService := service.NewSysLogsService(sysLogsUseCase, logger)
 	postService := service.NewPostService(sysPostUseCase, logger)
-	sysDictTypeRepo := data.NewSysDictTypeRepo(dataData, logger)
+	sysDictTypeRepo := admin.NewSysDictTypeRepo(query, logger)
 	sysDictTypeUseCase := biz.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
 	dictTypeService := service.NewDictTypeService(sysDictTypeUseCase, logger)
-	sysDictDatumRepo := data.NewSysDictDataRepo(dataData, logger)
+	sysDictDatumRepo := admin.NewSysDictDataRepo(query, logger)
 	sysDictDatumUseCase := biz.NewSysDictDatumUseCase(sysDictDatumRepo, logger)
 	dictDataService := service.NewDictDataService(sysDictDatumUseCase, logger)
 	rolesService := service.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)

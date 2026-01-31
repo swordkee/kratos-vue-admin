@@ -24,9 +24,8 @@ var ProviderSet = wire.NewSet(
 	admin.NewSysDictTypeUseCase,
 )
 
-type Transaction interface {
-	Transaction(context.Context, func(ctx context.Context) error) error
-}
+// Transaction 事务接口类型别名（指向 admin.Transaction 以避免循环导入）
+type Transaction = admin.Transaction
 
 type RedisRepo interface {
 	SetHashKey(context.Context, string, string, interface{}) error
@@ -42,7 +41,7 @@ type RedisRepo interface {
 }
 
 type OssRepo interface {
-	Upload(ctx context.Context, file []byte) (string, error)
+	UploadFile(file interface{}, filePath string) (string, error)
 }
 
 // UserListCondition is a condition for user list query.

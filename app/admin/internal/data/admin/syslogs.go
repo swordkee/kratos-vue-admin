@@ -2,6 +2,7 @@ package admin
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
@@ -28,15 +29,15 @@ func (s *sysLogsRepo) FindByID(ctx context.Context, id int64) (*model.SysLogs, e
 	return q.WithContext(ctx).Where(q.ID.Eq(id)).First()
 }
 
-func (r *sysLogsRepo) Find(ctx context.Context, offset, limit int) ([]*model.SysLogs, error) {
-	var records []*model.SysLogs
-	err := r.query.WithContext(ctx).
-		Offset(offset).
-		Limit(limit).
-		Order("id DESC").
-		Find(&records).Error
+func (r *sysLogsRepo) Count(ctx context.Context) (int64, error) {
+	q := r.query.SysLogs
+	count, err := q.WithContext(ctx).Count()
+	return count, err
+}
 
-	return records, err
+func (r *sysLogsRepo) Find(ctx context.Context, offset, limit int) ([]*model.SysLogs, error) {
+	q := r.query.SysLogs
+	return q.WithContext(ctx).Limit(limit).Offset(offset).Find()
 }
 
 func (r *sysLogsRepo) FindByPage(ctx context.Context, offset, limit int) (result []*model.SysLogs, count int64, err error) {
@@ -62,47 +63,57 @@ func (s *sysLogsRepo) Delete(ctx context.Context, id int64) error {
 }
 
 // DeleteByIds deletes operation records by ids
-func (s *sysLogsRepo) DeleteByIds(ctx context.Context, ids []int64) error {
+func (r *sysLogsRepo) DeleteByIds(ctx context.Context, ids []int64) error {
 	if len(ids) == 0 {
 		return nil
 	}
-	q := s.query.SysLogs
-	return q.WithContext(ctx).
-		Where("id IN ?", ids).
-		Delete(&model.SysLogs{}).Error
+	q := r.query.SysLogs
+	_, err := q.WithContext(ctx).Where(q.ID.In(ids...)).Delete()
+	return err
 }
 
 // DeleteByTimeRange deletes all operation records within the specified time range
 func (s *sysLogsRepo) DeleteByTimeRange(ctx context.Context, startTime, endTime string) error {
+	start, err1 := time.Parse("2006-01-02 15:04:05", startTime)
+	if err1 != nil {
+		return err1
+	}
+	end, err2 := time.Parse("2006-01-02 15:04:05", endTime)
+	if err2 != nil {
+		return err2
+	}
+
 	q := s.query.SysLogs
-	return q.WithContext(ctx).
-		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
-		Unscoped().
-		Delete(&model.SysLogs{})
+	_, err := q.WithContext(ctx).
+		Where(q.CreatedAt.Gte(start), q.CreatedAt.Lte(end)).
+		Delete()
+	return err
 }
 
 // FindByTimeRange finds operation records within the specified time range
 func (r *sysLogsRepo) FindByTimeRange(ctx context.Context, startTime, endTime string, offset, limit int) ([]*model.SysLogs, int64, error) {
+	start, err1 := time.Parse("2006-01-02 15:04:05", startTime)
+	if err1 != nil {
+		return nil, 0, err1
+	}
+	end, err2 := time.Parse("2006-01-02 15:04:05", endTime)
+	if err2 != nil {
+		return nil, 0, err2
+	}
+
 	var records []*model.SysLogs
 	var count int64
 
-	// Get total count within time range
-	err := r.query.WithContext(ctx).
-		Model(&model.SysLogs{}).
-		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
-		Count(&count).Error
+	q := r.query.SysLogs
+	condition := q.WithContext(ctx).Where(q.CreatedAt.Gte(start), q.CreatedAt.Lte(end))
 
+	// Get total count within time range
+	count, err := condition.Count()
 	if err != nil {
 		return nil, 0, err
 	}
 
 	// Get records within time range
-	err = r.query.WithContext(ctx).
-		Where("created_at >= ? AND created_at <= ?", startTime, endTime).
-		Offset(offset).
-		Limit(limit).
-		Order("id DESC").
-		Find(&records).Error
-
+	records, err = condition.Offset(offset).Limit(limit).Order(q.ID.Desc()).Find()
 	return records, count, err
 }

@@ -75,6 +75,11 @@ func (p *sysPostRepo) ListPageCount(ctx context.Context, postName, postCode stri
 	return int32(count), err
 }
 
+// Count counts posts by name, code and status
+func (p *sysPostRepo) Count(ctx context.Context, postName, postCode string, status int32) (int32, error) {
+	return p.ListPageCount(ctx, postName, postCode, status)
+}
+
 func (p *sysPostRepo) FindByIDList(ctx context.Context, ids ...int64) ([]*model.SysPosts, error) {
 	q := p.query.SysPosts
 	return q.WithContext(ctx).Where(q.ID.In(ids...)).Find()

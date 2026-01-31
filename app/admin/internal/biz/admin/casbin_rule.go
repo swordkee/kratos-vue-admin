@@ -35,7 +35,7 @@ func (c *CasbinRuleUseCase) UpdateCasbin(ctx context.Context, roleKey string, ap
 	return c.repo.UpdateCasbin(ctx, roleKey, rules)
 }
 
-func (c *CasbinRuleUseCase) GetPolicyPathByRoleId(roleKey string) [][]string {
+func (c *CasbinRuleUseCase) FindPolicyPathByRoleId(roleKey string) [][]string {
 	return c.repo.GetPolicyPathByRoleId(roleKey)
 }
 

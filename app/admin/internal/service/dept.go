@@ -58,13 +58,13 @@ func (s *DeptService) ListDept(ctx context.Context, req *pb.ListDeptRequest) (*p
 		Data: data,
 	}, nil
 }
-func (s *DeptService) GetDeptTree(ctx context.Context, req *pb.GetDeptTreeRequest) (*pb.GetDeptTreeReply, error) {
+func (s *DeptService) GetDeptTree(ctx context.Context, req *pb.QueryDeptTreeRequest) (*pb.QueryDeptTreeReply, error) {
 	deptList, err := s.deptUseCase.ListByNameStatusId(ctx, req.DeptName, req.Status, req.DeptId)
 	if err != nil {
 		return nil, err
 	}
 	data := biz.ConvertToDeptTree(deptList)
-	return &pb.GetDeptTreeReply{
+	return &pb.QueryDeptTreeReply{
 		Data: data,
 	}, nil
 }

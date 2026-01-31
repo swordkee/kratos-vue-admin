@@ -14,14 +14,10 @@ type SysMenuRepo interface {
 	Save(ctx context.Context, menu *model.SysMenus) error
 	Create(ctx context.Context, menu *model.SysMenus) error
 	Delete(ctx context.Context, id int64) error
-	DeleteMultiple(ctx context.Context, menus []*model.SysMenus) error
+	DeleteMultiple(ctx context.Context, ids []int64) error
 	FindByID(ctx context.Context, id int64) (*model.SysMenus, error)
-	FindById(ctx context.Context, id int64) (*model.SysMenus, error)
-	FindAll(ctx context.Context) ([]*model.SysMenus, error)
-	ListPage(ctx context.Context, name string, status int32, page, size int32) ([]*model.SysMenus, error)
 	Count(ctx context.Context, name string, status int32) (int32, error)
-	FindByRoleID(ctx context.Context, roleId int64) ([]*model.SysMenus, error)
-	GetAllChildren(ctx context.Context, id int64) ([]*model.SysMenus, error)
+	GetAllChildren(ctx context.Context, id int64) ([]int64, error)
 	FindByNameStatus(ctx context.Context, menuName string, status int32) ([]*model.SysMenus, error)
 	SelectMenuLabel(ctx context.Context, menu model.SysMenus) ([]*pb.MenuLabel, error)
 	GetRoleMenuId(ctx context.Context, roleId int64) ([]int32, error)
@@ -56,17 +52,17 @@ func (m *SysMenuUseCase) DeleteMenus(ctx context.Context, id int64) error {
 	// 删除父级菜单时同时删除子菜单，否则获取菜单会报错
 	allChildrenMenus, err := m.repo.GetAllChildren(ctx, id)
 	if err != nil {
-		return pb.ErrorDatabaseErr("获取所有子菜单失败:", err.Error())
+		return pb.ErrorDatabaseErr("获取所有子菜单失败:%s", err.Error())
 	}
 	err = m.repo.DeleteMultiple(ctx, allChildrenMenus)
 	if err != nil {
-		return pb.ErrorDatabaseErr("删除子菜单失败:", err.Error())
+		return pb.ErrorDatabaseErr("删除子菜单失败:%s", err.Error())
 	}
 	return m.repo.Delete(ctx, id)
 }
 
-func (m *SysMenuUseCase) GetMenus(ctx context.Context, id int64) (*model.SysMenus, error) {
-	return m.repo.FindById(ctx, id)
+func (m *SysMenuUseCase) FindMenus(ctx context.Context, id int64) (*model.SysMenus, error) {
+	return m.repo.FindByID(ctx, id)
 }
 
 type MenuSimpleTree struct {

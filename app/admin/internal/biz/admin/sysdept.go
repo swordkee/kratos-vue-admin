@@ -101,11 +101,11 @@ func (d *SysDeptUseCase) buildDeptPath(ctx context.Context, dept *model.SysDepts
 	return deptPath, nil
 }
 
-func (d *SysDeptUseCase) GetDept(ctx context.Context, id int64) (*model.SysDepts, error) {
+func (d *SysDeptUseCase) FindDept(ctx context.Context, id int64) (*model.SysDepts, error) {
 	return d.repo.FindByID(ctx, id)
 }
 
-func (d *SysDeptUseCase) GetDeptList(ctx context.Context) ([]*pb.DeptTree, error) {
+func (d *SysDeptUseCase) QueryDeptList(ctx context.Context) ([]*pb.DeptTree, error) {
 	return d.repo.SelectDept(ctx)
 }
 

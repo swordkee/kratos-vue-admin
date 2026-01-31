@@ -20,6 +20,7 @@ import (
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	v1 "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
 )
@@ -84,7 +85,7 @@ func EncoderResponse() http.EncodeResponseFunc {
 func NewHTTPServer(
 	c *conf.Server,
 	s *conf.Auth,
-	casbinRepo biz.CasbinRuleRepo,
+	casbinRepo admin.CasbinRuleRepo,
 	logger log.Logger,
 	sysUserService *service.SysuserService,
 	apiService *service.ApiService,
