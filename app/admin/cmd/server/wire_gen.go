@@ -16,7 +16,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/oss"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
+	adminV1 "github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
 )
 
 import (
@@ -50,24 +50,24 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	sysPostUseCase := biz.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
 	sysDeptRepo := admin.NewSysDeptRepo(query, logger)
 	sysDeptUseCase := biz.NewSysDeptUseCase(sysDeptRepo, logger)
-	sysuserService := service.NewSysuserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
+	sysuserService := adminV1.NewSysuserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
 	sysApiRepo := admin.NewSysApiRepo(query, logger)
 	sysApiUseCase := biz.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
-	apiService := service.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
-	deptService := service.NewDeptService(sysDeptUseCase, logger)
+	apiService := adminV1.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
+	deptService := adminV1.NewDeptService(sysDeptUseCase, logger)
 	sysMenuUseCase := biz.NewSysMenusUseCase(sysMenuRepo, logger)
-	menusService := service.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
+	menusService := adminV1.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
 	sysLogsRepo := admin.NewSysLogsRepo(query, logger)
 	sysLogsUseCase := biz.NewSysLogsUseCase(sysLogsRepo, logger)
-	sysLogsService := service.NewSysLogsService(sysLogsUseCase, logger)
-	postService := service.NewPostService(sysPostUseCase, logger)
+	sysLogsService := adminV1.NewSysLogsService(sysLogsUseCase, logger)
+	postService := adminV1.NewPostService(sysPostUseCase, logger)
 	sysDictTypeRepo := admin.NewSysDictTypeRepo(query, logger)
 	sysDictTypeUseCase := biz.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
-	dictTypeService := service.NewDictTypeService(sysDictTypeUseCase, logger)
+	dictTypeService := adminV1.NewDictTypeService(sysDictTypeUseCase, logger)
 	sysDictDatumRepo := admin.NewSysDictDataRepo(query, logger)
 	sysDictDatumUseCase := biz.NewSysDictDatumUseCase(sysDictDatumRepo, logger)
-	dictDataService := service.NewDictDataService(sysDictDatumUseCase, logger)
-	rolesService := service.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
+	dictDataService := adminV1.NewDictDataService(sysDictDatumUseCase, logger)
+	rolesService := adminV1.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
 	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, logger, sysuserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService)
 	app := newApp(logger, httpServer)
 	return app, func() {

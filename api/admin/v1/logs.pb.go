@@ -808,7 +808,7 @@ const file_logs_proto_rawDesc = "" +
 	"\bListLogs\x12\x1d.api.admin.v1.ListLogsRequest\x1a\x1b.api.admin.v1.ListLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/list\x12a\n" +
 	"\bFindLogs\x12\x1d.api.admin.v1.FindLogsRequest\x1a\x1b.api.admin.v1.FindLogsReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/logs/{id}\x12e\n" +
 	"\tCleanLogs\x12\x1e.api.admin.v1.CleanLogsRequest\x1a\x1c.api.admin.v1.CleanLogsReply\"\x1a\x82\xd3\xe4\x93\x02\x14*\x12/system/logs/clean\x12}\n" +
-	"\x0fDeleteLogsByIds\x12$.api.admin.v1.DeleteLogsByIdsRequest\x1a\".api.admin.v1.DeleteLogsByIdsReply\" \x82\xd3\xe4\x93\x02\x1a*\x18/system/logs/deleteByIdsB>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x0fDeleteLogsByIds\x12$.api.admin.v1.DeleteLogsByIdsRequest\x1a\".api.admin.v1.DeleteLogsByIdsReply\" \x82\xd3\xe4\x93\x02\x1a*\x18/system/logs/deleteByIdsB6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_logs_proto_rawDescOnce sync.Once

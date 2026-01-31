@@ -888,7 +888,7 @@ const file_roles_proto_rawDesc = "" +
 	"\x10ChangeRoleStatus\x12%.api.admin.v1.ChangeRoleStatusRequest\x1a#.api.admin.v1.ChangeRoleStatusReply\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\x1a\x19/system/role/changeStatus\x12l\n" +
 	"\tDataScope\x12\x1e.api.admin.v1.DataScopeRequest\x1a\x1c.api.admin.v1.DataScopeReply\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/system/role/dataScope\x12j\n" +
 	"\vDeleteRoles\x12 .api.admin.v1.DeleteRolesRequest\x1a\x1e.api.admin.v1.DeleteRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/role/{id}\x12d\n" +
-	"\tFindRoles\x12\x1e.api.admin.v1.FindRolesRequest\x1a\x1c.api.admin.v1.FindRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/role/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\tFindRoles\x12\x1e.api.admin.v1.FindRolesRequest\x1a\x1c.api.admin.v1.FindRolesReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/role/{id}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_roles_proto_rawDescOnce sync.Once

@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 
 package api.admin.v1;
 
-option go_package = "https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
 
 message ApiBase {
   string path = 1;

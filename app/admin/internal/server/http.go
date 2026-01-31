@@ -22,7 +22,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
+	adminV1 "github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
 )
 
 func jsonMarshal(res *pb.CommonReply) ([]byte, error) {
@@ -87,16 +87,16 @@ func NewHTTPServer(
 	s *conf.Auth,
 	casbinRepo admin.CasbinRuleRepo,
 	logger log.Logger,
-	sysUserService *service.SysuserService,
-	apiService *service.ApiService,
-	deptService *service.DeptService,
+	sysUserService *adminV1.SysuserService,
+	apiService *adminV1.ApiService,
+	deptService *adminV1.DeptService,
 	opRecordsCase *biz.SysLogsUseCase,
-	opRecordsService *service.SysLogsService,
-	menusService *service.MenusService,
-	postService *service.PostService,
-	dictTypeService *service.DictTypeService,
-	dictDataService *service.DictDataService,
-	roleService *service.RolesService,
+	opRecordsService *adminV1.SysLogsService,
+	menusService *adminV1.MenusService,
+	postService *adminV1.PostService,
+	dictTypeService *adminV1.DictTypeService,
+	dictDataService *adminV1.DictDataService,
+	roleService *adminV1.RolesService,
 ) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(

@@ -2125,7 +2125,7 @@ const file_base_proto_rawDesc = "" +
 	"\fisProhibited\x18\x02 \x01(\x05R\fisProhibited\x1av\n" +
 	"\tipItemSet\x125\n" +
 	"\x06ipItem\x18\x01 \x03(\v2\x1d.api.admin.v1.UserInfo.ipItemR\x06ipItem\x122\n" +
-	"\x14isMultiTerminalLogin\x18\x02 \x01(\x05R\x14isMultiTerminalLoginB>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x14isMultiTerminalLogin\x18\x02 \x01(\x05R\x14isMultiTerminalLoginB6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_base_proto_rawDescOnce sync.Once

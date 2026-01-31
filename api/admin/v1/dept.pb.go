@@ -789,7 +789,7 @@ const file_dept_proto_rawDesc = "" +
 	"UpdateDept\x12\x1f.api.admin.v1.UpdateDeptRequest\x1a\x1d.api.admin.v1.UpdateDeptReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/dept\x12g\n" +
 	"\n" +
 	"DeleteDept\x12\x1f.api.admin.v1.DeleteDeptRequest\x1a\x1d.api.admin.v1.DeleteDeptReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/dept/{id}\x12\x96\x01\n" +
-	"\x12RoleDeptTreeSelect\x12'.api.admin.v1.RoleDeptTreeSelectRequest\x1a%.api.admin.v1.RoleDeptTreeSelectReply\"0\x82\xd3\xe4\x93\x02*\x12(/system/dept/roleDeptTreeSelect/{roleId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x12RoleDeptTreeSelect\x12'.api.admin.v1.RoleDeptTreeSelectRequest\x1a%.api.admin.v1.RoleDeptTreeSelectReply\"0\x82\xd3\xe4\x93\x02*\x12(/system/dept/roleDeptTreeSelect/{roleId}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_dept_proto_rawDescOnce sync.Once

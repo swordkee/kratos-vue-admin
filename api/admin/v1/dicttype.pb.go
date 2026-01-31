@@ -855,7 +855,7 @@ const file_dicttype_proto_rawDesc = "" +
 	"\x0eCreateDictType\x12#.api.admin.v1.CreateDictTypeRequest\x1a!.api.admin.v1.CreateDictTypeReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/system/dict/type\x12v\n" +
 	"\x0eUpdateDictType\x12#.api.admin.v1.UpdateDictTypeRequest\x1a!.api.admin.v1.UpdateDictTypeReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\x1a\x11/system/dict/type\x12|\n" +
 	"\x0eDeleteDictType\x12#.api.admin.v1.DeleteDictTypeRequest\x1a!.api.admin.v1.DeleteDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/system/dict/type/{dictId}\x12v\n" +
-	"\fFindDictType\x12!.api.admin.v1.FindDictTypeRequest\x1a\x1f.api.admin.v1.FindDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/system/dict/type/{dictId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\fFindDictType\x12!.api.admin.v1.FindDictTypeRequest\x1a\x1f.api.admin.v1.FindDictTypeReply\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/system/dict/type/{dictId}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_dicttype_proto_rawDescOnce sync.Once

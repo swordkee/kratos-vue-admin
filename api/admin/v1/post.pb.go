@@ -521,7 +521,7 @@ const file_post_proto_rawDesc = "" +
 	"\n" +
 	"UpdatePost\x12\x1f.api.admin.v1.UpdatePostRequest\x1a\x1d.api.admin.v1.UpdatePostReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/post\x12g\n" +
 	"\n" +
-	"DeletePost\x12\x1f.api.admin.v1.DeletePostRequest\x1a\x1d.api.admin.v1.DeletePostReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/post/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"DeletePost\x12\x1f.api.admin.v1.DeletePostRequest\x1a\x1d.api.admin.v1.DeletePostReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/post/{id}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_post_proto_rawDescOnce sync.Once

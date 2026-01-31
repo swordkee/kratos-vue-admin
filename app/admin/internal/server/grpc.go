@@ -3,7 +3,7 @@ package server
 import (
 	v1 "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -11,7 +11,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, sysuser *service.SysuserService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, sysuser *admin.SysuserService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),

@@ -882,7 +882,7 @@ const file_dictdata_proto_rawDesc = "" +
 	"\x0eCreateDictData\x12#.api.admin.v1.CreateDictDataRequest\x1a!.api.admin.v1.CreateDictDataReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/system/dict/data\x12v\n" +
 	"\x0eUpdateDictData\x12#.api.admin.v1.UpdateDictDataRequest\x1a!.api.admin.v1.UpdateDictDataReply\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\x1a\x11/system/dict/data\x12~\n" +
 	"\x0eDeleteDictData\x12#.api.admin.v1.DeleteDictDataRequest\x1a!.api.admin.v1.DeleteDictDataReply\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/system/dict/data/{dictCode}\x12}\n" +
-	"\fFindDictData\x12!.api.admin.v1.FindDictDataRequest\x1a\x1f.api.admin.v1.FindDictDataReply\")\x82\xd3\xe4\x93\x02#\x12!/system/dict/data/info/{dictCode}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\fFindDictData\x12!.api.admin.v1.FindDictDataRequest\x1a\x1f.api.admin.v1.FindDictDataReply\")\x82\xd3\xe4\x93\x02#\x12!/system/dict/data/info/{dictCode}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_dictdata_proto_rawDescOnce sync.Once

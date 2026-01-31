@@ -90,7 +90,7 @@ const file_common_proto_rawDesc = "" +
 	"\vCommonReply\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12(\n" +
-	"\x04data\x18\x03 \x01(\v2\x14.google.protobuf.AnyR\x04dataB>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x04data\x18\x03 \x01(\v2\x14.google.protobuf.AnyR\x04dataB6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_common_proto_rawDescOnce sync.Once

@@ -1230,7 +1230,7 @@ const file_menus_proto_rawDesc = "" +
 	"\vUpdateMenus\x12 .api.admin.v1.UpdateMenusRequest\x1a\x1e.api.admin.v1.UpdateMenusReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/menu\x12j\n" +
 	"\vDeleteMenus\x12 .api.admin.v1.DeleteMenusRequest\x1a\x1e.api.admin.v1.DeleteMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/menu/{id}\x12d\n" +
 	"\tFindMenus\x12\x1e.api.admin.v1.FindMenusRequest\x1a\x1c.api.admin.v1.FindMenusReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/menu/{id}\x12\x96\x01\n" +
-	"\x12RoleMenuTreeSelect\x12'.api.admin.v1.RoleMenuTreeSelectRequest\x1a%.api.admin.v1.RoleMenuTreeSelectReply\"0\x82\xd3\xe4\x93\x02*\x12(/system/menu/roleMenuTreeSelect/{roleId}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x12RoleMenuTreeSelect\x12'.api.admin.v1.RoleMenuTreeSelectRequest\x1a%.api.admin.v1.RoleMenuTreeSelectReply\"0\x82\xd3\xe4\x93\x02*\x12(/system/menu/roleMenuTreeSelect/{roleId}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_menus_proto_rawDescOnce sync.Once

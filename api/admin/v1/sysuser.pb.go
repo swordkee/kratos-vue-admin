@@ -2169,7 +2169,7 @@ const file_sysuser_proto_rawDesc = "" +
 	"\x0eUpdatePassword\x12#.api.admin.v1.UpdatePasswordRequest\x1a!.api.admin.v1.UpdatePasswordReply\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\x1a\x10/system/user/pwd\x12p\n" +
 	"\fFindPostInit\x12!.api.admin.v1.FindPostInitRequest\x1a\x1f.api.admin.v1.FindPostInitReply\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/system/user/getInit\x12|\n" +
 	"\x10FindUserRolePost\x12%.api.admin.v1.FindUserRolePostRequest\x1a#.api.admin.v1.FindUserRolePostReply\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/system/user/getRoPo\x12\x87\x01\n" +
-	"\x14FindUserGoogleSecret\x12).api.admin.v1.FindUserGoogleSecretRequest\x1a'.api.admin.v1.FindUserGoogleSecretReply\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/system/user/secretB>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x14FindUserGoogleSecret\x12).api.admin.v1.FindUserGoogleSecretRequest\x1a'.api.admin.v1.FindUserGoogleSecretReply\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/system/user/secretB6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_sysuser_proto_rawDescOnce sync.Once

@@ -1,4 +1,4 @@
-package service
+package admin
 
 import (
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"

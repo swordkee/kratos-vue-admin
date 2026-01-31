@@ -742,7 +742,7 @@ const file_api_proto_rawDesc = "" +
 	"\tUpdateApi\x12\x1e.api.admin.v1.UpdateApiRequest\x1a\x1c.api.admin.v1.UpdateApiReply\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\x1a\v/system/api\x12\xa1\x01\n" +
 	"\x18QueryPolicyPathByRoleKey\x12-.api.admin.v1.QueryPolicyPathByRoleKeyRequest\x1a+.api.admin.v1.QueryPolicyPathByRoleKeyReply\")\x82\xd3\xe4\x93\x02#\x12!/system/api/getPolicyPathByRoleId\x12]\n" +
 	"\aFindApi\x12\x1c.api.admin.v1.FindApiRequest\x1a\x1a.api.admin.v1.FindApiReply\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/system/api/{id}\x12c\n" +
-	"\tDeleteApi\x12\x1e.api.admin.v1.DeleteApiRequest\x1a\x1c.api.admin.v1.DeleteApiReply\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/system/api/{id}B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\tDeleteApi\x12\x1e.api.admin.v1.DeleteApiRequest\x1a\x1c.api.admin.v1.DeleteApiReply\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/system/api/{id}B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once

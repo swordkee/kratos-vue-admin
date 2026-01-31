@@ -118,7 +118,7 @@ const file_sysuser_error_proto_rawDesc = "" +
 	"\x11ACCOUNT_FORBIDDEN\x10\t\x1a\x04\xa8E\xc8\x01\x12\x1b\n" +
 	"\x11ROLE_BIND_ACCOUNT\x10\n" +
 	"\x1a\x04\xa8E\xc8\x01\x12\x19\n" +
-	"\x0fACCOUNT_EXISTED\x10\v\x1a\x04\xa8E\xc8\x01\x1a\x04\xa0E\xf4\x03B>Z<https://github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
+	"\x0fACCOUNT_EXISTED\x10\v\x1a\x04\xa8E\xc8\x01\x1a\x04\xa0E\xf4\x03B6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
 	file_sysuser_error_proto_rawDescOnce sync.Once
