@@ -49,7 +49,7 @@ func (receiver *AuthUseCase) Login(ctx context.Context, req *pb.LoginRequest) (t
 	code, err := gAuth.GetCode(user.Secret)
 
 	if err != nil {
-		pErr = pb.ErrorInternalErr(err.Error())
+		pErr = pb.ErrorInternalErr("%s", err.Error())
 		return
 	}
 
