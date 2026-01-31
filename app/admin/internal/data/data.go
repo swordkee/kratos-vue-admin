@@ -23,8 +23,10 @@ var ProviderSet = wire.NewSet(
 	NewDB,
 	NewTransaction,
 	NewRedis,
+	NewQuery,
 	NewRedisRepo,
 	admin.NewSysUserRepo,
+	admin.NewSysLogsRepo,
 	admin.NewSysMenuRepo,
 	admin.NewSysDeptRepo,
 	admin.NewSysPostRepo,
@@ -35,6 +37,11 @@ var ProviderSet = wire.NewSet(
 	admin.NewSysDictDataRepo,
 	admin.NewSysDictTypeRepo,
 )
+
+// NewQuery returns the query instance from Data
+func NewQuery(d *Data) *dao.Query {
+	return d.query
+}
 
 // Data .
 type Data struct {

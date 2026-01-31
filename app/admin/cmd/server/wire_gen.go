@@ -9,14 +9,13 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	biz "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	admin2 "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/oss"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
-	adminV1 "github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
+	admin3 "github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
 )
 
 import (
@@ -28,46 +27,46 @@ import (
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casbin *conf.Casbin, confOss *conf.Oss, logger log.Logger, data_Redis *conf.Data_Redis) (*kratos.App, func(), error) {
 	db := data.NewDB(confData, logger)
+	casbinRuleRepo := admin.NewCasbinRuleRepo(db, logger)
 	universalClient := data.NewRedis(confData)
 	dataData, cleanup, err := data.NewData(db, logger, universalClient)
 	if err != nil {
 		return nil, nil, err
 	}
-	query := dao.Use(db)
-	casbinRuleRepo := admin.NewCasbinRuleRepo(db, logger)
+	query := data.NewQuery(dataData)
 	sysUserRepo := admin.NewSysUserRepo(query, logger)
 	ossRepo := oss.NewOssRepo(confOss, logger)
-	sysUserUseCase := biz.NewSysUserUseCase(sysUserRepo, ossRepo, confServer, logger)
+	sysUserUseCase := admin2.NewSysUserUseCase(sysUserRepo, ossRepo, confServer, logger)
 	sysRoleRepo := admin.NewSysRoleRepo(query, logger)
-	authUseCase := biz.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, logger)
+	authUseCase := admin2.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, logger)
 	sysRoleMenuRepo := admin.NewSysRoleMenuRepo(query, logger)
-	sysRoleMenuUseCase := biz.NewSysRoleMenuUseCase(sysRoleMenuRepo, logger)
-	casbinRuleUseCase := biz.NewCasbinRuleUseCase(casbinRuleRepo, logger)
+	sysRoleMenuUseCase := admin2.NewSysRoleMenuUseCase(sysRoleMenuRepo, logger)
+	casbinRuleUseCase := admin2.NewCasbinRuleUseCase(casbinRuleRepo, logger)
 	transaction := data.NewTransaction(dataData)
 	sysMenuRepo := admin.NewSysMenuRepo(query, logger)
-	sysRoleUseCase := biz.NewSysRoleUseCase(sysRoleRepo, logger, sysRoleMenuUseCase, casbinRuleUseCase, sysUserUseCase, transaction, sysMenuRepo)
+	sysRoleUseCase := admin2.NewSysRoleUseCase(sysRoleRepo, logger, sysRoleMenuUseCase, casbinRuleUseCase, sysUserUseCase, transaction, sysMenuRepo)
 	sysPostRepo := admin.NewSysPostRepo(query, logger)
-	sysPostUseCase := biz.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
+	sysPostUseCase := admin2.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
 	sysDeptRepo := admin.NewSysDeptRepo(query, logger)
-	sysDeptUseCase := biz.NewSysDeptUseCase(sysDeptRepo, logger)
-	sysuserService := adminV1.NewSysuserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
+	sysDeptUseCase := admin2.NewSysDeptUseCase(sysDeptRepo, logger)
+	sysuserService := admin3.NewSysuserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
 	sysApiRepo := admin.NewSysApiRepo(query, logger)
-	sysApiUseCase := biz.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
-	apiService := adminV1.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
-	deptService := adminV1.NewDeptService(sysDeptUseCase, logger)
-	sysMenuUseCase := biz.NewSysMenusUseCase(sysMenuRepo, logger)
-	menusService := adminV1.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
+	sysApiUseCase := admin2.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
+	apiService := admin3.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
+	deptService := admin3.NewDeptService(sysDeptUseCase, logger)
 	sysLogsRepo := admin.NewSysLogsRepo(query, logger)
-	sysLogsUseCase := biz.NewSysLogsUseCase(sysLogsRepo, logger)
-	sysLogsService := adminV1.NewSysLogsService(sysLogsUseCase, logger)
-	postService := adminV1.NewPostService(sysPostUseCase, logger)
+	sysLogsUseCase := admin2.NewSysLogsUseCase(sysLogsRepo, logger)
+	sysLogsService := admin3.NewSysLogsService(sysLogsUseCase, logger)
+	sysMenuUseCase := admin2.NewSysMenusUseCase(sysMenuRepo, logger)
+	menusService := admin3.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
+	postService := admin3.NewPostService(sysPostUseCase, logger)
 	sysDictTypeRepo := admin.NewSysDictTypeRepo(query, logger)
-	sysDictTypeUseCase := biz.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
-	dictTypeService := adminV1.NewDictTypeService(sysDictTypeUseCase, logger)
-	sysDictDatumRepo := admin.NewSysDictDataRepo(query, logger)
-	sysDictDatumUseCase := biz.NewSysDictDatumUseCase(sysDictDatumRepo, logger)
-	dictDataService := adminV1.NewDictDataService(sysDictDatumUseCase, logger)
-	rolesService := adminV1.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
+	sysDictTypeUseCase := admin2.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
+	dictTypeService := admin3.NewDictTypeService(sysDictTypeUseCase, logger)
+	sysDictDataRepo := admin.NewSysDictDataRepo(query, logger)
+	sysDictDatumUseCase := admin2.NewSysDictDatumUseCase(sysDictDataRepo, logger)
+	dictDataService := admin3.NewDictDataService(sysDictDatumUseCase, logger)
+	rolesService := admin3.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
 	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, logger, sysuserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService)
 	app := newApp(logger, httpServer)
 	return app, func() {

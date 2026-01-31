@@ -6,7 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 )
 
@@ -14,10 +14,10 @@ var ProviderSet = wire.NewSet(
 	NewOssRepo,
 )
 
-func NewOssRepo(c *conf.Oss, logger log.Logger) biz.OssRepo {
+func NewOssRepo(c *conf.Oss, logger log.Logger) admin.OssRepo {
 	logs := log.NewHelper(log.With(logger, "module", "app/admin/internal/pkg/oss"))
 	var err error
-	var repo biz.OssRepo
+	var repo admin.OssRepo
 	switch c.Use {
 	case conf.OssUseMode_aliyun:
 		repo, err = newAliyunClient(logs, c.Aliyun)

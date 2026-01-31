@@ -353,7 +353,7 @@ INSERT INTO `sys_apis` VALUES (33, '/api.admin.v1.DictData/FindDictData', '获�
 INSERT INTO `sys_apis` VALUES (34, '/api.admin.v1.DictData/CreateDictData', '添加字典数据信息', 'dict', 'POST', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (35, '/api.admin.v1.DictData/UpdateDictData', '修改字典数据信息', 'dict', 'PUT', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (36, '/api.admin.v1.DictData/DeleteDictData', '删除字典数据信息', 'dict', 'DELETE', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
-INSERT INTO `sys_apis` VALUES (37, '/api.admin.v1.Menus/GetMenusTree', '获取菜单树', 'menu', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
+INSERT INTO `sys_apis` VALUES (37, '/api.admin.v1.Menus/QueryMenusTree', '获取菜单树', 'menu', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (38, '/system/menu/menuRole', '获取角色菜单', 'menu', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (39, '/api.admin.v1.Menus/RoleMenuTreeSelect', '获取角色菜单树', 'menu', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (41, '/api.admin.v1.Menus/ListMenus', '获取菜单列表', 'menu', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
