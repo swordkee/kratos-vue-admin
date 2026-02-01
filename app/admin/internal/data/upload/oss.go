@@ -27,25 +27,17 @@ func NewOssRepo(path string, logger log.Logger) admin.OssRepo {
 	}
 }
 
-func (o *OssRepo) UploadFile(file interface{}, filePath string) (string, error) {
+func (o *OssRepo) UploadFile(file multipart.File, filePath string) (string, error) {
 	var fileBytes []byte
 	var fileName string
 
-	switch f := file.(type) {
-	case multipart.File:
-		defer f.Close()
-		var err error
-		fileBytes, err = io.ReadAll(f)
-		if err != nil {
-			return "", fmt.Errorf("failed to read file: %w", err)
-		}
-	case []byte:
-		fileBytes = f
-	case string:
-		fileBytes = []byte(f)
-	default:
-		return "", fmt.Errorf("unsupported file type")
+	// 读取文件内容
+	var err error
+	fileBytes, err = io.ReadAll(file)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file: %w", err)
 	}
+	defer file.Close()
 
 	// 生成文件名
 	if filePath == "" {

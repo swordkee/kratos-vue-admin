@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"mime/multipart"
 	"os"
 	"path/filepath"
 
@@ -21,11 +22,7 @@ func newLocalClient(log *log.Helper, config *conf.OssLocalConfig) (*localClient,
 	return &localClient{log: log, dir: config.Dir}, nil
 }
 
-func (c *localClient) UploadFile(file interface{}, path string) (string, error) {
-	reader, ok := file.(io.Reader)
-	if !ok {
-		return "", errors.New("file must be io.Reader")
-	}
+func (c *localClient) UploadFile(file multipart.File, path string) (string, error) {
 	path = filepath.Join(c.dir, path)
 	dir := filepath.Dir(path)
 
@@ -38,7 +35,7 @@ func (c *localClient) UploadFile(file interface{}, path string) (string, error) 
 	}
 	defer out.Close()
 
-	_, err = io.Copy(out, reader)
+	_, err = io.Copy(out, file)
 	return "/", err
 }
 

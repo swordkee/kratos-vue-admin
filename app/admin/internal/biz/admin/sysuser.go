@@ -9,6 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/uuid"
 	"github.com/kakuilan/kgo"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/upload"
 	"gorm.io/gorm"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
@@ -56,22 +57,17 @@ type SysUserRepo interface {
 	RemoveIpFromBlacklist(ctx context.Context, ip string) error
 }
 
-// OssRepo 接口定义
-type OssRepo interface {
-	UploadFile(file interface{}, filePath string) (string, error)
-}
-
 // SysUserUseCase is a SysUser use case.
 type SysUserUseCase struct {
 	userRepo   SysUserRepo
-	uploadRepo OssRepo
+	uploadRepo upload.OssRepo
 
 	severConfig *conf.Server
 	log         *log.Helper
 }
 
 // NewSysUserUseCase new a SysUser use case.
-func NewSysUserUseCase(userRepo SysUserRepo, uploadRepo OssRepo, severConfig *conf.Server, logger log.Logger) *SysUserUseCase {
+func NewSysUserUseCase(userRepo SysUserRepo, uploadRepo upload.OssRepo, severConfig *conf.Server, logger log.Logger) *SysUserUseCase {
 	return &SysUserUseCase{
 		userRepo:    userRepo,
 		uploadRepo:  uploadRepo,
