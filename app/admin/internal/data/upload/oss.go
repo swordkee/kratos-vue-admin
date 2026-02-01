@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
-	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/upload"
 )
 
 type OssRepo struct {
@@ -18,9 +18,9 @@ type OssRepo struct {
 	path string
 }
 
-var _ admin.OssRepo = (*OssRepo)(nil)
+var _ upload.OssRepo = (*OssRepo)(nil)
 
-func NewOssRepo(path string, logger log.Logger) admin.OssRepo {
+func NewOssRepo(path string, logger log.Logger) upload.OssRepo {
 	return &OssRepo{
 		log:  log.NewHelper(logger),
 		path: path,
