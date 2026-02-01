@@ -44,6 +44,16 @@ type SysUserRepo interface {
 	Count(ctx context.Context, condition UserListCondition) (int32, error)
 	CountByRoleId(ctx context.Context, roleId int64) (int64, error)
 	FindAll(ctx context.Context) ([]*model.SysUsers, error)
+
+	// JWT 黑名单相关
+	AddJwtToBlacklist(ctx context.Context, jwt string) error
+	IsJwtInBlacklist(ctx context.Context, jwt string) (bool, error)
+	CleanExpiredBlacklists(ctx context.Context) error
+
+	// IP 黑名单相关
+	AddIpToBlacklist(ctx context.Context, ip string, reason string) error
+	IsIpInBlacklist(ctx context.Context, ip string) (bool, error)
+	RemoveIpFromBlacklist(ctx context.Context, ip string) error
 }
 
 // OssRepo 接口定义
@@ -116,7 +126,7 @@ func (uc *SysUserUseCase) FindSysUserById(ctx context.Context, id int64) (*model
 	return uc.userRepo.FindByID(ctx, id)
 }
 
-func (uc *SysUserUseCase) ListPage(ctx context.Context, req *pb.ListSysuserRequest) (users []*model.SysUsers, total int32, err error) {
+func (uc *SysUserUseCase) ListPage(ctx context.Context, req *pb.ListSysUserRequest) (users []*model.SysUsers, total int32, err error) {
 	var condition = UserListCondition{
 		UserName: req.Username,
 		Phone:    req.Phone,
@@ -214,4 +224,42 @@ func (uc *SysUserUseCase) UploadFile(ctx context.Context) (string, error) {
 	}
 	//return filePath, nil
 	return domain + "/" + filePath, nil
+}
+
+// ==================== JWT 黑名单相关方法 ====================
+
+// AddJwtToBlacklist 将 JWT 加入黑名单
+func (uc *SysUserUseCase) AddJwtToBlacklist(ctx context.Context, jwt string) error {
+	uc.log.WithContext(ctx).Infof("AddJwtToBlacklist: %s", jwt)
+	return uc.userRepo.AddJwtToBlacklist(ctx, jwt)
+}
+
+// IsJwtInBlacklist 检查 JWT 是否在黑名单中
+func (uc *SysUserUseCase) IsJwtInBlacklist(ctx context.Context, jwt string) (bool, error) {
+	return uc.userRepo.IsJwtInBlacklist(ctx, jwt)
+}
+
+// CleanExpiredBlacklists 清理过期的黑名单记录
+func (uc *SysUserUseCase) CleanExpiredBlacklists(ctx context.Context) error {
+	uc.log.WithContext(ctx).Info("CleanExpiredBlacklists: 清理过期的黑名单记录")
+	return uc.userRepo.CleanExpiredBlacklists(ctx)
+}
+
+// ==================== IP 黑名单相关方法 ====================
+
+// AddIpToBlacklist 将 IP 加入黑名单
+func (uc *SysUserUseCase) AddIpToBlacklist(ctx context.Context, ip string, reason string) error {
+	uc.log.WithContext(ctx).Infof("AddIpToBlacklist: %s, reason: %s", ip, reason)
+	return uc.userRepo.AddIpToBlacklist(ctx, ip, reason)
+}
+
+// IsIpInBlacklist 检查 IP 是否在黑名单中
+func (uc *SysUserUseCase) IsIpInBlacklist(ctx context.Context, ip string) (bool, error) {
+	return uc.userRepo.IsIpInBlacklist(ctx, ip)
+}
+
+// RemoveIpFromBlacklist 将 IP 从黑名单中移除
+func (uc *SysUserUseCase) RemoveIpFromBlacklist(ctx context.Context, ip string) error {
+	uc.log.WithContext(ctx).Infof("RemoveIpFromBlacklist: %s", ip)
+	return uc.userRepo.RemoveIpFromBlacklist(ctx, ip)
 }

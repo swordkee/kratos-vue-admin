@@ -102,7 +102,7 @@ func (a *ApiService) AllApi(ctx context.Context, _ *pb.AllApiRequest) (*pb.AllAp
 	}, nil
 }
 
-func (a *ApiService) GetPolicyPathByRoleKey(ctx context.Context, req *pb.QueryPolicyPathByRoleKeyRequest) (*pb.QueryPolicyPathByRoleKeyReply, error) {
+func (a *ApiService) QueryPolicyPathByRoleKey(ctx context.Context, req *pb.QueryPolicyPathByRoleKeyRequest) (*pb.QueryPolicyPathByRoleKeyReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}

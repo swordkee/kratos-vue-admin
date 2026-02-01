@@ -2,7 +2,7 @@ package admin
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/casbin/casbin/v3"
@@ -84,7 +84,7 @@ func (c *casbinRuleRepo) UpdateCasbin(ctx context.Context, roleKey string, rules
 		return err
 	}
 	if !success {
-		return errors.New("存在相同api,添加失败,请联系管理员")
+		return fmt.Errorf("存在相同api,添加失败,请联系管理员: %w", fmt.Errorf("api policy already exists"))
 	}
 	_ = c.syncedEnforcer.SavePolicy()
 	return nil

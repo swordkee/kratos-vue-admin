@@ -946,3 +946,16 @@ INSERT INTO `sys_users` VALUES (2, 'd26733e4-ee09-4d98-b462-93bae039209c', 'test
 INSERT INTO `sys_users` VALUES (3, 'b3614db9-80a8-4892-9f65-0a6e70a00a2d', 'dahe', 'dahe', '$2a$10$iCr0rC6esWA91xCiImLZ5uMxjnW45VVhFzR2e9IPVg4QKY/XhvqEu', '13777788880', 1, '', '', 0, 'dahe@gmail.com', 3, 1, 'ewtwet', 1, '1', '1', 'admin', 'admin', '2023-08-24 08:54:34', '2023-09-04 11:16:19', NULL, '5KPR5XMSMTZTE6WQBHLFXYNKA64EOBUH');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- IP黑名单表
+CREATE TABLE `ip_blacklist`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IP地址',
+  `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '加入黑名单原因',
+  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间（软删除）',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_ip`(`ip`) USING BTREE,
+  INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC COMMENT = 'IP黑名单表';

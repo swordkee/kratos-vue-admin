@@ -195,12 +195,31 @@ func toCamelCase(s string) string {
 	return strings.Join(parts, "")
 }
 
-// 所有表配置 (jydb 核心交易表)
+// 所有表配置 (kva 数据库表)
 func getAllTables() []TableConfig {
 	tables := []TableConfig{}
 
-	//tables = append(tables, TableConfig{TableName: "casbin_rule", StructName: "casbin", Description: "权限配置表"})
-	//tables = append(tables, TableConfig{TableName: "jwt_blacklists", StructName: "blacklists", Description: "jwt黑名单"})
+	tables = append(tables, TableConfig{TableName: "casbin_rule", StructName: "casbin_rule", Description: "权限配置表"})
+	tables = append(tables, TableConfig{TableName: "jwt_blacklists", StructName: "jwt_blacklists", Description: "jwt黑名单"})
+	tables = append(tables, TableConfig{TableName: "log_jobs", StructName: "log_jobs", Description: "任务日志"})
+	tables = append(tables, TableConfig{TableName: "log_logins", StructName: "log_logins", Description: "登录日志"})
+	tables = append(tables, TableConfig{TableName: "log_opers", StructName: "log_opers", Description: "操作日志"})
+	tables = append(tables, TableConfig{TableName: "sys_apis", StructName: "sys_apis", Description: "系统API"})
+	tables = append(tables, TableConfig{TableName: "sys_depts", StructName: "sys_depts", Description: "部门"})
+	tables = append(tables, TableConfig{TableName: "sys_dict_data", StructName: "sys_dict_data", Description: "字典数据"})
+	tables = append(tables, TableConfig{TableName: "sys_dict_types", StructName: "sys_dict_types", Description: "字典类型"})
+	tables = append(tables, TableConfig{TableName: "sys_discovery", StructName: "sys_discovery", Description: "发现页"})
+	tables = append(tables, TableConfig{TableName: "sys_jobs", StructName: "sys_jobs", Description: "系统任务"})
+	tables = append(tables, TableConfig{TableName: "sys_logs", StructName: "sys_logs", Description: "系统日志"})
+	tables = append(tables, TableConfig{TableName: "sys_menu_btns", StructName: "sys_menu_btns", Description: "菜单按钮"})
+	tables = append(tables, TableConfig{TableName: "sys_menus", StructName: "sys_menus", Description: "菜单"})
+	tables = append(tables, TableConfig{TableName: "sys_posts", StructName: "sys_posts", Description: "岗位"})
+	tables = append(tables, TableConfig{TableName: "sys_role_btns", StructName: "sys_role_btns", Description: "角色按钮"})
+	tables = append(tables, TableConfig{TableName: "sys_role_depts", StructName: "sys_role_depts", Description: "角色部门"})
+	tables = append(tables, TableConfig{TableName: "sys_role_menus", StructName: "sys_role_menus", Description: "角色菜单"})
+	tables = append(tables, TableConfig{TableName: "sys_roles", StructName: "sys_roles", Description: "角色"})
+	tables = append(tables, TableConfig{TableName: "sys_users", StructName: "sys_users", Description: "用户"})
+	tables = append(tables, TableConfig{TableName: "ip_blacklist", StructName: "ip_blacklist", Description: "IP黑名单"})
 
 	return tables
 }

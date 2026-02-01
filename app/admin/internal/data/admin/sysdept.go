@@ -2,7 +2,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -41,7 +40,7 @@ func (d *sysDeptRepo) Save(ctx context.Context, dept *model.SysDepts) error {
 
 func (d *sysDeptRepo) UpdateByID(ctx context.Context, id int64, dept *model.SysDepts) error {
 	if id == 0 {
-		return errors.New("user can not update without id")
+		return fmt.Errorf("dept can not update without id: %w", fmt.Errorf("invalid id"))
 	}
 	q := d.query.SysDepts
 	dataMap := make(map[string]interface{})

@@ -33,7 +33,7 @@ func (r *RedisRepo) IncrHashKey(ctx context.Context, key string, field string, v
 	return r.data.rdb.HIncrBy(ctx, key, field, value).Err()
 }
 
-func (r *RedisRepo) GetHashKey(ctx context.Context, key string, field string) (string, error) {
+func (r *RedisRepo) QueryHashKey(ctx context.Context, key string, field string) (string, error) {
 	return r.data.rdb.HGet(ctx, key, field).Result()
 }
 
@@ -41,7 +41,7 @@ func (r *RedisRepo) DelHashKey(ctx context.Context, key string, field string) er
 	return r.data.rdb.HDel(ctx, key, field).Err()
 }
 
-func (r *RedisRepo) GetHashLen(ctx context.Context, key string) error {
+func (r *RedisRepo) QueryHashLen(ctx context.Context, key string) error {
 	return r.data.rdb.HLen(ctx, key).Err()
 }
 
@@ -50,7 +50,7 @@ func (r *RedisRepo) Lock(ctx context.Context, key string, value interface{}, dur
 	return res, err
 }
 
-func (r *RedisRepo) GetHashAllKeyAndVal(ctx context.Context, key string) (map[string]string, error) {
+func (r *RedisRepo) QueryHashAllKeyAndVal(ctx context.Context, key string) (map[string]string, error) {
 	res, err := r.data.rdb.HGetAll(ctx, key).Result()
 	mm := make(map[string]string)
 	for k, v := range res {

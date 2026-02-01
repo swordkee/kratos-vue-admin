@@ -86,8 +86,9 @@ func NewHTTPServer(
 	c *conf.Server,
 	s *conf.Auth,
 	casbinRepo admin.CasbinRuleRepo,
+	userRepo admin.SysUserRepo,
 	logger log.Logger,
-	sysUserService *adminV1.SysuserService,
+	sysUserService *adminV1.SysUserService,
 	apiService *adminV1.ApiService,
 	deptService *adminV1.DeptService,
 	opRecordsCase *biz.SysLogsUseCase,
@@ -103,7 +104,7 @@ func NewHTTPServer(
 			recovery.Recovery(),
 			logging.Server(logger),
 			middleware.OperationRecord(opRecordsCase),
-			middleware.Auth(s, casbinRepo),
+			middleware.Auth(s, casbinRepo, userRepo),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Language", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"}),
@@ -124,7 +125,7 @@ func NewHTTPServer(
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterSysuserHTTPServer(srv, sysUserService)
+	v1.RegisterSysUserHTTPServer(srv, sysUserService)
 	v1.RegisterApiHTTPServer(srv, apiService)
 	v1.RegisterDeptHTTPServer(srv, deptService)
 	v1.RegisterLogsServiceHTTPServer(srv, opRecordsService)

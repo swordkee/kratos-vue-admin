@@ -8,7 +8,7 @@ import (
 // ProviderSet is service providers.
 var ProviderSet = wire.NewSet(
 	// admin模块的服务
-	admin.NewSysuserService,
+	admin.NewSysUserService,
 	admin.NewSysLogsService,
 	admin.NewMenusService,
 	admin.NewRolesService,

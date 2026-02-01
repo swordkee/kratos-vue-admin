@@ -25,7 +25,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CreateSysuserRequest struct {
+type CreateSysUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	NickName      string                 `protobuf:"bytes,1,opt,name=nickName,proto3" json:"nickName,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
@@ -46,20 +46,20 @@ type CreateSysuserRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateSysuserRequest) Reset() {
-	*x = CreateSysuserRequest{}
+func (x *CreateSysUserRequest) Reset() {
+	*x = CreateSysUserRequest{}
 	mi := &file_sysuser_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateSysuserRequest) String() string {
+func (x *CreateSysUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateSysuserRequest) ProtoMessage() {}
+func (*CreateSysUserRequest) ProtoMessage() {}
 
-func (x *CreateSysuserRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateSysUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -71,136 +71,136 @@ func (x *CreateSysuserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateSysuserRequest.ProtoReflect.Descriptor instead.
-func (*CreateSysuserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateSysUserRequest.ProtoReflect.Descriptor instead.
+func (*CreateSysUserRequest) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateSysuserRequest) GetNickName() string {
+func (x *CreateSysUserRequest) GetNickName() string {
 	if x != nil {
 		return x.NickName
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetUsername() string {
+func (x *CreateSysUserRequest) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetPassword() string {
+func (x *CreateSysUserRequest) GetPassword() string {
 	if x != nil {
 		return x.Password
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetPhone() string {
+func (x *CreateSysUserRequest) GetPhone() string {
 	if x != nil {
 		return x.Phone
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetEmail() string {
+func (x *CreateSysUserRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetSex() int32 {
+func (x *CreateSysUserRequest) GetSex() int32 {
 	if x != nil {
 		return x.Sex
 	}
 	return 0
 }
 
-func (x *CreateSysuserRequest) GetDeptId() int64 {
+func (x *CreateSysUserRequest) GetDeptId() int64 {
 	if x != nil {
 		return x.DeptId
 	}
 	return 0
 }
 
-func (x *CreateSysuserRequest) GetStatus() int32 {
+func (x *CreateSysUserRequest) GetStatus() int32 {
 	if x != nil {
 		return x.Status
 	}
 	return 0
 }
 
-func (x *CreateSysuserRequest) GetRemark() string {
+func (x *CreateSysUserRequest) GetRemark() string {
 	if x != nil {
 		return x.Remark
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetPostId() int64 {
+func (x *CreateSysUserRequest) GetPostId() int64 {
 	if x != nil {
 		return x.PostId
 	}
 	return 0
 }
 
-func (x *CreateSysuserRequest) GetRoleId() int64 {
+func (x *CreateSysUserRequest) GetRoleId() int64 {
 	if x != nil {
 		return x.RoleId
 	}
 	return 0
 }
 
-func (x *CreateSysuserRequest) GetPostIds() string {
+func (x *CreateSysUserRequest) GetPostIds() string {
 	if x != nil {
 		return x.PostIds
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetRoleIds() string {
+func (x *CreateSysUserRequest) GetRoleIds() string {
 	if x != nil {
 		return x.RoleIds
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetAvatar() string {
+func (x *CreateSysUserRequest) GetAvatar() string {
 	if x != nil {
 		return x.Avatar
 	}
 	return ""
 }
 
-func (x *CreateSysuserRequest) GetSecret() string {
+func (x *CreateSysUserRequest) GetSecret() string {
 	if x != nil {
 		return x.Secret
 	}
 	return ""
 }
 
-type CreateSysuserReply struct {
+type CreateSysUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateSysuserReply) Reset() {
-	*x = CreateSysuserReply{}
+func (x *CreateSysUserReply) Reset() {
+	*x = CreateSysUserReply{}
 	mi := &file_sysuser_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateSysuserReply) String() string {
+func (x *CreateSysUserReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateSysuserReply) ProtoMessage() {}
+func (*CreateSysUserReply) ProtoMessage() {}
 
-func (x *CreateSysuserReply) ProtoReflect() protoreflect.Message {
+func (x *CreateSysUserReply) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -212,12 +212,12 @@ func (x *CreateSysuserReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateSysuserReply.ProtoReflect.Descriptor instead.
-func (*CreateSysuserReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateSysUserReply.ProtoReflect.Descriptor instead.
+func (*CreateSysUserReply) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{1}
 }
 
-type UpdateSysuserRequest struct {
+type UpdateSysUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	NickName      string                 `protobuf:"bytes,3,opt,name=nickName,proto3" json:"nickName,omitempty"`
@@ -245,20 +245,20 @@ type UpdateSysuserRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateSysuserRequest) Reset() {
-	*x = UpdateSysuserRequest{}
+func (x *UpdateSysUserRequest) Reset() {
+	*x = UpdateSysUserRequest{}
 	mi := &file_sysuser_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateSysuserRequest) String() string {
+func (x *UpdateSysUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateSysuserRequest) ProtoMessage() {}
+func (*UpdateSysUserRequest) ProtoMessage() {}
 
-func (x *UpdateSysuserRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateSysUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -270,185 +270,185 @@ func (x *UpdateSysuserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateSysuserRequest.ProtoReflect.Descriptor instead.
-func (*UpdateSysuserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateSysUserRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSysUserRequest) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *UpdateSysuserRequest) GetUserId() int64 {
+func (x *UpdateSysUserRequest) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetNickName() string {
+func (x *UpdateSysUserRequest) GetNickName() string {
 	if x != nil {
 		return x.NickName
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetPhone() string {
+func (x *UpdateSysUserRequest) GetPhone() string {
 	if x != nil {
 		return x.Phone
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetRoleId() int64 {
+func (x *UpdateSysUserRequest) GetRoleId() int64 {
 	if x != nil {
 		return x.RoleId
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetSalt() string {
+func (x *UpdateSysUserRequest) GetSalt() string {
 	if x != nil {
 		return x.Salt
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetAvatar() string {
+func (x *UpdateSysUserRequest) GetAvatar() string {
 	if x != nil {
 		return x.Avatar
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetSex() int32 {
+func (x *UpdateSysUserRequest) GetSex() int32 {
 	if x != nil {
 		return x.Sex
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetEmail() string {
+func (x *UpdateSysUserRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetDeptId() int64 {
+func (x *UpdateSysUserRequest) GetDeptId() int64 {
 	if x != nil {
 		return x.DeptId
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetPostId() int64 {
+func (x *UpdateSysUserRequest) GetPostId() int64 {
 	if x != nil {
 		return x.PostId
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetRoleIds() string {
+func (x *UpdateSysUserRequest) GetRoleIds() string {
 	if x != nil {
 		return x.RoleIds
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetPostIds() string {
+func (x *UpdateSysUserRequest) GetPostIds() string {
 	if x != nil {
 		return x.PostIds
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetCreateBy() string {
+func (x *UpdateSysUserRequest) GetCreateBy() string {
 	if x != nil {
 		return x.CreateBy
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetUpdateBy() string {
+func (x *UpdateSysUserRequest) GetUpdateBy() string {
 	if x != nil {
 		return x.UpdateBy
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetRemark() string {
+func (x *UpdateSysUserRequest) GetRemark() string {
 	if x != nil {
 		return x.Remark
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetStatus() int32 {
+func (x *UpdateSysUserRequest) GetStatus() int32 {
 	if x != nil {
 		return x.Status
 	}
 	return 0
 }
 
-func (x *UpdateSysuserRequest) GetCreatedAt() *timestamppb.Timestamp {
+func (x *UpdateSysUserRequest) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *UpdateSysuserRequest) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *UpdateSysUserRequest) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
 	return nil
 }
 
-func (x *UpdateSysuserRequest) GetUsername() string {
+func (x *UpdateSysUserRequest) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetPassword() string {
+func (x *UpdateSysUserRequest) GetPassword() string {
 	if x != nil {
 		return x.Password
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetRoleName() string {
+func (x *UpdateSysUserRequest) GetRoleName() string {
 	if x != nil {
 		return x.RoleName
 	}
 	return ""
 }
 
-func (x *UpdateSysuserRequest) GetSecret() string {
+func (x *UpdateSysUserRequest) GetSecret() string {
 	if x != nil {
 		return x.Secret
 	}
 	return ""
 }
 
-type UpdateSysuserReply struct {
+type UpdateSysUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateSysuserReply) Reset() {
-	*x = UpdateSysuserReply{}
+func (x *UpdateSysUserReply) Reset() {
+	*x = UpdateSysUserReply{}
 	mi := &file_sysuser_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateSysuserReply) String() string {
+func (x *UpdateSysUserReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateSysuserReply) ProtoMessage() {}
+func (*UpdateSysUserReply) ProtoMessage() {}
 
-func (x *UpdateSysuserReply) ProtoReflect() protoreflect.Message {
+func (x *UpdateSysUserReply) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -460,32 +460,32 @@ func (x *UpdateSysuserReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateSysuserReply.ProtoReflect.Descriptor instead.
-func (*UpdateSysuserReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateSysUserReply.ProtoReflect.Descriptor instead.
+func (*UpdateSysUserReply) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{3}
 }
 
-type DeleteSysuserRequest struct {
+type DeleteSysUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteSysuserRequest) Reset() {
-	*x = DeleteSysuserRequest{}
+func (x *DeleteSysUserRequest) Reset() {
+	*x = DeleteSysUserRequest{}
 	mi := &file_sysuser_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteSysuserRequest) String() string {
+func (x *DeleteSysUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteSysuserRequest) ProtoMessage() {}
+func (*DeleteSysUserRequest) ProtoMessage() {}
 
-func (x *DeleteSysuserRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteSysUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -497,38 +497,38 @@ func (x *DeleteSysuserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteSysuserRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSysuserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteSysUserRequest.ProtoReflect.Descriptor instead.
+func (*DeleteSysUserRequest) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *DeleteSysuserRequest) GetId() int64 {
+func (x *DeleteSysUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type DeleteSysuserReply struct {
+type DeleteSysUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteSysuserReply) Reset() {
-	*x = DeleteSysuserReply{}
+func (x *DeleteSysUserReply) Reset() {
+	*x = DeleteSysUserReply{}
 	mi := &file_sysuser_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteSysuserReply) String() string {
+func (x *DeleteSysUserReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteSysuserReply) ProtoMessage() {}
+func (*DeleteSysUserReply) ProtoMessage() {}
 
-func (x *DeleteSysuserReply) ProtoReflect() protoreflect.Message {
+func (x *DeleteSysUserReply) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -540,32 +540,32 @@ func (x *DeleteSysuserReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteSysuserReply.ProtoReflect.Descriptor instead.
-func (*DeleteSysuserReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteSysUserReply.ProtoReflect.Descriptor instead.
+func (*DeleteSysUserReply) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{5}
 }
 
-type FindSysuserRequest struct {
+type FindSysUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindSysuserRequest) Reset() {
-	*x = FindSysuserRequest{}
+func (x *FindSysUserRequest) Reset() {
+	*x = FindSysUserRequest{}
 	mi := &file_sysuser_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindSysuserRequest) String() string {
+func (x *FindSysUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindSysuserRequest) ProtoMessage() {}
+func (*FindSysUserRequest) ProtoMessage() {}
 
-func (x *FindSysuserRequest) ProtoReflect() protoreflect.Message {
+func (x *FindSysUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -577,19 +577,19 @@ func (x *FindSysuserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindSysuserRequest.ProtoReflect.Descriptor instead.
-func (*FindSysuserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindSysUserRequest.ProtoReflect.Descriptor instead.
+func (*FindSysUserRequest) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *FindSysuserRequest) GetId() int64 {
+func (x *FindSysUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type FindSysuserReply struct {
+type FindSysUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *UserData              `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	Roles         []*RoleData            `protobuf:"bytes,2,rep,name=roles,proto3" json:"roles,omitempty"`
@@ -601,20 +601,20 @@ type FindSysuserReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindSysuserReply) Reset() {
-	*x = FindSysuserReply{}
+func (x *FindSysUserReply) Reset() {
+	*x = FindSysUserReply{}
 	mi := &file_sysuser_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindSysuserReply) String() string {
+func (x *FindSysUserReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindSysuserReply) ProtoMessage() {}
+func (*FindSysUserReply) ProtoMessage() {}
 
-func (x *FindSysuserReply) ProtoReflect() protoreflect.Message {
+func (x *FindSysUserReply) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -626,54 +626,54 @@ func (x *FindSysuserReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindSysuserReply.ProtoReflect.Descriptor instead.
-func (*FindSysuserReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindSysUserReply.ProtoReflect.Descriptor instead.
+func (*FindSysUserReply) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *FindSysuserReply) GetUser() *UserData {
+func (x *FindSysUserReply) GetUser() *UserData {
 	if x != nil {
 		return x.User
 	}
 	return nil
 }
 
-func (x *FindSysuserReply) GetRoles() []*RoleData {
+func (x *FindSysUserReply) GetRoles() []*RoleData {
 	if x != nil {
 		return x.Roles
 	}
 	return nil
 }
 
-func (x *FindSysuserReply) GetPosts() []*PostData {
+func (x *FindSysUserReply) GetPosts() []*PostData {
 	if x != nil {
 		return x.Posts
 	}
 	return nil
 }
 
-func (x *FindSysuserReply) GetDepts() []*DeptTree {
+func (x *FindSysUserReply) GetDepts() []*DeptTree {
 	if x != nil {
 		return x.Depts
 	}
 	return nil
 }
 
-func (x *FindSysuserReply) GetPostIds() string {
+func (x *FindSysUserReply) GetPostIds() string {
 	if x != nil {
 		return x.PostIds
 	}
 	return ""
 }
 
-func (x *FindSysuserReply) GetRoleIds() string {
+func (x *FindSysUserReply) GetRoleIds() string {
 	if x != nil {
 		return x.RoleIds
 	}
 	return ""
 }
 
-type ListSysuserRequest struct {
+type ListSysUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PageNum       int32                  `protobuf:"varint,1,opt,name=pageNum,proto3" json:"pageNum,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
@@ -684,20 +684,20 @@ type ListSysuserRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListSysuserRequest) Reset() {
-	*x = ListSysuserRequest{}
+func (x *ListSysUserRequest) Reset() {
+	*x = ListSysUserRequest{}
 	mi := &file_sysuser_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSysuserRequest) String() string {
+func (x *ListSysUserRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSysuserRequest) ProtoMessage() {}
+func (*ListSysUserRequest) ProtoMessage() {}
 
-func (x *ListSysuserRequest) ProtoReflect() protoreflect.Message {
+func (x *ListSysUserRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -709,47 +709,47 @@ func (x *ListSysuserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSysuserRequest.ProtoReflect.Descriptor instead.
-func (*ListSysuserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListSysUserRequest.ProtoReflect.Descriptor instead.
+func (*ListSysUserRequest) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ListSysuserRequest) GetPageNum() int32 {
+func (x *ListSysUserRequest) GetPageNum() int32 {
 	if x != nil {
 		return x.PageNum
 	}
 	return 0
 }
 
-func (x *ListSysuserRequest) GetPageSize() int32 {
+func (x *ListSysUserRequest) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-func (x *ListSysuserRequest) GetUsername() string {
+func (x *ListSysUserRequest) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *ListSysuserRequest) GetPhone() string {
+func (x *ListSysUserRequest) GetPhone() string {
 	if x != nil {
 		return x.Phone
 	}
 	return ""
 }
 
-func (x *ListSysuserRequest) GetStatus() int32 {
+func (x *ListSysUserRequest) GetStatus() int32 {
 	if x != nil {
 		return x.Status
 	}
 	return 0
 }
 
-type ListSysuserReply struct {
+type ListSysUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
 	PageNum       int32                  `protobuf:"varint,2,opt,name=pageNum,proto3" json:"pageNum,omitempty"`
@@ -759,20 +759,20 @@ type ListSysuserReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListSysuserReply) Reset() {
-	*x = ListSysuserReply{}
+func (x *ListSysUserReply) Reset() {
+	*x = ListSysUserReply{}
 	mi := &file_sysuser_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSysuserReply) String() string {
+func (x *ListSysUserReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSysuserReply) ProtoMessage() {}
+func (*ListSysUserReply) ProtoMessage() {}
 
-func (x *ListSysuserReply) ProtoReflect() protoreflect.Message {
+func (x *ListSysUserReply) ProtoReflect() protoreflect.Message {
 	mi := &file_sysuser_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -784,33 +784,33 @@ func (x *ListSysuserReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSysuserReply.ProtoReflect.Descriptor instead.
-func (*ListSysuserReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListSysUserReply.ProtoReflect.Descriptor instead.
+func (*ListSysUserReply) Descriptor() ([]byte, []int) {
 	return file_sysuser_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ListSysuserReply) GetTotal() int32 {
+func (x *ListSysUserReply) GetTotal() int32 {
 	if x != nil {
 		return x.Total
 	}
 	return 0
 }
 
-func (x *ListSysuserReply) GetPageNum() int32 {
+func (x *ListSysUserReply) GetPageNum() int32 {
 	if x != nil {
 		return x.PageNum
 	}
 	return 0
 }
 
-func (x *ListSysuserReply) GetPageSize() int32 {
+func (x *ListSysUserReply) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-func (x *ListSysuserReply) GetData() []*UserData {
+func (x *ListSysUserReply) GetData() []*UserData {
 	if x != nil {
 		return x.Data
 	}
@@ -2007,7 +2007,7 @@ const file_sysuser_proto_rawDesc = "" +
 	"\n" +
 	"\rsysuser.proto\x12\fapi.admin.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\n" +
 	"base.proto\"\xaf\x03\n" +
-	"\x14CreateSysuserRequest\x12%\n" +
+	"\x14CreateSysUserRequest\x12%\n" +
 	"\bnickName\x18\x01 \x01(\tB\t\xfaB\x06r\x04\x10\x01\x18\x1eR\bnickName\x12%\n" +
 	"\busername\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x01\x18\x1eR\busername\x12%\n" +
 	"\bpassword\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x01\x18\x1eR\bpassword\x12\x14\n" +
@@ -2024,8 +2024,8 @@ const file_sysuser_proto_rawDesc = "" +
 	"\aroleIds\x18\r \x01(\tR\aroleIds\x12\x16\n" +
 	"\x06avatar\x18\x0e \x01(\tR\x06avatar\x12 \n" +
 	"\x06secret\x18\x0f \x01(\tB\b\xfaB\x05r\x03\x98\x01 R\x06secret\"\x14\n" +
-	"\x12CreateSysuserReply\"\xf9\x04\n" +
-	"\x14UpdateSysuserRequest\x12\x16\n" +
+	"\x12CreateSysUserReply\"\xf9\x04\n" +
+	"\x14UpdateSysUserRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
 	"\bnickName\x18\x03 \x01(\tR\bnickName\x12\x14\n" +
 	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
@@ -2049,26 +2049,26 @@ const file_sysuser_proto_rawDesc = "" +
 	"\bpassword\x18\x16 \x01(\tR\bpassword\x12\x1b\n" +
 	"\trole_name\x18\x17 \x01(\tR\broleName\x12\x16\n" +
 	"\x06secret\x18\x18 \x01(\tR\x06secret\"\x14\n" +
-	"\x12UpdateSysuserReply\"&\n" +
-	"\x14DeleteSysuserRequest\x12\x0e\n" +
+	"\x12UpdateSysUserReply\"&\n" +
+	"\x14DeleteSysUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x14\n" +
-	"\x12DeleteSysuserReply\"$\n" +
-	"\x12FindSysuserRequest\x12\x0e\n" +
+	"\x12DeleteSysUserReply\"$\n" +
+	"\x12FindSysUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\xfc\x01\n" +
-	"\x10FindSysuserReply\x12*\n" +
+	"\x10FindSysUserReply\x12*\n" +
 	"\x04user\x18\x01 \x01(\v2\x16.api.admin.v1.UserDataR\x04user\x12,\n" +
 	"\x05roles\x18\x02 \x03(\v2\x16.api.admin.v1.RoleDataR\x05roles\x12,\n" +
 	"\x05posts\x18\x03 \x03(\v2\x16.api.admin.v1.PostDataR\x05posts\x12,\n" +
 	"\x05depts\x18\x04 \x03(\v2\x16.api.admin.v1.DeptTreeR\x05depts\x12\x18\n" +
 	"\apostIds\x18\x05 \x01(\tR\apostIds\x12\x18\n" +
 	"\aroleIds\x18\x06 \x01(\tR\aroleIds\"\x94\x01\n" +
-	"\x12ListSysuserRequest\x12\x18\n" +
+	"\x12ListSysUserRequest\x12\x18\n" +
 	"\apageNum\x18\x01 \x01(\x05R\apageNum\x12\x1a\n" +
 	"\bpageSize\x18\x02 \x01(\x05R\bpageSize\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12\x14\n" +
 	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
 	"\x06status\x18\x05 \x01(\x05R\x06status\"\x8a\x01\n" +
-	"\x10ListSysuserReply\x12\x14\n" +
+	"\x10ListSysUserReply\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x05R\x05total\x12\x18\n" +
 	"\apageNum\x18\x02 \x01(\x05R\apageNum\x12\x1a\n" +
 	"\bpageSize\x18\x03 \x01(\x05R\bpageSize\x12*\n" +
@@ -2155,12 +2155,12 @@ const file_sysuser_proto_rawDesc = "" +
 	"\x19FindUserGoogleSecretReply\x12\x16\n" +
 	"\x06secret\x18\x01 \x01(\tR\x06secret\x12\x16\n" +
 	"\x06qrcode\x18\x02 \x01(\tR\x06qrcode2\xaf\f\n" +
-	"\aSysuser\x12n\n" +
-	"\rCreateSysuser\x12\".api.admin.v1.CreateSysuserRequest\x1a .api.admin.v1.CreateSysuserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/user\x12n\n" +
-	"\rUpdateSysuser\x12\".api.admin.v1.UpdateSysuserRequest\x1a .api.admin.v1.UpdateSysuserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/user\x12p\n" +
-	"\rDeleteSysuser\x12\".api.admin.v1.DeleteSysuserRequest\x1a .api.admin.v1.DeleteSysuserReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/user/{id}\x12r\n" +
-	"\vFindSysuser\x12 .api.admin.v1.FindSysuserRequest\x1a\x1e.api.admin.v1.FindSysuserReply\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/system/user/getById/{id}\x12j\n" +
-	"\vListSysuser\x12 .api.admin.v1.ListSysuserRequest\x1a\x1e.api.admin.v1.ListSysuserReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/user/list\x12p\n" +
+	"\aSysUser\x12n\n" +
+	"\rCreateSysUser\x12\".api.admin.v1.CreateSysUserRequest\x1a .api.admin.v1.CreateSysUserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/user\x12n\n" +
+	"\rUpdateSysUser\x12\".api.admin.v1.UpdateSysUserRequest\x1a .api.admin.v1.UpdateSysUserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/user\x12p\n" +
+	"\rDeleteSysUser\x12\".api.admin.v1.DeleteSysUserRequest\x1a .api.admin.v1.DeleteSysUserReply\"\x19\x82\xd3\xe4\x93\x02\x13*\x11/system/user/{id}\x12r\n" +
+	"\vFindSysUser\x12 .api.admin.v1.FindSysUserRequest\x1a\x1e.api.admin.v1.FindSysUserReply\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/system/user/getById/{id}\x12j\n" +
+	"\vListSysUser\x12 .api.admin.v1.ListSysUserRequest\x1a\x1e.api.admin.v1.ListSysUserReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/user/list\x12p\n" +
 	"\vFindCaptcha\x12 .api.admin.v1.FindCaptchaRequest\x1a\x1e.api.admin.v1.FindCaptchaReply\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/system/user/getCaptcha\x12\\\n" +
 	"\x05Login\x12\x1a.api.admin.v1.LoginRequest\x1a\x18.api.admin.v1.LoginReply\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/system/user/login\x12`\n" +
 	"\x06Logout\x12\x1b.api.admin.v1.LogoutRequest\x1a\x19.api.admin.v1.LogoutReply\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/system/user/logout\x12U\n" +
@@ -2185,16 +2185,16 @@ func file_sysuser_proto_rawDescGZIP() []byte {
 
 var file_sysuser_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_sysuser_proto_goTypes = []any{
-	(*CreateSysuserRequest)(nil),        // 0: api.admin.v1.CreateSysuserRequest
-	(*CreateSysuserReply)(nil),          // 1: api.admin.v1.CreateSysuserReply
-	(*UpdateSysuserRequest)(nil),        // 2: api.admin.v1.UpdateSysuserRequest
-	(*UpdateSysuserReply)(nil),          // 3: api.admin.v1.UpdateSysuserReply
-	(*DeleteSysuserRequest)(nil),        // 4: api.admin.v1.DeleteSysuserRequest
-	(*DeleteSysuserReply)(nil),          // 5: api.admin.v1.DeleteSysuserReply
-	(*FindSysuserRequest)(nil),          // 6: api.admin.v1.FindSysuserRequest
-	(*FindSysuserReply)(nil),            // 7: api.admin.v1.FindSysuserReply
-	(*ListSysuserRequest)(nil),          // 8: api.admin.v1.ListSysuserRequest
-	(*ListSysuserReply)(nil),            // 9: api.admin.v1.ListSysuserReply
+	(*CreateSysUserRequest)(nil),        // 0: api.admin.v1.CreateSysUserRequest
+	(*CreateSysUserReply)(nil),          // 1: api.admin.v1.CreateSysUserReply
+	(*UpdateSysUserRequest)(nil),        // 2: api.admin.v1.UpdateSysUserRequest
+	(*UpdateSysUserReply)(nil),          // 3: api.admin.v1.UpdateSysUserReply
+	(*DeleteSysUserRequest)(nil),        // 4: api.admin.v1.DeleteSysUserRequest
+	(*DeleteSysUserReply)(nil),          // 5: api.admin.v1.DeleteSysUserReply
+	(*FindSysUserRequest)(nil),          // 6: api.admin.v1.FindSysUserRequest
+	(*FindSysUserReply)(nil),            // 7: api.admin.v1.FindSysUserReply
+	(*ListSysUserRequest)(nil),          // 8: api.admin.v1.ListSysUserRequest
+	(*ListSysUserReply)(nil),            // 9: api.admin.v1.ListSysUserReply
 	(*FindCaptchaRequest)(nil),          // 10: api.admin.v1.FindCaptchaRequest
 	(*FindCaptchaReply)(nil),            // 11: api.admin.v1.FindCaptchaReply
 	(*LoginRequest)(nil),                // 12: api.admin.v1.LoginRequest
@@ -2224,13 +2224,13 @@ var file_sysuser_proto_goTypes = []any{
 	(*anypb.Any)(nil),                   // 36: google.protobuf.Any
 }
 var file_sysuser_proto_depIdxs = []int32{
-	30, // 0: api.admin.v1.UpdateSysuserRequest.createdAt:type_name -> google.protobuf.Timestamp
-	30, // 1: api.admin.v1.UpdateSysuserRequest.updatedAt:type_name -> google.protobuf.Timestamp
-	31, // 2: api.admin.v1.FindSysuserReply.user:type_name -> api.admin.v1.UserData
-	32, // 3: api.admin.v1.FindSysuserReply.roles:type_name -> api.admin.v1.RoleData
-	33, // 4: api.admin.v1.FindSysuserReply.posts:type_name -> api.admin.v1.PostData
-	34, // 5: api.admin.v1.FindSysuserReply.depts:type_name -> api.admin.v1.DeptTree
-	31, // 6: api.admin.v1.ListSysuserReply.data:type_name -> api.admin.v1.UserData
+	30, // 0: api.admin.v1.UpdateSysUserRequest.createdAt:type_name -> google.protobuf.Timestamp
+	30, // 1: api.admin.v1.UpdateSysUserRequest.updatedAt:type_name -> google.protobuf.Timestamp
+	31, // 2: api.admin.v1.FindSysUserReply.user:type_name -> api.admin.v1.UserData
+	32, // 3: api.admin.v1.FindSysUserReply.roles:type_name -> api.admin.v1.RoleData
+	33, // 4: api.admin.v1.FindSysUserReply.posts:type_name -> api.admin.v1.PostData
+	34, // 5: api.admin.v1.FindSysUserReply.depts:type_name -> api.admin.v1.DeptTree
+	31, // 6: api.admin.v1.ListSysUserReply.data:type_name -> api.admin.v1.UserData
 	28, // 7: api.admin.v1.AuthReply.user:type_name -> api.admin.v1.AuthReply.User
 	29, // 8: api.admin.v1.AuthReply.role:type_name -> api.admin.v1.AuthReply.Role
 	35, // 9: api.admin.v1.AuthReply.menus:type_name -> api.admin.v1.MenuTreeAuth
@@ -2245,34 +2245,34 @@ var file_sysuser_proto_depIdxs = []int32{
 	36, // 18: api.admin.v1.AuthReply.Role.deptIds:type_name -> google.protobuf.Any
 	30, // 19: api.admin.v1.AuthReply.Role.createdAt:type_name -> google.protobuf.Timestamp
 	30, // 20: api.admin.v1.AuthReply.Role.updatedAt:type_name -> google.protobuf.Timestamp
-	0,  // 21: api.admin.v1.Sysuser.CreateSysuser:input_type -> api.admin.v1.CreateSysuserRequest
-	2,  // 22: api.admin.v1.Sysuser.UpdateSysuser:input_type -> api.admin.v1.UpdateSysuserRequest
-	4,  // 23: api.admin.v1.Sysuser.DeleteSysuser:input_type -> api.admin.v1.DeleteSysuserRequest
-	6,  // 24: api.admin.v1.Sysuser.FindSysuser:input_type -> api.admin.v1.FindSysuserRequest
-	8,  // 25: api.admin.v1.Sysuser.ListSysuser:input_type -> api.admin.v1.ListSysuserRequest
-	10, // 26: api.admin.v1.Sysuser.FindCaptcha:input_type -> api.admin.v1.FindCaptchaRequest
-	12, // 27: api.admin.v1.Sysuser.Login:input_type -> api.admin.v1.LoginRequest
-	14, // 28: api.admin.v1.Sysuser.Logout:input_type -> api.admin.v1.LogoutRequest
-	16, // 29: api.admin.v1.Sysuser.Auth:input_type -> api.admin.v1.AuthRequest
-	18, // 30: api.admin.v1.Sysuser.ChangeStatus:input_type -> api.admin.v1.ChangeStatusRequest
-	20, // 31: api.admin.v1.Sysuser.UpdatePassword:input_type -> api.admin.v1.UpdatePasswordRequest
-	22, // 32: api.admin.v1.Sysuser.FindPostInit:input_type -> api.admin.v1.FindPostInitRequest
-	24, // 33: api.admin.v1.Sysuser.FindUserRolePost:input_type -> api.admin.v1.FindUserRolePostRequest
-	26, // 34: api.admin.v1.Sysuser.FindUserGoogleSecret:input_type -> api.admin.v1.FindUserGoogleSecretRequest
-	1,  // 35: api.admin.v1.Sysuser.CreateSysuser:output_type -> api.admin.v1.CreateSysuserReply
-	3,  // 36: api.admin.v1.Sysuser.UpdateSysuser:output_type -> api.admin.v1.UpdateSysuserReply
-	5,  // 37: api.admin.v1.Sysuser.DeleteSysuser:output_type -> api.admin.v1.DeleteSysuserReply
-	7,  // 38: api.admin.v1.Sysuser.FindSysuser:output_type -> api.admin.v1.FindSysuserReply
-	9,  // 39: api.admin.v1.Sysuser.ListSysuser:output_type -> api.admin.v1.ListSysuserReply
-	11, // 40: api.admin.v1.Sysuser.FindCaptcha:output_type -> api.admin.v1.FindCaptchaReply
-	13, // 41: api.admin.v1.Sysuser.Login:output_type -> api.admin.v1.LoginReply
-	15, // 42: api.admin.v1.Sysuser.Logout:output_type -> api.admin.v1.LogoutReply
-	17, // 43: api.admin.v1.Sysuser.Auth:output_type -> api.admin.v1.AuthReply
-	19, // 44: api.admin.v1.Sysuser.ChangeStatus:output_type -> api.admin.v1.ChangeStatusReply
-	21, // 45: api.admin.v1.Sysuser.UpdatePassword:output_type -> api.admin.v1.UpdatePasswordReply
-	23, // 46: api.admin.v1.Sysuser.FindPostInit:output_type -> api.admin.v1.FindPostInitReply
-	25, // 47: api.admin.v1.Sysuser.FindUserRolePost:output_type -> api.admin.v1.FindUserRolePostReply
-	27, // 48: api.admin.v1.Sysuser.FindUserGoogleSecret:output_type -> api.admin.v1.FindUserGoogleSecretReply
+	0,  // 21: api.admin.v1.SysUser.CreateSysUser:input_type -> api.admin.v1.CreateSysUserRequest
+	2,  // 22: api.admin.v1.SysUser.UpdateSysUser:input_type -> api.admin.v1.UpdateSysUserRequest
+	4,  // 23: api.admin.v1.SysUser.DeleteSysUser:input_type -> api.admin.v1.DeleteSysUserRequest
+	6,  // 24: api.admin.v1.SysUser.FindSysUser:input_type -> api.admin.v1.FindSysUserRequest
+	8,  // 25: api.admin.v1.SysUser.ListSysUser:input_type -> api.admin.v1.ListSysUserRequest
+	10, // 26: api.admin.v1.SysUser.FindCaptcha:input_type -> api.admin.v1.FindCaptchaRequest
+	12, // 27: api.admin.v1.SysUser.Login:input_type -> api.admin.v1.LoginRequest
+	14, // 28: api.admin.v1.SysUser.Logout:input_type -> api.admin.v1.LogoutRequest
+	16, // 29: api.admin.v1.SysUser.Auth:input_type -> api.admin.v1.AuthRequest
+	18, // 30: api.admin.v1.SysUser.ChangeStatus:input_type -> api.admin.v1.ChangeStatusRequest
+	20, // 31: api.admin.v1.SysUser.UpdatePassword:input_type -> api.admin.v1.UpdatePasswordRequest
+	22, // 32: api.admin.v1.SysUser.FindPostInit:input_type -> api.admin.v1.FindPostInitRequest
+	24, // 33: api.admin.v1.SysUser.FindUserRolePost:input_type -> api.admin.v1.FindUserRolePostRequest
+	26, // 34: api.admin.v1.SysUser.FindUserGoogleSecret:input_type -> api.admin.v1.FindUserGoogleSecretRequest
+	1,  // 35: api.admin.v1.SysUser.CreateSysUser:output_type -> api.admin.v1.CreateSysUserReply
+	3,  // 36: api.admin.v1.SysUser.UpdateSysUser:output_type -> api.admin.v1.UpdateSysUserReply
+	5,  // 37: api.admin.v1.SysUser.DeleteSysUser:output_type -> api.admin.v1.DeleteSysUserReply
+	7,  // 38: api.admin.v1.SysUser.FindSysUser:output_type -> api.admin.v1.FindSysUserReply
+	9,  // 39: api.admin.v1.SysUser.ListSysUser:output_type -> api.admin.v1.ListSysUserReply
+	11, // 40: api.admin.v1.SysUser.FindCaptcha:output_type -> api.admin.v1.FindCaptchaReply
+	13, // 41: api.admin.v1.SysUser.Login:output_type -> api.admin.v1.LoginReply
+	15, // 42: api.admin.v1.SysUser.Logout:output_type -> api.admin.v1.LogoutReply
+	17, // 43: api.admin.v1.SysUser.Auth:output_type -> api.admin.v1.AuthReply
+	19, // 44: api.admin.v1.SysUser.ChangeStatus:output_type -> api.admin.v1.ChangeStatusReply
+	21, // 45: api.admin.v1.SysUser.UpdatePassword:output_type -> api.admin.v1.UpdatePasswordReply
+	23, // 46: api.admin.v1.SysUser.FindPostInit:output_type -> api.admin.v1.FindPostInitReply
+	25, // 47: api.admin.v1.SysUser.FindUserRolePost:output_type -> api.admin.v1.FindUserRolePostReply
+	27, // 48: api.admin.v1.SysUser.FindUserGoogleSecret:output_type -> api.admin.v1.FindUserGoogleSecretReply
 	35, // [35:49] is the sub-list for method output_type
 	21, // [21:35] is the sub-list for method input_type
 	21, // [21:21] is the sub-list for extension type_name

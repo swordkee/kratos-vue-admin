@@ -2,12 +2,14 @@ package admin
 
 import (
 	"context"
+	"strings"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	kratoshttp "github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/swordkee/kratos-vue-admin/pkg/common/constant"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
@@ -15,8 +17,8 @@ import (
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
 
-type SysuserService struct {
-	pb.UnimplementedSysuserServer
+type SysUserService struct {
+	pb.UnimplementedSysUserServer
 	serverConf   *conf.Server
 	userCase     *biz.SysUserUseCase
 	authCase     *admin.AuthUseCase
@@ -27,8 +29,8 @@ type SysuserService struct {
 	log          *log.Helper
 }
 
-func NewSysuserService(serverConf *conf.Server, userCase *biz.SysUserUseCase, authCase *admin.AuthUseCase, roleCase *biz.SysRoleUseCase, roleMenuCase *biz.SysRoleMenuUseCase, postCase *biz.SysPostUseCase, deptCase *biz.SysDeptUseCase, logger log.Logger) *SysuserService {
-	return &SysuserService{
+func NewSysUserService(serverConf *conf.Server, userCase *admin.SysUserUseCase, authCase *admin.AuthUseCase, roleCase *admin.SysRoleUseCase, roleMenuCase *admin.SysRoleMenuUseCase, postCase *admin.SysPostUseCase, deptCase *admin.SysDeptUseCase, logger log.Logger) *SysUserService {
+	return &SysUserService{
 		serverConf:   serverConf,
 		userCase:     userCase,
 		authCase:     authCase,
@@ -36,11 +38,11 @@ func NewSysuserService(serverConf *conf.Server, userCase *biz.SysUserUseCase, au
 		roleMenuCase: roleMenuCase,
 		postCase:     postCase,
 		deptCase:     deptCase,
-		log:          log.NewHelper(log.With(logger, "module", "service/sysuser")),
+		log:          log.NewHelper(log.With(logger, "module", "service/SysUser")),
 	}
 }
 
-func (s *SysuserService) CreateSysuser(ctx context.Context, req *pb.CreateSysuserRequest) (*pb.CreateSysuserReply, error) {
+func (s *SysUserService) CreateSysUser(ctx context.Context, req *pb.CreateSysUserRequest) (*pb.CreateSysUserReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -65,10 +67,10 @@ func (s *SysuserService) CreateSysuser(ctx context.Context, req *pb.CreateSysuse
 	if err != nil {
 		return nil, err
 	}
-	return &pb.CreateSysuserReply{}, nil
+	return &pb.CreateSysUserReply{}, nil
 }
 
-func (s *SysuserService) UpdateSysuser(ctx context.Context, req *pb.UpdateSysuserRequest) (*pb.UpdateSysuserReply, error) {
+func (s *SysUserService) UpdateSysUser(ctx context.Context, req *pb.UpdateSysUserRequest) (*pb.UpdateSysUserReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -94,15 +96,15 @@ func (s *SysuserService) UpdateSysuser(ctx context.Context, req *pb.UpdateSysuse
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UpdateSysuserReply{}, nil
+	return &pb.UpdateSysUserReply{}, nil
 }
 
-func (s *SysuserService) DeleteSysuser(ctx context.Context, req *pb.DeleteSysuserRequest) (*pb.DeleteSysuserReply, error) {
+func (s *SysUserService) DeleteSysUser(ctx context.Context, req *pb.DeleteSysUserRequest) (*pb.DeleteSysUserReply, error) {
 	err := s.userCase.DeleteSysUser(ctx, req.Id)
-	return &pb.DeleteSysuserReply{}, err
+	return &pb.DeleteSysUserReply{}, err
 }
 
-func (s *SysuserService) FindSysuser(ctx context.Context, req *pb.FindSysuserRequest) (*pb.FindSysuserReply, error) {
+func (s *SysUserService) FindSysUser(ctx context.Context, req *pb.FindSysUserRequest) (*pb.FindSysUserReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -192,8 +194,8 @@ func (s *SysuserService) FindSysuser(ctx context.Context, req *pb.FindSysuserReq
 		Qrcode:     util.NewGoogleAuth().GetQrcode(user.Secret),
 	}
 
-	replyDepts := biz.ConvertToDeptTreeChildren(deptList)
-	reply := &pb.FindSysuserReply{
+	replyDepts := admin.ConvertToDeptTreeChildren(deptList)
+	reply := &pb.FindSysUserReply{
 		User:    replyUser,
 		Roles:   replyRole,
 		Posts:   replyPost,
@@ -204,7 +206,7 @@ func (s *SysuserService) FindSysuser(ctx context.Context, req *pb.FindSysuserReq
 	return reply, nil
 }
 
-func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserRequest) (*pb.ListSysuserReply, error) {
+func (s *SysUserService) ListSysUser(ctx context.Context, req *pb.ListSysUserRequest) (*pb.ListSysUserReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -259,7 +261,7 @@ func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserReq
 		}
 	}
 
-	return &pb.ListSysuserReply{
+	return &pb.ListSysUserReply{
 		Total:    total,
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
@@ -267,7 +269,7 @@ func (s *SysuserService) ListSysuser(ctx context.Context, req *pb.ListSysuserReq
 	}, nil
 }
 
-func (s *SysuserService) GetCaptcha(context.Context, *pb.FindCaptchaRequest) (*pb.FindCaptchaReply, error) {
+func (s *SysUserService) GetCaptcha(context.Context, *pb.FindCaptchaRequest) (*pb.FindCaptchaReply, error) {
 	id, content, image := util.Generate()
 	if s.serverConf.GetEnv() != conf.Env_dev {
 		content = ""
@@ -279,7 +281,7 @@ func (s *SysuserService) GetCaptcha(context.Context, *pb.FindCaptchaRequest) (*p
 	}, nil
 }
 
-func (s *SysuserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+func (s *SysUserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -295,12 +297,31 @@ func (s *SysuserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.L
 	}, nil
 }
 
-func (s *SysuserService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutReply, error) {
+func (s *SysUserService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutReply, error) {
+	// 从 context 获取 JWT token
+	rawToken := ""
+
+	// 从 transport 获取请求信息
+	if httpReq, ok := kratoshttp.RequestFromServerContext(ctx); ok {
+		authHeader := httpReq.Header.Get("Authorization")
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			rawToken = strings.TrimPrefix(authHeader, "Bearer ")
+		}
+	}
+
+	// 将 JWT 加入黑名单
+	if rawToken != "" {
+		if err := s.userCase.AddJwtToBlacklist(ctx, rawToken); err != nil {
+			s.log.Errorf("Failed to add JWT to blacklist: %v", err)
+			// 即使黑名单添加失败也返回成功，不影响用户登出体验
+		}
+	}
+
 	return &pb.LogoutReply{}, nil
 }
 
 // Auth 用户权限信息
-func (s *SysuserService) Auth(ctx context.Context, req *pb.AuthRequest) (*pb.AuthReply, error) {
+func (s *SysUserService) Auth(ctx context.Context, req *pb.AuthRequest) (*pb.AuthReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -377,7 +398,7 @@ func (s *SysuserService) Auth(ctx context.Context, req *pb.AuthRequest) (*pb.Aut
 	}, nil
 }
 
-func (s *SysuserService) ChangeStatus(ctx context.Context, req *pb.ChangeStatusRequest) (*pb.ChangeStatusReply, error) {
+func (s *SysUserService) ChangeStatus(ctx context.Context, req *pb.ChangeStatusRequest) (*pb.ChangeStatusReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -385,11 +406,11 @@ func (s *SysuserService) ChangeStatus(ctx context.Context, req *pb.ChangeStatusR
 	return &pb.ChangeStatusReply{}, err
 }
 
-func (s *SysuserService) UpdateAvatar(ctx context.Context) error {
+func (s *SysUserService) UpdateAvatar(ctx context.Context) error {
 	return s.userCase.UpdateAvatar(ctx)
 }
 
-func (s *SysuserService) UpdatePassword(ctx context.Context, req *pb.UpdatePasswordRequest) (*pb.UpdatePasswordReply, error) {
+func (s *SysUserService) UpdatePassword(ctx context.Context, req *pb.UpdatePasswordRequest) (*pb.UpdatePasswordReply, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
@@ -399,7 +420,7 @@ func (s *SysuserService) UpdatePassword(ctx context.Context, req *pb.UpdatePassw
 }
 
 // GetPostInit 获取初始化角色岗位信息
-func (s *SysuserService) GetPostInit(ctx context.Context, req *pb.FindPostInitRequest) (*pb.FindPostInitReply, error) {
+func (s *SysUserService) GetPostInit(ctx context.Context, req *pb.FindPostInitRequest) (*pb.FindPostInitReply, error) {
 	// 获取所有角色
 	roleList, err := s.roleCase.FindRoleAll(ctx)
 	if err != nil {
@@ -451,7 +472,7 @@ func (s *SysuserService) GetPostInit(ctx context.Context, req *pb.FindPostInitRe
 }
 
 // GetUserRolePost 获取用户角色岗位信息
-func (s *SysuserService) GetUserRolePost(ctx context.Context, req *pb.FindUserRolePostRequest) (*pb.FindUserRolePostReply, error) {
+func (s *SysUserService) GetUserRolePost(ctx context.Context, req *pb.FindUserRolePostRequest) (*pb.FindUserRolePostReply, error) {
 	claims := authz.MustFromContext(ctx)
 	user, err := s.userCase.FindSysUserById(ctx, claims.UserID)
 	if err != nil {
@@ -508,7 +529,7 @@ func (s *SysuserService) GetUserRolePost(ctx context.Context, req *pb.FindUserRo
 	}, err
 }
 
-func (s *SysuserService) GetUserGoogleSecret(ctx context.Context, req *pb.FindUserGoogleSecretRequest) (*pb.FindUserGoogleSecretReply, error) {
+func (s *SysUserService) GetUserGoogleSecret(ctx context.Context, req *pb.FindUserGoogleSecretRequest) (*pb.FindUserGoogleSecretReply, error) {
 	gAuth := util.NewGoogleAuth()
 	secret := gAuth.GetSecret()
 	qrcode := gAuth.GetQrcode(secret)
@@ -518,6 +539,6 @@ func (s *SysuserService) GetUserGoogleSecret(ctx context.Context, req *pb.FindUs
 	return rep, nil
 }
 
-func (s *SysuserService) UploadFile(ctx context.Context) (string, error) {
+func (s *SysUserService) UploadFile(ctx context.Context) (string, error) {
 	return s.userCase.UploadFile(ctx)
 }

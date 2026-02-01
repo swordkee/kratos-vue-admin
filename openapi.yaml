@@ -974,14 +974,14 @@ paths:
     /system/user:
         put:
             tags:
-                - Sysuser
+                - SysUser
             description: 更新用户
-            operationId: Sysuser_UpdateSysuser
+            operationId: SysUser_UpdateSysUser
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.admin.v1.UpdateSysuserRequest'
+                            $ref: '#/components/schemas/api.admin.v1.UpdateSysUserRequest'
                 required: true
             responses:
                 "200":
@@ -989,17 +989,17 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.UpdateSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.UpdateSysUserReply'
         post:
             tags:
-                - Sysuser
+                - SysUser
             description: 创建用户
-            operationId: Sysuser_CreateSysuser
+            operationId: SysUser_CreateSysUser
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.admin.v1.CreateSysuserRequest'
+                            $ref: '#/components/schemas/api.admin.v1.CreateSysUserRequest'
                 required: true
             responses:
                 "200":
@@ -1007,13 +1007,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.CreateSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.CreateSysUserReply'
     /system/user/auth:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 获取用户权限
-            operationId: Sysuser_Auth
+            operationId: SysUser_Auth
             parameters:
                 - name: username
                   in: query
@@ -1029,9 +1029,9 @@ paths:
     /system/user/changeStatus:
         put:
             tags:
-                - Sysuser
+                - SysUser
             description: 更新用户状态
-            operationId: Sysuser_ChangeStatus
+            operationId: SysUser_ChangeStatus
             requestBody:
                 content:
                     application/json:
@@ -1048,9 +1048,9 @@ paths:
     /system/user/getById/{id}:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 获取用户
-            operationId: Sysuser_FindSysuser
+            operationId: SysUser_FindSysUser
             parameters:
                 - name: id
                   in: path
@@ -1063,13 +1063,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.FindSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.FindSysUserReply'
     /system/user/getCaptcha:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 获取验证码
-            operationId: Sysuser_FindCaptcha
+            operationId: SysUser_FindCaptcha
             responses:
                 "200":
                     description: OK
@@ -1080,9 +1080,9 @@ paths:
     /system/user/getInit:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 获取岗位
-            operationId: Sysuser_FindPostInit
+            operationId: SysUser_FindPostInit
             responses:
                 "200":
                     description: OK
@@ -1093,9 +1093,9 @@ paths:
     /system/user/getRoPo:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 获取RoPo
-            operationId: Sysuser_FindUserRolePost
+            operationId: SysUser_FindUserRolePost
             responses:
                 "200":
                     description: OK
@@ -1106,9 +1106,9 @@ paths:
     /system/user/list:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 用户列表
-            operationId: Sysuser_ListSysuser
+            operationId: SysUser_ListSysUser
             parameters:
                 - name: pageNum
                   in: query
@@ -1139,13 +1139,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.ListSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.ListSysUserReply'
     /system/user/login:
         post:
             tags:
-                - Sysuser
+                - SysUser
             description: 登入
-            operationId: Sysuser_Login
+            operationId: SysUser_Login
             requestBody:
                 content:
                     application/json:
@@ -1162,9 +1162,9 @@ paths:
     /system/user/logout:
         post:
             tags:
-                - Sysuser
+                - SysUser
             description: 登出
-            operationId: Sysuser_Logout
+            operationId: SysUser_Logout
             requestBody:
                 content:
                     application/json:
@@ -1181,9 +1181,9 @@ paths:
     /system/user/pwd:
         put:
             tags:
-                - Sysuser
+                - SysUser
             description: 更新密码
-            operationId: Sysuser_UpdatePassword
+            operationId: SysUser_UpdatePassword
             requestBody:
                 content:
                     application/json:
@@ -1200,9 +1200,9 @@ paths:
     /system/user/secret:
         get:
             tags:
-                - Sysuser
+                - SysUser
             description: 生成密钥和二维码
-            operationId: Sysuser_FindUserGoogleSecret
+            operationId: SysUser_FindUserGoogleSecret
             responses:
                 "200":
                     description: OK
@@ -1213,9 +1213,9 @@ paths:
     /system/user/{id}:
         delete:
             tags:
-                - Sysuser
+                - SysUser
             description: 删除用户
-            operationId: Sysuser_DeleteSysuser
+            operationId: SysUser_DeleteSysUser
             parameters:
                 - name: id
                   in: path
@@ -1228,7 +1228,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.admin.v1.DeleteSysuserReply'
+                                $ref: '#/components/schemas/api.admin.v1.DeleteSysUserReply'
 components:
     schemas:
         api.admin.v1.AllApiReply:
@@ -1566,10 +1566,10 @@ components:
                     type: string
                 defaultRouter:
                     type: string
-        api.admin.v1.CreateSysuserReply:
+        api.admin.v1.CreateSysUserReply:
             type: object
             properties: {}
-        api.admin.v1.CreateSysuserRequest:
+        api.admin.v1.CreateSysUserRequest:
             type: object
             properties:
                 nickName:
@@ -1643,7 +1643,7 @@ components:
         api.admin.v1.DeleteRolesReply:
             type: object
             properties: {}
-        api.admin.v1.DeleteSysuserReply:
+        api.admin.v1.DeleteSysUserReply:
             type: object
             properties: {}
         api.admin.v1.DeptLabel:
@@ -1855,7 +1855,7 @@ components:
             properties:
                 role:
                     $ref: '#/components/schemas/api.admin.v1.RoleData'
-        api.admin.v1.FindSysuserReply:
+        api.admin.v1.FindSysUserReply:
             type: object
             properties:
                 user:
@@ -1998,7 +1998,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.RoleData'
-        api.admin.v1.ListSysuserReply:
+        api.admin.v1.ListSysUserReply:
             type: object
             properties:
                 total:
@@ -2551,10 +2551,10 @@ components:
                     type: string
                 roleId:
                     type: string
-        api.admin.v1.UpdateSysuserReply:
+        api.admin.v1.UpdateSysUserReply:
             type: object
             properties: {}
-        api.admin.v1.UpdateSysuserRequest:
+        api.admin.v1.UpdateSysUserRequest:
             type: object
             properties:
                 userId:
@@ -2684,5 +2684,5 @@ tags:
       description: 角色管理
     - name: SysPost
       description: 岗位管理
-    - name: Sysuser
+    - name: SysUser
       description: 用户管理

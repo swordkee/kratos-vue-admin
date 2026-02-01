@@ -19,184 +19,184 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSysuserAuth = "/api.admin.v1.Sysuser/Auth"
-const OperationSysuserChangeStatus = "/api.admin.v1.Sysuser/ChangeStatus"
-const OperationSysuserCreateSysuser = "/api.admin.v1.Sysuser/CreateSysuser"
-const OperationSysuserDeleteSysuser = "/api.admin.v1.Sysuser/DeleteSysuser"
-const OperationSysuserFindCaptcha = "/api.admin.v1.Sysuser/FindCaptcha"
-const OperationSysuserFindPostInit = "/api.admin.v1.Sysuser/FindPostInit"
-const OperationSysuserFindSysuser = "/api.admin.v1.Sysuser/FindSysuser"
-const OperationSysuserFindUserGoogleSecret = "/api.admin.v1.Sysuser/FindUserGoogleSecret"
-const OperationSysuserFindUserRolePost = "/api.admin.v1.Sysuser/FindUserRolePost"
-const OperationSysuserListSysuser = "/api.admin.v1.Sysuser/ListSysuser"
-const OperationSysuserLogin = "/api.admin.v1.Sysuser/Login"
-const OperationSysuserLogout = "/api.admin.v1.Sysuser/Logout"
-const OperationSysuserUpdatePassword = "/api.admin.v1.Sysuser/UpdatePassword"
-const OperationSysuserUpdateSysuser = "/api.admin.v1.Sysuser/UpdateSysuser"
+const OperationSysUserAuth = "/api.admin.v1.SysUser/Auth"
+const OperationSysUserChangeStatus = "/api.admin.v1.SysUser/ChangeStatus"
+const OperationSysUserCreateSysUser = "/api.admin.v1.SysUser/CreateSysUser"
+const OperationSysUserDeleteSysUser = "/api.admin.v1.SysUser/DeleteSysUser"
+const OperationSysUserFindCaptcha = "/api.admin.v1.SysUser/FindCaptcha"
+const OperationSysUserFindPostInit = "/api.admin.v1.SysUser/FindPostInit"
+const OperationSysUserFindSysUser = "/api.admin.v1.SysUser/FindSysUser"
+const OperationSysUserFindUserGoogleSecret = "/api.admin.v1.SysUser/FindUserGoogleSecret"
+const OperationSysUserFindUserRolePost = "/api.admin.v1.SysUser/FindUserRolePost"
+const OperationSysUserListSysUser = "/api.admin.v1.SysUser/ListSysUser"
+const OperationSysUserLogin = "/api.admin.v1.SysUser/Login"
+const OperationSysUserLogout = "/api.admin.v1.SysUser/Logout"
+const OperationSysUserUpdatePassword = "/api.admin.v1.SysUser/UpdatePassword"
+const OperationSysUserUpdateSysUser = "/api.admin.v1.SysUser/UpdateSysUser"
 
-type SysuserHTTPServer interface {
+type SysUserHTTPServer interface {
 	// Auth 获取用户权限
 	Auth(context.Context, *AuthRequest) (*AuthReply, error)
 	// ChangeStatus 更新用户状态
 	ChangeStatus(context.Context, *ChangeStatusRequest) (*ChangeStatusReply, error)
-	// CreateSysuser 创建用户
-	CreateSysuser(context.Context, *CreateSysuserRequest) (*CreateSysuserReply, error)
-	// DeleteSysuser 删除用户
-	DeleteSysuser(context.Context, *DeleteSysuserRequest) (*DeleteSysuserReply, error)
+	// CreateSysUser 创建用户
+	CreateSysUser(context.Context, *CreateSysUserRequest) (*CreateSysUserReply, error)
+	// DeleteSysUser 删除用户
+	DeleteSysUser(context.Context, *DeleteSysUserRequest) (*DeleteSysUserReply, error)
 	// FindCaptcha 获取验证码
 	FindCaptcha(context.Context, *FindCaptchaRequest) (*FindCaptchaReply, error)
 	// FindPostInit 获取岗位
 	FindPostInit(context.Context, *FindPostInitRequest) (*FindPostInitReply, error)
-	// FindSysuser 获取用户
-	FindSysuser(context.Context, *FindSysuserRequest) (*FindSysuserReply, error)
+	// FindSysUser 获取用户
+	FindSysUser(context.Context, *FindSysUserRequest) (*FindSysUserReply, error)
 	// FindUserGoogleSecret 生成密钥和二维码
 	FindUserGoogleSecret(context.Context, *FindUserGoogleSecretRequest) (*FindUserGoogleSecretReply, error)
 	// FindUserRolePost 获取RoPo
 	FindUserRolePost(context.Context, *FindUserRolePostRequest) (*FindUserRolePostReply, error)
-	// ListSysuser 用户列表
-	ListSysuser(context.Context, *ListSysuserRequest) (*ListSysuserReply, error)
+	// ListSysUser 用户列表
+	ListSysUser(context.Context, *ListSysUserRequest) (*ListSysUserReply, error)
 	// Login 登入
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	// Logout 登出
 	Logout(context.Context, *LogoutRequest) (*LogoutReply, error)
 	// UpdatePassword 更新密码
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*UpdatePasswordReply, error)
-	// UpdateSysuser 更新用户
-	UpdateSysuser(context.Context, *UpdateSysuserRequest) (*UpdateSysuserReply, error)
+	// UpdateSysUser 更新用户
+	UpdateSysUser(context.Context, *UpdateSysUserRequest) (*UpdateSysUserReply, error)
 }
 
-func RegisterSysuserHTTPServer(s *http.Server, srv SysuserHTTPServer) {
+func RegisterSysUserHTTPServer(s *http.Server, srv SysUserHTTPServer) {
 	r := s.Route("/")
-	r.POST("/system/user", _Sysuser_CreateSysuser0_HTTP_Handler(srv))
-	r.PUT("/system/user", _Sysuser_UpdateSysuser0_HTTP_Handler(srv))
-	r.DELETE("/system/user/{id}", _Sysuser_DeleteSysuser0_HTTP_Handler(srv))
-	r.GET("/system/user/getById/{id}", _Sysuser_FindSysuser0_HTTP_Handler(srv))
-	r.GET("/system/user/list", _Sysuser_ListSysuser0_HTTP_Handler(srv))
-	r.GET("/system/user/getCaptcha", _Sysuser_FindCaptcha0_HTTP_Handler(srv))
-	r.POST("/system/user/login", _Sysuser_Login0_HTTP_Handler(srv))
-	r.POST("/system/user/logout", _Sysuser_Logout0_HTTP_Handler(srv))
-	r.GET("/system/user/auth", _Sysuser_Auth0_HTTP_Handler(srv))
-	r.PUT("/system/user/changeStatus", _Sysuser_ChangeStatus0_HTTP_Handler(srv))
-	r.PUT("/system/user/pwd", _Sysuser_UpdatePassword0_HTTP_Handler(srv))
-	r.GET("/system/user/getInit", _Sysuser_FindPostInit0_HTTP_Handler(srv))
-	r.GET("/system/user/getRoPo", _Sysuser_FindUserRolePost0_HTTP_Handler(srv))
-	r.GET("/system/user/secret", _Sysuser_FindUserGoogleSecret0_HTTP_Handler(srv))
+	r.POST("/system/user", _SysUser_CreateSysUser0_HTTP_Handler(srv))
+	r.PUT("/system/user", _SysUser_UpdateSysUser0_HTTP_Handler(srv))
+	r.DELETE("/system/user/{id}", _SysUser_DeleteSysUser0_HTTP_Handler(srv))
+	r.GET("/system/user/getById/{id}", _SysUser_FindSysUser0_HTTP_Handler(srv))
+	r.GET("/system/user/list", _SysUser_ListSysUser0_HTTP_Handler(srv))
+	r.GET("/system/user/getCaptcha", _SysUser_FindCaptcha0_HTTP_Handler(srv))
+	r.POST("/system/user/login", _SysUser_Login0_HTTP_Handler(srv))
+	r.POST("/system/user/logout", _SysUser_Logout0_HTTP_Handler(srv))
+	r.GET("/system/user/auth", _SysUser_Auth0_HTTP_Handler(srv))
+	r.PUT("/system/user/changeStatus", _SysUser_ChangeStatus0_HTTP_Handler(srv))
+	r.PUT("/system/user/pwd", _SysUser_UpdatePassword0_HTTP_Handler(srv))
+	r.GET("/system/user/getInit", _SysUser_FindPostInit0_HTTP_Handler(srv))
+	r.GET("/system/user/getRoPo", _SysUser_FindUserRolePost0_HTTP_Handler(srv))
+	r.GET("/system/user/secret", _SysUser_FindUserGoogleSecret0_HTTP_Handler(srv))
 }
 
-func _Sysuser_CreateSysuser0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_CreateSysUser0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateSysuserRequest
+		var in CreateSysUserRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserCreateSysuser)
+		http.SetOperation(ctx, OperationSysUserCreateSysUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateSysuser(ctx, req.(*CreateSysuserRequest))
+			return srv.CreateSysUser(ctx, req.(*CreateSysUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateSysuserReply)
+		reply := out.(*CreateSysUserReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sysuser_UpdateSysuser0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_UpdateSysUser0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UpdateSysuserRequest
+		var in UpdateSysUserRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserUpdateSysuser)
+		http.SetOperation(ctx, OperationSysUserUpdateSysUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateSysuser(ctx, req.(*UpdateSysuserRequest))
+			return srv.UpdateSysUser(ctx, req.(*UpdateSysUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*UpdateSysuserReply)
+		reply := out.(*UpdateSysUserReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sysuser_DeleteSysuser0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_DeleteSysUser0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in DeleteSysuserRequest
+		var in DeleteSysUserRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserDeleteSysuser)
+		http.SetOperation(ctx, OperationSysUserDeleteSysUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteSysuser(ctx, req.(*DeleteSysuserRequest))
+			return srv.DeleteSysUser(ctx, req.(*DeleteSysUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*DeleteSysuserReply)
+		reply := out.(*DeleteSysUserReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sysuser_FindSysuser0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_FindSysUser0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in FindSysuserRequest
+		var in FindSysUserRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserFindSysuser)
+		http.SetOperation(ctx, OperationSysUserFindSysUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.FindSysuser(ctx, req.(*FindSysuserRequest))
+			return srv.FindSysUser(ctx, req.(*FindSysUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*FindSysuserReply)
+		reply := out.(*FindSysUserReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sysuser_ListSysuser0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_ListSysUser0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListSysuserRequest
+		var in ListSysUserRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserListSysuser)
+		http.SetOperation(ctx, OperationSysUserListSysUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListSysuser(ctx, req.(*ListSysuserRequest))
+			return srv.ListSysUser(ctx, req.(*ListSysUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListSysuserReply)
+		reply := out.(*ListSysUserReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Sysuser_FindCaptcha0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_FindCaptcha0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FindCaptchaRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserFindCaptcha)
+		http.SetOperation(ctx, OperationSysUserFindCaptcha)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.FindCaptcha(ctx, req.(*FindCaptchaRequest))
 		})
@@ -209,7 +209,7 @@ func _Sysuser_FindCaptcha0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Con
 	}
 }
 
-func _Sysuser_Login0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_Login0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in LoginRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -218,7 +218,7 @@ func _Sysuser_Login0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) 
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserLogin)
+		http.SetOperation(ctx, OperationSysUserLogin)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Login(ctx, req.(*LoginRequest))
 		})
@@ -231,7 +231,7 @@ func _Sysuser_Login0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) 
 	}
 }
 
-func _Sysuser_Logout0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_Logout0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in LogoutRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -240,7 +240,7 @@ func _Sysuser_Logout0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context)
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserLogout)
+		http.SetOperation(ctx, OperationSysUserLogout)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Logout(ctx, req.(*LogoutRequest))
 		})
@@ -253,13 +253,13 @@ func _Sysuser_Logout0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context)
 	}
 }
 
-func _Sysuser_Auth0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_Auth0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in AuthRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserAuth)
+		http.SetOperation(ctx, OperationSysUserAuth)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Auth(ctx, req.(*AuthRequest))
 		})
@@ -272,7 +272,7 @@ func _Sysuser_Auth0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) e
 	}
 }
 
-func _Sysuser_ChangeStatus0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_ChangeStatus0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ChangeStatusRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -281,7 +281,7 @@ func _Sysuser_ChangeStatus0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Co
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserChangeStatus)
+		http.SetOperation(ctx, OperationSysUserChangeStatus)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ChangeStatus(ctx, req.(*ChangeStatusRequest))
 		})
@@ -294,7 +294,7 @@ func _Sysuser_ChangeStatus0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Co
 	}
 }
 
-func _Sysuser_UpdatePassword0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_UpdatePassword0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in UpdatePasswordRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -303,7 +303,7 @@ func _Sysuser_UpdatePassword0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserUpdatePassword)
+		http.SetOperation(ctx, OperationSysUserUpdatePassword)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.UpdatePassword(ctx, req.(*UpdatePasswordRequest))
 		})
@@ -316,13 +316,13 @@ func _Sysuser_UpdatePassword0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.
 	}
 }
 
-func _Sysuser_FindPostInit0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_FindPostInit0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FindPostInitRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserFindPostInit)
+		http.SetOperation(ctx, OperationSysUserFindPostInit)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.FindPostInit(ctx, req.(*FindPostInitRequest))
 		})
@@ -335,13 +335,13 @@ func _Sysuser_FindPostInit0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Co
 	}
 }
 
-func _Sysuser_FindUserRolePost0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_FindUserRolePost0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FindUserRolePostRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserFindUserRolePost)
+		http.SetOperation(ctx, OperationSysUserFindUserRolePost)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.FindUserRolePost(ctx, req.(*FindUserRolePostRequest))
 		})
@@ -354,13 +354,13 @@ func _Sysuser_FindUserRolePost0_HTTP_Handler(srv SysuserHTTPServer) func(ctx htt
 	}
 }
 
-func _Sysuser_FindUserGoogleSecret0_HTTP_Handler(srv SysuserHTTPServer) func(ctx http.Context) error {
+func _SysUser_FindUserGoogleSecret0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in FindUserGoogleSecretRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSysuserFindUserGoogleSecret)
+		http.SetOperation(ctx, OperationSysUserFindUserGoogleSecret)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.FindUserGoogleSecret(ctx, req.(*FindUserGoogleSecretRequest))
 		})
@@ -373,51 +373,51 @@ func _Sysuser_FindUserGoogleSecret0_HTTP_Handler(srv SysuserHTTPServer) func(ctx
 	}
 }
 
-type SysuserHTTPClient interface {
+type SysUserHTTPClient interface {
 	// Auth 获取用户权限
 	Auth(ctx context.Context, req *AuthRequest, opts ...http.CallOption) (rsp *AuthReply, err error)
 	// ChangeStatus 更新用户状态
 	ChangeStatus(ctx context.Context, req *ChangeStatusRequest, opts ...http.CallOption) (rsp *ChangeStatusReply, err error)
-	// CreateSysuser 创建用户
-	CreateSysuser(ctx context.Context, req *CreateSysuserRequest, opts ...http.CallOption) (rsp *CreateSysuserReply, err error)
-	// DeleteSysuser 删除用户
-	DeleteSysuser(ctx context.Context, req *DeleteSysuserRequest, opts ...http.CallOption) (rsp *DeleteSysuserReply, err error)
+	// CreateSysUser 创建用户
+	CreateSysUser(ctx context.Context, req *CreateSysUserRequest, opts ...http.CallOption) (rsp *CreateSysUserReply, err error)
+	// DeleteSysUser 删除用户
+	DeleteSysUser(ctx context.Context, req *DeleteSysUserRequest, opts ...http.CallOption) (rsp *DeleteSysUserReply, err error)
 	// FindCaptcha 获取验证码
 	FindCaptcha(ctx context.Context, req *FindCaptchaRequest, opts ...http.CallOption) (rsp *FindCaptchaReply, err error)
 	// FindPostInit 获取岗位
 	FindPostInit(ctx context.Context, req *FindPostInitRequest, opts ...http.CallOption) (rsp *FindPostInitReply, err error)
-	// FindSysuser 获取用户
-	FindSysuser(ctx context.Context, req *FindSysuserRequest, opts ...http.CallOption) (rsp *FindSysuserReply, err error)
+	// FindSysUser 获取用户
+	FindSysUser(ctx context.Context, req *FindSysUserRequest, opts ...http.CallOption) (rsp *FindSysUserReply, err error)
 	// FindUserGoogleSecret 生成密钥和二维码
 	FindUserGoogleSecret(ctx context.Context, req *FindUserGoogleSecretRequest, opts ...http.CallOption) (rsp *FindUserGoogleSecretReply, err error)
 	// FindUserRolePost 获取RoPo
 	FindUserRolePost(ctx context.Context, req *FindUserRolePostRequest, opts ...http.CallOption) (rsp *FindUserRolePostReply, err error)
-	// ListSysuser 用户列表
-	ListSysuser(ctx context.Context, req *ListSysuserRequest, opts ...http.CallOption) (rsp *ListSysuserReply, err error)
+	// ListSysUser 用户列表
+	ListSysUser(ctx context.Context, req *ListSysUserRequest, opts ...http.CallOption) (rsp *ListSysUserReply, err error)
 	// Login 登入
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	// Logout 登出
 	Logout(ctx context.Context, req *LogoutRequest, opts ...http.CallOption) (rsp *LogoutReply, err error)
 	// UpdatePassword 更新密码
 	UpdatePassword(ctx context.Context, req *UpdatePasswordRequest, opts ...http.CallOption) (rsp *UpdatePasswordReply, err error)
-	// UpdateSysuser 更新用户
-	UpdateSysuser(ctx context.Context, req *UpdateSysuserRequest, opts ...http.CallOption) (rsp *UpdateSysuserReply, err error)
+	// UpdateSysUser 更新用户
+	UpdateSysUser(ctx context.Context, req *UpdateSysUserRequest, opts ...http.CallOption) (rsp *UpdateSysUserReply, err error)
 }
 
-type SysuserHTTPClientImpl struct {
+type SysUserHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewSysuserHTTPClient(client *http.Client) SysuserHTTPClient {
-	return &SysuserHTTPClientImpl{client}
+func NewSysUserHTTPClient(client *http.Client) SysUserHTTPClient {
+	return &SysUserHTTPClientImpl{client}
 }
 
 // Auth 获取用户权限
-func (c *SysuserHTTPClientImpl) Auth(ctx context.Context, in *AuthRequest, opts ...http.CallOption) (*AuthReply, error) {
+func (c *SysUserHTTPClientImpl) Auth(ctx context.Context, in *AuthRequest, opts ...http.CallOption) (*AuthReply, error) {
 	var out AuthReply
 	pattern := "/system/user/auth"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserAuth))
+	opts = append(opts, http.Operation(OperationSysUserAuth))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -427,11 +427,11 @@ func (c *SysuserHTTPClientImpl) Auth(ctx context.Context, in *AuthRequest, opts 
 }
 
 // ChangeStatus 更新用户状态
-func (c *SysuserHTTPClientImpl) ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...http.CallOption) (*ChangeStatusReply, error) {
+func (c *SysUserHTTPClientImpl) ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...http.CallOption) (*ChangeStatusReply, error) {
 	var out ChangeStatusReply
 	pattern := "/system/user/changeStatus"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserChangeStatus))
+	opts = append(opts, http.Operation(OperationSysUserChangeStatus))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
@@ -440,12 +440,12 @@ func (c *SysuserHTTPClientImpl) ChangeStatus(ctx context.Context, in *ChangeStat
 	return &out, nil
 }
 
-// CreateSysuser 创建用户
-func (c *SysuserHTTPClientImpl) CreateSysuser(ctx context.Context, in *CreateSysuserRequest, opts ...http.CallOption) (*CreateSysuserReply, error) {
-	var out CreateSysuserReply
+// CreateSysUser 创建用户
+func (c *SysUserHTTPClientImpl) CreateSysUser(ctx context.Context, in *CreateSysUserRequest, opts ...http.CallOption) (*CreateSysUserReply, error) {
+	var out CreateSysUserReply
 	pattern := "/system/user"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserCreateSysuser))
+	opts = append(opts, http.Operation(OperationSysUserCreateSysUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -454,12 +454,12 @@ func (c *SysuserHTTPClientImpl) CreateSysuser(ctx context.Context, in *CreateSys
 	return &out, nil
 }
 
-// DeleteSysuser 删除用户
-func (c *SysuserHTTPClientImpl) DeleteSysuser(ctx context.Context, in *DeleteSysuserRequest, opts ...http.CallOption) (*DeleteSysuserReply, error) {
-	var out DeleteSysuserReply
+// DeleteSysUser 删除用户
+func (c *SysUserHTTPClientImpl) DeleteSysUser(ctx context.Context, in *DeleteSysUserRequest, opts ...http.CallOption) (*DeleteSysUserReply, error) {
+	var out DeleteSysUserReply
 	pattern := "/system/user/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserDeleteSysuser))
+	opts = append(opts, http.Operation(OperationSysUserDeleteSysUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
@@ -469,11 +469,11 @@ func (c *SysuserHTTPClientImpl) DeleteSysuser(ctx context.Context, in *DeleteSys
 }
 
 // FindCaptcha 获取验证码
-func (c *SysuserHTTPClientImpl) FindCaptcha(ctx context.Context, in *FindCaptchaRequest, opts ...http.CallOption) (*FindCaptchaReply, error) {
+func (c *SysUserHTTPClientImpl) FindCaptcha(ctx context.Context, in *FindCaptchaRequest, opts ...http.CallOption) (*FindCaptchaReply, error) {
 	var out FindCaptchaReply
 	pattern := "/system/user/getCaptcha"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserFindCaptcha))
+	opts = append(opts, http.Operation(OperationSysUserFindCaptcha))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -483,11 +483,11 @@ func (c *SysuserHTTPClientImpl) FindCaptcha(ctx context.Context, in *FindCaptcha
 }
 
 // FindPostInit 获取岗位
-func (c *SysuserHTTPClientImpl) FindPostInit(ctx context.Context, in *FindPostInitRequest, opts ...http.CallOption) (*FindPostInitReply, error) {
+func (c *SysUserHTTPClientImpl) FindPostInit(ctx context.Context, in *FindPostInitRequest, opts ...http.CallOption) (*FindPostInitReply, error) {
 	var out FindPostInitReply
 	pattern := "/system/user/getInit"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserFindPostInit))
+	opts = append(opts, http.Operation(OperationSysUserFindPostInit))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -496,12 +496,12 @@ func (c *SysuserHTTPClientImpl) FindPostInit(ctx context.Context, in *FindPostIn
 	return &out, nil
 }
 
-// FindSysuser 获取用户
-func (c *SysuserHTTPClientImpl) FindSysuser(ctx context.Context, in *FindSysuserRequest, opts ...http.CallOption) (*FindSysuserReply, error) {
-	var out FindSysuserReply
+// FindSysUser 获取用户
+func (c *SysUserHTTPClientImpl) FindSysUser(ctx context.Context, in *FindSysUserRequest, opts ...http.CallOption) (*FindSysUserReply, error) {
+	var out FindSysUserReply
 	pattern := "/system/user/getById/{id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserFindSysuser))
+	opts = append(opts, http.Operation(OperationSysUserFindSysUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -511,11 +511,11 @@ func (c *SysuserHTTPClientImpl) FindSysuser(ctx context.Context, in *FindSysuser
 }
 
 // FindUserGoogleSecret 生成密钥和二维码
-func (c *SysuserHTTPClientImpl) FindUserGoogleSecret(ctx context.Context, in *FindUserGoogleSecretRequest, opts ...http.CallOption) (*FindUserGoogleSecretReply, error) {
+func (c *SysUserHTTPClientImpl) FindUserGoogleSecret(ctx context.Context, in *FindUserGoogleSecretRequest, opts ...http.CallOption) (*FindUserGoogleSecretReply, error) {
 	var out FindUserGoogleSecretReply
 	pattern := "/system/user/secret"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserFindUserGoogleSecret))
+	opts = append(opts, http.Operation(OperationSysUserFindUserGoogleSecret))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -525,11 +525,11 @@ func (c *SysuserHTTPClientImpl) FindUserGoogleSecret(ctx context.Context, in *Fi
 }
 
 // FindUserRolePost 获取RoPo
-func (c *SysuserHTTPClientImpl) FindUserRolePost(ctx context.Context, in *FindUserRolePostRequest, opts ...http.CallOption) (*FindUserRolePostReply, error) {
+func (c *SysUserHTTPClientImpl) FindUserRolePost(ctx context.Context, in *FindUserRolePostRequest, opts ...http.CallOption) (*FindUserRolePostReply, error) {
 	var out FindUserRolePostReply
 	pattern := "/system/user/getRoPo"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserFindUserRolePost))
+	opts = append(opts, http.Operation(OperationSysUserFindUserRolePost))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -538,12 +538,12 @@ func (c *SysuserHTTPClientImpl) FindUserRolePost(ctx context.Context, in *FindUs
 	return &out, nil
 }
 
-// ListSysuser 用户列表
-func (c *SysuserHTTPClientImpl) ListSysuser(ctx context.Context, in *ListSysuserRequest, opts ...http.CallOption) (*ListSysuserReply, error) {
-	var out ListSysuserReply
+// ListSysUser 用户列表
+func (c *SysUserHTTPClientImpl) ListSysUser(ctx context.Context, in *ListSysUserRequest, opts ...http.CallOption) (*ListSysUserReply, error) {
+	var out ListSysUserReply
 	pattern := "/system/user/list"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationSysuserListSysuser))
+	opts = append(opts, http.Operation(OperationSysUserListSysUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -553,11 +553,11 @@ func (c *SysuserHTTPClientImpl) ListSysuser(ctx context.Context, in *ListSysuser
 }
 
 // Login 登入
-func (c *SysuserHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
+func (c *SysUserHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opts ...http.CallOption) (*LoginReply, error) {
 	var out LoginReply
 	pattern := "/system/user/login"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserLogin))
+	opts = append(opts, http.Operation(OperationSysUserLogin))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -567,11 +567,11 @@ func (c *SysuserHTTPClientImpl) Login(ctx context.Context, in *LoginRequest, opt
 }
 
 // Logout 登出
-func (c *SysuserHTTPClientImpl) Logout(ctx context.Context, in *LogoutRequest, opts ...http.CallOption) (*LogoutReply, error) {
+func (c *SysUserHTTPClientImpl) Logout(ctx context.Context, in *LogoutRequest, opts ...http.CallOption) (*LogoutReply, error) {
 	var out LogoutReply
 	pattern := "/system/user/logout"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserLogout))
+	opts = append(opts, http.Operation(OperationSysUserLogout))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -581,11 +581,11 @@ func (c *SysuserHTTPClientImpl) Logout(ctx context.Context, in *LogoutRequest, o
 }
 
 // UpdatePassword 更新密码
-func (c *SysuserHTTPClientImpl) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...http.CallOption) (*UpdatePasswordReply, error) {
+func (c *SysUserHTTPClientImpl) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...http.CallOption) (*UpdatePasswordReply, error) {
 	var out UpdatePasswordReply
 	pattern := "/system/user/pwd"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserUpdatePassword))
+	opts = append(opts, http.Operation(OperationSysUserUpdatePassword))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
@@ -594,12 +594,12 @@ func (c *SysuserHTTPClientImpl) UpdatePassword(ctx context.Context, in *UpdatePa
 	return &out, nil
 }
 
-// UpdateSysuser 更新用户
-func (c *SysuserHTTPClientImpl) UpdateSysuser(ctx context.Context, in *UpdateSysuserRequest, opts ...http.CallOption) (*UpdateSysuserReply, error) {
-	var out UpdateSysuserReply
+// UpdateSysUser 更新用户
+func (c *SysUserHTTPClientImpl) UpdateSysUser(ctx context.Context, in *UpdateSysUserRequest, opts ...http.CallOption) (*UpdateSysUserReply, error) {
+	var out UpdateSysUserReply
 	pattern := "/system/user"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSysuserUpdateSysuser))
+	opts = append(opts, http.Operation(OperationSysUserUpdateSysUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {

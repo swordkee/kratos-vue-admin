@@ -11,35 +11,35 @@ package api.admin.v1;
 option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
 
 // 用户管理
-service Sysuser {
+service SysUser {
   // 创建用户
-  rpc CreateSysuser (CreateSysuserRequest) returns (CreateSysuserReply){
+  rpc CreateSysUser (CreateSysUserRequest) returns (CreateSysUserReply){
     option (google.api.http) = {
       post: "/system/user"
       body: "*"
     };
   };
   // 更新用户
-  rpc UpdateSysuser (UpdateSysuserRequest) returns (UpdateSysuserReply){
+  rpc UpdateSysUser (UpdateSysUserRequest) returns (UpdateSysUserReply){
     option (google.api.http) = {
       put: "/system/user"
       body: "*"
     };
   };
   // 删除用户
-  rpc DeleteSysuser (DeleteSysuserRequest) returns (DeleteSysuserReply){
+  rpc DeleteSysUser (DeleteSysUserRequest) returns (DeleteSysUserReply){
     option (google.api.http) = {
       delete: "/system/user/{id}"
     };
   };
   // 获取用户
-  rpc FindSysuser (FindSysuserRequest) returns (FindSysuserReply){
+  rpc FindSysUser (FindSysUserRequest) returns (FindSysUserReply){
     option (google.api.http) = {
       get: "/system/user/getById/{id}"
     };
   };
   // 用户列表
-  rpc ListSysuser (ListSysuserRequest) returns (ListSysuserReply){
+  rpc ListSysUser (ListSysUserRequest) returns (ListSysUserReply){
     option (google.api.http) = {
       get: "/system/user/list"
     };
@@ -105,7 +105,7 @@ service Sysuser {
   };
 }
 
-message CreateSysuserRequest {
+message CreateSysUserRequest {
   string nickName = 1 [(validate.rules).string = {min_len: 1, max_len: 30}];
   string username = 2 [(validate.rules).string = {min_len: 1, max_len: 30}];
   string password = 3 [(validate.rules).string = {min_len: 1, max_len: 30}];
@@ -123,9 +123,9 @@ message CreateSysuserRequest {
   string secret = 15 [(validate.rules).string.len = 32];
 }
 
-message CreateSysuserReply {}
+message CreateSysUserReply {}
 
-message UpdateSysuserRequest {
+message UpdateSysUserRequest {
   int64 userId = 1;
   string nickName = 3;
   string phone = 4;
@@ -149,17 +149,17 @@ message UpdateSysuserRequest {
   string role_name = 23;
   string secret = 24;
 }
-message UpdateSysuserReply {}
+message UpdateSysUserReply {}
 
-message DeleteSysuserRequest {
+message DeleteSysUserRequest {
   int64 id = 1;
 }
-message DeleteSysuserReply {}
+message DeleteSysUserReply {}
 
-message FindSysuserRequest {
+message FindSysUserRequest {
   int64 id = 1;
 }
-message FindSysuserReply {
+message FindSysUserReply {
   UserData user = 1;
   repeated RoleData roles = 2;
   repeated PostData posts = 3;
@@ -168,14 +168,14 @@ message FindSysuserReply {
   string roleIds = 6;
 }
 
-message ListSysuserRequest {
+message ListSysUserRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
   string username = 3;
   string phone = 4;
   int32 status = 5;
 }
-message ListSysuserReply {
+message ListSysUserReply {
   int32 total = 1;
   int32 pageNum = 2;
   int32 pageSize = 3;

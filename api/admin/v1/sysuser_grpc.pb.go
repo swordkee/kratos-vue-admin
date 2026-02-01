@@ -19,38 +19,38 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	Sysuser_CreateSysuser_FullMethodName        = "/api.admin.v1.Sysuser/CreateSysuser"
-	Sysuser_UpdateSysuser_FullMethodName        = "/api.admin.v1.Sysuser/UpdateSysuser"
-	Sysuser_DeleteSysuser_FullMethodName        = "/api.admin.v1.Sysuser/DeleteSysuser"
-	Sysuser_FindSysuser_FullMethodName          = "/api.admin.v1.Sysuser/FindSysuser"
-	Sysuser_ListSysuser_FullMethodName          = "/api.admin.v1.Sysuser/ListSysuser"
-	Sysuser_FindCaptcha_FullMethodName          = "/api.admin.v1.Sysuser/FindCaptcha"
-	Sysuser_Login_FullMethodName                = "/api.admin.v1.Sysuser/Login"
-	Sysuser_Logout_FullMethodName               = "/api.admin.v1.Sysuser/Logout"
-	Sysuser_Auth_FullMethodName                 = "/api.admin.v1.Sysuser/Auth"
-	Sysuser_ChangeStatus_FullMethodName         = "/api.admin.v1.Sysuser/ChangeStatus"
-	Sysuser_UpdatePassword_FullMethodName       = "/api.admin.v1.Sysuser/UpdatePassword"
-	Sysuser_FindPostInit_FullMethodName         = "/api.admin.v1.Sysuser/FindPostInit"
-	Sysuser_FindUserRolePost_FullMethodName     = "/api.admin.v1.Sysuser/FindUserRolePost"
-	Sysuser_FindUserGoogleSecret_FullMethodName = "/api.admin.v1.Sysuser/FindUserGoogleSecret"
+	SysUser_CreateSysUser_FullMethodName        = "/api.admin.v1.SysUser/CreateSysUser"
+	SysUser_UpdateSysUser_FullMethodName        = "/api.admin.v1.SysUser/UpdateSysUser"
+	SysUser_DeleteSysUser_FullMethodName        = "/api.admin.v1.SysUser/DeleteSysUser"
+	SysUser_FindSysUser_FullMethodName          = "/api.admin.v1.SysUser/FindSysUser"
+	SysUser_ListSysUser_FullMethodName          = "/api.admin.v1.SysUser/ListSysUser"
+	SysUser_FindCaptcha_FullMethodName          = "/api.admin.v1.SysUser/FindCaptcha"
+	SysUser_Login_FullMethodName                = "/api.admin.v1.SysUser/Login"
+	SysUser_Logout_FullMethodName               = "/api.admin.v1.SysUser/Logout"
+	SysUser_Auth_FullMethodName                 = "/api.admin.v1.SysUser/Auth"
+	SysUser_ChangeStatus_FullMethodName         = "/api.admin.v1.SysUser/ChangeStatus"
+	SysUser_UpdatePassword_FullMethodName       = "/api.admin.v1.SysUser/UpdatePassword"
+	SysUser_FindPostInit_FullMethodName         = "/api.admin.v1.SysUser/FindPostInit"
+	SysUser_FindUserRolePost_FullMethodName     = "/api.admin.v1.SysUser/FindUserRolePost"
+	SysUser_FindUserGoogleSecret_FullMethodName = "/api.admin.v1.SysUser/FindUserGoogleSecret"
 )
 
-// SysuserClient is the client API for Sysuser service.
+// SysUserClient is the client API for SysUser service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // 用户管理
-type SysuserClient interface {
+type SysUserClient interface {
 	// 创建用户
-	CreateSysuser(ctx context.Context, in *CreateSysuserRequest, opts ...grpc.CallOption) (*CreateSysuserReply, error)
+	CreateSysUser(ctx context.Context, in *CreateSysUserRequest, opts ...grpc.CallOption) (*CreateSysUserReply, error)
 	// 更新用户
-	UpdateSysuser(ctx context.Context, in *UpdateSysuserRequest, opts ...grpc.CallOption) (*UpdateSysuserReply, error)
+	UpdateSysUser(ctx context.Context, in *UpdateSysUserRequest, opts ...grpc.CallOption) (*UpdateSysUserReply, error)
 	// 删除用户
-	DeleteSysuser(ctx context.Context, in *DeleteSysuserRequest, opts ...grpc.CallOption) (*DeleteSysuserReply, error)
+	DeleteSysUser(ctx context.Context, in *DeleteSysUserRequest, opts ...grpc.CallOption) (*DeleteSysUserReply, error)
 	// 获取用户
-	FindSysuser(ctx context.Context, in *FindSysuserRequest, opts ...grpc.CallOption) (*FindSysuserReply, error)
+	FindSysUser(ctx context.Context, in *FindSysUserRequest, opts ...grpc.CallOption) (*FindSysUserReply, error)
 	// 用户列表
-	ListSysuser(ctx context.Context, in *ListSysuserRequest, opts ...grpc.CallOption) (*ListSysuserReply, error)
+	ListSysUser(ctx context.Context, in *ListSysUserRequest, opts ...grpc.CallOption) (*ListSysUserReply, error)
 	// 获取验证码
 	FindCaptcha(ctx context.Context, in *FindCaptchaRequest, opts ...grpc.CallOption) (*FindCaptchaReply, error)
 	// 登入
@@ -71,170 +71,170 @@ type SysuserClient interface {
 	FindUserGoogleSecret(ctx context.Context, in *FindUserGoogleSecretRequest, opts ...grpc.CallOption) (*FindUserGoogleSecretReply, error)
 }
 
-type sysuserClient struct {
+type sysUserClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSysuserClient(cc grpc.ClientConnInterface) SysuserClient {
-	return &sysuserClient{cc}
+func NewSysUserClient(cc grpc.ClientConnInterface) SysUserClient {
+	return &sysUserClient{cc}
 }
 
-func (c *sysuserClient) CreateSysuser(ctx context.Context, in *CreateSysuserRequest, opts ...grpc.CallOption) (*CreateSysuserReply, error) {
+func (c *sysUserClient) CreateSysUser(ctx context.Context, in *CreateSysUserRequest, opts ...grpc.CallOption) (*CreateSysUserReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateSysuserReply)
-	err := c.cc.Invoke(ctx, Sysuser_CreateSysuser_FullMethodName, in, out, cOpts...)
+	out := new(CreateSysUserReply)
+	err := c.cc.Invoke(ctx, SysUser_CreateSysUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) UpdateSysuser(ctx context.Context, in *UpdateSysuserRequest, opts ...grpc.CallOption) (*UpdateSysuserReply, error) {
+func (c *sysUserClient) UpdateSysUser(ctx context.Context, in *UpdateSysUserRequest, opts ...grpc.CallOption) (*UpdateSysUserReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateSysuserReply)
-	err := c.cc.Invoke(ctx, Sysuser_UpdateSysuser_FullMethodName, in, out, cOpts...)
+	out := new(UpdateSysUserReply)
+	err := c.cc.Invoke(ctx, SysUser_UpdateSysUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) DeleteSysuser(ctx context.Context, in *DeleteSysuserRequest, opts ...grpc.CallOption) (*DeleteSysuserReply, error) {
+func (c *sysUserClient) DeleteSysUser(ctx context.Context, in *DeleteSysUserRequest, opts ...grpc.CallOption) (*DeleteSysUserReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteSysuserReply)
-	err := c.cc.Invoke(ctx, Sysuser_DeleteSysuser_FullMethodName, in, out, cOpts...)
+	out := new(DeleteSysUserReply)
+	err := c.cc.Invoke(ctx, SysUser_DeleteSysUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) FindSysuser(ctx context.Context, in *FindSysuserRequest, opts ...grpc.CallOption) (*FindSysuserReply, error) {
+func (c *sysUserClient) FindSysUser(ctx context.Context, in *FindSysUserRequest, opts ...grpc.CallOption) (*FindSysUserReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FindSysuserReply)
-	err := c.cc.Invoke(ctx, Sysuser_FindSysuser_FullMethodName, in, out, cOpts...)
+	out := new(FindSysUserReply)
+	err := c.cc.Invoke(ctx, SysUser_FindSysUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) ListSysuser(ctx context.Context, in *ListSysuserRequest, opts ...grpc.CallOption) (*ListSysuserReply, error) {
+func (c *sysUserClient) ListSysUser(ctx context.Context, in *ListSysUserRequest, opts ...grpc.CallOption) (*ListSysUserReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSysuserReply)
-	err := c.cc.Invoke(ctx, Sysuser_ListSysuser_FullMethodName, in, out, cOpts...)
+	out := new(ListSysUserReply)
+	err := c.cc.Invoke(ctx, SysUser_ListSysUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) FindCaptcha(ctx context.Context, in *FindCaptchaRequest, opts ...grpc.CallOption) (*FindCaptchaReply, error) {
+func (c *sysUserClient) FindCaptcha(ctx context.Context, in *FindCaptchaRequest, opts ...grpc.CallOption) (*FindCaptchaReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FindCaptchaReply)
-	err := c.cc.Invoke(ctx, Sysuser_FindCaptcha_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_FindCaptcha_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+func (c *sysUserClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoginReply)
-	err := c.cc.Invoke(ctx, Sysuser_Login_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_Login_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutReply, error) {
+func (c *sysUserClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LogoutReply)
-	err := c.cc.Invoke(ctx, Sysuser_Logout_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_Logout_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) Auth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthReply, error) {
+func (c *sysUserClient) Auth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AuthReply)
-	err := c.cc.Invoke(ctx, Sysuser_Auth_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_Auth_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...grpc.CallOption) (*ChangeStatusReply, error) {
+func (c *sysUserClient) ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...grpc.CallOption) (*ChangeStatusReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ChangeStatusReply)
-	err := c.cc.Invoke(ctx, Sysuser_ChangeStatus_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_ChangeStatus_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*UpdatePasswordReply, error) {
+func (c *sysUserClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*UpdatePasswordReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdatePasswordReply)
-	err := c.cc.Invoke(ctx, Sysuser_UpdatePassword_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_UpdatePassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) FindPostInit(ctx context.Context, in *FindPostInitRequest, opts ...grpc.CallOption) (*FindPostInitReply, error) {
+func (c *sysUserClient) FindPostInit(ctx context.Context, in *FindPostInitRequest, opts ...grpc.CallOption) (*FindPostInitReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FindPostInitReply)
-	err := c.cc.Invoke(ctx, Sysuser_FindPostInit_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_FindPostInit_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) FindUserRolePost(ctx context.Context, in *FindUserRolePostRequest, opts ...grpc.CallOption) (*FindUserRolePostReply, error) {
+func (c *sysUserClient) FindUserRolePost(ctx context.Context, in *FindUserRolePostRequest, opts ...grpc.CallOption) (*FindUserRolePostReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FindUserRolePostReply)
-	err := c.cc.Invoke(ctx, Sysuser_FindUserRolePost_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_FindUserRolePost_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *sysuserClient) FindUserGoogleSecret(ctx context.Context, in *FindUserGoogleSecretRequest, opts ...grpc.CallOption) (*FindUserGoogleSecretReply, error) {
+func (c *sysUserClient) FindUserGoogleSecret(ctx context.Context, in *FindUserGoogleSecretRequest, opts ...grpc.CallOption) (*FindUserGoogleSecretReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FindUserGoogleSecretReply)
-	err := c.cc.Invoke(ctx, Sysuser_FindUserGoogleSecret_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SysUser_FindUserGoogleSecret_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SysuserServer is the server API for Sysuser service.
-// All implementations must embed UnimplementedSysuserServer
+// SysUserServer is the server API for SysUser service.
+// All implementations must embed UnimplementedSysUserServer
 // for forward compatibility
 //
 // 用户管理
-type SysuserServer interface {
+type SysUserServer interface {
 	// 创建用户
-	CreateSysuser(context.Context, *CreateSysuserRequest) (*CreateSysuserReply, error)
+	CreateSysUser(context.Context, *CreateSysUserRequest) (*CreateSysUserReply, error)
 	// 更新用户
-	UpdateSysuser(context.Context, *UpdateSysuserRequest) (*UpdateSysuserReply, error)
+	UpdateSysUser(context.Context, *UpdateSysUserRequest) (*UpdateSysUserReply, error)
 	// 删除用户
-	DeleteSysuser(context.Context, *DeleteSysuserRequest) (*DeleteSysuserReply, error)
+	DeleteSysUser(context.Context, *DeleteSysUserRequest) (*DeleteSysUserReply, error)
 	// 获取用户
-	FindSysuser(context.Context, *FindSysuserRequest) (*FindSysuserReply, error)
+	FindSysUser(context.Context, *FindSysUserRequest) (*FindSysUserReply, error)
 	// 用户列表
-	ListSysuser(context.Context, *ListSysuserRequest) (*ListSysuserReply, error)
+	ListSysUser(context.Context, *ListSysUserRequest) (*ListSysUserReply, error)
 	// 获取验证码
 	FindCaptcha(context.Context, *FindCaptchaRequest) (*FindCaptchaReply, error)
 	// 登入
@@ -253,382 +253,382 @@ type SysuserServer interface {
 	FindUserRolePost(context.Context, *FindUserRolePostRequest) (*FindUserRolePostReply, error)
 	// 生成密钥和二维码
 	FindUserGoogleSecret(context.Context, *FindUserGoogleSecretRequest) (*FindUserGoogleSecretReply, error)
-	mustEmbedUnimplementedSysuserServer()
+	mustEmbedUnimplementedSysUserServer()
 }
 
-// UnimplementedSysuserServer must be embedded to have forward compatible implementations.
-type UnimplementedSysuserServer struct {
+// UnimplementedSysUserServer must be embedded to have forward compatible implementations.
+type UnimplementedSysUserServer struct {
 }
 
-func (UnimplementedSysuserServer) CreateSysuser(context.Context, *CreateSysuserRequest) (*CreateSysuserReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateSysuser not implemented")
+func (UnimplementedSysUserServer) CreateSysUser(context.Context, *CreateSysUserRequest) (*CreateSysUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSysUser not implemented")
 }
-func (UnimplementedSysuserServer) UpdateSysuser(context.Context, *UpdateSysuserRequest) (*UpdateSysuserReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateSysuser not implemented")
+func (UnimplementedSysUserServer) UpdateSysUser(context.Context, *UpdateSysUserRequest) (*UpdateSysUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSysUser not implemented")
 }
-func (UnimplementedSysuserServer) DeleteSysuser(context.Context, *DeleteSysuserRequest) (*DeleteSysuserReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteSysuser not implemented")
+func (UnimplementedSysUserServer) DeleteSysUser(context.Context, *DeleteSysUserRequest) (*DeleteSysUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSysUser not implemented")
 }
-func (UnimplementedSysuserServer) FindSysuser(context.Context, *FindSysuserRequest) (*FindSysuserReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FindSysuser not implemented")
+func (UnimplementedSysUserServer) FindSysUser(context.Context, *FindSysUserRequest) (*FindSysUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindSysUser not implemented")
 }
-func (UnimplementedSysuserServer) ListSysuser(context.Context, *ListSysuserRequest) (*ListSysuserReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSysuser not implemented")
+func (UnimplementedSysUserServer) ListSysUser(context.Context, *ListSysUserRequest) (*ListSysUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSysUser not implemented")
 }
-func (UnimplementedSysuserServer) FindCaptcha(context.Context, *FindCaptchaRequest) (*FindCaptchaReply, error) {
+func (UnimplementedSysUserServer) FindCaptcha(context.Context, *FindCaptchaRequest) (*FindCaptchaReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindCaptcha not implemented")
 }
-func (UnimplementedSysuserServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
+func (UnimplementedSysUserServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedSysuserServer) Logout(context.Context, *LogoutRequest) (*LogoutReply, error) {
+func (UnimplementedSysUserServer) Logout(context.Context, *LogoutRequest) (*LogoutReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
-func (UnimplementedSysuserServer) Auth(context.Context, *AuthRequest) (*AuthReply, error) {
+func (UnimplementedSysUserServer) Auth(context.Context, *AuthRequest) (*AuthReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Auth not implemented")
 }
-func (UnimplementedSysuserServer) ChangeStatus(context.Context, *ChangeStatusRequest) (*ChangeStatusReply, error) {
+func (UnimplementedSysUserServer) ChangeStatus(context.Context, *ChangeStatusRequest) (*ChangeStatusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeStatus not implemented")
 }
-func (UnimplementedSysuserServer) UpdatePassword(context.Context, *UpdatePasswordRequest) (*UpdatePasswordReply, error) {
+func (UnimplementedSysUserServer) UpdatePassword(context.Context, *UpdatePasswordRequest) (*UpdatePasswordReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePassword not implemented")
 }
-func (UnimplementedSysuserServer) FindPostInit(context.Context, *FindPostInitRequest) (*FindPostInitReply, error) {
+func (UnimplementedSysUserServer) FindPostInit(context.Context, *FindPostInitRequest) (*FindPostInitReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindPostInit not implemented")
 }
-func (UnimplementedSysuserServer) FindUserRolePost(context.Context, *FindUserRolePostRequest) (*FindUserRolePostReply, error) {
+func (UnimplementedSysUserServer) FindUserRolePost(context.Context, *FindUserRolePostRequest) (*FindUserRolePostReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindUserRolePost not implemented")
 }
-func (UnimplementedSysuserServer) FindUserGoogleSecret(context.Context, *FindUserGoogleSecretRequest) (*FindUserGoogleSecretReply, error) {
+func (UnimplementedSysUserServer) FindUserGoogleSecret(context.Context, *FindUserGoogleSecretRequest) (*FindUserGoogleSecretReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindUserGoogleSecret not implemented")
 }
-func (UnimplementedSysuserServer) mustEmbedUnimplementedSysuserServer() {}
+func (UnimplementedSysUserServer) mustEmbedUnimplementedSysUserServer() {}
 
-// UnsafeSysuserServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SysuserServer will
+// UnsafeSysUserServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SysUserServer will
 // result in compilation errors.
-type UnsafeSysuserServer interface {
-	mustEmbedUnimplementedSysuserServer()
+type UnsafeSysUserServer interface {
+	mustEmbedUnimplementedSysUserServer()
 }
 
-func RegisterSysuserServer(s grpc.ServiceRegistrar, srv SysuserServer) {
-	s.RegisterService(&Sysuser_ServiceDesc, srv)
+func RegisterSysUserServer(s grpc.ServiceRegistrar, srv SysUserServer) {
+	s.RegisterService(&SysUser_ServiceDesc, srv)
 }
 
-func _Sysuser_CreateSysuser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateSysuserRequest)
+func _SysUser_CreateSysUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).CreateSysuser(ctx, in)
+		return srv.(SysUserServer).CreateSysUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_CreateSysuser_FullMethodName,
+		FullMethod: SysUser_CreateSysUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).CreateSysuser(ctx, req.(*CreateSysuserRequest))
+		return srv.(SysUserServer).CreateSysUser(ctx, req.(*CreateSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_UpdateSysuser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateSysuserRequest)
+func _SysUser_UpdateSysUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).UpdateSysuser(ctx, in)
+		return srv.(SysUserServer).UpdateSysUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_UpdateSysuser_FullMethodName,
+		FullMethod: SysUser_UpdateSysUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).UpdateSysuser(ctx, req.(*UpdateSysuserRequest))
+		return srv.(SysUserServer).UpdateSysUser(ctx, req.(*UpdateSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_DeleteSysuser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteSysuserRequest)
+func _SysUser_DeleteSysUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).DeleteSysuser(ctx, in)
+		return srv.(SysUserServer).DeleteSysUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_DeleteSysuser_FullMethodName,
+		FullMethod: SysUser_DeleteSysUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).DeleteSysuser(ctx, req.(*DeleteSysuserRequest))
+		return srv.(SysUserServer).DeleteSysUser(ctx, req.(*DeleteSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_FindSysuser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FindSysuserRequest)
+func _SysUser_FindSysUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).FindSysuser(ctx, in)
+		return srv.(SysUserServer).FindSysUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_FindSysuser_FullMethodName,
+		FullMethod: SysUser_FindSysUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).FindSysuser(ctx, req.(*FindSysuserRequest))
+		return srv.(SysUserServer).FindSysUser(ctx, req.(*FindSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_ListSysuser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSysuserRequest)
+func _SysUser_ListSysUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).ListSysuser(ctx, in)
+		return srv.(SysUserServer).ListSysUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_ListSysuser_FullMethodName,
+		FullMethod: SysUser_ListSysUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).ListSysuser(ctx, req.(*ListSysuserRequest))
+		return srv.(SysUserServer).ListSysUser(ctx, req.(*ListSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_FindCaptcha_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_FindCaptcha_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FindCaptchaRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).FindCaptcha(ctx, in)
+		return srv.(SysUserServer).FindCaptcha(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_FindCaptcha_FullMethodName,
+		FullMethod: SysUser_FindCaptcha_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).FindCaptcha(ctx, req.(*FindCaptchaRequest))
+		return srv.(SysUserServer).FindCaptcha(ctx, req.(*FindCaptchaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).Login(ctx, in)
+		return srv.(SysUserServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_Login_FullMethodName,
+		FullMethod: SysUser_Login_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).Login(ctx, req.(*LoginRequest))
+		return srv.(SysUserServer).Login(ctx, req.(*LoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogoutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).Logout(ctx, in)
+		return srv.(SysUserServer).Logout(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_Logout_FullMethodName,
+		FullMethod: SysUser_Logout_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).Logout(ctx, req.(*LogoutRequest))
+		return srv.(SysUserServer).Logout(ctx, req.(*LogoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).Auth(ctx, in)
+		return srv.(SysUserServer).Auth(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_Auth_FullMethodName,
+		FullMethod: SysUser_Auth_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).Auth(ctx, req.(*AuthRequest))
+		return srv.(SysUserServer).Auth(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_ChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_ChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChangeStatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).ChangeStatus(ctx, in)
+		return srv.(SysUserServer).ChangeStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_ChangeStatus_FullMethodName,
+		FullMethod: SysUser_ChangeStatus_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).ChangeStatus(ctx, req.(*ChangeStatusRequest))
+		return srv.(SysUserServer).ChangeStatus(ctx, req.(*ChangeStatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePasswordRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).UpdatePassword(ctx, in)
+		return srv.(SysUserServer).UpdatePassword(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_UpdatePassword_FullMethodName,
+		FullMethod: SysUser_UpdatePassword_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
+		return srv.(SysUserServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_FindPostInit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_FindPostInit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FindPostInitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).FindPostInit(ctx, in)
+		return srv.(SysUserServer).FindPostInit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_FindPostInit_FullMethodName,
+		FullMethod: SysUser_FindPostInit_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).FindPostInit(ctx, req.(*FindPostInitRequest))
+		return srv.(SysUserServer).FindPostInit(ctx, req.(*FindPostInitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_FindUserRolePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_FindUserRolePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FindUserRolePostRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).FindUserRolePost(ctx, in)
+		return srv.(SysUserServer).FindUserRolePost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_FindUserRolePost_FullMethodName,
+		FullMethod: SysUser_FindUserRolePost_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).FindUserRolePost(ctx, req.(*FindUserRolePostRequest))
+		return srv.(SysUserServer).FindUserRolePost(ctx, req.(*FindUserRolePostRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Sysuser_FindUserGoogleSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SysUser_FindUserGoogleSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FindUserGoogleSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SysuserServer).FindUserGoogleSecret(ctx, in)
+		return srv.(SysUserServer).FindUserGoogleSecret(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Sysuser_FindUserGoogleSecret_FullMethodName,
+		FullMethod: SysUser_FindUserGoogleSecret_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysuserServer).FindUserGoogleSecret(ctx, req.(*FindUserGoogleSecretRequest))
+		return srv.(SysUserServer).FindUserGoogleSecret(ctx, req.(*FindUserGoogleSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Sysuser_ServiceDesc is the grpc.ServiceDesc for Sysuser service.
+// SysUser_ServiceDesc is the grpc.ServiceDesc for SysUser service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Sysuser_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.admin.v1.Sysuser",
-	HandlerType: (*SysuserServer)(nil),
+var SysUser_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.admin.v1.SysUser",
+	HandlerType: (*SysUserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateSysuser",
-			Handler:    _Sysuser_CreateSysuser_Handler,
+			MethodName: "CreateSysUser",
+			Handler:    _SysUser_CreateSysUser_Handler,
 		},
 		{
-			MethodName: "UpdateSysuser",
-			Handler:    _Sysuser_UpdateSysuser_Handler,
+			MethodName: "UpdateSysUser",
+			Handler:    _SysUser_UpdateSysUser_Handler,
 		},
 		{
-			MethodName: "DeleteSysuser",
-			Handler:    _Sysuser_DeleteSysuser_Handler,
+			MethodName: "DeleteSysUser",
+			Handler:    _SysUser_DeleteSysUser_Handler,
 		},
 		{
-			MethodName: "FindSysuser",
-			Handler:    _Sysuser_FindSysuser_Handler,
+			MethodName: "FindSysUser",
+			Handler:    _SysUser_FindSysUser_Handler,
 		},
 		{
-			MethodName: "ListSysuser",
-			Handler:    _Sysuser_ListSysuser_Handler,
+			MethodName: "ListSysUser",
+			Handler:    _SysUser_ListSysUser_Handler,
 		},
 		{
 			MethodName: "FindCaptcha",
-			Handler:    _Sysuser_FindCaptcha_Handler,
+			Handler:    _SysUser_FindCaptcha_Handler,
 		},
 		{
 			MethodName: "Login",
-			Handler:    _Sysuser_Login_Handler,
+			Handler:    _SysUser_Login_Handler,
 		},
 		{
 			MethodName: "Logout",
-			Handler:    _Sysuser_Logout_Handler,
+			Handler:    _SysUser_Logout_Handler,
 		},
 		{
 			MethodName: "Auth",
-			Handler:    _Sysuser_Auth_Handler,
+			Handler:    _SysUser_Auth_Handler,
 		},
 		{
 			MethodName: "ChangeStatus",
-			Handler:    _Sysuser_ChangeStatus_Handler,
+			Handler:    _SysUser_ChangeStatus_Handler,
 		},
 		{
 			MethodName: "UpdatePassword",
-			Handler:    _Sysuser_UpdatePassword_Handler,
+			Handler:    _SysUser_UpdatePassword_Handler,
 		},
 		{
 			MethodName: "FindPostInit",
-			Handler:    _Sysuser_FindPostInit_Handler,
+			Handler:    _SysUser_FindPostInit_Handler,
 		},
 		{
 			MethodName: "FindUserRolePost",
-			Handler:    _Sysuser_FindUserRolePost_Handler,
+			Handler:    _SysUser_FindUserRolePost_Handler,
 		},
 		{
 			MethodName: "FindUserGoogleSecret",
-			Handler:    _Sysuser_FindUserGoogleSecret_Handler,
+			Handler:    _SysUser_FindUserGoogleSecret_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
