@@ -74,8 +74,8 @@ func main() {
 		WithUnitTest: false,
 		ModelPkgPath: filepath.Join(projectRoot, "app/admin/internal/data/gen/model"),
 	})
-
-	g.UseDB(db)
+	g.UseDB(db) // 必须在生成模型前先连接数据库
+	g.WithImportPkgPath("github.com/shopspring/decimal")
 
 	// 获取要生成的表配置
 	allConfiguredTables := getAllTables()
@@ -132,6 +132,7 @@ func main() {
 	}
 
 	// 为每个表生成模型
+	var models []interface{}
 	successCount := 0
 	failCount := 0
 	for _, tc := range tables {
@@ -144,9 +145,22 @@ func main() {
 				}
 			}()
 
-			model := g.GenerateModelAs(tc.TableName, toCamelCase(tc.TableName))
+			// 为包含金额字段的表添加特殊字段类型映射
+			var fieldOpts []gen.ModelOpt
+			switch tc.TableName {
+			case "sys_users":
+				// 不太可能有金额字段，但为保持一致性而保留
+			}
+
+			var model interface{}
+			if len(fieldOpts) > 0 {
+				model = g.GenerateModelAs(tc.TableName, toCamelCase(tc.TableName), fieldOpts...)
+			} else {
+				model = g.GenerateModelAs(tc.TableName, toCamelCase(tc.TableName))
+			}
+			
 			if model != nil {
-				g.ApplyBasic(model)
+				models = append(models, model)
 				successCount++
 				fmt.Printf("成功生成表 %s 的模型 -> %s\n", tc.TableName, tc.StructName)
 			} else {
@@ -154,6 +168,11 @@ func main() {
 				fmt.Printf("跳过表 %s (表不存在或生成失败)\n", tc.TableName)
 			}
 		}()
+	}
+
+	// 应用所有模型
+	if len(models) > 0 {
+		g.ApplyBasic(models...)
 	}
 
 	// 执行生成
