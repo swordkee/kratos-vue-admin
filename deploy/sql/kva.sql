@@ -210,8 +210,8 @@ INSERT INTO `casbin_rule` VALUES (10, 'p', 'admin', '/system/user/export', 'GET'
 -- ----------------------------
 -- Table structure for jwt_blacklists
 -- ----------------------------
-DROP TABLE IF EXISTS `jwt_blacklists`;
-CREATE TABLE `jwt_blacklists`  (
+DROP TABLE IF EXISTS `jwt_black_list`;
+CREATE TABLE `jwt_black_list`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `jwt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'jwt',
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
@@ -222,88 +222,9 @@ CREATE TABLE `jwt_blacklists`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of jwt_blacklists
+-- Records of jwt_black_list
 -- ----------------------------
 
--- ----------------------------
--- Table structure for log_jobs
--- ----------------------------
-DROP TABLE IF EXISTS `log_jobs`;
-CREATE TABLE `log_jobs`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-  `job_group` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分组',
-  `entry_id` int(11) NOT NULL COMMENT '任务id',
-  `invoke_target` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用方法',
-  `log_info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '日志信息',
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=正常 2=异常',
-  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of log_jobs
--- ----------------------------
-
--- ----------------------------
--- Table structure for log_logins
--- ----------------------------
-DROP TABLE IF EXISTS `log_logins`;
-CREATE TABLE `log_logins`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `username` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=正常 2=异常',
-  `ipaddr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'ip地址',
-  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '归属地',
-  `browser` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '浏览器',
-  `os` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '系统',
-  `platform` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '固件',
-  `create_by` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '创建人',
-  `update_by` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '更新者',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '消息',
-  `login_time` timestamp NULL DEFAULT NULL COMMENT '登录时间',
-  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of log_logins
--- ----------------------------
-
--- ----------------------------
--- Table structure for log_opers
--- ----------------------------
-DROP TABLE IF EXISTS `log_opers`;
-CREATE TABLE `log_opers`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作的模块',
-  `business_type` tinyint(2) NOT NULL DEFAULT 0 COMMENT '0其它 1新增 2修改 3删除',
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作url',
-  `method` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '请求方法',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人员',
-  `user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '用户id',
-  `ip` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作IP',
-  `agent` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '代理',
-  `latency` int(11) NOT NULL DEFAULT 0 COMMENT '延迟',
-  `resp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '请求参数',
-  `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '1=正常 2=异常',
-  `error_message` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '错误信息',
-  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of log_opers
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_apis

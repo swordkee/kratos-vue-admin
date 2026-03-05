@@ -11,6 +11,7 @@ message Bootstrap {
   Auth auth = 3;
   Casbin casbin = 4;
   Oss oss = 5;
+  LogConfig log = 6;  // 日志配置
 }
 
 enum Env
@@ -96,4 +97,11 @@ enum GormLogLevel {
     info = 1;
   silent = 2;
     error =3;
+}
+
+// 操作日志配置
+message LogConfig {
+  bool enableReadLog = 1;     // 是否记录读操作(GET/HEAD/OPTIONS)，默认false
+  bool enableWriteLog = 2;    // 是否记录写操作(POST/PUT/DELETE/PATCH)，默认true
+  int32 maxBodyLength = 3;    // 请求/响应体最大长度，默认4096
 }

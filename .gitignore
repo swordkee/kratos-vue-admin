@@ -1,4 +1,42 @@
-.go.sum
-# Editor directories and files
-.idea
-.vscode
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE specific files
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Build output
+bin/
+dist/
+
+# Config files with sensitive data
+configs/config.local.yaml
+configs/*.local.yaml
+
+# Log files
+*.log
+logs/
+
+# OS specific files
+.DS_Store
+Thumbs.db

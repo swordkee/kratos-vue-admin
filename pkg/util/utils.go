@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"github.com/jinzhu/copier"
+	"github.com/shopspring/decimal"
 	"github.com/tencentyun/tls-sig-api-v2-golang/tencentyun"
 	"math/big"
 	"math/rand"
@@ -309,4 +310,16 @@ func IsContainInt(target int, List []int) bool {
 		}
 	}
 	return false
+}
+
+// ParseDecimal 将字符串转换为 decimal.Decimal，如果为空则返回 0
+func ParseDecimal(s string) decimal.Decimal {
+	if s == "" {
+		return decimal.Zero
+	}
+	d, err := decimal.NewFromString(s)
+	if err != nil {
+		return decimal.Zero
+	}
+	return d
 }

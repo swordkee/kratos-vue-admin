@@ -158,7 +158,7 @@ func main() {
 			} else {
 				model = g.GenerateModelAs(tc.TableName, toCamelCase(tc.TableName))
 			}
-			
+
 			if model != nil {
 				models = append(models, model)
 				successCount++
@@ -219,7 +219,7 @@ func getAllTables() []TableConfig {
 	tables := []TableConfig{}
 
 	tables = append(tables, TableConfig{TableName: "casbin_rule", StructName: "casbin_rule", Description: "权限配置表"})
-	tables = append(tables, TableConfig{TableName: "jwt_blacklists", StructName: "jwt_blacklists", Description: "jwt黑名单"})
+	tables = append(tables, TableConfig{TableName: "jwt_black_list", StructName: "jwt_black_list", Description: "jwt黑名单"})
 	tables = append(tables, TableConfig{TableName: "log_jobs", StructName: "log_jobs", Description: "任务日志"})
 	tables = append(tables, TableConfig{TableName: "log_logins", StructName: "log_logins", Description: "登录日志"})
 	tables = append(tables, TableConfig{TableName: "log_opers", StructName: "log_opers", Description: "操作日志"})
@@ -238,7 +238,6 @@ func getAllTables() []TableConfig {
 	tables = append(tables, TableConfig{TableName: "sys_role_menus", StructName: "sys_role_menus", Description: "角色菜单"})
 	tables = append(tables, TableConfig{TableName: "sys_roles", StructName: "sys_roles", Description: "角色"})
 	tables = append(tables, TableConfig{TableName: "sys_users", StructName: "sys_users", Description: "用户"})
-	tables = append(tables, TableConfig{TableName: "ip_blacklist", StructName: "ip_blacklist", Description: "IP黑名单"})
 
 	return tables
 }

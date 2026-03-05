@@ -61,6 +61,8 @@ func (m *CommonReply) validate(all bool) error {
 
 	// no validation rules for Message
 
+	// no validation rules for TraceId
+
 	if all {
 		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
