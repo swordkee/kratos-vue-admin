@@ -32,7 +32,8 @@ export const useUserInfosState = defineStore('userInfos', {
 			const userName = Cookies.get('userName');
 
 			let response = await authUser({"username": userName})
-			let loginRes = response.data
+			// request 成功时已解包 data；兼容返回 {data:{...}} 包装的形态
+			let loginRes = response?.data ?? response
 			Session.set("menus", loginRes.menus);
 			let perms = loginRes.permissions;
 			perms.push("base");

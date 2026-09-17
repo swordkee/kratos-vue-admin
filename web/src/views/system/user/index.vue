@@ -108,6 +108,20 @@
                     </el-button>
                   </div>
                   <div>
+                    <el-popconfirm
+                      title="确认重置该用户的二因素认证（MFA）吗？重置后需重新绑定认证器。"
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      @confirm="handleResetMfa(scope.row)">
+                      <template #reference>
+                        <el-button text type="warning" v-auth="'system:user:edit'">
+                          <SvgIcon name="elementRefresh" />
+                          重置MFA
+                        </el-button>
+                      </template>
+                    </el-popconfirm>
+                  </div>
+                  <div>
                     <el-button text type="primary" v-auth="'system:user:delete'" @click="handleDelete(scope.row)">
                       <SvgIcon name="elementDelete" />
                       删除
@@ -156,6 +170,7 @@ import MDInput from "@/components/panda/MDInput.vue";
 import EditModule from "./component/editModule.vue";
 import { letterAvatar } from '@/utils/string';
 import { handleFileError } from "@/utils/export";
+import { mfaReset } from "@/api/mfa";
 
 const { proxy } = getCurrentInstance() as any;
 const userFormRef = ref();
@@ -286,6 +301,15 @@ const handleStatusChange = (row: any) => {
     row.status = row.status === 1 ? 0 : 1;
   });
 };
+/** 重置用户 MFA（TOTP）
+ * 管理员操作：重置后该用户需重新扫码绑定认证器（el-popconfirm 已做二次确认）
+ */
+const handleResetMfa = (row: any) => {
+  return mfaReset(row.userId).then(() => {
+    ElMessage.success("已重置，该用户可重新绑定认证器");
+  });
+};
+
 /** 删除按钮操作 */
 const handleDelete = (row: any) => {
   const userIds = row.userId || state.ids;
