@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log/slog"
 	"os"
+	"strings"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/pkg/logx"
@@ -47,8 +48,7 @@ func newApp(_ log.Logger, hs *http.Server) *kratos.App {
 	)
 }
 
-func newLogxLogger() *logx.Logger {
-	slogLogger := slog.New(logx.BuildHandler(logx.HandlerConfig{
+func newLogxLogger() *logx.Logger {	slogLogger := slog.New(logx.BuildHandler(logx.HandlerConfig{
 		Level:       "info",
 		OutputPaths: "stdout",
 	})).With(
@@ -84,6 +84,7 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+	applyAuthEnvOverride(&bc)
 
 	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, bc.Message, logger, newLogxLogger(), bc.Data.Redis)
 	if err != nil {
@@ -94,5 +95,20 @@ func main() {
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
 		panic(err)
+	}
+}
+
+// applyAuthEnvOverride 让 ECDSA P-384 私钥/公钥支持从环境变量读取，优先于 YAML。
+// env 未设置时保持 YAML 值（样例配置可直接启动）；生产必须用 env 注入，
+// 避免沿用仓库内 DEV 占位密钥。
+func applyAuthEnvOverride(bc *conf.Bootstrap) {
+	if bc.Auth == nil {
+		return
+	}
+	if v := strings.TrimSpace(os.Getenv("ADMIN_ECDSA_PRIVATE_KEY")); v != "" {
+		bc.Auth.EcdsaPrivateKey = v
+	}
+	if v := strings.TrimSpace(os.Getenv("ADMIN_ECDSA_PUBLIC_KEY")); v != "" {
+		bc.Auth.EcdsaPublicKey = v
 	}
 }

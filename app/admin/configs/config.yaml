@@ -6,6 +6,11 @@
   grpc:
     addr: 0.0.0.0:9001
     timeout: 1s
+  # CORS 跨域白名单：缺省/留空=禁用跨域（仅同源，经前端代理）。需要跨域时显式列来源（含 scheme）：
+  # cors:
+  #   allowOrigins:
+  #     - "http://localhost:5173"
+  #   maxAge: 86400
 data:
   database:
     driver: mysql

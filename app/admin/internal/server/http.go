@@ -48,6 +48,15 @@ func CustomRequestDecoder(r *stdhttp.Request, v interface{}) error {
 		return nil
 	}
 
+	// protobuf 请求体走 protojson：int64 同时接受字符串/数字，丢弃未知字段（R29-ADMIN-01）
+	if pm, ok := v.(proto.Message); ok {
+		fresh := pm.ProtoReflect().New().Interface()
+		if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(data, fresh); err == nil {
+			proto.Merge(pm, fresh)
+			return nil
+		}
+		// 解析失败回退标准 json（失败数据由 fresh 承接，不落 v）
+	}
 	// 直接解码到目标结构体
 	return json.Unmarshal(data, v)
 }
@@ -193,6 +202,8 @@ func NewHTTPServer(
 	// 构建日志中间件配置
 	logMiddlewareConfig := middleware.DefaultLogConfig()
 
+	// CORS 默认收紧：不配置 allowOrigins = 不注册 CORS 过滤器（gorilla 无参默认 *），
+	// 即仅同源可用；配置显式白名单时才注册（凭据仅与白名单搭配，禁止 * + credentials）。
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -200,14 +211,21 @@ func NewHTTPServer(
 			middleware.OperationRecordWithConfig(opRecordsCase, logMiddlewareConfig),
 			middleware.Auth(s, casbinRepo, userRepo),
 		),
-		http.Filter(handlers.CORS(
-			handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Language", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"}),
-			handlers.AllowedOrigins([]string{"*"}),
-			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"}),
-			handlers.AllowCredentials(),
-		)),
 		http.ResponseEncoder(EncoderResponse()),
 		http.RequestDecoder(CustomRequestDecoder),
+	}
+	if c.Cors != nil && len(c.Cors.AllowOrigins) > 0 {
+		maxAge := int(c.Cors.MaxAge)
+		if maxAge <= 0 {
+			maxAge = 86400
+		}
+		opts = append(opts, http.Filter(handlers.CORS(
+			handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Language", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"}),
+			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"}),
+			handlers.AllowedOrigins(c.Cors.AllowOrigins),
+			handlers.AllowCredentials(),
+			handlers.MaxAge(maxAge),
+		)))
 	}
 
 	if c.Http.Network != "" {
@@ -255,7 +273,10 @@ func NewHTTPServer(
 		return ctx.Result(200, url)
 	})
 
-	srv.Handle("/debug/pprof/", pprof.NewHandler())
+	// pprof 调试端点为裸处理器（不经认证中间件），生产环境必须关闭；仅 dev/test 保留。
+	if c.Env != conf.Env_pro {
+		srv.Handle("/debug/pprof/", pprof.NewHandler())
+	}
 
 	return srv
 }

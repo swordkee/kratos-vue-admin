@@ -36,6 +36,15 @@ message Server {
   HTTP http = 1;
   GRPC grpc = 2;
   Env  env = 3;
+  // CORS 跨域白名单：缺省/留空 = 禁用跨域（仅同源）；需要跨域时显式列出来源（含 scheme）。
+  // 凭据（AllowCredentials）仅与显式白名单搭配，禁止通配源 * + 凭据的矛盾组合。
+  Cors cors = 4;
+}
+
+// Cors 跨域配置（PA-P2-03 收紧形态）
+message Cors {
+  repeated string allowOrigins = 1; // 允许来源（含 scheme，如 https://admin.example.com）
+  int32 maxAge = 2;                 // 预检缓存秒数，缺省 86400
 }
 
 message Data {
