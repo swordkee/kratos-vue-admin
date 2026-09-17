@@ -1,5 +1,6 @@
 <template>
-  <el-form ref="loginFormRef" size="large" :model="state.loginForm" :rules="state.rules" class="login-content-form">
+  <!-- TOTP：未触发二因素时显示账号密码登录表单 -->
+  <el-form v-if="!state.isMfaStep" ref="loginFormRef" size="large" :model="state.loginForm" :rules="state.rules" class="login-content-form">
     <el-form-item class="login-animation-one">
       <el-input type="text" :placeholder="$t('message.account.accountPlaceholder1')" v-model="state.loginForm.username"
         clearable autocomplete="off">
@@ -27,8 +28,44 @@
       </el-input>
     </el-form-item>
     <el-form-item class="login-animation-three">
-      <el-input type="text" maxlength="6" placeholder="输入谷歌密钥" v-model="state.loginForm.code" clearable
-        autocomplete="off">
+      <div class="login-captcha-wrapper">
+        <el-input type="text" maxlength="6" placeholder="请输入图形验证码"
+          v-model="state.loginForm.code" clearable autocomplete="off" style="flex: 1;">
+          <template #prefix>
+            <el-icon class="el-input__icon">
+              <elementPicture />
+            </el-icon>
+          </template>
+        </el-input>
+        <el-button
+          v-if="!state.base64Image"
+          class="get-captcha-btn"
+          round
+          @click="getCaptcha"
+          :loading="state.getCaptchaLoading">
+          获取验证码
+        </el-button>
+        <img v-if="state.base64Image"
+          :key="state.timestamp"
+          :src="state.base64Image"
+          alt="captcha"
+          class="captcha-image"
+          @click="getCaptcha"
+          title="点击刷新验证码" />
+      </div>
+    </el-form-item>
+    <el-form-item class="login-animation-four">
+      <el-button type="primary" class="login-content-submit" round @click="openVerify" :loading="state.loading.signIn">
+        <span>{{ $t("message.account.accountBtnText") }}</span>
+      </el-button>
+    </el-form-item>
+  </el-form>
+
+  <!-- TOTP 二因素验证步骤：登录 step1 返回 needMfa 后显示 -->
+  <el-form v-else size="large" class="login-content-form">
+    <el-form-item>
+      <el-input type="text" maxlength="6" placeholder="输入动态验证码" v-model="state.mfaCode" clearable
+        autocomplete="off" @keyup.enter="onMfaVerify">
         <template #prefix>
           <el-icon class="el-input__icon">
             <elementPosition />
@@ -36,9 +73,14 @@
         </template>
       </el-input>
     </el-form-item>
-    <el-form-item class="login-animation-four">
-      <el-button type="primary" class="login-content-submit" round @click="openVerify" :loading="state.loading.signIn">
-        <span>{{ $t("message.account.accountBtnText") }}</span>
+    <el-form-item>
+      <el-button type="primary" class="login-content-submit" round @click="onMfaVerify" :loading="state.loading.signIn">
+        <span>验证并登录</span>
+      </el-button>
+    </el-form-item>
+    <el-form-item>
+      <el-button text type="primary" @click="backToLogin">
+        <span>重新登录</span>
       </el-button>
     </el-form-item>
   </el-form>
@@ -57,7 +99,8 @@ import { useI18n } from "vue-i18n";
 import { initBackEndControlRoutes } from "@/router/index";
 import { Session } from "@/utils/storage";
 import Cookies from 'js-cookie';
-import { signIn } from "@/api/login/index";
+import { signIn, captcha as getCaptchaApi } from "@/api/login/index";
+import { mfaVerify } from "@/api/mfa";
 import { formatAxis } from "@/utils/formatTime";
 import rotate from '@/assets/rotate.png'
 
@@ -79,18 +122,49 @@ const state = reactive({
     username: "admin",
     password: "123456",
     code: "",
+    // 图形验证码会话 ID（KVA 后端 getCaptcha 返回 captchaId）
+    captchaId: "",
   },
+  // 图形验证码
+  base64Image: "",
+  timestamp: Date.now(),
+  getCaptchaLoading: false,
+  // TOTP 两段式登录：needMfa=true 时进入二因素步骤
+  isMfaStep: false,
+  mfaToken: "",
+  mfaCode: "",
   rules: {
     username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-    code: [{ required: true, message: "输入谷歌密钥", trigger: "blur" }],
   },
   isShowPassword: false,
   loading: {
     signIn: false,
   },
 });
+// 获取图形验证码（KVA: GET /system/user/getCaptcha → { base64Captcha, captchaId }）
+const getCaptcha = async () => {
+  state.getCaptchaLoading = true;
+  try {
+    const res: any = await getCaptchaApi();
+    // request 成功时已解包 data；兼容返回 {data:{...}} 包装的形态
+    const data = res?.data ?? res;
+    const img = data?.base64Captcha || data?.base64Image;
+    if (img) {
+      state.base64Image = img;
+      state.loginForm.captchaId = data?.captchaId || "";
+      state.timestamp = Date.now();
+      state.loginForm.code = "";
+    }
+  } catch (e) {
+    ElMessage.error("获取验证码失败：" + (e as Error).message);
+  } finally {
+    state.getCaptchaLoading = false;
+  }
+};
+
 onMounted(() => {
+  getCaptcha();
 });
 
 
@@ -113,15 +187,25 @@ const onSignIn = async () => {
   state.loading.signIn = true;
   let loginRespon;
   try {
+    // 提交账号、密码、图形验证码及 captchaId
     loginRespon = await signIn(state.loginForm);
   } catch (e) {
     // dragRef.value.reset();
     // state.isPassingFour = false;
     state.loading.signIn = false;
     state.loginForm.code = "";
+    getCaptcha();
     return;
   }
-  let loginRes = loginRespon.data;
+  // request 成功时已解包 data；兼容返回 {data:{...}} 包装的形态
+  let loginRes = loginRespon?.data ?? loginRespon;
+  // TOTP 两段式登录：needMfa=true → 进入二因素验证步骤（不签发正式 token）
+  if (loginRes?.needMfa) {
+    state.mfaToken = loginRes.mfaToken;
+    state.isMfaStep = true;
+    state.loading.signIn = false;
+    return;
+  }
   Session.set("token", loginRes.token);
   Cookies.set('userName', state.loginForm.username);
   // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
@@ -133,6 +217,39 @@ const onSignIn = async () => {
 const openVerify = () => {
   // state.dialogVerifyVisible = true;
   login();
+};
+
+// 退出二因素步骤，返回账号密码登录
+const backToLogin = () => {
+  state.isMfaStep = false;
+  state.mfaToken = "";
+  state.mfaCode = "";
+};
+
+// TOTP 二因素验证：动态码 → /mfa/verify 换正式 token → 登录成功
+const onMfaVerify = async () => {
+  if (!state.mfaCode) {
+    ElMessage.warning("请输入动态验证码");
+    return;
+  }
+  state.loading.signIn = true;
+  try {
+    const verifyRes: any = await mfaVerify(state.mfaToken, state.mfaCode);
+    const vRes = verifyRes?.data ?? verifyRes;
+    if (!vRes?.token) {
+      ElMessage.error("验证失败，请重试");
+      state.mfaCode = "";
+      return;
+    }
+    Session.set("token", vRes.token);
+    Cookies.set('userName', state.loginForm.username);
+    await initBackEndControlRoutes();
+    signInSuccess();
+  } catch (e) {
+    state.mfaCode = "";
+  } finally {
+    state.loading.signIn = false;
+  }
 };
 const passVerify = () => {
   state.dialogVerifyVisible = false;
@@ -200,6 +317,44 @@ const signInSuccess = () => {
   .login-animation-four {
     animation-delay: 0.4s;
     margin-bottom: 5px;
+  }
+
+  .login-captcha-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+
+    .el-input {
+      flex: 1;
+    }
+
+    .get-captcha-btn {
+      width: 110px;
+      white-space: nowrap;
+      height: 40px;
+      flex-shrink: 0;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .captcha-image {
+      width: 120px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #dcdfe6;
+      flex-shrink: 0;
+
+      &:hover {
+        border-color: #c0c4cc;
+        opacity: 0.9;
+      }
+    }
   }
 
   .login-content-password {

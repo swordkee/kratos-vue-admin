@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+package api.admin.v1;
+
+option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+
+// MFA TOTP 双因素认证
+// R26 接入（设计 docs/design/2026-09-12-mfa-totp-integration.md，参考 api-admin feature/mfa-totp）：
+//   - 两段式登录：密码 → MfaPending 5min token → Verify 校验动态码/恢复码 → 正式 token
+//   - 绑定/解绑/恢复码/管理员重置；默认不启用（auth.mfa.enabled=false）
+service SysMfa {
+  // 查询当前用户 TOTP 状态（available=总开关，enabled=本人是否已绑定）
+  rpc Status(MfaStatusReq) returns (MfaStatusRsp) {
+    option (google.api.http) = {
+      get: "/mfa/status"
+    };
+  };
+  // 生成 TOTP 密钥与 otpauth URI（待确认，5 分钟会话缓存）
+  rpc Enroll(MfaEnrollReq) returns (MfaEnrollRsp) {
+    option (google.api.http) = {
+      post: "/mfa/enroll"
+      body: "*"
+    };
+  };
+  // 校验动态码并启用（返回一次性恢复码）
+  rpc Enable(MfaCodeReq) returns (MfaEnableRsp) {
+    option (google.api.http) = {
+      post: "/mfa/enable"
+      body: "*"
+    };
+  };
+  // 关闭（需动态码或恢复码二次确认）
+  rpc Disable(MfaCodeReq) returns (MfaRsp) {
+    option (google.api.http) = {
+      post: "/mfa/disable"
+      body: "*"
+    };
+  };
+  // 管理员重置指定用户 TOTP
+  rpc Reset(MfaResetReq) returns (MfaRsp) {
+    option (google.api.http) = {
+      post: "/mfa/reset"
+      body: "*"
+    };
+  };
+  // 两段式登录二次验证：MfaPending token + 动态码/恢复码 → 正式 token（公开，白名单）
+  rpc Verify(MfaVerifyReq) returns (MfaVerifyRsp) {
+    option (google.api.http) = {
+      post: "/mfa/verify"
+      body: "*"
+    };
+  };
+}
+
+message MfaStatusReq {}
+
+message MfaStatusRsp {
+  bool available = 1; // 功能总开关（auth.mfa.enabled）
+  bool enabled = 2;   // 本人是否已绑定 TOTP
+  int64 boundAt = 3;  // 绑定时间（毫秒时间戳，未绑定为 0）
+}
+
+message MfaEnrollReq {
+  string username = 1; // otpauth AccountName（一般传登录用户名）
+}
+
+message MfaEnrollRsp {
+  string secret = 1; // TOTP secret（仅本次返回，用于扫码/手工输入）
+  string url = 2;    // otpauth://totp/ URI（二维码内容）
+}
+
+message MfaCodeReq {
+  string code = 1; // 动态码或恢复码
+}
+
+message MfaEnableRsp {
+  repeated string recoveryCodes = 1; // 恢复码（仅本次返回，请妥善保存）
+}
+
+message MfaRsp {}
+
+message MfaResetReq {
+  int64 userId = 1; // 目标用户 ID（管理员操作）
+}
+
+message MfaVerifyReq {
+  string mfaToken = 1; // 两段式登录第 1 步的 MfaPending token
+  string code = 2;     // 动态码或恢复码
+}
+
+message MfaVerifyRsp {
+  string token = 1; // 正式登录 token
+  int64 expire = 2; // 过期时间（毫秒时间戳）
+}

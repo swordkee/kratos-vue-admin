@@ -9,7 +9,8 @@ import (
 	"github.com/casbin/casbin/v3/model"
 	"github.com/casbin/casbin/v3/persist"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"gorm.io/gorm"
@@ -120,4 +121,13 @@ func (c *casbinRuleRepo) GetModel() model.Model {
 // GetAdapter 获取 Casbin 适配器
 func (c *casbinRuleRepo) GetAdapter() persist.Adapter {
 	return c.syncedEnforcer.GetAdapter()
+}
+
+// Enforce 判断 subject(roleKey) 是否可对 obj(path) 执行 act(method)。
+// 超级管理员角色直接放行；其余角色交由 Casbin 策略判定。
+func (c *casbinRuleRepo) Enforce(sub, obj, act string) (bool, error) {
+	if sub == authz.SuperAdminRoleKey {
+		return true, nil
+	}
+	return c.syncedEnforcer.Enforce(sub, obj, act)
 }

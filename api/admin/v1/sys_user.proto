@@ -70,6 +70,20 @@ service SysUser {
       get: "/system/user/auth"
     };
   };
+  // 发送手机登录验证码（需先通过图形验证码）
+  rpc SendPhoneLoginCode (SendPhoneLoginCodeRequest) returns (SendPhoneLoginCodeReply){
+    option (google.api.http) = {
+      post: "/system/user/phone/sendcode"
+      body: "*"
+    };
+  };
+  // 手机验证码登录（与密码登录共用 MFA 两段式语义）
+  rpc PhoneLogin (PhoneLoginRequest) returns (LoginReply){
+    option (google.api.http) = {
+      post: "/system/user/phone/login"
+      body: "*"
+    };
+  };
   // 更新用户状态
   rpc ChangeStatus(ChangeStatusRequest) returns (ChangeStatusReply){
     option (google.api.http) = {
@@ -193,10 +207,32 @@ message LoginRequest{
   string username = 1;
   string password = 2;
   string code = 3;
+  // 图形验证码 ID（FindCaptcha 返回的 captchaId），与 code 一起在登录时校验
+  string captchaId = 4;
 }
 message LoginReply{
   string token = 1;
   int64 expire = 2;
+  // TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
+  bool needMfa = 3;
+  string mfaToken = 4;
+}
+
+message SendPhoneLoginCodeRequest {
+  string phone = 1;     // 手机号
+  string username = 2;  // 用户名（确保仅后台用户可收码）
+  string captchaId = 3; // 图形验证码 ID
+  string code = 4;      // 图形验证码
+}
+
+message SendPhoneLoginCodeReply {
+  int32 retCode = 1;
+  string retMsg = 2;
+}
+
+message PhoneLoginRequest {
+  string phone = 1; // 手机号
+  string code = 2;  // 短信验证码
 }
 
 message LogoutRequest{}

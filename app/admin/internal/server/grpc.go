@@ -5,9 +5,9 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
 
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
+	"github.com/go-kratos/kratos/v3/middleware/recovery"
+	"github.com/go-kratos/kratos/v3/transport/grpc"
 )
 
 // NewGRPCServer new a gRPC server.

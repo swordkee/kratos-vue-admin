@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"

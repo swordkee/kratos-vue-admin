@@ -206,6 +206,19 @@
               </div>
             </div>
           </div>
+          <div class="personal-edit-safe-box">
+            <div class="personal-edit-safe-item">
+              <div class="personal-edit-safe-item-left">
+                <div class="personal-edit-safe-item-left-label">二因素认证（TOTP）</div>
+                <div class="personal-edit-safe-item-left-value">
+                  绑定后登录需输入动态验证码，账号更安全
+                </div>
+              </div>
+              <div class="personal-edit-safe-item-right">
+                <el-button text type="primary" @click="handler('mfa', true)">管理</el-button>
+              </div>
+            </div>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -259,6 +272,8 @@
         </span>
       </template>
     </el-dialog>
+    <!-- TOTP 二因素认证设置弹窗 -->
+    <MfaDialog v-model="state.dialogVisibleMfa" :username="userInfos.userInfos.username" />
   </div>
 </template>
 
@@ -269,6 +284,7 @@ import { formatAxis } from "@/utils/formatTime";
 import { useUserInfosState } from "@/stores/userInfos";
 import { newsInfoList, recommendList } from "./mock";
 import { updateUserPwd, getRoPo, updateUser } from "@/api/system/user";
+import MfaDialog from "./component/mfa-dialog.vue";
 import { ElMessage } from "element-plus";
 import { Session } from "@/utils/storage";
 import { useRouter } from "vue-router";
@@ -283,6 +299,7 @@ const state = reactive({
   dialogVisiblePassWord: false,
   dialogVisiblePost: false,
   dialogVisibleRole: false,
+  dialogVisibleMfa: false,
   password: {
     newPassword: "",
     oldPassword: "",
@@ -318,6 +335,9 @@ const handler = (ty: string, bl: boolean) => {
       break;
     case "post":
       state.dialogVisiblePost = bl;
+      break;
+    case "mfa":
+      state.dialogVisibleMfa = bl;
       break;
   }
 };

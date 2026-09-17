@@ -5,13 +5,17 @@ import (
 
 	"github.com/casbin/casbin/v3/model"
 	"github.com/casbin/casbin/v3/persist"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 )
 
 type CasbinRuleRepo interface {
 	GetModel() model.Model
 	GetAdapter() persist.Adapter
+
+	// Enforce 判断 subject(roleKey) 能否对 obj(operation) 执行 act(method)。
+	// 超级管理员直接放行；其余角色交由 Casbin 策略判定（空策略不锁死系统）。
+	Enforce(sub, obj, act string) (bool, error)
 
 	UpdateCasbin(ctx context.Context, roleKey string, p [][]string) error
 	ClearCasbin(v int, p ...string) error

@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/go-kratos/kratos/v2/metadata"
-	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/go-kratos/kratos/v3/metadata"
+	"github.com/go-kratos/kratos/v3/transport"
 	"github.com/swordkee/kratos-vue-admin/pkg/common/constant"
 )
 

@@ -59,7 +59,6 @@ INSERT INTO `casbin_rule` VALUES (22, 'p', 'admin', '/api.admin.v1.Dept/UpdateDe
 INSERT INTO `casbin_rule` VALUES (33, 'p', 'admin', '/api.admin.v1.DictData/CreateDictData', 'POST', '', '', '');
 INSERT INTO `casbin_rule` VALUES (35, 'p', 'admin', '/api.admin.v1.DictData/DeleteDictData', 'DELETE', '', '', '');
 INSERT INTO `casbin_rule` VALUES (32, 'p', 'admin', '/api.admin.v1.DictData/FindDictData', 'GET', '', '', '');
-INSERT INTO `casbin_rule` VALUES (31, 'p', 'admin', '/api.admin.v1.DictData/ListDictData', 'GET', '', '', '');
 INSERT INTO `casbin_rule` VALUES (30, 'p', 'admin', '/api.admin.v1.DictData/ListDictData', 'GET', '', '', '');
 INSERT INTO `casbin_rule` VALUES (34, 'p', 'admin', '/api.admin.v1.DictData/UpdateDictData', 'PUT', '', '', '');
 INSERT INTO `casbin_rule` VALUES (26, 'p', 'admin', '/api.admin.v1.DictType/CreateDictType', 'POST', '', '', '');
@@ -855,6 +854,9 @@ CREATE TABLE `sys_users`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
   `secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'google密钥',
+  `mfa_enabled` tinyint NOT NULL DEFAULT 0 COMMENT 'TOTP 双因素是否开启（AES-256-GCM 密钥存 mfa_secret）',
+  `mfa_secret` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'AES-256-GCM 加密的 TOTP secret（32 字节主密钥 auth.mfa.encryptionKey）',
+  `mfa_bound_at` datetime NULL DEFAULT NULL COMMENT 'TOTP 绑定时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
@@ -862,9 +864,9 @@ CREATE TABLE `sys_users`  (
 -- ----------------------------
 -- Records of sys_users
 -- ----------------------------
-INSERT INTO `sys_users` VALUES (1, '1-1-1-1', 'admin', 'admin', '$2a$10$cKFFTCzGOvaIHHJY2K45Zuwt8TD6oPzYi4s5MzYIBAWCLL6ZhouP2', '18888888888', 1, '', '', 0, 'example@email.com', 3, 1, 'remark', 1, '1', '1', 'admin', 'admin', '2021-12-03 09:46:55', '2023-09-04 10:40:54', NULL, '45RNXQTW2EMJ2EOAQ26UYML2D2K2IPYT');
-INSERT INTO `sys_users` VALUES (2, 'd26733e4-ee09-4d98-b462-93bae039209c', 'test2', 'test2', '$2a$10$yiQ9u0lh7wsGjchqMGVOE.lp3KO99R5nw0Kc1DWQC6THI6d.JzNP.', '13312312311', 1, '', '', 1, 'email@email.com', 2, 1, 'this is a remark2', 1, '1', '1', 'admin', 'admin', '2023-08-23 11:38:47', '2023-09-07 10:02:50', NULL, 'K6SSMXVIX6WRDBEIPX2ZDHLR6XSCEAKN');
-INSERT INTO `sys_users` VALUES (3, 'b3614db9-80a8-4892-9f65-0a6e70a00a2d', 'dahe', 'dahe', '$2a$10$iCr0rC6esWA91xCiImLZ5uMxjnW45VVhFzR2e9IPVg4QKY/XhvqEu', '13777788880', 1, '', '', 0, 'dahe@gmail.com', 3, 1, 'ewtwet', 1, '1', '1', 'admin', 'admin', '2023-08-24 08:54:34', '2023-09-04 11:16:19', NULL, '5KPR5XMSMTZTE6WQBHLFXYNKA64EOBUH');
+INSERT INTO `sys_users` VALUES (1, '1-1-1-1', 'admin', 'admin', '$2a$10$cKFFTCzGOvaIHHJY2K45Zuwt8TD6oPzYi4s5MzYIBAWCLL6ZhouP2', '18888888888', 1, '', '', 0, 'example@email.com', 3, 1, 'remark', 1, '1', '1', 'admin', 'admin', '2021-12-03 09:46:55', '2023-09-04 10:40:54', NULL, '', 0, NULL, NULL);
+INSERT INTO `sys_users` VALUES (2, 'd26733e4-ee09-4d98-b462-93bae039209c', 'test2', 'test2', '$2a$10$yiQ9u0lh7wsGjchqMGVOE.lp3KO99R5nw0Kc1DWQC6THI6d.JzNP.', '13312312311', 1, '', '', 1, 'email@email.com', 2, 1, 'this is a remark2', 1, '1', '1', 'admin', 'admin', '2023-08-23 11:38:47', '2023-09-07 10:02:50', NULL, '', 0, NULL, NULL);
+INSERT INTO `sys_users` VALUES (3, 'b3614db9-80a8-4892-9f65-0a6e70a00a2d', 'dahe', 'dahe', '$2a$10$iCr0rC6esWA91xCiImLZ5uMxjnW45VVhFzR2e9IPVg4QKY/XhvqEu', '13777788880', 1, '', '', 0, 'dahe@gmail.com', 3, 1, 'ewtwet', 1, '1', '1', 'admin', 'admin', '2023-08-24 08:54:34', '2023-09-04 11:16:19', NULL, '', 0, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -880,3 +882,37 @@ CREATE TABLE `ip_blacklist`  (
   UNIQUE INDEX `idx_ip`(`ip`) USING BTREE,
   INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC COMMENT = 'IP黑名单表';
+
+-- ----------------------------
+-- Table structure for sys_mfa_recovery_code（TOTP 恢复码，一次性，bcrypt 哈希）
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `sys_mfa_recovery_code`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint NOT NULL COMMENT 'sys_users.id',
+  `code_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '恢复码 bcrypt 哈希',
+  `used_at` datetime NULL DEFAULT NULL COMMENT '使用时间（一次性标记）',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC COMMENT = 'TOTP 恢复码（一次性）';
+
+-- ----------------------------
+-- Table structure for sys_sms_gateway（短信网关配置，三端统一）
+-- 启用手机验证码登录需至少一行 feature_id=201、status=1 的记录
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `sys_sms_gateway`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '网关名称',
+  `feature_id` int NOT NULL DEFAULT 0 COMMENT '功能 ID（201=手机验证码登录）',
+  `sms_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'generic' COMMENT '短信类型（generic/aliyun 等）',
+  `sign_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '短信签名',
+  `access_key_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'AccessKey ID',
+  `access_key_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'AccessKey Secret',
+  `sms_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '短信网关 URL',
+  `template_code` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '模板内容（#code# 为验证码占位符）或模板代码',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '是否可用（0=禁用，1=启用）',
+  `ext` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '扩展配置（JSON）',
+  `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_feature_status`(`feature_id`, `status`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信网关配置（三端统一）';

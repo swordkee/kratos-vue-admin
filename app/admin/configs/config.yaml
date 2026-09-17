@@ -1,4 +1,4 @@
-server:
+﻿server:
   env: "dev"
   http:
     addr: 0.0.0.0:8001
@@ -6,6 +6,11 @@ server:
   grpc:
     addr: 0.0.0.0:9001
     timeout: 1s
+  # CORS 跨域白名单：缺省/留空=禁用跨域（仅同源，经前端代理）。需要跨域时显式列来源（含 scheme）：
+  # cors:
+  #   allowOrigins:
+  #     - "http://localhost:5173"
+  #   maxAge: 86400
 data:
   database:
     driver: mysql
@@ -25,8 +30,28 @@ data:
     database: 6
 
 auth:
-  jwtKey: hijbcdefgklmna2324
+  # JWT 采用 ECDSA P-384（ES384）非对称签名：私钥签发、公钥校验（HS256 jwtKey 已废弃）
+  ecdsa_private_key: |
+    -----BEGIN EC PRIVATE KEY-----
+    MIGkAgEBBDDOGpN2mhDhNnDXhjEJgAI5JMldGdNF8P08lPFqe/inDHCx6dTYBT9u
+    WP5Rm6DFVkWgBwYFK4EEACKhZANiAAT9veOUPTyrjJlEvWIB/XBjtP1ow5ZYGFlb
+    nB7q9le9s44WNQm3RHeSW2gPsRZ+XQphHTzmmPf0pCPVi1glXxAfoo7bOH6xLSqb
+    LZdgl8Qcssmy7vIBb+TvwHcm3OiZL7U=
+    -----END EC PRIVATE KEY-----
+  ecdsa_public_key: |
+    -----BEGIN PUBLIC KEY-----
+    MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE/b3jlD08q4yZRL1iAf1wY7T9aMOWWBhZ
+    W5we6vZXvbOOFjUJt0R3kltoD7EWfl0KYR085pj39KQj1YtYJV8QH6KO2zh+sS0q
+    my2XYJfEHLLJsu7yAW/k78B3JtzomS+1
+    -----END PUBLIC KEY-----
   expires: 259200s # 259200 = 3天
+  # TOTP 双因素认证：默认不启用（零行为影响）。启用顺序：先执行 DDL（sys_users mfa 三列 + sys_mfa_recovery_code），再配 32 字节 encryptionKey，最后 enabled: true
+  # kratos v3 按 proto JSON 名映射，必须用 encryptionKey（kebab 键不会解码）；required=true 在前端引导完成前会把未绑定用户锁在 409
+  mfa:
+    enabled: false
+    required: false
+    encryptionKey: "NblwAFHe7tp5NgV1uIN7YTDZpsDMUxOV"
+    issuer: "BMALL"
 
 casbin:
   path: ../../configs/authz/casbin_model.conf
@@ -42,3 +67,21 @@ oss:
     bucketName: ""
     bucketURL: ""
     imgDomain: ""
+
+# 消息/短信验证码域（三端统一，PB 消息名 Message；真实网关凭据以 sys_sms_gateway 表为准）
+message:
+  enabled: true
+  defaultProvider: "generic"
+  loginCaptcha:
+    enabled: true
+    type: "numeric"
+    length: 4
+    expireMinutes: 5
+    cachePrefix: "login:captcha:"
+  phoneLogin:
+    enabled: false              # 默认关闭：启用需先在 sys_sms_gateway 配 feature_id=201 网关
+    codeLength: 6
+    expireMinutes: 5
+    cachePrefix: "phone:login:"
+    dailyLimit: 10
+  providers: {}

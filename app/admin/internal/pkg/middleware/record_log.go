@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/middleware"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/kratos/v3/middleware"
+	"github.com/go-kratos/kratos/v3/transport/http"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )

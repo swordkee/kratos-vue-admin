@@ -50,6 +50,9 @@ func newSysUsers(db *gorm.DB, opts ...gen.DOOption) sysUsers {
 	_sysUsers.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_sysUsers.DeletedAt = field.NewField(tableName, "deleted_at")
 	_sysUsers.Secret = field.NewString(tableName, "secret")
+	_sysUsers.MfaEnabled = field.NewInt32(tableName, "mfa_enabled")
+	_sysUsers.MfaSecret = field.NewString(tableName, "mfa_secret")
+	_sysUsers.MfaBoundAt = field.NewTime(tableName, "mfa_bound_at")
 
 	_sysUsers.fillFieldMap()
 
@@ -83,6 +86,10 @@ type sysUsers struct {
 	UpdatedAt field.Time   // 更新时间
 	DeletedAt field.Field  // 删除时间
 	Secret    field.String // google密钥
+
+	MfaEnabled field.Int32  // TOTP 双因素是否开启
+	MfaSecret  field.String // AES-256-GCM 加密的 TOTP secret
+	MfaBoundAt field.Time   // TOTP 绑定时间
 
 	fieldMap map[string]field.Expr
 }
@@ -122,6 +129,9 @@ func (s *sysUsers) updateTableName(table string) *sysUsers {
 	s.UpdatedAt = field.NewTime(table, "updated_at")
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Secret = field.NewString(table, "secret")
+	s.MfaEnabled = field.NewInt32(table, "mfa_enabled")
+	s.MfaSecret = field.NewString(table, "mfa_secret")
+	s.MfaBoundAt = field.NewTime(table, "mfa_bound_at")
 
 	s.fillFieldMap()
 
@@ -168,6 +178,9 @@ func (s *sysUsers) fillFieldMap() {
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["secret"] = s.Secret
+	s.fieldMap["mfa_enabled"] = s.MfaEnabled
+	s.fieldMap["mfa_secret"] = s.MfaSecret
+	s.fieldMap["mfa_bound_at"] = s.MfaBoundAt
 }
 
 func (s sysUsers) clone(db *gorm.DB) sysUsers {

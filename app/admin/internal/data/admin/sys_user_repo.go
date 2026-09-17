@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"gorm.io/gorm"
 
 	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
@@ -59,6 +59,12 @@ func (r *SysUserRepo) FindAll(ctx context.Context) ([]*model.SysUsers, error) {
 func (r *SysUserRepo) FindByUsername(ctx context.Context, username string) (*model.SysUsers, error) {
 	q := r.query.SysUsers
 	return q.WithContext(ctx).Where(q.Username.Eq(username)).First()
+}
+
+// FindByPhone 按手机号查找用户（手机验证码登录）
+func (r *SysUserRepo) FindByPhone(ctx context.Context, phone string) (*model.SysUsers, error) {
+	q := r.query.SysUsers
+	return q.WithContext(ctx).Where(q.Phone.Eq(phone)).First()
 }
 
 func (r *SysUserRepo) ListPage(ctx context.Context, page, size int32, condition admin.UserListCondition) ([]*model.SysUsers, error) {

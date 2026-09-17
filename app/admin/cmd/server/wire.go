@@ -13,12 +13,13 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v3"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/logx"
 	"github.com/google/wire"
 )
 
 // wireApp init kratos application.
-func wireApp(*conf.Server, *conf.Data, *conf.Auth, *conf.Casbin, *conf.Oss, log.Logger, *conf.Data_Redis) (*kratos.App, func(), error) {
+func wireApp(*conf.Server, *conf.Data, *conf.Auth, *conf.Casbin, *conf.Oss, *conf.Message, log.Logger, *logx.Logger, *conf.Data_Redis) (*kratos.App, func(), error) {
 	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, oss.ProviderSet, newApp))
 }

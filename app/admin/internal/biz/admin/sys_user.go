@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/errors"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v3/errors"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/google/uuid"
 	"github.com/kakuilan/kgo"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/upload"
@@ -40,6 +40,7 @@ type SysUserRepo interface {
 	Create(ctx context.Context, g *model.SysUsers) (*model.SysUsers, error)
 	FindByID(ctx context.Context, id int64) (*model.SysUsers, error)
 	FindByUsername(ctx context.Context, username string) (*model.SysUsers, error)
+	FindByPhone(ctx context.Context, phone string) (*model.SysUsers, error)
 	FindByPostId(ctx context.Context, postId int64) ([]*model.SysUsers, error)
 	ListPage(ctx context.Context, page, size int32, condition UserListCondition) ([]*model.SysUsers, error)
 	Count(ctx context.Context, condition UserListCondition) (int32, error)

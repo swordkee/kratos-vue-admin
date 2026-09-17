@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/sms"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
 
@@ -13,6 +14,10 @@ import (
 var ProviderSet = wire.NewSet(
 	admin.NewSysUserUseCase,
 	admin.NewAuthUseCase,
+	admin.ProvideMFAService,
+	admin.NewMfaUseCase,
+	sms.NewGatewayRepo,
+	NewSmsUseCase,
 	admin.NewSysMenusUseCase,
 	admin.NewSysDeptUseCase,
 	admin.NewSysPostUseCase,
@@ -60,6 +65,7 @@ type SysUserRepo interface {
 	Create(ctx context.Context, g *model.SysUsers) (*model.SysUsers, error)
 	FindByID(ctx context.Context, id int64) (*model.SysUsers, error)
 	FindByUsername(ctx context.Context, username string) (*model.SysUsers, error)
+	FindByPhone(ctx context.Context, phone string) (*model.SysUsers, error)
 	FindByPostId(ctx context.Context, postId int64) ([]*model.SysUsers, error)
 	ListPage(ctx context.Context, page, size int32, condition UserListCondition) ([]*model.SysUsers, error)
 	Count(ctx context.Context, condition UserListCondition) (int32, error)

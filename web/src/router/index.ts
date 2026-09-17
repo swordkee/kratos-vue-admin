@@ -1,4 +1,4 @@
-
+﻿
 import { useKeepAliveNamesStore } from '@/stores/keepAliveNames'
 import { useRoutesListStore } from "@/stores/routesList";
 import { useTagsViewRoutesStore } from "@/stores/tagsViewRoutes";
@@ -71,7 +71,22 @@ export async function initBackEndControlRoutes() {
 						isIframe: false,
 						icon: 'iconfont icon-shouye',
 					},
-				}
+				},
+				// 个人中心：头像下拉入口（user.vue command=/personal），不进侧边菜单。
+				{
+					path: '/personal',
+					name: 'personal',
+					component: () => import('@/views/personal/index.vue'),
+					meta: {
+						title: '个人中心',
+						isLink: '',
+						isHide: true,
+						isKeepAlive: true,
+						isAffix: false,
+						isIframe: false,
+						icon: 'iconfont icon-gerenzhongxin',
+					},
+				},
 			],
 		},
 	]

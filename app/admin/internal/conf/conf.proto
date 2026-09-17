@@ -12,6 +12,7 @@ message Bootstrap {
   Casbin casbin = 4;
   Oss oss = 5;
   LogConfig log = 6;  // 日志配置
+  Message message = 7; // 消息/短信验证码域配置（与 go-exAdmin、go-payAdmin 三端统一）
 }
 
 enum Env
@@ -35,6 +36,15 @@ message Server {
   HTTP http = 1;
   GRPC grpc = 2;
   Env  env = 3;
+  // CORS 跨域白名单：缺省/留空 = 禁用跨域（仅同源）；需要跨域时显式列出来源（含 scheme）。
+  // 凭据（AllowCredentials）仅与显式白名单搭配，禁止通配源 * + 凭据的矛盾组合。
+  Cors cors = 4;
+}
+
+// Cors 跨域配置（PA-P2-03 收紧形态）
+message Cors {
+  repeated string allowOrigins = 1; // 允许来源（含 scheme，如 https://admin.example.com）
+  int32 maxAge = 2;                 // 预检缓存秒数，缺省 86400
 }
 
 message Data {
@@ -59,9 +69,25 @@ message Data {
   Redis redis = 2;
 }
 
+// Auth 认证配置。
+// JWT 采用 ECDSA P-384 (ES384) 非对称签名：ecdsa_private_key（签发侧 SEC1/PKCS8 PEM）、
+// ecdsa_public_key（验证侧 PKIX PEM）。部署时各实例使用同一密钥对。
 message Auth {
-  string jwtKey = 1;
-  google.protobuf.Duration  expires = 2;
+  string ecdsa_private_key = 1; // ECDSA P-384 私钥 PEM（签发侧）
+  string ecdsa_public_key = 2;  // ECDSA P-384 公钥 PEM（验证侧）
+  google.protobuf.Duration expires = 3;
+  Mfa mfa = 5; // TOTP 双因素认证配置（默认不启用）
+}
+
+// Mfa TOTP 双因素认证配置。
+// 默认不启用（enabled=false），零行为影响；enabled=true 时必须配置 32 字节
+// encryption_key（启动校验拒绝占位密钥），且先行执行 DDL（sys_users mfa 三列 +
+// sys_mfa_recovery_code 表）。
+message Mfa {
+  bool enabled = 1;          // 总开关，默认 false
+  bool required = 2;         // 强制全员绑定（enabled=true 前提下）
+  string encryption_key = 3; // AES-256-GCM 主密钥（32 字节，enabled=true 时必填）
+  string issuer = 4;         // TOTP 发行者名称（验证器 App 显示，缺省 BMALL）
 }
 
 message Casbin {
@@ -104,4 +130,44 @@ message LogConfig {
   bool enableReadLog = 1;     // 是否记录读操作(GET/HEAD/OPTIONS)，默认false
   bool enableWriteLog = 2;    // 是否记录写操作(POST/PUT/DELETE/PATCH)，默认true
   int32 maxBodyLength = 3;    // 请求/响应体最大长度，默认4096
+}
+
+// Message 消息/短信验证码域配置（三端统一，YAML 段名 message）。
+// 注意：配置名不使用 SMS——其语义覆盖图形登录验证码与手机验证码登录，
+// 短信网关真实凭据以 sys_sms_gateway 表为准，providers 仅作 YAML 兜底。
+message Message {
+  bool enabled = 1;                    // 消息域总开关
+  string default_provider = 2;         // 默认提供商（仅日志记录）
+  LoginCaptcha login_captcha = 3;      // 登录图形验证码
+  PhoneLogin phone_login = 4;          // 手机验证码登录
+  map<string, MessageProvider> providers = 5; // YAML 提供商兜底（表配置优先）
+}
+
+// LoginCaptcha 登录图形验证码
+message LoginCaptcha {
+  bool enabled = 1;           // 是否启用
+  string type = 2;            // 验证码类型: simple=字符, numeric=数字
+  int32 length = 3;           // 长度
+  int32 expire_minutes = 4;   // 过期时间（分钟）
+  string cache_prefix = 5;    // 缓存 key 前缀
+}
+
+// PhoneLogin 手机验证码登录
+message PhoneLogin {
+  bool enabled = 1;           // 是否启用
+  int32 code_length = 2;      // 验证码长度
+  int32 expire_minutes = 3;   // 过期时间（分钟）
+  string cache_prefix = 4;    // 缓存 key 前缀
+  int32 daily_limit = 5;      // 每日发送限制
+}
+
+// MessageProvider 消息提供商（HTTP 短信网关）
+message MessageProvider {
+  string name = 1;
+  string gateway_url = 2;
+  string access_key_id = 3;
+  string access_key_secret = 4;
+  string sign_name = 5;
+  string template_code = 6;
+  map<string, string> extra = 7;
 }

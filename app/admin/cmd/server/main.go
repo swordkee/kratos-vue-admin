@@ -2,16 +2,18 @@ package main
 
 import (
 	"flag"
+	"log/slog"
 	"os"
+	"strings"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/pkg/logx"
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/config"
-	"github.com/go-kratos/kratos/v2/config/file"
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/kratos/v3"
+	"github.com/go-kratos/kratos/v3/config"
+	"github.com/go-kratos/kratos/v3/config/file"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
+	"github.com/go-kratos/kratos/v3/transport/http"
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -31,18 +33,31 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, hs *http.Server) *kratos.App {
+func newApp(_ log.Logger, hs *http.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(map[string]string{}),
-		kratos.Logger(logger),
+		// kratos v3 内部日志统一走标准库 slog；业务层日志仍用内嵌的 v2 兼容 log.Logger
+		kratos.Logger(slog.New(slog.NewTextHandler(os.Stdout, nil))),
 		kratos.Server(
 			// gs,
 			hs,
 		),
 	)
+}
+
+func newLogxLogger() *logx.Logger {	slogLogger := slog.New(logx.BuildHandler(logx.HandlerConfig{
+		Level:       "info",
+		OutputPaths: "stdout",
+	})).With(
+		slog.String("service.name", Name),
+		slog.String("service.version", Version),
+		slog.String("host", id),
+	)
+	logx.SetDefault(slogLogger)
+	return logx.NewLogger(slogLogger, logx.WithDesensitize())
 }
 
 func main() {
@@ -53,8 +68,6 @@ func main() {
 		"service.id", id,
 		"service.name", Name,
 		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
 	)
 	c := config.New(
 		config.WithSource(
@@ -71,8 +84,9 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+	applyAuthEnvOverride(&bc)
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, logger, bc.Data.Redis)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, bc.Message, logger, newLogxLogger(), bc.Data.Redis)
 	if err != nil {
 		panic(err)
 	}
@@ -81,5 +95,20 @@ func main() {
 	// start and wait for stop signal
 	if err := app.Run(); err != nil {
 		panic(err)
+	}
+}
+
+// applyAuthEnvOverride 让 ECDSA P-384 私钥/公钥支持从环境变量读取，优先于 YAML。
+// env 未设置时保持 YAML 值（样例配置可直接启动）；生产必须用 env 注入，
+// 避免沿用仓库内 DEV 占位密钥。
+func applyAuthEnvOverride(bc *conf.Bootstrap) {
+	if bc.Auth == nil {
+		return
+	}
+	if v := strings.TrimSpace(os.Getenv("ADMIN_ECDSA_PRIVATE_KEY")); v != "" {
+		bc.Auth.EcdsaPrivateKey = v
+	}
+	if v := strings.TrimSpace(os.Getenv("ADMIN_ECDSA_PUBLIC_KEY")); v != "" {
+		bc.Auth.EcdsaPublicKey = v
 	}
 }
