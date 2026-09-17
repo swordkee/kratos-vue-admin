@@ -1,11 +1,11 @@
-<template>
+﻿<template>
 	<div class="login-scan-container">
 		<div ref="qrcodeRef"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { watch, getCurrentInstance } from 'vue';
+import { watch, onMounted, getCurrentInstance } from 'vue';
 import QRCode from 'qrcodejs2-fixes';
 
 const { proxy } = getCurrentInstance() as any;
@@ -26,7 +26,9 @@ const props = defineProps({
 })
 // 初始化生成二维码
 const initQrcode = () => {
-	proxy.$refs.qrcodeRef.innerHTML = '';
+	const el = proxy.$refs.qrcodeRef;
+	if (!el || !props.ruleForm?.qrcode) return;
+	el.innerHTML = '';
 	new QRCode(proxy.$refs.qrcodeRef, {
 		text: props.ruleForm.qrcode,
 		width: props.width,
@@ -36,6 +38,9 @@ const initQrcode = () => {
 	});
 };
 
+onMounted(() => {
+	props.ruleForm?.qrcode && initQrcode();
+});
 watch(
 	() => props.ruleForm.qrcode,
 	() => {

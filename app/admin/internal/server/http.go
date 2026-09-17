@@ -6,18 +6,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	stdhttp "net/http"
 
-	"github.com/go-kratos/kratos/v2/transport/http/pprof"
+	"github.com/go-kratos/kratos/v3/transport/http/pprof"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/middleware"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/logging"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
+	"github.com/go-kratos/kratos/v3/middleware/logging"
+	"github.com/go-kratos/kratos/v3/middleware/recovery"
+	"github.com/go-kratos/kratos/v3/transport/http"
 	"github.com/gorilla/handlers"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
@@ -193,7 +194,7 @@ func NewHTTPServer(
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
-			logging.Server(logger),
+			logging.Server(slog.Default()),
 			middleware.OperationRecordWithConfig(opRecordsCase, logMiddlewareConfig),
 			middleware.Auth(s, casbinRepo, userRepo),
 		),

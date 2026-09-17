@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/google/wire"
 	go_redis "github.com/redis/go-redis/v9"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"

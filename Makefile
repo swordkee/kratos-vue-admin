@@ -3,19 +3,20 @@ VERSION=$(shell git describe --tags --always)
 APP_RELATIVE_PATH=$(shell a=`basename $$PWD` && cd .. && b=`basename $$PWD` && echo $$b/$$a)
 INTERNAL_PROTO_FILES=$(shell  cd app/admin && find internal -name *.proto)
 API_PROTO_FILES=$(shell cd api/admin/v1/ && find . -name "*.proto")
-KRATOS_VERSION=$(shell go mod graph |grep go-kratos/kratos/v2 |head -n 1 |awk -F '@' '{print $$2}')
-KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v2@$(KRATOS_VERSION)
+KRATOS_VERSION=$(shell go mod graph |grep "go-kratos/kratos/v3@" |head -n 1 |awk -F '@' '{print $$2}')
+KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v3@$(KRATOS_VERSION)
 APP_NAME=$(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
 DOCKER_IMAGE=$(shell echo $(APP_NAME) |awk -F '@' '{print "go-kratos/beer-" $$0 ":0.1.0"}')
 
 .PHONY: init
 # init env
 init:
-	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
-	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
-	go get -u github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2
-	go get -u github.com/google/wire/cmd/wire
-	go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.2
+	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v3@v3.0.0
+	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v3@v3.0.0
+	go install github.com/google/wire/cmd/wire@latest
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	go install github.com/envoyproxy/protoc-gen-validate@latest
 
 

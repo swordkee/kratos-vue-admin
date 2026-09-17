@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/errors"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v3/errors"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/google/uuid"
 	"github.com/kakuilan/kgo"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/upload"

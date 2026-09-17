@@ -7,8 +7,8 @@
 package main
 
 import (
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v3"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	admin2 "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data"

@@ -4,18 +4,36 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/errors"
-	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
-	"github.com/go-kratos/kratos/v2/transport"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/kratos/v3/errors"
+	"github.com/go-kratos/kratos/v3/transport"
+	"github.com/go-kratos/kratos/v3/transport/http"
 	jwtV5 "github.com/golang-jwt/jwt/v5"
 	"github.com/swordkee/kratos-casbin/authz"
 )
+
+type contextKey string
+
+const claimsKey contextKey = "jwt_claims"
 
 var (
 	ErrTokenMiss  = errors.New(500, "token miss", "token miss")
 	ErrClaimsMiss = errors.New(500, "claims miss", "claims miss")
 )
+
+// NewContext 将解析后的 claims 注入 ctx（自定义 JWT 中间件使用，
+// kratos v3 已移除 middleware/auth/jwt，不再依赖其 context key）。
+func NewContext(ctx context.Context, claims *TokenClaims) context.Context {
+	return context.WithValue(ctx, claimsKey, claims)
+}
+
+// SuperAdminRoleKey 超级管理员角色 key：casbin 策略缺失时旁路放行，
+// 避免 casbin_rule 表为空/策略缺失锁死系统（对齐下游 E-P0-01）。
+const SuperAdminRoleKey = "admin"
+
+// IsSuperAdmin 判断角色 key 是否超级管理员。
+func IsSuperAdmin(roleKey string) bool {
+	return roleKey == SuperAdminRoleKey
+}
 
 type TokenClaims struct {
 	UserID   int64  `json:"user_id"`
@@ -72,11 +90,11 @@ func (su *securityUser) GetDomain() string {
 }
 
 func FromContext(ctx context.Context) (*TokenClaims, error) {
-	claims, ok := jwt.FromContext(ctx)
-	if !ok {
+	claims, ok := ctx.Value(claimsKey).(*TokenClaims)
+	if !ok || claims == nil {
 		return nil, ErrTokenMiss
 	}
-	return claims.(*TokenClaims), nil
+	return claims, nil
 }
 
 func MustFromContext(ctx context.Context) *TokenClaims {

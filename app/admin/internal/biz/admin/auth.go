@@ -7,7 +7,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg"
 	"github.com/swordkee/kratos-vue-admin/pkg/common/constant"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"

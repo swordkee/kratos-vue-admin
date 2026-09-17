@@ -13,8 +13,8 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/service"
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v3"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/google/wire"
 )
 

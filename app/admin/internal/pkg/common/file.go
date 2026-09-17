@@ -6,7 +6,7 @@ import (
 	"mime/multipart"
 	"strings"
 
-	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/kratos/v3/transport/http"
 )
 
 func FormFile(ctx context.Context) (file multipart.File, handler *multipart.FileHeader, err error) {

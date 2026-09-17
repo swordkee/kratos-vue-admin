@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	admin "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"

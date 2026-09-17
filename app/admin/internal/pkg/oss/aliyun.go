@@ -6,7 +6,7 @@ import (
 	"mime/multipart"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 )

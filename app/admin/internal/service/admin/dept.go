@@ -9,7 +9,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 )
 
 type DeptService struct {
