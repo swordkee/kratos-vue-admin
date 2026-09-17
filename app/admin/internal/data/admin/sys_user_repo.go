@@ -61,6 +61,12 @@ func (r *SysUserRepo) FindByUsername(ctx context.Context, username string) (*mod
 	return q.WithContext(ctx).Where(q.Username.Eq(username)).First()
 }
 
+// FindByPhone 按手机号查找用户（手机验证码登录）
+func (r *SysUserRepo) FindByPhone(ctx context.Context, phone string) (*model.SysUsers, error) {
+	q := r.query.SysUsers
+	return q.WithContext(ctx).Where(q.Phone.Eq(phone)).First()
+}
+
 func (r *SysUserRepo) ListPage(ctx context.Context, page, size int32, condition admin.UserListCondition) ([]*model.SysUsers, error) {
 	m := r.query.SysUsers
 	q := m.WithContext(ctx)

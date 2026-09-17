@@ -176,7 +176,8 @@ type Bootstrap struct {
 	Auth          *Auth                  `protobuf:"bytes,3,opt,name=auth,proto3" json:"auth,omitempty"`
 	Casbin        *Casbin                `protobuf:"bytes,4,opt,name=casbin,proto3" json:"casbin,omitempty"`
 	Oss           *Oss                   `protobuf:"bytes,5,opt,name=oss,proto3" json:"oss,omitempty"`
-	Log           *LogConfig             `protobuf:"bytes,6,opt,name=log,proto3" json:"log,omitempty"` // 日志配置
+	Log           *LogConfig             `protobuf:"bytes,6,opt,name=log,proto3" json:"log,omitempty"`         // 日志配置
+	Message       *Message               `protobuf:"bytes,7,opt,name=message,proto3" json:"message,omitempty"` // 消息/短信验证码域配置（与 go-exAdmin、go-payAdmin 三端统一）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -249,6 +250,13 @@ func (x *Bootstrap) GetOss() *Oss {
 func (x *Bootstrap) GetLog() *LogConfig {
 	if x != nil {
 		return x.Log
+	}
+	return nil
+}
+
+func (x *Bootstrap) GetMessage() *Message {
+	if x != nil {
+		return x.Message
 	}
 	return nil
 }
@@ -801,6 +809,332 @@ func (x *LogConfig) GetMaxBodyLength() int32 {
 	return 0
 }
 
+// Message 消息/短信验证码域配置（三端统一，YAML 段名 message）。
+// 注意：配置名不使用 SMS——其语义覆盖图形登录验证码与手机验证码登录，
+// 短信网关真实凭据以 sys_sms_gateway 表为准，providers 仅作 YAML 兜底。
+type Message struct {
+	state           protoimpl.MessageState      `protogen:"open.v1"`
+	Enabled         bool                        `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                                                              // 消息域总开关
+	DefaultProvider string                      `protobuf:"bytes,2,opt,name=default_provider,json=defaultProvider,proto3" json:"default_provider,omitempty"`                                        // 默认提供商（仅日志记录）
+	LoginCaptcha    *LoginCaptcha               `protobuf:"bytes,3,opt,name=login_captcha,json=loginCaptcha,proto3" json:"login_captcha,omitempty"`                                                 // 登录图形验证码
+	PhoneLogin      *PhoneLogin                 `protobuf:"bytes,4,opt,name=phone_login,json=phoneLogin,proto3" json:"phone_login,omitempty"`                                                       // 手机验证码登录
+	Providers       map[string]*MessageProvider `protobuf:"bytes,5,rep,name=providers,proto3" json:"providers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // YAML 提供商兜底（表配置优先）
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *Message) Reset() {
+	*x = Message{}
+	mi := &file_conf_conf_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Message) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Message) ProtoMessage() {}
+
+func (x *Message) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Message.ProtoReflect.Descriptor instead.
+func (*Message) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *Message) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *Message) GetDefaultProvider() string {
+	if x != nil {
+		return x.DefaultProvider
+	}
+	return ""
+}
+
+func (x *Message) GetLoginCaptcha() *LoginCaptcha {
+	if x != nil {
+		return x.LoginCaptcha
+	}
+	return nil
+}
+
+func (x *Message) GetPhoneLogin() *PhoneLogin {
+	if x != nil {
+		return x.PhoneLogin
+	}
+	return nil
+}
+
+func (x *Message) GetProviders() map[string]*MessageProvider {
+	if x != nil {
+		return x.Providers
+	}
+	return nil
+}
+
+// LoginCaptcha 登录图形验证码
+type LoginCaptcha struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                  // 是否启用
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`                                         // 验证码类型: simple=字符, numeric=数字
+	Length        int32                  `protobuf:"varint,3,opt,name=length,proto3" json:"length,omitempty"`                                    // 长度
+	ExpireMinutes int32                  `protobuf:"varint,4,opt,name=expire_minutes,json=expireMinutes,proto3" json:"expire_minutes,omitempty"` // 过期时间（分钟）
+	CachePrefix   string                 `protobuf:"bytes,5,opt,name=cache_prefix,json=cachePrefix,proto3" json:"cache_prefix,omitempty"`        // 缓存 key 前缀
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginCaptcha) Reset() {
+	*x = LoginCaptcha{}
+	mi := &file_conf_conf_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginCaptcha) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginCaptcha) ProtoMessage() {}
+
+func (x *LoginCaptcha) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginCaptcha.ProtoReflect.Descriptor instead.
+func (*LoginCaptcha) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *LoginCaptcha) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *LoginCaptcha) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *LoginCaptcha) GetLength() int32 {
+	if x != nil {
+		return x.Length
+	}
+	return 0
+}
+
+func (x *LoginCaptcha) GetExpireMinutes() int32 {
+	if x != nil {
+		return x.ExpireMinutes
+	}
+	return 0
+}
+
+func (x *LoginCaptcha) GetCachePrefix() string {
+	if x != nil {
+		return x.CachePrefix
+	}
+	return ""
+}
+
+// PhoneLogin 手机验证码登录
+type PhoneLogin struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                  // 是否启用
+	CodeLength    int32                  `protobuf:"varint,2,opt,name=code_length,json=codeLength,proto3" json:"code_length,omitempty"`          // 验证码长度
+	ExpireMinutes int32                  `protobuf:"varint,3,opt,name=expire_minutes,json=expireMinutes,proto3" json:"expire_minutes,omitempty"` // 过期时间（分钟）
+	CachePrefix   string                 `protobuf:"bytes,4,opt,name=cache_prefix,json=cachePrefix,proto3" json:"cache_prefix,omitempty"`        // 缓存 key 前缀
+	DailyLimit    int32                  `protobuf:"varint,5,opt,name=daily_limit,json=dailyLimit,proto3" json:"daily_limit,omitempty"`          // 每日发送限制
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PhoneLogin) Reset() {
+	*x = PhoneLogin{}
+	mi := &file_conf_conf_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PhoneLogin) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PhoneLogin) ProtoMessage() {}
+
+func (x *PhoneLogin) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PhoneLogin.ProtoReflect.Descriptor instead.
+func (*PhoneLogin) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *PhoneLogin) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *PhoneLogin) GetCodeLength() int32 {
+	if x != nil {
+		return x.CodeLength
+	}
+	return 0
+}
+
+func (x *PhoneLogin) GetExpireMinutes() int32 {
+	if x != nil {
+		return x.ExpireMinutes
+	}
+	return 0
+}
+
+func (x *PhoneLogin) GetCachePrefix() string {
+	if x != nil {
+		return x.CachePrefix
+	}
+	return ""
+}
+
+func (x *PhoneLogin) GetDailyLimit() int32 {
+	if x != nil {
+		return x.DailyLimit
+	}
+	return 0
+}
+
+// MessageProvider 消息提供商（HTTP 短信网关）
+type MessageProvider struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Name            string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	GatewayUrl      string                 `protobuf:"bytes,2,opt,name=gateway_url,json=gatewayUrl,proto3" json:"gateway_url,omitempty"`
+	AccessKeyId     string                 `protobuf:"bytes,3,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
+	AccessKeySecret string                 `protobuf:"bytes,4,opt,name=access_key_secret,json=accessKeySecret,proto3" json:"access_key_secret,omitempty"`
+	SignName        string                 `protobuf:"bytes,5,opt,name=sign_name,json=signName,proto3" json:"sign_name,omitempty"`
+	TemplateCode    string                 `protobuf:"bytes,6,opt,name=template_code,json=templateCode,proto3" json:"template_code,omitempty"`
+	Extra           map[string]string      `protobuf:"bytes,7,rep,name=extra,proto3" json:"extra,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *MessageProvider) Reset() {
+	*x = MessageProvider{}
+	mi := &file_conf_conf_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MessageProvider) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageProvider) ProtoMessage() {}
+
+func (x *MessageProvider) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageProvider.ProtoReflect.Descriptor instead.
+func (*MessageProvider) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *MessageProvider) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetGatewayUrl() string {
+	if x != nil {
+		return x.GatewayUrl
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetAccessKeyId() string {
+	if x != nil {
+		return x.AccessKeyId
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetAccessKeySecret() string {
+	if x != nil {
+		return x.AccessKeySecret
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetSignName() string {
+	if x != nil {
+		return x.SignName
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetTemplateCode() string {
+	if x != nil {
+		return x.TemplateCode
+	}
+	return ""
+}
+
+func (x *MessageProvider) GetExtra() map[string]string {
+	if x != nil {
+		return x.Extra
+	}
+	return nil
+}
+
 type Server_HTTP struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Network       string                 `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
@@ -812,7 +1146,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -824,7 +1158,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -872,7 +1206,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -884,7 +1218,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -934,7 +1268,7 @@ type Data_Database struct {
 
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -946,7 +1280,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1013,7 +1347,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_conf_conf_proto_msgTypes[13]
+	mi := &file_conf_conf_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1025,7 +1359,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[13]
+	mi := &file_conf_conf_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,14 +1436,15 @@ var File_conf_conf_proto protoreflect.FileDescriptor
 const file_conf_conf_proto_rawDesc = "" +
 	"\n" +
 	"\x0fconf/conf.proto\x12\n" +
-	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\xfb\x01\n" +
+	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\xaa\x02\n" +
 	"\tBootstrap\x12*\n" +
 	"\x06server\x18\x01 \x01(\v2\x12.kratos.api.ServerR\x06server\x12$\n" +
 	"\x04data\x18\x02 \x01(\v2\x10.kratos.api.DataR\x04data\x12$\n" +
 	"\x04auth\x18\x03 \x01(\v2\x10.kratos.api.AuthR\x04auth\x12*\n" +
 	"\x06casbin\x18\x04 \x01(\v2\x12.kratos.api.CasbinR\x06casbin\x12!\n" +
 	"\x03oss\x18\x05 \x01(\v2\x0f.kratos.api.OssR\x03oss\x12'\n" +
-	"\x03log\x18\x06 \x01(\v2\x15.kratos.api.LogConfigR\x03log\"\xdb\x02\n" +
+	"\x03log\x18\x06 \x01(\v2\x15.kratos.api.LogConfigR\x03log\x12-\n" +
+	"\amessage\x18\a \x01(\v2\x13.kratos.api.MessageR\amessage\"\xdb\x02\n" +
 	"\x06Server\x12+\n" +
 	"\x04http\x18\x01 \x01(\v2\x17.kratos.api.Server.HTTPR\x04http\x12+\n" +
 	"\x04grpc\x18\x02 \x01(\v2\x17.kratos.api.Server.GRPCR\x04grpc\x12!\n" +
@@ -1170,7 +1505,45 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\tLogConfig\x12$\n" +
 	"\renableReadLog\x18\x01 \x01(\bR\renableReadLog\x12&\n" +
 	"\x0eenableWriteLog\x18\x02 \x01(\bR\x0eenableWriteLog\x12$\n" +
-	"\rmaxBodyLength\x18\x03 \x01(\x05R\rmaxBodyLength*!\n" +
+	"\rmaxBodyLength\x18\x03 \x01(\x05R\rmaxBodyLength\"\xe3\x02\n" +
+	"\aMessage\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12)\n" +
+	"\x10default_provider\x18\x02 \x01(\tR\x0fdefaultProvider\x12=\n" +
+	"\rlogin_captcha\x18\x03 \x01(\v2\x18.kratos.api.LoginCaptchaR\floginCaptcha\x127\n" +
+	"\vphone_login\x18\x04 \x01(\v2\x16.kratos.api.PhoneLoginR\n" +
+	"phoneLogin\x12@\n" +
+	"\tproviders\x18\x05 \x03(\v2\".kratos.api.Message.ProvidersEntryR\tproviders\x1aY\n" +
+	"\x0eProvidersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x121\n" +
+	"\x05value\x18\x02 \x01(\v2\x1b.kratos.api.MessageProviderR\x05value:\x028\x01\"\x9e\x01\n" +
+	"\fLoginCaptcha\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x16\n" +
+	"\x06length\x18\x03 \x01(\x05R\x06length\x12%\n" +
+	"\x0eexpire_minutes\x18\x04 \x01(\x05R\rexpireMinutes\x12!\n" +
+	"\fcache_prefix\x18\x05 \x01(\tR\vcachePrefix\"\xb2\x01\n" +
+	"\n" +
+	"PhoneLogin\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1f\n" +
+	"\vcode_length\x18\x02 \x01(\x05R\n" +
+	"codeLength\x12%\n" +
+	"\x0eexpire_minutes\x18\x03 \x01(\x05R\rexpireMinutes\x12!\n" +
+	"\fcache_prefix\x18\x04 \x01(\tR\vcachePrefix\x12\x1f\n" +
+	"\vdaily_limit\x18\x05 \x01(\x05R\n" +
+	"dailyLimit\"\xd0\x02\n" +
+	"\x0fMessageProvider\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1f\n" +
+	"\vgateway_url\x18\x02 \x01(\tR\n" +
+	"gatewayUrl\x12\"\n" +
+	"\raccess_key_id\x18\x03 \x01(\tR\vaccessKeyId\x12*\n" +
+	"\x11access_key_secret\x18\x04 \x01(\tR\x0faccessKeySecret\x12\x1b\n" +
+	"\tsign_name\x18\x05 \x01(\tR\bsignName\x12#\n" +
+	"\rtemplate_code\x18\x06 \x01(\tR\ftemplateCode\x12<\n" +
+	"\x05extra\x18\a \x03(\v2&.kratos.api.MessageProvider.ExtraEntryR\x05extra\x1a8\n" +
+	"\n" +
+	"ExtraEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*!\n" +
 	"\x03Env\x12\a\n" +
 	"\x03dev\x10\x00\x12\b\n" +
 	"\x04test\x10\x01\x12\a\n" +
@@ -1200,7 +1573,7 @@ func file_conf_conf_proto_rawDescGZIP() []byte {
 }
 
 var file_conf_conf_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_conf_conf_proto_goTypes = []any{
 	(Env)(0),                    // 0: kratos.api.Env
 	(OssUseMode)(0),             // 1: kratos.api.OssUseMode
@@ -1215,11 +1588,17 @@ var file_conf_conf_proto_goTypes = []any{
 	(*OssLocalConfig)(nil),      // 10: kratos.api.OssLocalConfig
 	(*Oss)(nil),                 // 11: kratos.api.Oss
 	(*LogConfig)(nil),           // 12: kratos.api.LogConfig
-	(*Server_HTTP)(nil),         // 13: kratos.api.Server.HTTP
-	(*Server_GRPC)(nil),         // 14: kratos.api.Server.GRPC
-	(*Data_Database)(nil),       // 15: kratos.api.Data.Database
-	(*Data_Redis)(nil),          // 16: kratos.api.Data.Redis
-	(*durationpb.Duration)(nil), // 17: google.protobuf.Duration
+	(*Message)(nil),             // 13: kratos.api.Message
+	(*LoginCaptcha)(nil),        // 14: kratos.api.LoginCaptcha
+	(*PhoneLogin)(nil),          // 15: kratos.api.PhoneLogin
+	(*MessageProvider)(nil),     // 16: kratos.api.MessageProvider
+	(*Server_HTTP)(nil),         // 17: kratos.api.Server.HTTP
+	(*Server_GRPC)(nil),         // 18: kratos.api.Server.GRPC
+	(*Data_Database)(nil),       // 19: kratos.api.Data.Database
+	(*Data_Redis)(nil),          // 20: kratos.api.Data.Redis
+	nil,                         // 21: kratos.api.Message.ProvidersEntry
+	nil,                         // 22: kratos.api.MessageProvider.ExtraEntry
+	(*durationpb.Duration)(nil), // 23: google.protobuf.Duration
 }
 var file_conf_conf_proto_depIdxs = []int32{
 	4,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
@@ -1228,26 +1607,32 @@ var file_conf_conf_proto_depIdxs = []int32{
 	8,  // 3: kratos.api.Bootstrap.casbin:type_name -> kratos.api.Casbin
 	11, // 4: kratos.api.Bootstrap.oss:type_name -> kratos.api.Oss
 	12, // 5: kratos.api.Bootstrap.log:type_name -> kratos.api.LogConfig
-	13, // 6: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	14, // 7: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
-	0,  // 8: kratos.api.Server.env:type_name -> kratos.api.Env
-	15, // 9: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	16, // 10: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	17, // 11: kratos.api.Auth.expires:type_name -> google.protobuf.Duration
-	7,  // 12: kratos.api.Auth.mfa:type_name -> kratos.api.Mfa
-	1,  // 13: kratos.api.Oss.use:type_name -> kratos.api.OssUseMode
-	9,  // 14: kratos.api.Oss.aliyun:type_name -> kratos.api.OssConfig
-	10, // 15: kratos.api.Oss.local:type_name -> kratos.api.OssLocalConfig
-	17, // 16: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	17, // 17: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	2,  // 18: kratos.api.Data.Database.logLevel:type_name -> kratos.api.GormLogLevel
-	17, // 19: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	17, // 20: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	13, // 6: kratos.api.Bootstrap.message:type_name -> kratos.api.Message
+	17, // 7: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	18, // 8: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	0,  // 9: kratos.api.Server.env:type_name -> kratos.api.Env
+	19, // 10: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	20, // 11: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	23, // 12: kratos.api.Auth.expires:type_name -> google.protobuf.Duration
+	7,  // 13: kratos.api.Auth.mfa:type_name -> kratos.api.Mfa
+	1,  // 14: kratos.api.Oss.use:type_name -> kratos.api.OssUseMode
+	9,  // 15: kratos.api.Oss.aliyun:type_name -> kratos.api.OssConfig
+	10, // 16: kratos.api.Oss.local:type_name -> kratos.api.OssLocalConfig
+	14, // 17: kratos.api.Message.login_captcha:type_name -> kratos.api.LoginCaptcha
+	15, // 18: kratos.api.Message.phone_login:type_name -> kratos.api.PhoneLogin
+	21, // 19: kratos.api.Message.providers:type_name -> kratos.api.Message.ProvidersEntry
+	22, // 20: kratos.api.MessageProvider.extra:type_name -> kratos.api.MessageProvider.ExtraEntry
+	23, // 21: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	23, // 22: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	2,  // 23: kratos.api.Data.Database.logLevel:type_name -> kratos.api.GormLogLevel
+	23, // 24: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	23, // 25: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	16, // 26: kratos.api.Message.ProvidersEntry.value:type_name -> kratos.api.MessageProvider
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }
@@ -1261,7 +1646,7 @@ func file_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_conf_proto_rawDesc), len(file_conf_conf_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   14,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

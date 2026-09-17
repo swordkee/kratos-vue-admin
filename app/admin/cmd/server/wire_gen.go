@@ -8,7 +8,9 @@ package main
 
 import (
 	"github.com/go-kratos/kratos/v3"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	admin2 "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/sms"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
@@ -26,7 +28,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casbin *conf.Casbin, confOss *conf.Oss, logger log.Logger, logxLogger *logx.Logger, data_Redis *conf.Data_Redis) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casbin *conf.Casbin, confOss *conf.Oss, message *conf.Message, logger log.Logger, logxLogger *logx.Logger, data_Redis *conf.Data_Redis) (*kratos.App, func(), error) {
 	db := data.NewDB(confData, logger)
 	casbinRuleRepo := admin.NewCasbinRuleRepo(db, logger)
 	universalClient := data.NewRedis(confData)
@@ -59,7 +61,9 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	sysPostUseCase := admin2.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
 	sysDeptRepo := admin.NewSysDeptRepo(query, logger)
 	sysDeptUseCase := admin2.NewSysDeptUseCase(sysDeptRepo, logger)
-	sysUserService := admin3.NewSysUserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, logger)
+	gatewayRepo := sms.NewGatewayRepo(db)
+	useCase := biz.NewSmsUseCase(message, universalClient, gatewayRepo, logxLogger)
+	sysUserService := admin3.NewSysUserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, useCase, logger)
 	sysApiRepo := admin.NewSysApiRepo(query, logger)
 	sysApiUseCase := admin2.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
 	apiService := admin3.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)

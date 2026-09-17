@@ -11,6 +11,7 @@ import (
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/sms"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
@@ -26,10 +27,11 @@ type SysUserService struct {
 	roleMenuCase *biz.SysRoleMenuUseCase
 	postCase     *biz.SysPostUseCase
 	deptCase     *biz.SysDeptUseCase
+	smsCase      *sms.UseCase
 	log          *log.Helper
 }
 
-func NewSysUserService(serverConf *conf.Server, userCase *admin.SysUserUseCase, authCase *admin.AuthUseCase, roleCase *admin.SysRoleUseCase, roleMenuCase *admin.SysRoleMenuUseCase, postCase *admin.SysPostUseCase, deptCase *admin.SysDeptUseCase, logger log.Logger) *SysUserService {
+func NewSysUserService(serverConf *conf.Server, userCase *admin.SysUserUseCase, authCase *admin.AuthUseCase, roleCase *admin.SysRoleUseCase, roleMenuCase *admin.SysRoleMenuUseCase, postCase *admin.SysPostUseCase, deptCase *admin.SysDeptUseCase, smsCase *sms.UseCase, logger log.Logger) *SysUserService {
 	return &SysUserService{
 		serverConf:   serverConf,
 		userCase:     userCase,
@@ -38,6 +40,7 @@ func NewSysUserService(serverConf *conf.Server, userCase *admin.SysUserUseCase, 
 		roleMenuCase: roleMenuCase,
 		postCase:     postCase,
 		deptCase:     deptCase,
+		smsCase:      smsCase,
 		log:          log.NewHelper(log.With(logger, "module", "service/SysUser")),
 	}
 }
@@ -291,6 +294,50 @@ func (s *SysUserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.L
 		return nil, err
 	}
 	return reply, nil
+}
+
+// SendPhoneLoginCode 发送手机登录验证码：图形码校验 → 用户名/手机号匹配 → 生成短信码发送。
+// 用户不存在或手机不匹配时不报错（防信息泄露），但不实际发送。
+func (s *SysUserService) SendPhoneLoginCode(ctx context.Context, req *pb.SendPhoneLoginCodeRequest) (*pb.SendPhoneLoginCodeReply, error) {
+	fail := func(msg string) *pb.SendPhoneLoginCodeReply {
+		return &pb.SendPhoneLoginCodeReply{RetCode: -1, RetMsg: msg}
+	}
+	if s.smsCase == nil || !s.smsCase.IsPhoneLoginEnabled() {
+		return fail("手机验证码登录未启用"), nil
+	}
+	if req.CaptchaId == "" || req.Code == "" {
+		return fail("请输入图形验证码"), nil
+	}
+	if !util.Verify(req.CaptchaId, req.Code) {
+		return fail("图形验证码错误"), nil
+	}
+	user, err := s.userCase.FindSysUserByUsername(ctx, req.Username)
+	if err != nil || user.Phone != req.Phone {
+		// 不暴露用户是否存在/手机是否匹配
+		s.log.Warnf("[安全] 手机验证码发送条件不满足 username=%s phone=%s err=%v", req.Username, req.Phone, err)
+		return &pb.SendPhoneLoginCodeReply{RetCode: 0, RetMsg: "验证码已发送"}, nil
+	}
+	cfg := s.smsCase.GetPhoneLoginConfig()
+	code := s.smsCase.GenerateCode(cfg.GetCodeLength(), "numeric")
+	if err := s.smsCase.SendSmsCode(ctx, req.Phone, code, cfg.GetExpireMinutes()); err != nil {
+		s.log.Errorf("发送短信验证码失败: %v", err)
+		return fail("验证码发送失败"), nil
+	}
+	return &pb.SendPhoneLoginCodeReply{RetCode: 0, RetMsg: "验证码已发送"}, nil
+}
+
+// PhoneLogin 手机验证码登录（短信码校验通过后走与密码登录一致的 MFA 分流）
+func (s *SysUserService) PhoneLogin(ctx context.Context, req *pb.PhoneLoginRequest) (*pb.LoginReply, error) {
+	if s.smsCase == nil || !s.smsCase.IsPhoneLoginEnabled() {
+		return nil, pb.ErrorInternalErr("手机验证码登录未启用")
+	}
+	cfg := s.smsCase.GetPhoneLoginConfig()
+	cacheKey := s.smsCase.GetCacheKey(cfg.GetCachePrefix(), req.Phone)
+	ok, err := s.smsCase.VerifyCode(ctx, cacheKey, req.Code)
+	if err != nil || !ok {
+		return nil, pb.ErrorCaptchaInvalid("验证码错误或已过期")
+	}
+	return s.authCase.PhoneLogin(ctx, req.Phone)
 }
 
 func (s *SysUserService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutReply, error) {

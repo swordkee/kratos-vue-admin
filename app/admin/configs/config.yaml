@@ -62,3 +62,21 @@ oss:
     bucketName: ""
     bucketURL: ""
     imgDomain: ""
+
+# 消息/短信验证码域（三端统一，PB 消息名 Message；真实网关凭据以 sys_sms_gateway 表为准）
+message:
+  enabled: true
+  defaultProvider: "generic"
+  loginCaptcha:
+    enabled: true
+    type: "numeric"
+    length: 4
+    expireMinutes: 5
+    cachePrefix: "login:captcha:"
+  phoneLogin:
+    enabled: false              # 默认关闭：启用需先在 sys_sms_gateway 配 feature_id=201 网关
+    codeLength: 6
+    expireMinutes: 5
+    cachePrefix: "phone:login:"
+    dailyLimit: 10
+  providers: {}

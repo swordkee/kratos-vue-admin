@@ -1827,6 +1827,328 @@ var _ interface {
 	ErrorName() string
 } = LoginReplyValidationError{}
 
+// Validate checks the field values on SendPhoneLoginCodeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SendPhoneLoginCodeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendPhoneLoginCodeRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendPhoneLoginCodeRequestMultiError, or nil if none found.
+func (m *SendPhoneLoginCodeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendPhoneLoginCodeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Phone
+
+	// no validation rules for Username
+
+	// no validation rules for CaptchaId
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return SendPhoneLoginCodeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendPhoneLoginCodeRequestMultiError is an error wrapping multiple validation
+// errors returned by SendPhoneLoginCodeRequest.ValidateAll() if the
+// designated constraints aren't met.
+type SendPhoneLoginCodeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendPhoneLoginCodeRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendPhoneLoginCodeRequestMultiError) AllErrors() []error { return m }
+
+// SendPhoneLoginCodeRequestValidationError is the validation error returned by
+// SendPhoneLoginCodeRequest.Validate if the designated constraints aren't met.
+type SendPhoneLoginCodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendPhoneLoginCodeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendPhoneLoginCodeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendPhoneLoginCodeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendPhoneLoginCodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendPhoneLoginCodeRequestValidationError) ErrorName() string {
+	return "SendPhoneLoginCodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendPhoneLoginCodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendPhoneLoginCodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendPhoneLoginCodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendPhoneLoginCodeRequestValidationError{}
+
+// Validate checks the field values on SendPhoneLoginCodeReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SendPhoneLoginCodeReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendPhoneLoginCodeReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendPhoneLoginCodeReplyMultiError, or nil if none found.
+func (m *SendPhoneLoginCodeReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendPhoneLoginCodeReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for RetCode
+
+	// no validation rules for RetMsg
+
+	if len(errors) > 0 {
+		return SendPhoneLoginCodeReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendPhoneLoginCodeReplyMultiError is an error wrapping multiple validation
+// errors returned by SendPhoneLoginCodeReply.ValidateAll() if the designated
+// constraints aren't met.
+type SendPhoneLoginCodeReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendPhoneLoginCodeReplyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendPhoneLoginCodeReplyMultiError) AllErrors() []error { return m }
+
+// SendPhoneLoginCodeReplyValidationError is the validation error returned by
+// SendPhoneLoginCodeReply.Validate if the designated constraints aren't met.
+type SendPhoneLoginCodeReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendPhoneLoginCodeReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendPhoneLoginCodeReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendPhoneLoginCodeReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendPhoneLoginCodeReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendPhoneLoginCodeReplyValidationError) ErrorName() string {
+	return "SendPhoneLoginCodeReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendPhoneLoginCodeReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendPhoneLoginCodeReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendPhoneLoginCodeReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendPhoneLoginCodeReplyValidationError{}
+
+// Validate checks the field values on PhoneLoginRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *PhoneLoginRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PhoneLoginRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PhoneLoginRequestMultiError, or nil if none found.
+func (m *PhoneLoginRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PhoneLoginRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Phone
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return PhoneLoginRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// PhoneLoginRequestMultiError is an error wrapping multiple validation errors
+// returned by PhoneLoginRequest.ValidateAll() if the designated constraints
+// aren't met.
+type PhoneLoginRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PhoneLoginRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PhoneLoginRequestMultiError) AllErrors() []error { return m }
+
+// PhoneLoginRequestValidationError is the validation error returned by
+// PhoneLoginRequest.Validate if the designated constraints aren't met.
+type PhoneLoginRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PhoneLoginRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PhoneLoginRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PhoneLoginRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PhoneLoginRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PhoneLoginRequestValidationError) ErrorName() string {
+	return "PhoneLoginRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PhoneLoginRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPhoneLoginRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PhoneLoginRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PhoneLoginRequestValidationError{}
+
 // Validate checks the field values on LogoutRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

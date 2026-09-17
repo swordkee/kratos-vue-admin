@@ -23,6 +23,8 @@ func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList["/api.admin.v1.SysUser/FindCaptcha"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/FindPostInit"] = struct{}{}
 	whiteList["/api.admin.v1.SysMfa/Verify"] = struct{}{}
+	whiteList["/api.admin.v1.SysUser/SendPhoneLoginCode"] = struct{}{}
+	whiteList["/api.admin.v1.SysUser/PhoneLogin"] = struct{}{}
 	return func(ctx context.Context, operation string) bool {
 		if _, ok := whiteList[operation]; ok {
 			return false

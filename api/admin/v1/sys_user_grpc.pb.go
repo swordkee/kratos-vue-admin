@@ -28,6 +28,8 @@ const (
 	SysUser_Login_FullMethodName                = "/api.admin.v1.SysUser/Login"
 	SysUser_Logout_FullMethodName               = "/api.admin.v1.SysUser/Logout"
 	SysUser_Auth_FullMethodName                 = "/api.admin.v1.SysUser/Auth"
+	SysUser_SendPhoneLoginCode_FullMethodName   = "/api.admin.v1.SysUser/SendPhoneLoginCode"
+	SysUser_PhoneLogin_FullMethodName           = "/api.admin.v1.SysUser/PhoneLogin"
 	SysUser_ChangeStatus_FullMethodName         = "/api.admin.v1.SysUser/ChangeStatus"
 	SysUser_UpdatePassword_FullMethodName       = "/api.admin.v1.SysUser/UpdatePassword"
 	SysUser_FindPostInit_FullMethodName         = "/api.admin.v1.SysUser/FindPostInit"
@@ -59,6 +61,10 @@ type SysUserClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutReply, error)
 	// 获取用户权限
 	Auth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthReply, error)
+	// 发送手机登录验证码（需先通过图形验证码）
+	SendPhoneLoginCode(ctx context.Context, in *SendPhoneLoginCodeRequest, opts ...grpc.CallOption) (*SendPhoneLoginCodeReply, error)
+	// 手机验证码登录（与密码登录共用 MFA 两段式语义）
+	PhoneLogin(ctx context.Context, in *PhoneLoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 	// 更新用户状态
 	ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...grpc.CallOption) (*ChangeStatusReply, error)
 	// 更新密码
@@ -169,6 +175,26 @@ func (c *sysUserClient) Auth(ctx context.Context, in *AuthRequest, opts ...grpc.
 	return out, nil
 }
 
+func (c *sysUserClient) SendPhoneLoginCode(ctx context.Context, in *SendPhoneLoginCodeRequest, opts ...grpc.CallOption) (*SendPhoneLoginCodeReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendPhoneLoginCodeReply)
+	err := c.cc.Invoke(ctx, SysUser_SendPhoneLoginCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysUserClient) PhoneLogin(ctx context.Context, in *PhoneLoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginReply)
+	err := c.cc.Invoke(ctx, SysUser_PhoneLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sysUserClient) ChangeStatus(ctx context.Context, in *ChangeStatusRequest, opts ...grpc.CallOption) (*ChangeStatusReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ChangeStatusReply)
@@ -243,6 +269,10 @@ type SysUserServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutReply, error)
 	// 获取用户权限
 	Auth(context.Context, *AuthRequest) (*AuthReply, error)
+	// 发送手机登录验证码（需先通过图形验证码）
+	SendPhoneLoginCode(context.Context, *SendPhoneLoginCodeRequest) (*SendPhoneLoginCodeReply, error)
+	// 手机验证码登录（与密码登录共用 MFA 两段式语义）
+	PhoneLogin(context.Context, *PhoneLoginRequest) (*LoginReply, error)
 	// 更新用户状态
 	ChangeStatus(context.Context, *ChangeStatusRequest) (*ChangeStatusReply, error)
 	// 更新密码
@@ -289,6 +319,12 @@ func (UnimplementedSysUserServer) Logout(context.Context, *LogoutRequest) (*Logo
 }
 func (UnimplementedSysUserServer) Auth(context.Context, *AuthRequest) (*AuthReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method Auth not implemented")
+}
+func (UnimplementedSysUserServer) SendPhoneLoginCode(context.Context, *SendPhoneLoginCodeRequest) (*SendPhoneLoginCodeReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendPhoneLoginCode not implemented")
+}
+func (UnimplementedSysUserServer) PhoneLogin(context.Context, *PhoneLoginRequest) (*LoginReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method PhoneLogin not implemented")
 }
 func (UnimplementedSysUserServer) ChangeStatus(context.Context, *ChangeStatusRequest) (*ChangeStatusReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method ChangeStatus not implemented")
@@ -488,6 +524,42 @@ func _SysUser_Auth_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SysUser_SendPhoneLoginCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendPhoneLoginCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysUserServer).SendPhoneLoginCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SysUser_SendPhoneLoginCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysUserServer).SendPhoneLoginCode(ctx, req.(*SendPhoneLoginCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SysUser_PhoneLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhoneLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysUserServer).PhoneLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SysUser_PhoneLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysUserServer).PhoneLogin(ctx, req.(*PhoneLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SysUser_ChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChangeStatusRequest)
 	if err := dec(in); err != nil {
@@ -620,6 +692,14 @@ var SysUser_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Auth",
 			Handler:    _SysUser_Auth_Handler,
+		},
+		{
+			MethodName: "SendPhoneLoginCode",
+			Handler:    _SysUser_SendPhoneLoginCode_Handler,
+		},
+		{
+			MethodName: "PhoneLogin",
+			Handler:    _SysUser_PhoneLogin_Handler,
 		},
 		{
 			MethodName: "ChangeStatus",

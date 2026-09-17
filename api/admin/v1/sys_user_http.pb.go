@@ -29,6 +29,8 @@ const OperationSysUserFindUserRolePost = "/api.admin.v1.SysUser/FindUserRolePost
 const OperationSysUserListSysUser = "/api.admin.v1.SysUser/ListSysUser"
 const OperationSysUserLogin = "/api.admin.v1.SysUser/Login"
 const OperationSysUserLogout = "/api.admin.v1.SysUser/Logout"
+const OperationSysUserPhoneLogin = "/api.admin.v1.SysUser/PhoneLogin"
+const OperationSysUserSendPhoneLoginCode = "/api.admin.v1.SysUser/SendPhoneLoginCode"
 const OperationSysUserUpdatePassword = "/api.admin.v1.SysUser/UpdatePassword"
 const OperationSysUserUpdateSysUser = "/api.admin.v1.SysUser/UpdateSysUser"
 
@@ -57,6 +59,10 @@ type SysUserHTTPServer interface {
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	// Logout 登出
 	Logout(context.Context, *LogoutRequest) (*LogoutReply, error)
+	// PhoneLogin 手机验证码登录（与密码登录共用 MFA 两段式语义）
+	PhoneLogin(context.Context, *PhoneLoginRequest) (*LoginReply, error)
+	// SendPhoneLoginCode 发送手机登录验证码（需先通过图形验证码）
+	SendPhoneLoginCode(context.Context, *SendPhoneLoginCodeRequest) (*SendPhoneLoginCodeReply, error)
 	// UpdatePassword 更新密码
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*UpdatePasswordReply, error)
 	// UpdateSysUser 更新用户
@@ -74,6 +80,8 @@ func RegisterSysUserHTTPServer(s *http.Server, srv SysUserHTTPServer) {
 	r.Handle("POST", "/system/user/login", _SysUser_Login0_HTTP_Handler(srv))
 	r.Handle("POST", "/system/user/logout", _SysUser_Logout0_HTTP_Handler(srv))
 	r.Handle("GET", "/system/user/auth", _SysUser_Auth0_HTTP_Handler(srv))
+	r.Handle("POST", "/system/user/phone/sendcode", _SysUser_SendPhoneLoginCode0_HTTP_Handler(srv))
+	r.Handle("POST", "/system/user/phone/login", _SysUser_PhoneLogin0_HTTP_Handler(srv))
 	r.Handle("PUT", "/system/user/changeStatus", _SysUser_ChangeStatus0_HTTP_Handler(srv))
 	r.Handle("PUT", "/system/user/pwd", _SysUser_UpdatePassword0_HTTP_Handler(srv))
 	r.Handle("GET", "/system/user/getInit", _SysUser_FindPostInit0_HTTP_Handler(srv))
@@ -258,6 +266,44 @@ func _SysUser_Auth0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) e
 	}
 }
 
+func _SysUser_SendPhoneLoginCode0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SendPhoneLoginCodeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSysUserSendPhoneLoginCode)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SendPhoneLoginCode(ctx, req.(*SendPhoneLoginCodeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SendPhoneLoginCodeReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SysUser_PhoneLogin0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in PhoneLoginRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSysUserPhoneLogin)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.PhoneLogin(ctx, req.(*PhoneLoginRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*LoginReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 func _SysUser_ChangeStatus0_HTTP_Handler(srv SysUserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ChangeStatusRequest
@@ -378,6 +424,10 @@ type SysUserHTTPClient interface {
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	// Logout 登出
 	Logout(ctx context.Context, req *LogoutRequest, opts ...http.CallOption) (rsp *LogoutReply, err error)
+	// PhoneLogin 手机验证码登录（与密码登录共用 MFA 两段式语义）
+	PhoneLogin(ctx context.Context, req *PhoneLoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
+	// SendPhoneLoginCode 发送手机登录验证码（需先通过图形验证码）
+	SendPhoneLoginCode(ctx context.Context, req *SendPhoneLoginCodeRequest, opts ...http.CallOption) (rsp *SendPhoneLoginCodeReply, err error)
 	// UpdatePassword 更新密码
 	UpdatePassword(ctx context.Context, req *UpdatePasswordRequest, opts ...http.CallOption) (rsp *UpdatePasswordReply, err error)
 	// UpdateSysUser 更新用户
@@ -591,6 +641,42 @@ func (c *SysUserHTTPClientImpl) Logout(ctx context.Context, in *LogoutRequest, o
 		http.Accept("application/protojson"),
 		http.ContentType("application/protojson"),
 		http.Operation(OperationSysUserLogout),
+		http.PathTemplate(pattern),
+	}, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// PhoneLogin 手机验证码登录（与密码登录共用 MFA 两段式语义）
+func (c *SysUserHTTPClientImpl) PhoneLogin(ctx context.Context, in *PhoneLoginRequest, opts ...http.CallOption) (*LoginReply, error) {
+	var out LoginReply
+	pattern := "/system/user/phone/login"
+	path := http.BuildPath(pattern, in)
+	opts = append([]http.CallOption{
+		http.Accept("application/protojson"),
+		http.ContentType("application/protojson"),
+		http.Operation(OperationSysUserPhoneLogin),
+		http.PathTemplate(pattern),
+	}, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+// SendPhoneLoginCode 发送手机登录验证码（需先通过图形验证码）
+func (c *SysUserHTTPClientImpl) SendPhoneLoginCode(ctx context.Context, in *SendPhoneLoginCodeRequest, opts ...http.CallOption) (*SendPhoneLoginCodeReply, error) {
+	var out SendPhoneLoginCodeReply
+	pattern := "/system/user/phone/sendcode"
+	path := http.BuildPath(pattern, in)
+	opts = append([]http.CallOption{
+		http.Accept("application/protojson"),
+		http.ContentType("application/protojson"),
+		http.Operation(OperationSysUserSendPhoneLoginCode),
 		http.PathTemplate(pattern),
 	}, opts...)
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)

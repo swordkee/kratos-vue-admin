@@ -986,7 +986,7 @@ type LoginReply struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
 	Token  string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	Expire int64                  `protobuf:"varint,2,opt,name=expire,proto3" json:"expire,omitempty"`
-	// R26 TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
+	// TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
 	NeedMfa       bool   `protobuf:"varint,3,opt,name=needMfa,proto3" json:"needMfa,omitempty"`
 	MfaToken      string `protobuf:"bytes,4,opt,name=mfaToken,proto3" json:"mfaToken,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1051,6 +1051,178 @@ func (x *LoginReply) GetMfaToken() string {
 	return ""
 }
 
+type SendPhoneLoginCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Phone         string                 `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`         // 手机号
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`   // 用户名（确保仅后台用户可收码）
+	CaptchaId     string                 `protobuf:"bytes,3,opt,name=captchaId,proto3" json:"captchaId,omitempty"` // 图形验证码 ID
+	Code          string                 `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`           // 图形验证码
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendPhoneLoginCodeRequest) Reset() {
+	*x = SendPhoneLoginCodeRequest{}
+	mi := &file_sys_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendPhoneLoginCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendPhoneLoginCodeRequest) ProtoMessage() {}
+
+func (x *SendPhoneLoginCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sys_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendPhoneLoginCodeRequest.ProtoReflect.Descriptor instead.
+func (*SendPhoneLoginCodeRequest) Descriptor() ([]byte, []int) {
+	return file_sys_user_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SendPhoneLoginCodeRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SendPhoneLoginCodeRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *SendPhoneLoginCodeRequest) GetCaptchaId() string {
+	if x != nil {
+		return x.CaptchaId
+	}
+	return ""
+}
+
+func (x *SendPhoneLoginCodeRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type SendPhoneLoginCodeReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RetCode       int32                  `protobuf:"varint,1,opt,name=retCode,proto3" json:"retCode,omitempty"`
+	RetMsg        string                 `protobuf:"bytes,2,opt,name=retMsg,proto3" json:"retMsg,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendPhoneLoginCodeReply) Reset() {
+	*x = SendPhoneLoginCodeReply{}
+	mi := &file_sys_user_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendPhoneLoginCodeReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendPhoneLoginCodeReply) ProtoMessage() {}
+
+func (x *SendPhoneLoginCodeReply) ProtoReflect() protoreflect.Message {
+	mi := &file_sys_user_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendPhoneLoginCodeReply.ProtoReflect.Descriptor instead.
+func (*SendPhoneLoginCodeReply) Descriptor() ([]byte, []int) {
+	return file_sys_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *SendPhoneLoginCodeReply) GetRetCode() int32 {
+	if x != nil {
+		return x.RetCode
+	}
+	return 0
+}
+
+func (x *SendPhoneLoginCodeReply) GetRetMsg() string {
+	if x != nil {
+		return x.RetMsg
+	}
+	return ""
+}
+
+type PhoneLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Phone         string                 `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"` // 手机号
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`   // 短信验证码
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PhoneLoginRequest) Reset() {
+	*x = PhoneLoginRequest{}
+	mi := &file_sys_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PhoneLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PhoneLoginRequest) ProtoMessage() {}
+
+func (x *PhoneLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sys_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PhoneLoginRequest.ProtoReflect.Descriptor instead.
+func (*PhoneLoginRequest) Descriptor() ([]byte, []int) {
+	return file_sys_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *PhoneLoginRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *PhoneLoginRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
 type LogoutRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1059,7 +1231,7 @@ type LogoutRequest struct {
 
 func (x *LogoutRequest) Reset() {
 	*x = LogoutRequest{}
-	mi := &file_sys_user_proto_msgTypes[14]
+	mi := &file_sys_user_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1071,7 +1243,7 @@ func (x *LogoutRequest) String() string {
 func (*LogoutRequest) ProtoMessage() {}
 
 func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[14]
+	mi := &file_sys_user_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1084,7 +1256,7 @@ func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogoutRequest.ProtoReflect.Descriptor instead.
 func (*LogoutRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{14}
+	return file_sys_user_proto_rawDescGZIP(), []int{17}
 }
 
 type LogoutReply struct {
@@ -1095,7 +1267,7 @@ type LogoutReply struct {
 
 func (x *LogoutReply) Reset() {
 	*x = LogoutReply{}
-	mi := &file_sys_user_proto_msgTypes[15]
+	mi := &file_sys_user_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1107,7 +1279,7 @@ func (x *LogoutReply) String() string {
 func (*LogoutReply) ProtoMessage() {}
 
 func (x *LogoutReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[15]
+	mi := &file_sys_user_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1120,7 +1292,7 @@ func (x *LogoutReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogoutReply.ProtoReflect.Descriptor instead.
 func (*LogoutReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{15}
+	return file_sys_user_proto_rawDescGZIP(), []int{18}
 }
 
 type AuthRequest struct {
@@ -1132,7 +1304,7 @@ type AuthRequest struct {
 
 func (x *AuthRequest) Reset() {
 	*x = AuthRequest{}
-	mi := &file_sys_user_proto_msgTypes[16]
+	mi := &file_sys_user_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1144,7 +1316,7 @@ func (x *AuthRequest) String() string {
 func (*AuthRequest) ProtoMessage() {}
 
 func (x *AuthRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[16]
+	mi := &file_sys_user_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1157,7 +1329,7 @@ func (x *AuthRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthRequest.ProtoReflect.Descriptor instead.
 func (*AuthRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{16}
+	return file_sys_user_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *AuthRequest) GetUsername() string {
@@ -1179,7 +1351,7 @@ type AuthReply struct {
 
 func (x *AuthReply) Reset() {
 	*x = AuthReply{}
-	mi := &file_sys_user_proto_msgTypes[17]
+	mi := &file_sys_user_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1191,7 +1363,7 @@ func (x *AuthReply) String() string {
 func (*AuthReply) ProtoMessage() {}
 
 func (x *AuthReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[17]
+	mi := &file_sys_user_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1204,7 +1376,7 @@ func (x *AuthReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthReply.ProtoReflect.Descriptor instead.
 func (*AuthReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{17}
+	return file_sys_user_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *AuthReply) GetUser() *AuthReply_User {
@@ -1245,7 +1417,7 @@ type ChangeStatusRequest struct {
 
 func (x *ChangeStatusRequest) Reset() {
 	*x = ChangeStatusRequest{}
-	mi := &file_sys_user_proto_msgTypes[18]
+	mi := &file_sys_user_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1257,7 +1429,7 @@ func (x *ChangeStatusRequest) String() string {
 func (*ChangeStatusRequest) ProtoMessage() {}
 
 func (x *ChangeStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[18]
+	mi := &file_sys_user_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1270,7 +1442,7 @@ func (x *ChangeStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeStatusRequest.ProtoReflect.Descriptor instead.
 func (*ChangeStatusRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{18}
+	return file_sys_user_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ChangeStatusRequest) GetUserId() int64 {
@@ -1295,7 +1467,7 @@ type ChangeStatusReply struct {
 
 func (x *ChangeStatusReply) Reset() {
 	*x = ChangeStatusReply{}
-	mi := &file_sys_user_proto_msgTypes[19]
+	mi := &file_sys_user_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1307,7 +1479,7 @@ func (x *ChangeStatusReply) String() string {
 func (*ChangeStatusReply) ProtoMessage() {}
 
 func (x *ChangeStatusReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[19]
+	mi := &file_sys_user_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1320,7 +1492,7 @@ func (x *ChangeStatusReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeStatusReply.ProtoReflect.Descriptor instead.
 func (*ChangeStatusReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{19}
+	return file_sys_user_proto_rawDescGZIP(), []int{22}
 }
 
 type UpdatePasswordRequest struct {
@@ -1333,7 +1505,7 @@ type UpdatePasswordRequest struct {
 
 func (x *UpdatePasswordRequest) Reset() {
 	*x = UpdatePasswordRequest{}
-	mi := &file_sys_user_proto_msgTypes[20]
+	mi := &file_sys_user_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1345,7 +1517,7 @@ func (x *UpdatePasswordRequest) String() string {
 func (*UpdatePasswordRequest) ProtoMessage() {}
 
 func (x *UpdatePasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[20]
+	mi := &file_sys_user_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1358,7 +1530,7 @@ func (x *UpdatePasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePasswordRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePasswordRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{20}
+	return file_sys_user_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *UpdatePasswordRequest) GetNewPassword() string {
@@ -1383,7 +1555,7 @@ type UpdatePasswordReply struct {
 
 func (x *UpdatePasswordReply) Reset() {
 	*x = UpdatePasswordReply{}
-	mi := &file_sys_user_proto_msgTypes[21]
+	mi := &file_sys_user_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1395,7 +1567,7 @@ func (x *UpdatePasswordReply) String() string {
 func (*UpdatePasswordReply) ProtoMessage() {}
 
 func (x *UpdatePasswordReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[21]
+	mi := &file_sys_user_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1408,7 +1580,7 @@ func (x *UpdatePasswordReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePasswordReply.ProtoReflect.Descriptor instead.
 func (*UpdatePasswordReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{21}
+	return file_sys_user_proto_rawDescGZIP(), []int{24}
 }
 
 type FindPostInitRequest struct {
@@ -1419,7 +1591,7 @@ type FindPostInitRequest struct {
 
 func (x *FindPostInitRequest) Reset() {
 	*x = FindPostInitRequest{}
-	mi := &file_sys_user_proto_msgTypes[22]
+	mi := &file_sys_user_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1431,7 +1603,7 @@ func (x *FindPostInitRequest) String() string {
 func (*FindPostInitRequest) ProtoMessage() {}
 
 func (x *FindPostInitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[22]
+	mi := &file_sys_user_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1444,7 +1616,7 @@ func (x *FindPostInitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindPostInitRequest.ProtoReflect.Descriptor instead.
 func (*FindPostInitRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{22}
+	return file_sys_user_proto_rawDescGZIP(), []int{25}
 }
 
 type FindPostInitReply struct {
@@ -1457,7 +1629,7 @@ type FindPostInitReply struct {
 
 func (x *FindPostInitReply) Reset() {
 	*x = FindPostInitReply{}
-	mi := &file_sys_user_proto_msgTypes[23]
+	mi := &file_sys_user_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1469,7 +1641,7 @@ func (x *FindPostInitReply) String() string {
 func (*FindPostInitReply) ProtoMessage() {}
 
 func (x *FindPostInitReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[23]
+	mi := &file_sys_user_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1482,7 +1654,7 @@ func (x *FindPostInitReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindPostInitReply.ProtoReflect.Descriptor instead.
 func (*FindPostInitReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{23}
+	return file_sys_user_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *FindPostInitReply) GetRoles() []*RoleData {
@@ -1507,7 +1679,7 @@ type FindUserRolePostRequest struct {
 
 func (x *FindUserRolePostRequest) Reset() {
 	*x = FindUserRolePostRequest{}
-	mi := &file_sys_user_proto_msgTypes[24]
+	mi := &file_sys_user_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1519,7 +1691,7 @@ func (x *FindUserRolePostRequest) String() string {
 func (*FindUserRolePostRequest) ProtoMessage() {}
 
 func (x *FindUserRolePostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[24]
+	mi := &file_sys_user_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1532,7 +1704,7 @@ func (x *FindUserRolePostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindUserRolePostRequest.ProtoReflect.Descriptor instead.
 func (*FindUserRolePostRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{24}
+	return file_sys_user_proto_rawDescGZIP(), []int{27}
 }
 
 type FindUserRolePostReply struct {
@@ -1545,7 +1717,7 @@ type FindUserRolePostReply struct {
 
 func (x *FindUserRolePostReply) Reset() {
 	*x = FindUserRolePostReply{}
-	mi := &file_sys_user_proto_msgTypes[25]
+	mi := &file_sys_user_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1557,7 +1729,7 @@ func (x *FindUserRolePostReply) String() string {
 func (*FindUserRolePostReply) ProtoMessage() {}
 
 func (x *FindUserRolePostReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[25]
+	mi := &file_sys_user_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1570,7 +1742,7 @@ func (x *FindUserRolePostReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindUserRolePostReply.ProtoReflect.Descriptor instead.
 func (*FindUserRolePostReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{25}
+	return file_sys_user_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *FindUserRolePostReply) GetRoles() []*RoleData {
@@ -1595,7 +1767,7 @@ type FindUserGoogleSecretRequest struct {
 
 func (x *FindUserGoogleSecretRequest) Reset() {
 	*x = FindUserGoogleSecretRequest{}
-	mi := &file_sys_user_proto_msgTypes[26]
+	mi := &file_sys_user_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1607,7 +1779,7 @@ func (x *FindUserGoogleSecretRequest) String() string {
 func (*FindUserGoogleSecretRequest) ProtoMessage() {}
 
 func (x *FindUserGoogleSecretRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[26]
+	mi := &file_sys_user_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1620,7 +1792,7 @@ func (x *FindUserGoogleSecretRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindUserGoogleSecretRequest.ProtoReflect.Descriptor instead.
 func (*FindUserGoogleSecretRequest) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{26}
+	return file_sys_user_proto_rawDescGZIP(), []int{29}
 }
 
 type FindUserGoogleSecretReply struct {
@@ -1633,7 +1805,7 @@ type FindUserGoogleSecretReply struct {
 
 func (x *FindUserGoogleSecretReply) Reset() {
 	*x = FindUserGoogleSecretReply{}
-	mi := &file_sys_user_proto_msgTypes[27]
+	mi := &file_sys_user_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1645,7 +1817,7 @@ func (x *FindUserGoogleSecretReply) String() string {
 func (*FindUserGoogleSecretReply) ProtoMessage() {}
 
 func (x *FindUserGoogleSecretReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[27]
+	mi := &file_sys_user_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1658,7 +1830,7 @@ func (x *FindUserGoogleSecretReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindUserGoogleSecretReply.ProtoReflect.Descriptor instead.
 func (*FindUserGoogleSecretReply) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{27}
+	return file_sys_user_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *FindUserGoogleSecretReply) GetSecret() string {
@@ -1704,7 +1876,7 @@ type AuthReply_User struct {
 
 func (x *AuthReply_User) Reset() {
 	*x = AuthReply_User{}
-	mi := &file_sys_user_proto_msgTypes[28]
+	mi := &file_sys_user_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1716,7 +1888,7 @@ func (x *AuthReply_User) String() string {
 func (*AuthReply_User) ProtoMessage() {}
 
 func (x *AuthReply_User) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[28]
+	mi := &file_sys_user_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1729,7 +1901,7 @@ func (x *AuthReply_User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthReply_User.ProtoReflect.Descriptor instead.
 func (*AuthReply_User) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{17, 0}
+	return file_sys_user_proto_rawDescGZIP(), []int{20, 0}
 }
 
 func (x *AuthReply_User) GetUserId() int64 {
@@ -1901,7 +2073,7 @@ type AuthReply_Role struct {
 
 func (x *AuthReply_Role) Reset() {
 	*x = AuthReply_Role{}
-	mi := &file_sys_user_proto_msgTypes[29]
+	mi := &file_sys_user_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1913,7 +2085,7 @@ func (x *AuthReply_Role) String() string {
 func (*AuthReply_Role) ProtoMessage() {}
 
 func (x *AuthReply_Role) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_user_proto_msgTypes[29]
+	mi := &file_sys_user_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1926,7 +2098,7 @@ func (x *AuthReply_Role) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthReply_Role.ProtoReflect.Descriptor instead.
 func (*AuthReply_Role) Descriptor() ([]byte, []int) {
-	return file_sys_user_proto_rawDescGZIP(), []int{17, 1}
+	return file_sys_user_proto_rawDescGZIP(), []int{20, 1}
 }
 
 func (x *AuthReply_Role) GetRoleId() int64 {
@@ -2114,7 +2286,18 @@ const file_sys_user_proto_rawDesc = "" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x16\n" +
 	"\x06expire\x18\x02 \x01(\x03R\x06expire\x12\x18\n" +
 	"\aneedMfa\x18\x03 \x01(\bR\aneedMfa\x12\x1a\n" +
-	"\bmfaToken\x18\x04 \x01(\tR\bmfaToken\"\x0f\n" +
+	"\bmfaToken\x18\x04 \x01(\tR\bmfaToken\"\x7f\n" +
+	"\x19SendPhoneLoginCodeRequest\x12\x14\n" +
+	"\x05phone\x18\x01 \x01(\tR\x05phone\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1c\n" +
+	"\tcaptchaId\x18\x03 \x01(\tR\tcaptchaId\x12\x12\n" +
+	"\x04code\x18\x04 \x01(\tR\x04code\"K\n" +
+	"\x17SendPhoneLoginCodeReply\x12\x18\n" +
+	"\aretCode\x18\x01 \x01(\x05R\aretCode\x12\x16\n" +
+	"\x06retMsg\x18\x02 \x01(\tR\x06retMsg\"=\n" +
+	"\x11PhoneLoginRequest\x12\x14\n" +
+	"\x05phone\x18\x01 \x01(\tR\x05phone\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"\x0f\n" +
 	"\rLogoutRequest\"\r\n" +
 	"\vLogoutReply\")\n" +
 	"\vAuthRequest\x12\x1a\n" +
@@ -2183,7 +2366,7 @@ const file_sys_user_proto_rawDesc = "" +
 	"\x1bFindUserGoogleSecretRequest\"K\n" +
 	"\x19FindUserGoogleSecretReply\x12\x16\n" +
 	"\x06secret\x18\x01 \x01(\tR\x06secret\x12\x16\n" +
-	"\x06qrcode\x18\x02 \x01(\tR\x06qrcode2\xaf\f\n" +
+	"\x06qrcode\x18\x02 \x01(\tR\x06qrcode2\xac\x0e\n" +
 	"\aSysUser\x12n\n" +
 	"\rCreateSysUser\x12\".api.admin.v1.CreateSysUserRequest\x1a .api.admin.v1.CreateSysUserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/system/user\x12n\n" +
 	"\rUpdateSysUser\x12\".api.admin.v1.UpdateSysUserRequest\x1a .api.admin.v1.UpdateSysUserReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/system/user\x12p\n" +
@@ -2193,7 +2376,10 @@ const file_sys_user_proto_rawDesc = "" +
 	"\vFindCaptcha\x12 .api.admin.v1.FindCaptchaRequest\x1a\x1e.api.admin.v1.FindCaptchaReply\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/system/user/getCaptcha\x12\\\n" +
 	"\x05Login\x12\x1a.api.admin.v1.LoginRequest\x1a\x18.api.admin.v1.LoginReply\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/system/user/login\x12`\n" +
 	"\x06Logout\x12\x1b.api.admin.v1.LogoutRequest\x1a\x19.api.admin.v1.LogoutReply\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/system/user/logout\x12U\n" +
-	"\x04Auth\x12\x19.api.admin.v1.AuthRequest\x1a\x17.api.admin.v1.AuthReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/user/auth\x12x\n" +
+	"\x04Auth\x12\x19.api.admin.v1.AuthRequest\x1a\x17.api.admin.v1.AuthReply\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/system/user/auth\x12\x8c\x01\n" +
+	"\x12SendPhoneLoginCode\x12'.api.admin.v1.SendPhoneLoginCodeRequest\x1a%.api.admin.v1.SendPhoneLoginCodeReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/system/user/phone/sendcode\x12l\n" +
+	"\n" +
+	"PhoneLogin\x12\x1f.api.admin.v1.PhoneLoginRequest\x1a\x18.api.admin.v1.LoginReply\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/system/user/phone/login\x12x\n" +
 	"\fChangeStatus\x12!.api.admin.v1.ChangeStatusRequest\x1a\x1f.api.admin.v1.ChangeStatusReply\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\x1a\x19/system/user/changeStatus\x12u\n" +
 	"\x0eUpdatePassword\x12#.api.admin.v1.UpdatePasswordRequest\x1a!.api.admin.v1.UpdatePasswordReply\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\x1a\x10/system/user/pwd\x12p\n" +
 	"\fFindPostInit\x12!.api.admin.v1.FindPostInitRequest\x1a\x1f.api.admin.v1.FindPostInitReply\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/system/user/getInit\x12|\n" +
@@ -2212,7 +2398,7 @@ func file_sys_user_proto_rawDescGZIP() []byte {
 	return file_sys_user_proto_rawDescData
 }
 
-var file_sys_user_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_sys_user_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_sys_user_proto_goTypes = []any{
 	(*CreateSysUserRequest)(nil),        // 0: api.admin.v1.CreateSysUserRequest
 	(*CreateSysUserReply)(nil),          // 1: api.admin.v1.CreateSysUserReply
@@ -2228,52 +2414,55 @@ var file_sys_user_proto_goTypes = []any{
 	(*FindCaptchaReply)(nil),            // 11: api.admin.v1.FindCaptchaReply
 	(*LoginRequest)(nil),                // 12: api.admin.v1.LoginRequest
 	(*LoginReply)(nil),                  // 13: api.admin.v1.LoginReply
-	(*LogoutRequest)(nil),               // 14: api.admin.v1.LogoutRequest
-	(*LogoutReply)(nil),                 // 15: api.admin.v1.LogoutReply
-	(*AuthRequest)(nil),                 // 16: api.admin.v1.AuthRequest
-	(*AuthReply)(nil),                   // 17: api.admin.v1.AuthReply
-	(*ChangeStatusRequest)(nil),         // 18: api.admin.v1.ChangeStatusRequest
-	(*ChangeStatusReply)(nil),           // 19: api.admin.v1.ChangeStatusReply
-	(*UpdatePasswordRequest)(nil),       // 20: api.admin.v1.UpdatePasswordRequest
-	(*UpdatePasswordReply)(nil),         // 21: api.admin.v1.UpdatePasswordReply
-	(*FindPostInitRequest)(nil),         // 22: api.admin.v1.FindPostInitRequest
-	(*FindPostInitReply)(nil),           // 23: api.admin.v1.FindPostInitReply
-	(*FindUserRolePostRequest)(nil),     // 24: api.admin.v1.FindUserRolePostRequest
-	(*FindUserRolePostReply)(nil),       // 25: api.admin.v1.FindUserRolePostReply
-	(*FindUserGoogleSecretRequest)(nil), // 26: api.admin.v1.FindUserGoogleSecretRequest
-	(*FindUserGoogleSecretReply)(nil),   // 27: api.admin.v1.FindUserGoogleSecretReply
-	(*AuthReply_User)(nil),              // 28: api.admin.v1.AuthReply.User
-	(*AuthReply_Role)(nil),              // 29: api.admin.v1.AuthReply.Role
-	(*timestamppb.Timestamp)(nil),       // 30: google.protobuf.Timestamp
-	(*UserData)(nil),                    // 31: api.admin.v1.UserData
-	(*RoleData)(nil),                    // 32: api.admin.v1.RoleData
-	(*PostData)(nil),                    // 33: api.admin.v1.PostData
-	(*DeptTree)(nil),                    // 34: api.admin.v1.DeptTree
-	(*MenuTreeAuth)(nil),                // 35: api.admin.v1.MenuTreeAuth
-	(*anypb.Any)(nil),                   // 36: google.protobuf.Any
+	(*SendPhoneLoginCodeRequest)(nil),   // 14: api.admin.v1.SendPhoneLoginCodeRequest
+	(*SendPhoneLoginCodeReply)(nil),     // 15: api.admin.v1.SendPhoneLoginCodeReply
+	(*PhoneLoginRequest)(nil),           // 16: api.admin.v1.PhoneLoginRequest
+	(*LogoutRequest)(nil),               // 17: api.admin.v1.LogoutRequest
+	(*LogoutReply)(nil),                 // 18: api.admin.v1.LogoutReply
+	(*AuthRequest)(nil),                 // 19: api.admin.v1.AuthRequest
+	(*AuthReply)(nil),                   // 20: api.admin.v1.AuthReply
+	(*ChangeStatusRequest)(nil),         // 21: api.admin.v1.ChangeStatusRequest
+	(*ChangeStatusReply)(nil),           // 22: api.admin.v1.ChangeStatusReply
+	(*UpdatePasswordRequest)(nil),       // 23: api.admin.v1.UpdatePasswordRequest
+	(*UpdatePasswordReply)(nil),         // 24: api.admin.v1.UpdatePasswordReply
+	(*FindPostInitRequest)(nil),         // 25: api.admin.v1.FindPostInitRequest
+	(*FindPostInitReply)(nil),           // 26: api.admin.v1.FindPostInitReply
+	(*FindUserRolePostRequest)(nil),     // 27: api.admin.v1.FindUserRolePostRequest
+	(*FindUserRolePostReply)(nil),       // 28: api.admin.v1.FindUserRolePostReply
+	(*FindUserGoogleSecretRequest)(nil), // 29: api.admin.v1.FindUserGoogleSecretRequest
+	(*FindUserGoogleSecretReply)(nil),   // 30: api.admin.v1.FindUserGoogleSecretReply
+	(*AuthReply_User)(nil),              // 31: api.admin.v1.AuthReply.User
+	(*AuthReply_Role)(nil),              // 32: api.admin.v1.AuthReply.Role
+	(*timestamppb.Timestamp)(nil),       // 33: google.protobuf.Timestamp
+	(*UserData)(nil),                    // 34: api.admin.v1.UserData
+	(*RoleData)(nil),                    // 35: api.admin.v1.RoleData
+	(*PostData)(nil),                    // 36: api.admin.v1.PostData
+	(*DeptTree)(nil),                    // 37: api.admin.v1.DeptTree
+	(*MenuTreeAuth)(nil),                // 38: api.admin.v1.MenuTreeAuth
+	(*anypb.Any)(nil),                   // 39: google.protobuf.Any
 }
 var file_sys_user_proto_depIdxs = []int32{
-	30, // 0: api.admin.v1.UpdateSysUserRequest.createdAt:type_name -> google.protobuf.Timestamp
-	30, // 1: api.admin.v1.UpdateSysUserRequest.updatedAt:type_name -> google.protobuf.Timestamp
-	31, // 2: api.admin.v1.FindSysUserReply.user:type_name -> api.admin.v1.UserData
-	32, // 3: api.admin.v1.FindSysUserReply.roles:type_name -> api.admin.v1.RoleData
-	33, // 4: api.admin.v1.FindSysUserReply.posts:type_name -> api.admin.v1.PostData
-	34, // 5: api.admin.v1.FindSysUserReply.depts:type_name -> api.admin.v1.DeptTree
-	31, // 6: api.admin.v1.ListSysUserReply.data:type_name -> api.admin.v1.UserData
-	28, // 7: api.admin.v1.AuthReply.user:type_name -> api.admin.v1.AuthReply.User
-	29, // 8: api.admin.v1.AuthReply.role:type_name -> api.admin.v1.AuthReply.Role
-	35, // 9: api.admin.v1.AuthReply.menus:type_name -> api.admin.v1.MenuTreeAuth
-	32, // 10: api.admin.v1.FindPostInitReply.roles:type_name -> api.admin.v1.RoleData
-	33, // 11: api.admin.v1.FindPostInitReply.posts:type_name -> api.admin.v1.PostData
-	32, // 12: api.admin.v1.FindUserRolePostReply.roles:type_name -> api.admin.v1.RoleData
-	33, // 13: api.admin.v1.FindUserRolePostReply.posts:type_name -> api.admin.v1.PostData
-	30, // 14: api.admin.v1.AuthReply.User.createdAt:type_name -> google.protobuf.Timestamp
-	30, // 15: api.admin.v1.AuthReply.User.updatedAt:type_name -> google.protobuf.Timestamp
-	36, // 16: api.admin.v1.AuthReply.Role.apiIds:type_name -> google.protobuf.Any
-	36, // 17: api.admin.v1.AuthReply.Role.menuIds:type_name -> google.protobuf.Any
-	36, // 18: api.admin.v1.AuthReply.Role.deptIds:type_name -> google.protobuf.Any
-	30, // 19: api.admin.v1.AuthReply.Role.createdAt:type_name -> google.protobuf.Timestamp
-	30, // 20: api.admin.v1.AuthReply.Role.updatedAt:type_name -> google.protobuf.Timestamp
+	33, // 0: api.admin.v1.UpdateSysUserRequest.createdAt:type_name -> google.protobuf.Timestamp
+	33, // 1: api.admin.v1.UpdateSysUserRequest.updatedAt:type_name -> google.protobuf.Timestamp
+	34, // 2: api.admin.v1.FindSysUserReply.user:type_name -> api.admin.v1.UserData
+	35, // 3: api.admin.v1.FindSysUserReply.roles:type_name -> api.admin.v1.RoleData
+	36, // 4: api.admin.v1.FindSysUserReply.posts:type_name -> api.admin.v1.PostData
+	37, // 5: api.admin.v1.FindSysUserReply.depts:type_name -> api.admin.v1.DeptTree
+	34, // 6: api.admin.v1.ListSysUserReply.data:type_name -> api.admin.v1.UserData
+	31, // 7: api.admin.v1.AuthReply.user:type_name -> api.admin.v1.AuthReply.User
+	32, // 8: api.admin.v1.AuthReply.role:type_name -> api.admin.v1.AuthReply.Role
+	38, // 9: api.admin.v1.AuthReply.menus:type_name -> api.admin.v1.MenuTreeAuth
+	35, // 10: api.admin.v1.FindPostInitReply.roles:type_name -> api.admin.v1.RoleData
+	36, // 11: api.admin.v1.FindPostInitReply.posts:type_name -> api.admin.v1.PostData
+	35, // 12: api.admin.v1.FindUserRolePostReply.roles:type_name -> api.admin.v1.RoleData
+	36, // 13: api.admin.v1.FindUserRolePostReply.posts:type_name -> api.admin.v1.PostData
+	33, // 14: api.admin.v1.AuthReply.User.createdAt:type_name -> google.protobuf.Timestamp
+	33, // 15: api.admin.v1.AuthReply.User.updatedAt:type_name -> google.protobuf.Timestamp
+	39, // 16: api.admin.v1.AuthReply.Role.apiIds:type_name -> google.protobuf.Any
+	39, // 17: api.admin.v1.AuthReply.Role.menuIds:type_name -> google.protobuf.Any
+	39, // 18: api.admin.v1.AuthReply.Role.deptIds:type_name -> google.protobuf.Any
+	33, // 19: api.admin.v1.AuthReply.Role.createdAt:type_name -> google.protobuf.Timestamp
+	33, // 20: api.admin.v1.AuthReply.Role.updatedAt:type_name -> google.protobuf.Timestamp
 	0,  // 21: api.admin.v1.SysUser.CreateSysUser:input_type -> api.admin.v1.CreateSysUserRequest
 	2,  // 22: api.admin.v1.SysUser.UpdateSysUser:input_type -> api.admin.v1.UpdateSysUserRequest
 	4,  // 23: api.admin.v1.SysUser.DeleteSysUser:input_type -> api.admin.v1.DeleteSysUserRequest
@@ -2281,29 +2470,33 @@ var file_sys_user_proto_depIdxs = []int32{
 	8,  // 25: api.admin.v1.SysUser.ListSysUser:input_type -> api.admin.v1.ListSysUserRequest
 	10, // 26: api.admin.v1.SysUser.FindCaptcha:input_type -> api.admin.v1.FindCaptchaRequest
 	12, // 27: api.admin.v1.SysUser.Login:input_type -> api.admin.v1.LoginRequest
-	14, // 28: api.admin.v1.SysUser.Logout:input_type -> api.admin.v1.LogoutRequest
-	16, // 29: api.admin.v1.SysUser.Auth:input_type -> api.admin.v1.AuthRequest
-	18, // 30: api.admin.v1.SysUser.ChangeStatus:input_type -> api.admin.v1.ChangeStatusRequest
-	20, // 31: api.admin.v1.SysUser.UpdatePassword:input_type -> api.admin.v1.UpdatePasswordRequest
-	22, // 32: api.admin.v1.SysUser.FindPostInit:input_type -> api.admin.v1.FindPostInitRequest
-	24, // 33: api.admin.v1.SysUser.FindUserRolePost:input_type -> api.admin.v1.FindUserRolePostRequest
-	26, // 34: api.admin.v1.SysUser.FindUserGoogleSecret:input_type -> api.admin.v1.FindUserGoogleSecretRequest
-	1,  // 35: api.admin.v1.SysUser.CreateSysUser:output_type -> api.admin.v1.CreateSysUserReply
-	3,  // 36: api.admin.v1.SysUser.UpdateSysUser:output_type -> api.admin.v1.UpdateSysUserReply
-	5,  // 37: api.admin.v1.SysUser.DeleteSysUser:output_type -> api.admin.v1.DeleteSysUserReply
-	7,  // 38: api.admin.v1.SysUser.FindSysUser:output_type -> api.admin.v1.FindSysUserReply
-	9,  // 39: api.admin.v1.SysUser.ListSysUser:output_type -> api.admin.v1.ListSysUserReply
-	11, // 40: api.admin.v1.SysUser.FindCaptcha:output_type -> api.admin.v1.FindCaptchaReply
-	13, // 41: api.admin.v1.SysUser.Login:output_type -> api.admin.v1.LoginReply
-	15, // 42: api.admin.v1.SysUser.Logout:output_type -> api.admin.v1.LogoutReply
-	17, // 43: api.admin.v1.SysUser.Auth:output_type -> api.admin.v1.AuthReply
-	19, // 44: api.admin.v1.SysUser.ChangeStatus:output_type -> api.admin.v1.ChangeStatusReply
-	21, // 45: api.admin.v1.SysUser.UpdatePassword:output_type -> api.admin.v1.UpdatePasswordReply
-	23, // 46: api.admin.v1.SysUser.FindPostInit:output_type -> api.admin.v1.FindPostInitReply
-	25, // 47: api.admin.v1.SysUser.FindUserRolePost:output_type -> api.admin.v1.FindUserRolePostReply
-	27, // 48: api.admin.v1.SysUser.FindUserGoogleSecret:output_type -> api.admin.v1.FindUserGoogleSecretReply
-	35, // [35:49] is the sub-list for method output_type
-	21, // [21:35] is the sub-list for method input_type
+	17, // 28: api.admin.v1.SysUser.Logout:input_type -> api.admin.v1.LogoutRequest
+	19, // 29: api.admin.v1.SysUser.Auth:input_type -> api.admin.v1.AuthRequest
+	14, // 30: api.admin.v1.SysUser.SendPhoneLoginCode:input_type -> api.admin.v1.SendPhoneLoginCodeRequest
+	16, // 31: api.admin.v1.SysUser.PhoneLogin:input_type -> api.admin.v1.PhoneLoginRequest
+	21, // 32: api.admin.v1.SysUser.ChangeStatus:input_type -> api.admin.v1.ChangeStatusRequest
+	23, // 33: api.admin.v1.SysUser.UpdatePassword:input_type -> api.admin.v1.UpdatePasswordRequest
+	25, // 34: api.admin.v1.SysUser.FindPostInit:input_type -> api.admin.v1.FindPostInitRequest
+	27, // 35: api.admin.v1.SysUser.FindUserRolePost:input_type -> api.admin.v1.FindUserRolePostRequest
+	29, // 36: api.admin.v1.SysUser.FindUserGoogleSecret:input_type -> api.admin.v1.FindUserGoogleSecretRequest
+	1,  // 37: api.admin.v1.SysUser.CreateSysUser:output_type -> api.admin.v1.CreateSysUserReply
+	3,  // 38: api.admin.v1.SysUser.UpdateSysUser:output_type -> api.admin.v1.UpdateSysUserReply
+	5,  // 39: api.admin.v1.SysUser.DeleteSysUser:output_type -> api.admin.v1.DeleteSysUserReply
+	7,  // 40: api.admin.v1.SysUser.FindSysUser:output_type -> api.admin.v1.FindSysUserReply
+	9,  // 41: api.admin.v1.SysUser.ListSysUser:output_type -> api.admin.v1.ListSysUserReply
+	11, // 42: api.admin.v1.SysUser.FindCaptcha:output_type -> api.admin.v1.FindCaptchaReply
+	13, // 43: api.admin.v1.SysUser.Login:output_type -> api.admin.v1.LoginReply
+	18, // 44: api.admin.v1.SysUser.Logout:output_type -> api.admin.v1.LogoutReply
+	20, // 45: api.admin.v1.SysUser.Auth:output_type -> api.admin.v1.AuthReply
+	15, // 46: api.admin.v1.SysUser.SendPhoneLoginCode:output_type -> api.admin.v1.SendPhoneLoginCodeReply
+	13, // 47: api.admin.v1.SysUser.PhoneLogin:output_type -> api.admin.v1.LoginReply
+	22, // 48: api.admin.v1.SysUser.ChangeStatus:output_type -> api.admin.v1.ChangeStatusReply
+	24, // 49: api.admin.v1.SysUser.UpdatePassword:output_type -> api.admin.v1.UpdatePasswordReply
+	26, // 50: api.admin.v1.SysUser.FindPostInit:output_type -> api.admin.v1.FindPostInitReply
+	28, // 51: api.admin.v1.SysUser.FindUserRolePost:output_type -> api.admin.v1.FindUserRolePostReply
+	30, // 52: api.admin.v1.SysUser.FindUserGoogleSecret:output_type -> api.admin.v1.FindUserGoogleSecretReply
+	37, // [37:53] is the sub-list for method output_type
+	21, // [21:37] is the sub-list for method input_type
 	21, // [21:21] is the sub-list for extension type_name
 	21, // [21:21] is the sub-list for extension extendee
 	0,  // [0:21] is the sub-list for field type_name
@@ -2321,7 +2514,7 @@ func file_sys_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sys_user_proto_rawDesc), len(file_sys_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   30,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
