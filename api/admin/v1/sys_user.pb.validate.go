@@ -1641,6 +1641,8 @@ func (m *LoginRequest) validate(all bool) error {
 
 	// no validation rules for Code
 
+	// no validation rules for CaptchaId
+
 	if len(errors) > 0 {
 		return LoginRequestMultiError(errors)
 	}
@@ -1743,6 +1745,10 @@ func (m *LoginReply) validate(all bool) error {
 	// no validation rules for Token
 
 	// no validation rules for Expire
+
+	// no validation rules for NeedMfa
+
+	// no validation rules for MfaToken
 
 	if len(errors) > 0 {
 		return LoginReplyMultiError(errors)

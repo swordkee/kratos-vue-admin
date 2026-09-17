@@ -2,6 +2,7 @@ package authz
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"time"
 
 	"github.com/go-kratos/kratos/v3/errors"
@@ -40,6 +41,13 @@ type TokenClaims struct {
 	RoleID   int64  `json:"role_id"`
 	RoleKey  string `json:"role_key"`
 	Nickname string `json:"nickname"`
+	// MfaPending 两段式登录中间态（TOTP）：密码已过但待二因素验证。
+	// 携带此 flag 的 token 仅短有效期，中间件拒绝其访问业务接口（仅 /mfa/verify 可用）。
+	// 旧 token 无此字段解析为 false，向后兼容。
+	MfaPending bool `json:"mfa_pending"`
+	// MustEnrollMfa 强制绑定 TOTP 但用户尚未绑定（mfa.required=true 时）。
+	// 携带此 flag 的 token 仅放行绑定相关接口，其余 409 引导。
+	MustEnrollMfa bool `json:"must_enroll_mfa"`
 	jwtV5.RegisteredClaims
 }
 
@@ -105,16 +113,37 @@ func MustFromContext(ctx context.Context) *TokenClaims {
 	return claims
 }
 
-func NewToken(key string, expireAt time.Time, userID, roleID int64, roleKey, nickname string) (string, error) {
-	claims := jwtV5.NewWithClaims(jwtV5.SigningMethodHS256, &TokenClaims{
-		UserID:   userID,
-		RoleID:   roleID,
-		Nickname: nickname,
-		RoleKey:  roleKey,
+// NewToken 用 ECDSA P-384 私钥签发 ES384 JWT（普通登录 token）。
+func NewToken(priv *ecdsa.PrivateKey, expireAt time.Time, userID, roleID int64, roleKey, nickname string) (string, error) {
+	return newToken(priv, expireAt, userID, roleID, roleKey, nickname, false, false)
+}
+
+// NewMFAPendingToken 签发两段式登录的待二因素验证短期 token（MfaPending=true，TTL 通常 5 分钟）。
+// 密码校验通过但用户已绑定 TOTP 时使用：前端 /mfa/verify 验证通过后才签发正式 token。
+// 中间件对 MfaPending token 拒绝访问业务接口（仅 /mfa/verify 白名单）。
+func NewMFAPendingToken(priv *ecdsa.PrivateKey, ttl time.Duration, userID, roleID int64, roleKey, nickname string) (string, error) {
+	return newToken(priv, time.Now().Add(ttl), userID, roleID, roleKey, nickname, true, false)
+}
+
+// NewMustEnrollToken 签发强制绑定 token（MustEnrollMfa=true，mfa.required 且用户未绑定时使用）。
+// MfaRequiredGuard 仅放行绑定相关接口，其余 409 引导前端跳个人中心绑定。
+func NewMustEnrollToken(priv *ecdsa.PrivateKey, expireAt time.Time, userID, roleID int64, roleKey, nickname string) (string, error) {
+	return newToken(priv, expireAt, userID, roleID, roleKey, nickname, false, true)
+}
+
+// newToken 统一签发（mfaPending/mustEnrollMfa 由调用方按场景指定）。
+func newToken(priv *ecdsa.PrivateKey, expireAt time.Time, userID, roleID int64, roleKey, nickname string, mfaPending, mustEnrollMfa bool) (string, error) {
+	claims := jwtV5.NewWithClaims(jwtV5.SigningMethodES384, &TokenClaims{
+		UserID:        userID,
+		RoleID:        roleID,
+		Nickname:      nickname,
+		RoleKey:       roleKey,
+		MfaPending:    mfaPending,
+		MustEnrollMfa: mustEnrollMfa,
 		RegisteredClaims: jwtV5.RegisteredClaims{
 			Issuer:    "admin",
 			ExpiresAt: jwtV5.NewNumericDate(expireAt),
 		},
 	})
-	return claims.SignedString([]byte(key))
+	return claims.SignedString(priv)
 }

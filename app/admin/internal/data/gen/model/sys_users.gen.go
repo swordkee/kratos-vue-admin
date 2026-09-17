@@ -37,6 +37,10 @@ type SysUsers struct {
 	UpdatedAt time.Time      `gorm:"column:updated_at;comment:更新时间" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`
 	Secret    string         `gorm:"column:secret;not null;comment:google密钥" json:"secret"`
+	// R26 TOTP 双因素认证三列（generator FieldType 已钉版，MfaBoundAt 必须为 *time.Time 可空）
+	MfaEnabled int32      `gorm:"column:mfa_enabled;not null;comment:TOTP 双因素是否开启(R26，AES-256-GCM 加密密钥存 mfa_secret)" json:"mfa_enabled"`
+	MfaSecret  string     `gorm:"column:mfa_secret;comment:AES-256-GCM 加密的 TOTP secret(32 字节主密钥，auth.mfa.encryptionKey)" json:"mfa_secret"`
+	MfaBoundAt *time.Time `gorm:"column:mfa_bound_at;comment:TOTP 绑定时间" json:"mfa_bound_at"`
 }
 
 // TableName SysUsers's table name

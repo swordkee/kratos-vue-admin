@@ -269,7 +269,7 @@ func (s *SysUserService) ListSysUser(ctx context.Context, req *pb.ListSysUserReq
 	}, nil
 }
 
-func (s *SysUserService) GetCaptcha(context.Context, *pb.FindCaptchaRequest) (*pb.FindCaptchaReply, error) {
+func (s *SysUserService) FindCaptcha(context.Context, *pb.FindCaptchaRequest) (*pb.FindCaptchaReply, error) {
 	id, content, image := util.Generate()
 	if s.serverConf.GetEnv() != conf.Env_dev {
 		content = ""
@@ -286,15 +286,11 @@ func (s *SysUserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.L
 		return nil, err
 	}
 
-	token, expireAt, err := s.authCase.Login(ctx, req)
+	reply, err := s.authCase.Login(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-
-	return &pb.LoginReply{
-		Token:  token,
-		Expire: expireAt,
-	}, nil
+	return reply, nil
 }
 
 func (s *SysUserService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutReply, error) {

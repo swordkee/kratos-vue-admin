@@ -22,6 +22,7 @@ func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList["/api.admin.v1.SysUser/Login"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/FindCaptcha"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/FindPostInit"] = struct{}{}
+	whiteList["/api.admin.v1.SysMfa/Verify"] = struct{}{}
 	return func(ctx context.Context, operation string) bool {
 		if _, ok := whiteList[operation]; ok {
 			return false
@@ -60,15 +61,17 @@ func jwtServer(keyFunc func(*jwtV5.Token) (interface{}, error)) middleware.Middl
 }
 
 func Auth(s *conf.Auth, repo admin.CasbinRuleRepo, userRepo admin.SysUserRepo) middleware.Middleware {
-	// 阶段 1：HS256 对称密钥（与旧版一致）；阶段 3 切换 ES384 公钥校验。
-	keyFunc := func(t *jwtV5.Token) (interface{}, error) {
-		if t == nil || t.Method == nil || t.Method.Alg() != jwtV5.SigningMethodHS256.Alg() {
-			return nil, jwtV5.ErrTokenSignatureInvalid
-		}
-		return []byte(s.JwtKey), nil
+	// 解析验证侧 ECDSA P-384 公钥（ES384）；解析失败 pub 为 nil，
+	// ES384Keyfunc 对 nil 公钥 fail-closed（验签全部失败），避免缺配置误放行。
+	pub, pubErr := authz.ParseECDSAPublicKey(s.EcdsaPublicKey)
+	if pubErr != nil {
+		log.Errorf("parse ecdsa public key: %v", pubErr)
 	}
+	keyFunc := authz.ES384Keyfunc(pub)
 	return selector.Server(
 		jwtServer(keyFunc),
+		// R26 TOTP：MfaPending 拒绝访问业务接口 + MustEnrollMfa 强制绑定守卫
+		MfaRequiredGuard(),
 		// JWT 黑名单和 IP 黑名单检查中间件
 		func(handler middleware.Handler) middleware.Handler {
 			return func(ctx context.Context, req interface{}) (interface{}, error) {

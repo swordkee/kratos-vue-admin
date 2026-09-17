@@ -1,0 +1,33 @@
+syntax = "proto3";
+package api.admin.v1;
+
+import "errors/errors.proto";
+
+option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+
+// TOTP 双因素认证错误码（R26 接入，设计 docs/design/2026-09-12-mfa-totp-integration.md）
+enum SysMfaErrorReason {
+  // 设置缺省错误码
+  option (errors.default_code) = 400;
+
+  // 二因素认证未开启（总开关关闭，接口不可用）
+  MFA_DISABLED = 0 [(errors.code) = 400];
+
+  // 用户已开启二因素，重复绑定
+  MFA_ALREADY_ENABLED = 1 [(errors.code) = 400];
+
+  // 用户未开启二因素（关闭/解绑时）
+  MFA_NOT_ENABLED = 2 [(errors.code) = 400];
+
+  // 动态码或恢复码错误/已过期
+  MFA_VERIFY_FAILED = 3 [(errors.code) = 400];
+
+  // 绑定会话过期（enroll 后 5 分钟内未完成 enable）
+  MFA_ENROLL_EXPIRED = 4 [(errors.code) = 400];
+
+  // 强制绑定：mfa.required=true 且用户未绑定，需先完成绑定（409 引导前端跳转）
+  MFA_REQUIRED = 5 [(errors.code) = 409];
+
+  // 用户不存在（管理员重置目标不存在）
+  MFA_NO_USER = 6 [(errors.code) = 404];
+}

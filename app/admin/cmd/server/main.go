@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/swordkee/kratos-vue-admin/pkg/logx"
 
 	"github.com/go-kratos/kratos/v3"
 	"github.com/go-kratos/kratos/v3/config"
@@ -46,6 +47,19 @@ func newApp(_ log.Logger, hs *http.Server) *kratos.App {
 	)
 }
 
+func newLogxLogger() *logx.Logger {
+	slogLogger := slog.New(logx.BuildHandler(logx.HandlerConfig{
+		Level:       "info",
+		OutputPaths: "stdout",
+	})).With(
+		slog.String("service.name", Name),
+		slog.String("service.version", Version),
+		slog.String("host", id),
+	)
+	logx.SetDefault(slogLogger)
+	return logx.NewLogger(slogLogger, logx.WithDesensitize())
+}
+
 func main() {
 	flag.Parse()
 	logger := log.With(log.NewStdLogger(os.Stdout),
@@ -71,7 +85,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, logger, bc.Data.Redis)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, logger, newLogxLogger(), bc.Data.Redis)
 	if err != nil {
 		panic(err)
 	}

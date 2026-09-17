@@ -914,10 +914,12 @@ func (x *FindCaptchaReply) GetContent() string {
 }
 
 type LoginRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	Code          string                 `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Username string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Code     string                 `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	// 图形验证码 ID（FindCaptcha 返回的 captchaId），与 code 一起在登录时校验
+	CaptchaId     string `protobuf:"bytes,4,opt,name=captchaId,proto3" json:"captchaId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -973,10 +975,20 @@ func (x *LoginRequest) GetCode() string {
 	return ""
 }
 
+func (x *LoginRequest) GetCaptchaId() string {
+	if x != nil {
+		return x.CaptchaId
+	}
+	return ""
+}
+
 type LoginReply struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Expire        int64                  `protobuf:"varint,2,opt,name=expire,proto3" json:"expire,omitempty"`
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	Token  string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Expire int64                  `protobuf:"varint,2,opt,name=expire,proto3" json:"expire,omitempty"`
+	// R26 TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
+	NeedMfa       bool   `protobuf:"varint,3,opt,name=needMfa,proto3" json:"needMfa,omitempty"`
+	MfaToken      string `protobuf:"bytes,4,opt,name=mfaToken,proto3" json:"mfaToken,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1023,6 +1035,20 @@ func (x *LoginReply) GetExpire() int64 {
 		return x.Expire
 	}
 	return 0
+}
+
+func (x *LoginReply) GetNeedMfa() bool {
+	if x != nil {
+		return x.NeedMfa
+	}
+	return false
+}
+
+func (x *LoginReply) GetMfaToken() string {
+	if x != nil {
+		return x.MfaToken
+	}
+	return ""
 }
 
 type LogoutRequest struct {
@@ -2077,15 +2103,18 @@ const file_sys_user_proto_rawDesc = "" +
 	"\x10FindCaptchaReply\x12$\n" +
 	"\rbase64Captcha\x18\x01 \x01(\tR\rbase64Captcha\x12\x1c\n" +
 	"\tcaptchaId\x18\x02 \x01(\tR\tcaptchaId\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\"Z\n" +
+	"\acontent\x18\x03 \x01(\tR\acontent\"x\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x12\n" +
-	"\x04code\x18\x03 \x01(\tR\x04code\":\n" +
+	"\x04code\x18\x03 \x01(\tR\x04code\x12\x1c\n" +
+	"\tcaptchaId\x18\x04 \x01(\tR\tcaptchaId\"p\n" +
 	"\n" +
 	"LoginReply\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x16\n" +
-	"\x06expire\x18\x02 \x01(\x03R\x06expire\"\x0f\n" +
+	"\x06expire\x18\x02 \x01(\x03R\x06expire\x12\x18\n" +
+	"\aneedMfa\x18\x03 \x01(\bR\aneedMfa\x12\x1a\n" +
+	"\bmfaToken\x18\x04 \x01(\tR\bmfaToken\"\x0f\n" +
 	"\rLogoutRequest\"\r\n" +
 	"\vLogoutReply\")\n" +
 	"\vAuthRequest\x12\x1a\n" +

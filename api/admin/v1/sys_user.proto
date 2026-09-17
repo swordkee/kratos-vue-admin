@@ -193,10 +193,15 @@ message LoginRequest{
   string username = 1;
   string password = 2;
   string code = 3;
+  // 图形验证码 ID（FindCaptcha 返回的 captchaId），与 code 一起在登录时校验
+  string captchaId = 4;
 }
 message LoginReply{
   string token = 1;
   int64 expire = 2;
+  // R26 TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
+  bool needMfa = 3;
+  string mfaToken = 4;
 }
 
 message LogoutRequest{}

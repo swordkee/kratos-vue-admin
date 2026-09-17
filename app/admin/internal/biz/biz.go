@@ -13,6 +13,8 @@ import (
 var ProviderSet = wire.NewSet(
 	admin.NewSysUserUseCase,
 	admin.NewAuthUseCase,
+	admin.ProvideMFAService,
+	admin.NewMfaUseCase,
 	admin.NewSysMenusUseCase,
 	admin.NewSysDeptUseCase,
 	admin.NewSysPostUseCase,

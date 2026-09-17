@@ -59,9 +59,25 @@ message Data {
   Redis redis = 2;
 }
 
+// Auth 认证配置。
+// JWT 采用 ECDSA P-384 (ES384) 非对称签名：ecdsa_private_key（签发侧 SEC1/PKCS8 PEM）、
+// ecdsa_public_key（验证侧 PKIX PEM）。部署时各实例使用同一密钥对。
 message Auth {
-  string jwtKey = 1;
-  google.protobuf.Duration  expires = 2;
+  string ecdsa_private_key = 1; // ECDSA P-384 私钥 PEM（签发侧）
+  string ecdsa_public_key = 2;  // ECDSA P-384 公钥 PEM（验证侧）
+  google.protobuf.Duration expires = 3;
+  Mfa mfa = 5; // TOTP 双因素认证配置（默认不启用）
+}
+
+// Mfa TOTP 双因素认证配置。
+// 默认不启用（enabled=false），零行为影响；enabled=true 时必须配置 32 字节
+// encryption_key（启动校验拒绝占位密钥），且先行执行 DDL（sys_users mfa 三列 +
+// sys_mfa_recovery_code 表）。
+message Mfa {
+  bool enabled = 1;          // 总开关，默认 false
+  bool required = 2;         // 强制全员绑定（enabled=true 前提下）
+  string encryption_key = 3; // AES-256-GCM 主密钥（32 字节，enabled=true 时必填）
+  string issuer = 4;         // TOTP 发行者名称（验证器 App 显示，缺省 BMALL）
 }
 
 message Casbin {

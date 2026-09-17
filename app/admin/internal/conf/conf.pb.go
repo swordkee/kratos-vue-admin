@@ -365,12 +365,17 @@ func (x *Data) GetRedis() *Data_Redis {
 	return nil
 }
 
+// Auth 认证配置。
+// JWT 采用 ECDSA P-384 (ES384) 非对称签名：ecdsa_private_key（签发侧 SEC1/PKCS8 PEM）、
+// ecdsa_public_key（验证侧 PKIX PEM）。部署时各实例使用同一密钥对。
 type Auth struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	JwtKey        string                 `protobuf:"bytes,1,opt,name=jwtKey,proto3" json:"jwtKey,omitempty"`
-	Expires       *durationpb.Duration   `protobuf:"bytes,2,opt,name=expires,proto3" json:"expires,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	EcdsaPrivateKey string                 `protobuf:"bytes,1,opt,name=ecdsa_private_key,json=ecdsaPrivateKey,proto3" json:"ecdsa_private_key,omitempty"` // ECDSA P-384 私钥 PEM（签发侧）
+	EcdsaPublicKey  string                 `protobuf:"bytes,2,opt,name=ecdsa_public_key,json=ecdsaPublicKey,proto3" json:"ecdsa_public_key,omitempty"`    // ECDSA P-384 公钥 PEM（验证侧）
+	Expires         *durationpb.Duration   `protobuf:"bytes,3,opt,name=expires,proto3" json:"expires,omitempty"`
+	Mfa             *Mfa                   `protobuf:"bytes,5,opt,name=mfa,proto3" json:"mfa,omitempty"` // TOTP 双因素认证配置（默认不启用）
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Auth) Reset() {
@@ -403,9 +408,16 @@ func (*Auth) Descriptor() ([]byte, []int) {
 	return file_conf_conf_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *Auth) GetJwtKey() string {
+func (x *Auth) GetEcdsaPrivateKey() string {
 	if x != nil {
-		return x.JwtKey
+		return x.EcdsaPrivateKey
+	}
+	return ""
+}
+
+func (x *Auth) GetEcdsaPublicKey() string {
+	if x != nil {
+		return x.EcdsaPublicKey
 	}
 	return ""
 }
@@ -417,6 +429,85 @@ func (x *Auth) GetExpires() *durationpb.Duration {
 	return nil
 }
 
+func (x *Auth) GetMfa() *Mfa {
+	if x != nil {
+		return x.Mfa
+	}
+	return nil
+}
+
+// Mfa TOTP 双因素认证配置。
+// 默认不启用（enabled=false），零行为影响；enabled=true 时必须配置 32 字节
+// encryption_key（启动校验拒绝占位密钥），且先行执行 DDL（sys_users mfa 三列 +
+// sys_mfa_recovery_code 表）。
+type Mfa struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`                                 // 总开关，默认 false
+	Required      bool                   `protobuf:"varint,2,opt,name=required,proto3" json:"required,omitempty"`                               // 强制全员绑定（enabled=true 前提下）
+	EncryptionKey string                 `protobuf:"bytes,3,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryption_key,omitempty"` // AES-256-GCM 主密钥（32 字节，enabled=true 时必填）
+	Issuer        string                 `protobuf:"bytes,4,opt,name=issuer,proto3" json:"issuer,omitempty"`                                    // TOTP 发行者名称（验证器 App 显示，缺省 BMALL）
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Mfa) Reset() {
+	*x = Mfa{}
+	mi := &file_conf_conf_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Mfa) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Mfa) ProtoMessage() {}
+
+func (x *Mfa) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Mfa.ProtoReflect.Descriptor instead.
+func (*Mfa) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Mfa) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *Mfa) GetRequired() bool {
+	if x != nil {
+		return x.Required
+	}
+	return false
+}
+
+func (x *Mfa) GetEncryptionKey() string {
+	if x != nil {
+		return x.EncryptionKey
+	}
+	return ""
+}
+
+func (x *Mfa) GetIssuer() string {
+	if x != nil {
+		return x.Issuer
+	}
+	return ""
+}
+
 type Casbin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
@@ -426,7 +517,7 @@ type Casbin struct {
 
 func (x *Casbin) Reset() {
 	*x = Casbin{}
-	mi := &file_conf_conf_proto_msgTypes[4]
+	mi := &file_conf_conf_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +529,7 @@ func (x *Casbin) String() string {
 func (*Casbin) ProtoMessage() {}
 
 func (x *Casbin) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[4]
+	mi := &file_conf_conf_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +542,7 @@ func (x *Casbin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Casbin.ProtoReflect.Descriptor instead.
 func (*Casbin) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{4}
+	return file_conf_conf_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Casbin) GetPath() string {
@@ -475,7 +566,7 @@ type OssConfig struct {
 
 func (x *OssConfig) Reset() {
 	*x = OssConfig{}
-	mi := &file_conf_conf_proto_msgTypes[5]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +578,7 @@ func (x *OssConfig) String() string {
 func (*OssConfig) ProtoMessage() {}
 
 func (x *OssConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[5]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +591,7 @@ func (x *OssConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OssConfig.ProtoReflect.Descriptor instead.
 func (*OssConfig) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{5}
+	return file_conf_conf_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *OssConfig) GetEndpoint() string {
@@ -554,7 +645,7 @@ type OssLocalConfig struct {
 
 func (x *OssLocalConfig) Reset() {
 	*x = OssLocalConfig{}
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -566,7 +657,7 @@ func (x *OssLocalConfig) String() string {
 func (*OssLocalConfig) ProtoMessage() {}
 
 func (x *OssLocalConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +670,7 @@ func (x *OssLocalConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OssLocalConfig.ProtoReflect.Descriptor instead.
 func (*OssLocalConfig) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{6}
+	return file_conf_conf_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *OssLocalConfig) GetDir() string {
@@ -600,7 +691,7 @@ type Oss struct {
 
 func (x *Oss) Reset() {
 	*x = Oss{}
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -612,7 +703,7 @@ func (x *Oss) String() string {
 func (*Oss) ProtoMessage() {}
 
 func (x *Oss) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -625,7 +716,7 @@ func (x *Oss) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Oss.ProtoReflect.Descriptor instead.
 func (*Oss) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{7}
+	return file_conf_conf_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Oss) GetUse() OssUseMode {
@@ -661,7 +752,7 @@ type LogConfig struct {
 
 func (x *LogConfig) Reset() {
 	*x = LogConfig{}
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -673,7 +764,7 @@ func (x *LogConfig) String() string {
 func (*LogConfig) ProtoMessage() {}
 
 func (x *LogConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -686,7 +777,7 @@ func (x *LogConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogConfig.ProtoReflect.Descriptor instead.
 func (*LogConfig) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{8}
+	return file_conf_conf_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *LogConfig) GetEnableReadLog() bool {
@@ -721,7 +812,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -733,7 +824,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -781,7 +872,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -793,7 +884,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -843,7 +934,7 @@ type Data_Database struct {
 
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -855,7 +946,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -922,7 +1013,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -934,7 +1025,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1048,10 +1139,17 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x06 \x01(\tR\bpassword\x12\x1a\n" +
 	"\bdatabase\x18\a \x01(\x05R\bdatabase\x12%\n" +
-	"\x0eenable_cluster\x18\b \x01(\bR\renableCluster\"S\n" +
-	"\x04Auth\x12\x16\n" +
-	"\x06jwtKey\x18\x01 \x01(\tR\x06jwtKey\x123\n" +
-	"\aexpires\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\aexpires\"\x1c\n" +
+	"\x0eenable_cluster\x18\b \x01(\bR\renableCluster\"\xb4\x01\n" +
+	"\x04Auth\x12*\n" +
+	"\x11ecdsa_private_key\x18\x01 \x01(\tR\x0fecdsaPrivateKey\x12(\n" +
+	"\x10ecdsa_public_key\x18\x02 \x01(\tR\x0eecdsaPublicKey\x123\n" +
+	"\aexpires\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\aexpires\x12!\n" +
+	"\x03mfa\x18\x05 \x01(\v2\x0f.kratos.api.MfaR\x03mfa\"z\n" +
+	"\x03Mfa\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1a\n" +
+	"\brequired\x18\x02 \x01(\bR\brequired\x12%\n" +
+	"\x0eencryption_key\x18\x03 \x01(\tR\rencryptionKey\x12\x16\n" +
+	"\x06issuer\x18\x04 \x01(\tR\x06issuer\"\x1c\n" +
 	"\x06Casbin\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\"\xc5\x01\n" +
 	"\tOssConfig\x12\x1a\n" +
@@ -1102,7 +1200,7 @@ func file_conf_conf_proto_rawDescGZIP() []byte {
 }
 
 var file_conf_conf_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_conf_conf_proto_goTypes = []any{
 	(Env)(0),                    // 0: kratos.api.Env
 	(OssUseMode)(0),             // 1: kratos.api.OssUseMode
@@ -1111,43 +1209,45 @@ var file_conf_conf_proto_goTypes = []any{
 	(*Server)(nil),              // 4: kratos.api.Server
 	(*Data)(nil),                // 5: kratos.api.Data
 	(*Auth)(nil),                // 6: kratos.api.Auth
-	(*Casbin)(nil),              // 7: kratos.api.Casbin
-	(*OssConfig)(nil),           // 8: kratos.api.OssConfig
-	(*OssLocalConfig)(nil),      // 9: kratos.api.OssLocalConfig
-	(*Oss)(nil),                 // 10: kratos.api.Oss
-	(*LogConfig)(nil),           // 11: kratos.api.LogConfig
-	(*Server_HTTP)(nil),         // 12: kratos.api.Server.HTTP
-	(*Server_GRPC)(nil),         // 13: kratos.api.Server.GRPC
-	(*Data_Database)(nil),       // 14: kratos.api.Data.Database
-	(*Data_Redis)(nil),          // 15: kratos.api.Data.Redis
-	(*durationpb.Duration)(nil), // 16: google.protobuf.Duration
+	(*Mfa)(nil),                 // 7: kratos.api.Mfa
+	(*Casbin)(nil),              // 8: kratos.api.Casbin
+	(*OssConfig)(nil),           // 9: kratos.api.OssConfig
+	(*OssLocalConfig)(nil),      // 10: kratos.api.OssLocalConfig
+	(*Oss)(nil),                 // 11: kratos.api.Oss
+	(*LogConfig)(nil),           // 12: kratos.api.LogConfig
+	(*Server_HTTP)(nil),         // 13: kratos.api.Server.HTTP
+	(*Server_GRPC)(nil),         // 14: kratos.api.Server.GRPC
+	(*Data_Database)(nil),       // 15: kratos.api.Data.Database
+	(*Data_Redis)(nil),          // 16: kratos.api.Data.Redis
+	(*durationpb.Duration)(nil), // 17: google.protobuf.Duration
 }
 var file_conf_conf_proto_depIdxs = []int32{
 	4,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
 	5,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
 	6,  // 2: kratos.api.Bootstrap.auth:type_name -> kratos.api.Auth
-	7,  // 3: kratos.api.Bootstrap.casbin:type_name -> kratos.api.Casbin
-	10, // 4: kratos.api.Bootstrap.oss:type_name -> kratos.api.Oss
-	11, // 5: kratos.api.Bootstrap.log:type_name -> kratos.api.LogConfig
-	12, // 6: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	13, // 7: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	8,  // 3: kratos.api.Bootstrap.casbin:type_name -> kratos.api.Casbin
+	11, // 4: kratos.api.Bootstrap.oss:type_name -> kratos.api.Oss
+	12, // 5: kratos.api.Bootstrap.log:type_name -> kratos.api.LogConfig
+	13, // 6: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	14, // 7: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
 	0,  // 8: kratos.api.Server.env:type_name -> kratos.api.Env
-	14, // 9: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	15, // 10: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	16, // 11: kratos.api.Auth.expires:type_name -> google.protobuf.Duration
-	1,  // 12: kratos.api.Oss.use:type_name -> kratos.api.OssUseMode
-	8,  // 13: kratos.api.Oss.aliyun:type_name -> kratos.api.OssConfig
-	9,  // 14: kratos.api.Oss.local:type_name -> kratos.api.OssLocalConfig
-	16, // 15: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	16, // 16: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	2,  // 17: kratos.api.Data.Database.logLevel:type_name -> kratos.api.GormLogLevel
-	16, // 18: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	16, // 19: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	15, // 9: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	16, // 10: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	17, // 11: kratos.api.Auth.expires:type_name -> google.protobuf.Duration
+	7,  // 12: kratos.api.Auth.mfa:type_name -> kratos.api.Mfa
+	1,  // 13: kratos.api.Oss.use:type_name -> kratos.api.OssUseMode
+	9,  // 14: kratos.api.Oss.aliyun:type_name -> kratos.api.OssConfig
+	10, // 15: kratos.api.Oss.local:type_name -> kratos.api.OssLocalConfig
+	17, // 16: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	17, // 17: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	2,  // 18: kratos.api.Data.Database.logLevel:type_name -> kratos.api.GormLogLevel
+	17, // 19: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	17, // 20: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }
@@ -1161,7 +1261,7 @@ func file_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_conf_proto_rawDesc), len(file_conf_conf_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
