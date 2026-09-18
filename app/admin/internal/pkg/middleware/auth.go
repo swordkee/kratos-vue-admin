@@ -20,6 +20,7 @@ import (
 func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList := make(map[string]struct{})
 	whiteList["/api.admin.v1.SysUser/Login"] = struct{}{}
+	whiteList["/api.admin.v1.SysUser/GetLoginConfig"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/FindCaptcha"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/FindPostInit"] = struct{}{}
 	whiteList["/api.admin.v1.SysMfa/Verify"] = struct{}{}

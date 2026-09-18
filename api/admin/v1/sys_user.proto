@@ -57,6 +57,12 @@ service SysUser {
       body: "*"
     };
   };
+  // 登录页开关（公开；前端按此决定是否展示图形验证码/手机验证码登录）
+  rpc GetLoginConfig (GetLoginConfigRequest) returns (GetLoginConfigReply){
+    option (google.api.http) = {
+      get: "/system/user/loginConfig"
+    };
+  };
   // 登出
   rpc Logout (LogoutRequest) returns (LogoutReply){
     option (google.api.http) = {
@@ -209,6 +215,15 @@ message LoginRequest{
   string code = 3;
   // 图形验证码 ID（FindCaptcha 返回的 captchaId），与 code 一起在登录时校验
   string captchaId = 4;
+}
+
+// 登录页开关请求（无参数）
+message GetLoginConfigRequest {}
+
+// 登录页开关：由 config.yaml message.loginCaptcha.enabled / phoneLogin.enabled 控制
+message GetLoginConfigReply {
+  bool captcha_enabled = 1;     // 是否要求图形验证码
+  bool phone_login_enabled = 2; // 是否允许手机验证码登录
 }
 message LoginReply{
   string token = 1;

@@ -1720,6 +1720,214 @@ var _ interface {
 	ErrorName() string
 } = LoginRequestValidationError{}
 
+// Validate checks the field values on GetLoginConfigRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetLoginConfigRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetLoginConfigRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetLoginConfigRequestMultiError, or nil if none found.
+func (m *GetLoginConfigRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetLoginConfigRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetLoginConfigRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetLoginConfigRequestMultiError is an error wrapping multiple validation
+// errors returned by GetLoginConfigRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetLoginConfigRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetLoginConfigRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetLoginConfigRequestMultiError) AllErrors() []error { return m }
+
+// GetLoginConfigRequestValidationError is the validation error returned by
+// GetLoginConfigRequest.Validate if the designated constraints aren't met.
+type GetLoginConfigRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetLoginConfigRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetLoginConfigRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetLoginConfigRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetLoginConfigRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetLoginConfigRequestValidationError) ErrorName() string {
+	return "GetLoginConfigRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetLoginConfigRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetLoginConfigRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetLoginConfigRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetLoginConfigRequestValidationError{}
+
+// Validate checks the field values on GetLoginConfigReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetLoginConfigReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetLoginConfigReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetLoginConfigReplyMultiError, or nil if none found.
+func (m *GetLoginConfigReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetLoginConfigReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for CaptchaEnabled
+
+	// no validation rules for PhoneLoginEnabled
+
+	if len(errors) > 0 {
+		return GetLoginConfigReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetLoginConfigReplyMultiError is an error wrapping multiple validation
+// errors returned by GetLoginConfigReply.ValidateAll() if the designated
+// constraints aren't met.
+type GetLoginConfigReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetLoginConfigReplyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetLoginConfigReplyMultiError) AllErrors() []error { return m }
+
+// GetLoginConfigReplyValidationError is the validation error returned by
+// GetLoginConfigReply.Validate if the designated constraints aren't met.
+type GetLoginConfigReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetLoginConfigReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetLoginConfigReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetLoginConfigReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetLoginConfigReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetLoginConfigReplyValidationError) ErrorName() string {
+	return "GetLoginConfigReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetLoginConfigReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetLoginConfigReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetLoginConfigReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetLoginConfigReplyValidationError{}
+
 // Validate checks the field values on LoginReply with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

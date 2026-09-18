@@ -289,9 +289,30 @@ func (s *SysUserService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.L
 		return nil, err
 	}
 
+	// 图形验证码校验（受 config message.loginCaptcha.enabled 控制；手机登录走独立 PhoneLogin）。
+	if s.smsCase != nil && s.smsCase.IsLoginCaptchaEnabled() {
+		if req.CaptchaId == "" || req.Code == "" {
+			return nil, pb.ErrorCaptchaInvalid("请输入验证码")
+		}
+		if !util.Verify(req.CaptchaId, req.Code) {
+			return nil, pb.ErrorCaptchaInvalid("验证码错误或已过期")
+		}
+	}
+
 	reply, err := s.authCase.Login(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+	return reply, nil
+}
+
+// GetLoginConfig 返回登录页开关（公开接口）：图形验证码 / 手机验证码登录，
+// 数据源 config.yaml 的 message.loginCaptcha.enabled 与 message.phoneLogin.enabled。
+func (s *SysUserService) GetLoginConfig(ctx context.Context, req *pb.GetLoginConfigRequest) (*pb.GetLoginConfigReply, error) {
+	reply := &pb.GetLoginConfigReply{}
+	if s.smsCase != nil {
+		reply.CaptchaEnabled = s.smsCase.IsLoginCaptchaEnabled()
+		reply.PhoneLoginEnabled = s.smsCase.IsPhoneLoginEnabled()
 	}
 	return reply, nil
 }
