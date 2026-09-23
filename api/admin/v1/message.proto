@@ -1,0 +1,156 @@
+syntax = "proto3";
+
+package api.admin.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+
+// 统一站内信（KVA 域，表 sys_message；TASK-03 批1 模板版，2026-09-23）
+//
+// 身份纪律（服务端强制，请求里的 uid 不可信）：
+//   - List/Get/已读/删除/未读数的目标收件人一律取 JWT claims 的 UserID（authz.FromContext）；
+//   - ListMessages 额外允许「超管传 uid 查他人」，非超管传他人 uid → 403，无身份 → 401；
+//   - SendMessage 的 uid=收件人（可为任意用户），sender_id/sender_name 由服务端 claims 注入；
+//   - MarkRead / DeleteMessage 请求体不带 uid（带了也会被忽略）。
+service MessageService {
+  // 发送站内信
+  rpc SendMessage(SendMessageReq) returns (SendMessageRsp) {
+    option (google.api.http) = {
+      post: "/system/message/send"
+      body: "*"
+    };
+  }
+
+  // 分页列表（type / is_read 过滤；默认查自己，超管可传 uid 查他人）
+  rpc ListMessages(ListMessagesReq) returns (ListMessagesRsp) {
+    option (google.api.http) = {
+      get: "/system/message/list"
+    };
+  }
+
+  // 详情（收件人=JWT 注入）
+  rpc GetMessage(GetMessageReq) returns (GetMessageRsp) {
+    option (google.api.http) = {
+      get: "/system/message/info/{id}"
+    };
+  }
+
+  // 单条已读（复合条件 id+uid；重复已读幂等成功）
+  rpc MarkRead(MarkReadReq) returns (MarkReadRsp) {
+    option (google.api.http) = {
+      put: "/system/message/read/{id}"
+    };
+  }
+
+  // 全部已读（按 uid 批量）
+  rpc MarkAllRead(MarkAllReadReq) returns (MarkAllReadRsp) {
+    option (google.api.http) = {
+      put: "/system/message/readAll"
+    };
+  }
+
+  // 删除（软删 deleted_at；复合条件 id+uid）
+  rpc DeleteMessage(DeleteMessageReq) returns (DeleteMessageRsp) {
+    option (google.api.http) = {
+      delete: "/system/message/{id}"
+    };
+  }
+
+  // 未读数（角标）
+  rpc CountUnread(CountUnreadReq) returns (CountUnreadRsp) {
+    option (google.api.http) = {
+      get: "/system/message/unread"
+    };
+  }
+}
+
+// Message 站内信行（sys_message 列全集）
+message Message {
+  int64 id = 1;
+  int32 uid = 2;      // 收件人 sys_users.id
+  int32 type = 3;     // 1系统 2订单 3结算 4投诉
+  string title = 4;
+  string content = 5;
+  string scene = 6;   // 业务场景标识（可空）
+  string param = 7;   // 场景参数 JSON（可空）
+  int32 sender_id = 8;   // 发送人（0/空=系统）
+  string sender_name = 9;
+  int32 is_read = 10;  // 0未读 1已读
+  int64 read_at = 11;   // 毫秒时间戳（未读=0）
+  int64 deleted_at = 12; // 毫秒时间戳（未删=0）
+  int64 created_at = 13;
+  int64 updated_at = 14;
+}
+
+// 信封字段 code/msg：与本目录既有 envelope 语义一致（0=成功；HTTP 外层
+// EncoderResponse 会再包一层 CommonReply{code,message,data}，前端解包 data 后读本层）。
+message SendMessageReq {
+  int32 uid = 1;   // 收件人（任意 uid）
+  int32 type = 2;  // 1系统 2订单 3结算 4投诉
+  string title = 3 [(validate.rules).string = {min_len: 1, max_len: 200}];
+  string content = 4;
+  string scene = 5;
+  string param = 6;
+}
+message SendMessageRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 id = 3; // 新站内信 ID
+}
+
+message ListMessagesReq {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 uid = 3; // 仅超管可查他人；缺省/0=查自己，非超管传他人 → 403
+  google.protobuf.Int32Value type = 4;    // 缺省=全部
+  google.protobuf.Int32Value is_read = 5; // 0未读 1已读 -1（或缺省）=全部
+}
+message ListMessagesRsp {
+  int32 code = 1;
+  string msg = 2;
+  int32 total = 3;
+  repeated Message list = 4;
+}
+
+message GetMessageReq {
+  int64 id = 1; // 收件人由服务端 JWT 注入
+}
+message GetMessageRsp {
+  int32 code = 1;
+  string msg = 2;
+  Message data = 3;
+}
+
+// MarkRead/Delete 不带 uid：服务端 JWT 注入，客户端即使塞 uid 也会被丢弃
+message MarkReadReq {
+  int64 id = 1;
+}
+message MarkReadRsp {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message MarkAllReadReq {}
+message MarkAllReadRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 updated = 3; // 本次置为已读的条数
+}
+
+message DeleteMessageReq {
+  int64 id = 1;
+}
+message DeleteMessageRsp {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message CountUnreadReq {}
+message CountUnreadRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 count = 3;
+}

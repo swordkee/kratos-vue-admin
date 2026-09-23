@@ -150,6 +150,12 @@ func main() {
 			switch tc.TableName {
 			case "sys_users":
 				// 不太可能有金额字段，但为保持一致性而保留
+			// === 站内信（TASK-03 批1 模板版）===
+			// read_at 可空（未读=NULL）：非指针 time.Time 零值会落 '0000-00-00 00:00:00'，
+			// MySQL strict 模式报 1292 拒写（exAdmin 冒烟实测），指针化后 INSERT 省列=NULL、
+			// 读路径 NULL 安全——对齐 exAdmin cmd/tools/generator.go 的 read_at 指针化口径。
+			case "sys_message":
+				fieldOpts = append(fieldOpts, gen.FieldType("read_at", "*time.Time"))
 			}
 
 			var model interface{}
@@ -238,6 +244,8 @@ func getAllTables() []TableConfig {
 	tables = append(tables, TableConfig{TableName: "sys_role_menus", StructName: "sys_role_menus", Description: "角色菜单"})
 	tables = append(tables, TableConfig{TableName: "sys_roles", StructName: "sys_roles", Description: "角色"})
 	tables = append(tables, TableConfig{TableName: "sys_users", StructName: "sys_users", Description: "用户"})
+	// TASK-03 批1（2026-09-23）：统一站内信（KVA 域）——单 uid 单收、软删、已读复合条件
+	tables = append(tables, TableConfig{TableName: "sys_message", StructName: "SysMessage", Description: "统一站内信"})
 
 	return tables
 }

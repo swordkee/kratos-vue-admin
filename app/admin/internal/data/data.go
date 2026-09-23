@@ -36,6 +36,7 @@ var ProviderSet = wire.NewSet(
 	admin.NewCasbinRuleRepo,
 	admin.NewSysDictDataRepo,
 	admin.NewSysDictTypeRepo,
+	admin.NewMessageRepo,
 )
 
 // NewQuery returns the query instance from Data

@@ -87,7 +87,10 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 		return nil, nil, err
 	}
 	sysMfaService := admin3.NewSysMfaService(mfaUseCase, logxLogger)
-	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService)
+	messageRepo := admin.NewMessageRepo(query, logxLogger)
+	messageUseCase := admin2.NewMessageUseCase(messageRepo, logxLogger)
+	messageService := admin3.NewMessageService(messageUseCase, logxLogger)
+	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService, messageService)
 	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()

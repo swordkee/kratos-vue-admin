@@ -198,6 +198,8 @@ func NewHTTPServer(
 	roleService *adminV1.RolesService,
 	// R26 TOTP MFA（/mfa/status|enroll|enable|disable|reset|verify）
 	sysMfaService *adminV1.SysMfaService,
+	// 统一站内信（TASK-03 批1 模板版：/system/message/*）
+	messageService *adminV1.MessageService,
 ) *http.Server {
 	// 构建日志中间件配置
 	logMiddlewareConfig := middleware.DefaultLogConfig()
@@ -248,6 +250,7 @@ func NewHTTPServer(
 	v1.RegisterDictDataHTTPServer(srv, dictDataService)
 	v1.RegisterRolesHTTPServer(srv, roleService)
 	v1.RegisterSysMfaHTTPServer(srv, sysMfaService)
+	v1.RegisterMessageServiceHTTPServer(srv, messageService)
 
 	// 上传文件的路由
 	r := srv.Route("/")

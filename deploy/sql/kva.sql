@@ -916,3 +916,35 @@ CREATE TABLE IF NOT EXISTS `sys_sms_gateway`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_feature_status`(`feature_id`, `status`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信网关配置（三端统一）';
+
+-- ----------------------------
+-- Table structure for sys_message（统一站内信，TASK-03 批1 模板版，2026-09-23）
+-- 头注：本表是**承载业务数据**的表（收件人消息、已读/软删状态）。
+--   本文件前段建表为 DROP+CREATE 非幂等（清数据口径，仅用于新环境全新导入）；
+--   本表若跟随 DROP+CREATE，重复执行 PART 1 会清空线上站内信——故此处沿用本文件
+--   末尾追加段（sys_mfa_recovery_code / sys_sms_gateway）的 `CREATE TABLE IF NOT EXISTS`
+--   幂等口径：重复执行不删表、不清数据，仅在缺表时补建。
+-- 口径：单 uid 单收、软删（deleted_at）、已读=复合条件（id+uid）+重复已读幂等；
+--       库位随连接串（新环境导入先建本表，再跑 app/admin/cmd/tools/generator.go 生成 gen）。
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `sys_message`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `uid` int NOT NULL DEFAULT 0 COMMENT '收件人 sys_users.id（单 uid 单收）',
+  `type` tinyint NOT NULL DEFAULT 1 COMMENT '类型：1系统 2订单 3结算 4投诉',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '正文',
+  `scene` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务场景标识',
+  `param` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '场景参数（JSON）',
+  `sender_id` int NULL DEFAULT NULL COMMENT '发送人 sys_users.id（NULL/0=系统发送）',
+  `sender_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送人名称',
+  `is_read` tinyint NOT NULL DEFAULT 0 COMMENT '已读状态：0未读 1已读',
+  `read_at` datetime NULL DEFAULT NULL COMMENT '已读时间',
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间（软删）',
+  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_sys_message_uid_deleted_read`(`uid`, `deleted_at`, `is_read`) USING BTREE,
+  INDEX `idx_sys_message_uid_deleted`(`uid`, `deleted_at`) USING BTREE,
+  INDEX `idx_sys_message_type`(`type`) USING BTREE,
+  INDEX `idx_sys_message_created_at`(`created_at`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '统一站内信（KVA）' ROW_FORMAT = DYNAMIC;

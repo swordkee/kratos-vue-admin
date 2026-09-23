@@ -18,4 +18,5 @@ var ProviderSet = wire.NewSet(
 	admin.NewDictDataService,
 	admin.NewDictTypeService,
 	admin.NewSysMfaService,
+	admin.NewMessageService,
 )

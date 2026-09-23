@@ -29,6 +29,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		SysLogs:      newSysLogs(db, opts...),
 		SysMenuBtns:  newSysMenuBtns(db, opts...),
 		SysMenus:     newSysMenus(db, opts...),
+		SysMessage:   newSysMessage(db, opts...),
 		SysPosts:     newSysPosts(db, opts...),
 		SysRoleBtns:  newSysRoleBtns(db, opts...),
 		SysRoleDepts: newSysRoleDepts(db, opts...),
@@ -52,6 +53,7 @@ type Query struct {
 	SysLogs      sysLogs
 	SysMenuBtns  sysMenuBtns
 	SysMenus     sysMenus
+	SysMessage   sysMessage
 	SysPosts     sysPosts
 	SysRoleBtns  sysRoleBtns
 	SysRoleDepts sysRoleDepts
@@ -76,6 +78,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		SysLogs:      q.SysLogs.clone(db),
 		SysMenuBtns:  q.SysMenuBtns.clone(db),
 		SysMenus:     q.SysMenus.clone(db),
+		SysMessage:   q.SysMessage.clone(db),
 		SysPosts:     q.SysPosts.clone(db),
 		SysRoleBtns:  q.SysRoleBtns.clone(db),
 		SysRoleDepts: q.SysRoleDepts.clone(db),
@@ -107,6 +110,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		SysLogs:      q.SysLogs.replaceDB(db),
 		SysMenuBtns:  q.SysMenuBtns.replaceDB(db),
 		SysMenus:     q.SysMenus.replaceDB(db),
+		SysMessage:   q.SysMessage.replaceDB(db),
 		SysPosts:     q.SysPosts.replaceDB(db),
 		SysRoleBtns:  q.SysRoleBtns.replaceDB(db),
 		SysRoleDepts: q.SysRoleDepts.replaceDB(db),
@@ -128,6 +132,7 @@ type queryCtx struct {
 	SysLogs      *sysLogsDo
 	SysMenuBtns  *sysMenuBtnsDo
 	SysMenus     *sysMenusDo
+	SysMessage   *sysMessageDo
 	SysPosts     *sysPostsDo
 	SysRoleBtns  *sysRoleBtnsDo
 	SysRoleDepts *sysRoleDeptsDo
@@ -149,6 +154,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		SysLogs:      q.SysLogs.WithContext(ctx),
 		SysMenuBtns:  q.SysMenuBtns.WithContext(ctx),
 		SysMenus:     q.SysMenus.WithContext(ctx),
+		SysMessage:   q.SysMessage.WithContext(ctx),
 		SysPosts:     q.SysPosts.WithContext(ctx),
 		SysRoleBtns:  q.SysRoleBtns.WithContext(ctx),
 		SysRoleDepts: q.SysRoleDepts.WithContext(ctx),

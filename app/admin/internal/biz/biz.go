@@ -28,6 +28,7 @@ var ProviderSet = wire.NewSet(
 	admin.NewSysDictDatumUseCase,
 	admin.NewSysDictTypeUseCase,
 	admin.NewSysLogsUseCase,
+	admin.NewMessageUseCase,
 )
 
 // Transaction 事务接口类型别名（指向 admin.Transaction 以避免循环导入）
