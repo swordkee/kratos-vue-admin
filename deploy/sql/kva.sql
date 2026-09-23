@@ -206,6 +206,49 @@ INSERT INTO `casbin_rule` VALUES (45, 'p', 'admin', '/system/post/:postId', 'GET
 INSERT INTO `casbin_rule` VALUES (56, 'p', 'admin', '/system/role/export', 'GET', '', '', '');
 INSERT INTO `casbin_rule` VALUES (10, 'p', 'admin', '/system/user/export', 'GET', '', '', '');
 
+-- [站内信权限·2026-09-23] 站内信权限数据（用户裁决「B 类按你建议」→ 模板随
+--   go-exAdmin 同口径落库）：7 条 MessageService casbin 规则。列序照本节既有种子
+--   (id, ptype, v0, v1, v2, v3, v4, v5)：ptype='p'、v0=角色 admin、v1=路径、
+--   v2=方法、v3/v4/v5=''（本表种子 v4/v5 为 ''，go-exAdmin 运行时为 NULL——
+--   按「casbin 列形态照模板种子」取 ''）；省略 id 走自增；守卫取 ptype/v0/v1/v2
+--   身份四元组（NOT EXISTS 语义直白、不依赖唯一键）。
+-- [站内信权限·2026-09-23]
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/SendMessage', 'POST', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/SendMessage' AND v2 = 'POST');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/ListMessages', 'GET', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/ListMessages' AND v2 = 'GET');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/GetMessage', 'GET', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/GetMessage' AND v2 = 'GET');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/MarkRead', 'PUT', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/MarkRead' AND v2 = 'PUT');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/MarkAllRead', 'PUT', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/MarkAllRead' AND v2 = 'PUT');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/DeleteMessage', 'DELETE', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/DeleteMessage' AND v2 = 'DELETE');
+
+INSERT INTO `casbin_rule` (ptype, v0, v1, v2, v3, v4, v5)
+SELECT 'p', 'admin', '/api.admin.v1.MessageService/CountUnread', 'GET', '', '', ''
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `casbin_rule` WHERE ptype = 'p' AND v0 = 'admin' AND v1 = '/api.admin.v1.MessageService/CountUnread' AND v2 = 'GET');
+-- [站内信权限·END]
+
 -- ----------------------------
 -- Table structure for jwt_blacklists
 -- ----------------------------
@@ -321,6 +364,48 @@ INSERT INTO `sys_apis` VALUES (121, '/api.admin.v1.Sysuser/ChangeStatus', '用�
 INSERT INTO `sys_apis` VALUES (122, '/api.admin.v1.Sysuser/Logout', '用户退出', 'user', 'POST', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (123, '/api.admin.v1.Sysuser/ListSysuser', '获取用户列表', 'user', 'GET', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
 INSERT INTO `sys_apis` VALUES (124, '/api.admin.v1.Sysuser/DeleteSysuser', '删除用户', 'user', 'DELETE', '2023-09-07 16:33:04', '2023-09-07 16:33:20', NULL);
+
+-- [站内信权限·2026-09-23] 站内信权限数据：7 条 MessageService sys_apis。列序照本节
+--   既有种子 (path, description, api_group, method, created_at, updated_at,
+--   deleted_at)；created_at/updated_at 字面值=go-exAdmin 运行时落库值
+--   2026-09-23 11:30:24（同口径、dump 风格为字面时间戳），deleted_at NULL；
+--   description 逐值抄自运行时 229..235 行；省略 id 走自增，path NOT EXISTS 守卫幂等。
+-- [站内信权限·2026-09-23]
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/SendMessage', '发送站内信', 'message', 'POST', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/SendMessage');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/ListMessages', '站内信分页列表', 'message', 'GET', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/ListMessages');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/GetMessage', '站内信详情', 'message', 'GET', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/GetMessage');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/MarkRead', '站内信标记已读', 'message', 'PUT', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/MarkRead');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/MarkAllRead', '站内信全部已读', 'message', 'PUT', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/MarkAllRead');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/DeleteMessage', '站内信删除', 'message', 'DELETE', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/DeleteMessage');
+
+INSERT INTO `sys_apis` (path, description, api_group, method, created_at, updated_at)
+SELECT '/api.admin.v1.MessageService/CountUnread', '站内信未读数', 'message', 'GET', '2026-09-23 11:30:24', '2026-09-23 11:30:24'
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_apis` WHERE path = '/api.admin.v1.MessageService/CountUnread');
+-- [站内信权限·END]
 
 -- ----------------------------
 -- Table structure for sys_depts
@@ -636,6 +721,26 @@ INSERT INTO `sys_menus` VALUES (49, '操作日志', '', 0, 8, 'elementComment', 
 INSERT INTO `sys_menus` VALUES (50, '反馈管理', '', 0, 9, 'elementEdit', '', 'Layout', 2, '', 'M', 1, 2, 2, '', 1, '', 'admin', '', '2023-09-06 16:59:32', '2023-09-06 17:07:32', NULL);
 INSERT INTO `sys_menus` VALUES (51, '私聊消息', '', 46, 1, 'iconfont icon-tongzhi1', '/msg/single_list', '/msg/single_list', 2, '', 'C', 1, 2, 2, 'system:msg:index', 1, '', 'admin', '', '2023-09-07 10:52:10', '2023-09-07 10:59:30', NULL);
 
+-- [站内信权限·2026-09-23] 消息中心 2 行：原值照抄 go-exAdmin/deploy/sql/sys_menus.sql
+--   :180/:182（menu_name/parent/sort/icon/path/component/permission 等逐值；组件
+--   resource/message 两仓 web 同位实证 kratos-vue-admin/web/src/views/resource/
+--   message/index.vue 实存）；created_at/updated_at/deleted_at 原值 NULL（与
+--   go-exAdmin 运行时 sys_menus 122/123 同为 NULL，同口径）；省略 id 走自增、
+--   path NOT EXISTS 守卫幂等；子行 parent_id 按 path 动态取父（原值字面
+--   parent_id=300 系 exAdmin 库 id，模板库不适用——本字段为唯一偏离并已注明）。
+-- [站内信权限·2026-09-23]
+INSERT INTO `sys_menus` (menu_name, title, parent_id, sort, icon, path, component, is_iframe, link, menu_type, hidden, keep_alive, is_affix, permission, status, create_by, update_by, remark, created_at, updated_at, deleted_at)
+SELECT '消息中心', '', 0, 28, 'message', '/message', 'Layout', 2, '', 'M', 1, 2, 2, '', 1, 'admin', '', '', NULL, NULL, NULL
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_menus` WHERE path = '/message');
+
+INSERT INTO `sys_menus` (menu_name, title, parent_id, sort, icon, path, component, is_iframe, link, menu_type, hidden, keep_alive, is_affix, permission, status, create_by, update_by, remark, created_at, updated_at, deleted_at)
+SELECT '我的消息', '', p.id, 1, 'message', '/message/list', 'resource/message/index', 2, '', 'C', 1, 2, 2, 'message:list', 1, 'admin', '', '', NULL, NULL, NULL
+FROM `sys_menus` p
+WHERE p.path = '/message' AND p.deleted_at IS NULL
+  AND NOT EXISTS (SELECT 1 FROM `sys_menus` x WHERE x.path = '/message/list');
+-- [站内信权限·END]
+
 -- ----------------------------
 -- Table structure for sys_posts
 -- ----------------------------
@@ -796,6 +901,27 @@ INSERT INTO `sys_role_menus` VALUES (5916, 1, 47, '超管理员');
 INSERT INTO `sys_role_menus` VALUES (5917, 1, 48, '超管理员');
 INSERT INTO `sys_role_menus` VALUES (5918, 1, 49, '超管理员');
 INSERT INTO `sys_role_menus` VALUES (5919, 1, 50, '超管理员');
+
+-- [站内信权限·2026-09-23] 消息中心 2 行角色绑定（用户裁决 ②：模板菜单种子带
+--   sys_role_menus 绑定行 → 消息中心行照同形态补）。列序照本节既有种子
+--   (id, role_id, menu_id, role_name)；口径=go-exAdmin 运行时实查（/message、
+--   /message/list 各绑 role 1 超管理员 + role 2 管理员，共 4 行）；role_id/
+--   role_name 取字面值 1/2（本 dump 角色种子固定 id=1/2；且 sys_roles 表在本段
+--   之后才 DROP+CREATE，fresh 导入时不能 JOIN）；menu_id 按 path 动态解析，
+--   (role_id, menu_id) NOT EXISTS 守卫幂等。回滚：DELETE FROM sys_role_menus
+--   WHERE menu_id IN (SELECT id FROM (SELECT id FROM sys_menus WHERE path IN
+--   ('/message','/message/list')) t);
+-- [站内信权限·2026-09-23]
+INSERT INTO `sys_role_menus` (role_id, menu_id, role_name)
+SELECT 1, m.id, '超管理员' FROM `sys_menus` m
+WHERE m.path IN ('/message', '/message/list') AND m.deleted_at IS NULL
+  AND NOT EXISTS (SELECT 1 FROM `sys_role_menus` x WHERE x.role_id = 1 AND x.menu_id = m.id);
+
+INSERT INTO `sys_role_menus` (role_id, menu_id, role_name)
+SELECT 2, m.id, '管理员' FROM `sys_menus` m
+WHERE m.path IN ('/message', '/message/list') AND m.deleted_at IS NULL
+  AND NOT EXISTS (SELECT 1 FROM `sys_role_menus` x WHERE x.role_id = 2 AND x.menu_id = m.id);
+-- [站内信权限·END]
 
 -- ----------------------------
 -- Table structure for sys_roles
