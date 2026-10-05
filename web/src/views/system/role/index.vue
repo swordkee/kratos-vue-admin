@@ -361,7 +361,7 @@ const getList = () => {
   state.loading = true;
   listRole(state.queryParams).then(
     (response) => {
-      state.roleList = response.data;
+      state.roleList = response.list;
       state.total = response.total;
       state.loading = false;
     }
@@ -406,13 +406,13 @@ const handleQuery = () => {
 /** 查询菜单树结构 */
 const getMenuTreeselect = () => {
   menuTreeselect().then((response) => {
-    state.menuOptions = response?.data?.list;
+    state.menuOptions = response?.list;
   });
 };
 /** 查询Api树结构 */
 const getApiTreeselect = () => {
   listApiAll({}).then((response) => {
-    const apis = response.data
+    const apis = response.list
     state.apiOptions = buildApiTree(apis)
   });
 };
@@ -475,7 +475,7 @@ const handleDataScope = (row: any) => {
   reset();
   const roleDeptTreeselect = getRoleDeptTreeselect(row.roleId);
   getRole(row.roleId).then((response) => {
-    state.roleForm = response.data?.role;
+    state.roleForm = response?.role;
     state.openDataScope = true;
     nextTick(() => {
       roleDeptTreeselect.then((res) => {
@@ -500,7 +500,7 @@ const handleUpdate = (row: any) => {
   getApiTreeselect()
   const roleMenu = getRoleMenuTreeselect(roleId);
   getRole(roleId).then((response) => {
-    state.roleForm = response.data?.role;
+    state.roleForm = response?.role;
     state.open = true;
     state.title = "修改角色";
     nextTick(() => {
@@ -513,7 +513,7 @@ const handleUpdate = (row: any) => {
         roleKey: state.roleForm.roleKey
       }).then((res) => {
         let apiKes: any[] = []
-        res.data && res.data?.apis.map((item) => {
+        res?.apis?.map((item) => {
           apiKes.push("p:" + item.path + "m:" + item.method)
         })
         console.log("apiKes", apiKes)
@@ -566,14 +566,14 @@ const handleExport = () => {
 const getRoleDeptTreeselect = (roleId: number) => {
   return roleDeptTreeselect(roleId).then((response) => {
     state.deptOptions = response.depts;
-    return response.data;
+    return response;
   });
 };
 /** 根据角色ID查询菜单树结构 */
 const getRoleMenuTreeselect = (roleId: number) => {
   return roleMenuTreeselect(roleId).then((response) => {
     state.menuOptions = response.menus;
-    return response.data;
+    return response;
   });
 };
 /** 提交按钮 */
@@ -693,7 +693,7 @@ onMounted(() => {
   // 查询菜单状态数据字典
   proxy.getDicts("sys_normal_disable").then((response: any) => {
     console.log(response.list, "response.data");
-    state.statusOptions = response.data?.list;
+    state.statusOptions = response?.list;
   });
 });
 

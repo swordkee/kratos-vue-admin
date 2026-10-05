@@ -91,6 +91,32 @@ function addSnakeAliases(value: any): any {
 	return value;
 }
 
+// 根因收口（时间字段）：protojson 把 int64 时间戳序列化为字符串（如 quoted_at:"1791186660000"），
+// 页面 `new Date(ts)` 会按「日期字符串」解析失败 → Invalid Date。响应侧统一把「时间语义字段」
+// 的数字字符串转 number。判定：键名匹配 `_at`/`_time`/`At`/`Time`/`^time$`（camel `*Time`/`*At`
+// 已由 addSnakeAliases 补 snake 别名，此处按 snake 形态匹配即可）+ 值形如纯数字串且在安全整数内。
+// 只在安全整数范围内转（超范围保留字符串，避免精度丢失）；不碰普通数字串字段（如 phone、
+// 单号字符串——它们不匹配时间键名）。
+const TIME_KEY_RE = /(_at|_time|At|Time)$|^time$/;
+function coerceTimeFields(value: any): any {
+	if (Array.isArray(value)) return value.map(coerceTimeFields);
+	if (value && typeof value === 'object') {
+		const out: Record<string, any> = {};
+		for (const k of Object.keys(value)) {
+			const v = (value as any)[k];
+			// 时间语义键名 + 纯数字字符串 → number（epoch 毫秒/秒）
+			if (typeof v === 'string' && /^\d{6,}$/.test(v) && TIME_KEY_RE.test(k)) {
+				const n = Number(v);
+				out[k] = Number.isSafeInteger(n) ? n : v;
+			} else {
+				out[k] = coerceTimeFields(v);
+			}
+		}
+		return out;
+	}
+	return value;
+}
+
 // 配置新建一个 axios 实例
 const service = axios.create({
 	baseURL: import.meta.env.VITE_API_URL as any,
@@ -154,7 +180,8 @@ service.interceptors.response.use(
 			// 返回 data 字段的内容，解包 Kratos 响应格式；
 			// 兜底 {} 防止调用方直接取属性时 "null has no properties"
 			// 附带 camelCase→snake_case 别名，兼容页面既有 snake_case 读取。
-			return addSnakeAliases(res.data ?? response.data.data ?? {});
+			// 再把「时间语义字段」的 protojson 数字字符串转 number，避免 new Date(str) → Invalid Date。
+			return coerceTimeFields(addSnakeAliases(res.data ?? response.data.data ?? {}));
 		}
 
 		// 业务错误处理

@@ -36,6 +36,8 @@ configs/*.local.yaml
 # Log files
 *.log
 logs/
+# 例外：源码目录名恰为 logs/ 的（web/src/views/system/logs 是操作日志页，非日志输出目录）
+!web/src/**/logs/
 
 # OS specific files
 .DS_Store

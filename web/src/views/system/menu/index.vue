@@ -41,6 +41,7 @@
       </template>
       <!--数据表格-->
       <el-table v-loading="loading" :data="menuList" row-key="menuId" border
+        lazy :load="loadMenuChildren"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
         <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="150"></el-table-column>
         <el-table-column prop="icon" label="图标" align="center" width="100">
@@ -116,6 +117,8 @@ import { ElMessage, ElMessageBox } from "element-plus";
 
 const { proxy } = getCurrentInstance() as any;
 const editMenuRef = ref();
+// 菜单树懒加载数据源：menuId → 子节点行（见 getList / loadMenuChildren）
+const menuChildrenMap = new Map<number, any[]>();
 const state: any = reactive({
   // 遮罩层
   loading: true,
@@ -154,9 +157,28 @@ const {
 const getList = () => {
   state.loading = true;
   listMenu(state.queryParams).then((response: any) => {
-    state.menuList = response.data?.list;
+    // 性能优化：菜单表 300+ 行，el-table 树模式会把**全部**行渲染进 DOM（子节点折叠也占位，
+    // 且每行各带一个 el-popover + 多列 show-overflow-tooltip），实测首行渲染 ~4.7s。
+    // 改**懒加载树**：只把根节点喂给表格，展开某行时由 loadMenuChildren 提供其子节点
+    // ⇒ 初始渲染量降到根节点数（307 → 23），展开仍按需出子节点。数据仍一次接口取回。
+    // 另：响应拦截器已解包，此处应为 response.list（原 response.data?.list 恒 undefined）。
+    const tree = (response?.list ?? []) as any[];
+    menuChildrenMap.clear();
+    const strip = (nodes: any[]): any[] =>
+      nodes.map((n) => {
+        const children = Array.isArray(n.children) ? n.children : [];
+        if (children.length) menuChildrenMap.set(n.menuId, strip(children));
+        const row: any = { ...n, hasChildren: children.length > 0 };
+        delete row.children;
+        return row;
+      });
+    state.menuList = strip(tree);
     state.loading = false;
   });
+};
+/** el-table 树懒加载：展开行时返回其子节点（已随列表一次性取回，纯前端分发） */
+const loadMenuChildren = (row: any, _treeNode: any, resolve: (rows: any[]) => void) => {
+  resolve(menuChildrenMap.get(row.menuId) || []);
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {

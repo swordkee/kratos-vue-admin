@@ -4,11 +4,12 @@ import (
 	"context"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-kratos/kratos/v3/errors"
-	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 )
 
 type SysLogsService struct {
@@ -101,6 +102,7 @@ func (s *SysLogsService) ListLogs(ctx context.Context, req *pb.ListLogsRequest) 
 			Method:       d.Method,
 			Path:         d.Path,
 			Status:       int32(d.Status),
+			Latency:      strconv.FormatInt(d.Latency/int64(time.Millisecond), 10),
 			Agent:        d.Agent,
 			UserId:       d.UserID,
 			ErrorMessage: d.ErrorMessage,

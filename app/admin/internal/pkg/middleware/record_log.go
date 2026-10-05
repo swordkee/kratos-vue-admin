@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	kerrors "github.com/go-kratos/kratos/v3/errors"
 	"github.com/go-kratos/kratos/v3/middleware"
 	"github.com/go-kratos/kratos/v3/transport/http"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
@@ -126,7 +127,9 @@ func OperationRecordWithConfig(opRecordsCase *biz.SysLogsUseCase, config *LogCon
 				Method: method,
 				Path:   getPath(httpReq),
 				Agent:  getUserAgent(httpReq),
-				Body:   truncateBody(string(reqBody), config.MaxBodyLength),
+				// 入库前脱敏（凭证/身份证/手机号/银行卡号不落库）；先脱敏再截断，
+				// 避免先截断把敏感值切一半导致掩码漏掉。
+				Body:   truncateBody(sanitizeLogPayload(string(reqBody)), config.MaxBodyLength),
 				UserID: userID,
 			}
 
@@ -139,14 +142,23 @@ func OperationRecordWithConfig(opRecordsCase *biz.SysLogsUseCase, config *LogCon
 
 			// Get error message if any
 			if err != nil {
-				record.ErrorMessage = err.Error()
+				// 错误串也可能内嵌请求片段（如校验回显），同样入库前脱敏
+				record.ErrorMessage = truncateBody(sanitizeLogPayload(err.Error()), config.MaxBodyLength)
+				if se := kerrors.FromError(err); se != nil && se.Code > 0 {
+					record.Status = int64(se.Code)
+				} else {
+					record.Status = 500
+				}
+			} else {
+				record.Status = 200
 			}
 
 			// Capture response body
 			if reply != nil {
 				respBytes, jsonErr := json.Marshal(reply)
 				if jsonErr == nil {
-					record.Resp = truncateBody(string(respBytes), config.MaxBodyLength)
+					// 入库前脱敏（响应含 token/个人信息时不落库）
+					record.Resp = truncateBody(sanitizeLogPayload(string(respBytes)), config.MaxBodyLength)
 				}
 			}
 
