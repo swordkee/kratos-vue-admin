@@ -9,9 +9,6 @@
       <el-tab-pane label="设备详情" name="info">
         <DeviceInfo :rowData="state.rowData"/>
       </el-tab-pane>
-      <el-tab-pane label="拓展信息" name="ext">
-        <DeviceExt v-if="state.activeName === 'ext'" :rowData="state.rowData"/>
-      </el-tab-pane>
       <template v-if="state.rowData.deviceType !== 'monitor'">
         <el-tab-pane  label="设备状态" name="property">
           <DeviceProperty  v-if="state.activeName === 'property'" :rowData="state.rowData"/>
@@ -39,7 +36,6 @@
 <script lang="ts" setup name="viewDevice">
 import {reactive} from "vue";
 import DeviceInfo from "./device_info.vue"
-import DeviceExt from "./device_ext.vue"
 import DeviceProperty from "./device_property.vue"
 import DeviceSub from "./device_sub.vue"
 import DeviceAlarm from "./device_alarm.vue"
