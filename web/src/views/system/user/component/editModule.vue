@@ -94,7 +94,7 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <el-col v-if="state.ruleForm.userId != undefined" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-form-item label="谷歌秘钥" prop="secret">
               <div class="system-secret">
                 <el-input v-model="state.ruleForm.secret" disabled />
@@ -103,7 +103,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <el-col v-if="state.ruleForm.userId != undefined" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-form-item label="谷歌秘钥二维码">
               <twoDimensionalCode :ruleForm="state.ruleForm" />
             </el-form-item>
@@ -198,12 +198,6 @@ const state = reactive({
     password: [
       { required: true, message: "用户密码不能为空", trigger: "blur" },
     ],
-    secret: [
-      { required: true, message: "谷歌密钥不能为空", trigger: "blur" },
-    ],
-    qrcode: [
-      { required: true, message: "谷歌二维码不能为空", trigger: "blur" },
-    ],
     email: [
       {
         type: "email",
@@ -245,7 +239,7 @@ const openDialog = (row: any) => {
       state.roleOptions = response.roles
     })
     state.ruleForm = JSON.parse(JSON.stringify(row));
-    getUserSecret()
+    // 新增用户不再预生成 TOTP 谷歌秘钥——建号后由用户走二因素认证自助绑定（/mfa/enroll）
   }
   getTreeselect();
   state.isShowDialog = true;

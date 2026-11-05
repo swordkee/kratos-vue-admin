@@ -79,7 +79,7 @@ func (d *sysDeptRepo) ListByNameStatusId(ctx context.Context, deptName string, s
 	if id != 0 {
 		db = db.Where(q.ID.Eq(id))
 	}
-	return db.Find()
+	return db.Order(q.Sort, q.ID).Find()
 }
 
 func (d *sysDeptRepo) GetRoleDeptId(ctx context.Context, roleId int32) ([]int32, error) {

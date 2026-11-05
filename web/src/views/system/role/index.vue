@@ -34,7 +34,7 @@
         <div class="card-header">
           <span class="card-header-text">角色列表</span>
           <div>
-            <el-button type="primary" plain v-auth="'system:role:add'" @click="handleAdd">
+            <el-button type="primary" plain v-auth="'system:role:add'" :disabled="state.permissionLoading" @click="openRoleForm()">
               <SvgIcon name="elementPlus" />
               新增
             </el-button>
@@ -50,8 +50,8 @@
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="编号" prop="roleId" />
         <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" />
-        <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" /> -->
-        <el-table-column label="显示顺序" prop="sort" />
+        <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" />
+        <el-table-column label="显示顺序" prop="roleSort" />
         <el-table-column label="状态" align="center">
           <template #default="scope">
             <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2"
@@ -72,7 +72,7 @@
                 </el-button>
               </template>
               <div>
-                <el-button text type="primary" v-auth="'system:role:edit'" @click="handleUpdate(scope.row)">
+                <el-button text type="primary" v-auth="'system:role:edit'" :disabled="state.permissionLoading" @click="openRoleForm(scope.row)">
                   <SvgIcon name="elementEdit" />
                   修改
                 </el-button>
@@ -102,7 +102,7 @@
       </div>
     </el-card>
     <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="state.title" v-model="state.open" width="769px" center>
+    <el-dialog :title="state.title" v-model="state.open" width="min(769px, 95vw)" center destroy-on-close @opened="restoreRoleChecks">
       <div v-drag="['.app-container .el-dialog', '.app-container .el-dialog__header']"></div>
       <el-form ref="roleFormRef" :model="state.roleForm" :rules="state.rules" label-width="120px" label-position="right">
         <el-form-item label="角色名称" prop="roleName">
@@ -116,7 +116,7 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="state.roleForm.status">
-            <el-radio v-for="dict in state.statusOptions" :key="dict.dictValue" :label="dict.dictValue">{{ dict.dictLabel
+            <el-radio v-for="dict in state.statusOptions" :key="dict.dictValue" :label="Number(dict.dictValue)">{{ dict.dictLabel
             }}
             </el-radio>
           </el-radio-group>
@@ -129,11 +129,11 @@
               </el-checkbox>
               <el-checkbox v-model="state.menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选
               </el-checkbox>
-              <el-tree class="tree-border" :data="state.menuOptions" show-checkbox ref="menuRef" node-key="menuId"
-                empty-text="加载中，请稍后" :props="{
+              <el-tree class="tree-border" :data="state.menuOptions" show-checkbox ref="menuRef" node-key="menuId" @check="state.menuChanged = true"
+                empty-text="暂无可分配菜单" :props="{
                   label: 'menuName',
                   children: 'children',
-                }" :default-checked-keys="state.menuCheckedKeys"></el-tree>
+                }"></el-tree>
             </el-tab-pane>
             <el-tab-pane label="API权限" name="second">
               <el-checkbox v-model="state.apiExpand" @change="handleCheckedTreeExpand($event, 'api')">展开/折叠
@@ -141,7 +141,7 @@
               <el-checkbox v-model="state.apiNodeAll" @change="handleCheckedTreeNodeAll($event, 'api')">全选/全不选
               </el-checkbox>
               <el-tree class="tree-border" :data="state.apiOptions" show-checkbox ref="apiRef" node-key="onlyId"
-                empty-text="加载中，请稍后" :props="{
+                empty-text="暂无已登记接口" :props="{
                   children: 'children',
                   label: 'description'
                 }" :default-checked-keys="state.apiCheckedKeys"></el-tree>
@@ -154,7 +154,7 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" :loading="state.bunLoading" @click="submitForm">确 定</el-button>
+          <el-button type="primary" :loading="state.bunLoading" :disabled="!state.permissionsReady" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </span>
       </template>
@@ -219,10 +219,7 @@ import {
   exportRole,
   changeRoleStatus,
 } from "@/api/system/role";
-import {
-  treeselect as menuTreeselect,
-  roleMenuTreeselect,
-} from "@/api/system/menu";
+import { roleMenuTreeselect } from "@/api/system/menu";
 import {
   listApiAll, getPolicyPathByRoleId
 } from "@/api/system/api";
@@ -242,6 +239,9 @@ const state: any = reactive({
   // 遮罩层
   loading: true,
   bunLoading: false,
+  permissionLoading: false,
+  permissionsReady: false,
+  menuChanged: false,
   // 选中数组
   ids: [],
   // 总条数
@@ -326,26 +326,11 @@ const state: any = reactive({
 });
 // 表单重置
 const reset = () => {
-  (state.menuExpand = false),
-    (state.menuNodeAll = false),
-    (state.apiExpand = false),
-    (state.apiNodeAll = false),
-    (state.deptExpand = true),
-    (state.deptNodeAll = false),
-    (state.roleForm = {
-      roleId: undefined,
-      roleName: undefined,
-      roleKey: undefined,
-      roleSort: 0,
-      status: "0",
-      menuIds: [],
-      apiIds: [],
-      deptIds: [],
-      menuCheckStrictly: true,
-      deptCheckStrictly: true,
-      remark: undefined,
-    });
-  state.roleForm = {};
+  state.menuExpand = state.menuNodeAll = false;
+  state.apiExpand = state.apiNodeAll = false;
+  state.deptExpand = true;
+  state.deptNodeAll = false;
+  state.roleForm = { roleSort: 0, status: 1 };
 };
 /** 重置按钮操作 */
 const resetQuery = () => {
@@ -353,7 +338,7 @@ const resetQuery = () => {
   state.queryParams.pageSize = 10;
   state.queryParams.roleName = "";
   state.queryParams.roleKey = "";
-  state.queryParams.status = "";
+  state.queryParams.status = undefined;
   handleQuery();
 };
 /** 查询角色列表 */
@@ -361,7 +346,7 @@ const getList = () => {
   state.loading = true;
   listRole(state.queryParams).then(
     (response) => {
-      state.roleList = response.list;
+      state.roleList = response.data;
       state.total = response.total;
       state.loading = false;
     }
@@ -403,41 +388,23 @@ const handleQuery = () => {
   // state.queryParams.pageNum = 1;
   getList();
 };
-/** 查询菜单树结构 */
-const getMenuTreeselect = () => {
-  menuTreeselect().then((response) => {
-    state.menuOptions = response?.list;
-  });
-};
-/** 查询Api树结构 */
-const getApiTreeselect = () => {
-  listApiAll({}).then((response) => {
-    const apis = response.list
-    state.apiOptions = buildApiTree(apis)
-  });
-};
-// 创建api树方法
-const buildApiTree = (apis: any[]) => {
-  const apiObj: any = new Object()
-  apis && apis.map(item => {
-    item.onlyId = "p:" + item.path + "m:" + item.method
-    if (Object.prototype.hasOwnProperty.call(apiObj, item.apiGroup)) {
-      apiObj[item.apiGroup].push(item)
-    } else {
-      Object.assign(apiObj, { [item.apiGroup]: [item] })
-    }
-  })
-  const apiTree = []
-  for (const key in apiObj) {
-    const treeNode = {
-      onlyId: key,
-      description: key + '组',
-      children: apiObj[key]
-    }
-    apiTree.push(treeNode)
+type RoleApi = { path: string; method: string; apiGroup?: string; description?: string };
+const apiKey = (api: RoleApi) => `p:${api.path}m:${api.method}`;
+
+function buildApiTree(catalog: RoleApi[], granted: RoleApi[]) {
+  const groups = new Map<string, any[]>();
+  const seen = new Set<string>();
+  // Keep existing grants selectable when the API was never registered or its catalog entry was removed.
+  for (const api of [...catalog, ...granted]) {
+    const onlyId = apiKey(api);
+    if (seen.has(onlyId)) continue;
+    seen.add(onlyId);
+    const group = api.apiGroup || '其他接口';
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group)!.push({ ...api, onlyId, description: api.description || `${api.method} ${api.path}` });
   }
-  return apiTree
-};
+  return Array.from(groups, ([group, children]) => ({ onlyId: group, description: group + '组', children }));
+}
 
 // 多选框选中数据
 const handleSelectionChange = (selection: any) => {
@@ -466,7 +433,9 @@ const handleStatusChange = (row: any) => {
     })
     .catch((action: Action) => {
       if (action === 'cancel') {
-        row.status = row.status == 2 ? 1 : 2
+        // 状态域为 1=正常 / 2=停用（DDL 注释、字典 sys_normal_disable、Go 常量
+        // constant.StatusUserForbidden=2 三者一致），取消时回滚
+        row.status = row.status == 1 ? 2 : 1
       }
     });
 };
@@ -486,44 +455,49 @@ const handleDataScope = (row: any) => {
     state.title = "分配数据权限";
   });
 };
-/** 新增按钮操作 */
-const handleAdd = () => {
+/** Wait for the catalog and the role's current grants before allowing a full replacement. */
+async function openRoleForm(row?: any) {
+  if (state.permissionLoading) return;
   reset();
-  getMenuTreeselect();
-  getApiTreeselect()
-  state.open = true;
-  state.title = "添加角色";
-};
-/** 修改按钮操作 */
-const handleUpdate = (row: any) => {
-  const roleId = row.roleId;
-  getApiTreeselect()
-  const roleMenu = getRoleMenuTreeselect(roleId);
-  getRole(roleId).then((response) => {
-    state.roleForm = response?.role;
+  state.activeName = 'first';
+  state.permissionsReady = false;
+  state.permissionLoading = true;
+  state.menuChanged = false;
+  try {
+    const roleAndPolicies = row
+      ? getRole(row.roleId).then(async ({ role }: any) => ({
+          role, grants: (await getPolicyPathByRoleId({ roleKey: role.roleKey }) as any).apis,
+        }))
+      : { role: state.roleForm, grants: [] };
+    const [{ role, grants }, menu, catalog] = await Promise.all([
+      roleAndPolicies, roleMenuTreeselect(row?.roleId ?? 0), listApiAll({}),
+    ]) as any;
+    if (![catalog.data, grants, menu.menus, menu.checkedKeys].every(Array.isArray)) {
+      throw new Error('权限数据不完整');
+    }
+    state.roleForm = role;
+    state.menuOptions = menu.menus;
+    state.menuCheckedKeys = menu.checkedKeys;
+    state.apiOptions = buildApiTree(catalog.data, grants);
+    state.apiCheckedKeys = grants.map(apiKey);
+    state.title = row ? '修改角色' : '添加角色';
     state.open = true;
-    state.title = "修改角色";
-    nextTick(() => {
-      roleMenu.then((res) => {
-        state.menuCheckedKeys = res.checkedKeys;
-        const formWrap = unref(menuRef) as any;
-        formWrap.setCheckedKeys(res.checkedKeys);
-      });
-      getPolicyPathByRoleId({
-        roleKey: state.roleForm.roleKey
-      }).then((res) => {
-        let apiKes: any[] = []
-        res?.apis?.map((item) => {
-          apiKes.push("p:" + item.path + "m:" + item.method)
-        })
-        console.log("apiKes", apiKes)
-        const formWrap = unref(apiRef) as any;
-        formWrap.setCheckedKeys(apiKes);
-      })
-    });
-  });
-  state.bunLoading = false;
-};
+  } catch {
+    ElMessage.error('角色权限未加载完整，请重试');
+  } finally {
+    state.permissionLoading = false;
+  }
+}
+
+function restoreRoleChecks() {
+  const tree = unref(menuRef) as any;
+  if (!tree || !unref(apiRef)) return;
+  // The stored set includes parent directories. Checking a parent recursively would grant its other children.
+  const nodes = state.menuCheckedKeys.map((id: number) => tree.getNode(id)).filter(Boolean);
+  nodes.sort((a: any, b: any) => a.level - b.level);
+  for (const node of nodes) tree.setChecked(node.key, true, false);
+  state.permissionsReady = true;
+}
 /** 删除按钮操作 */
 const handleDelete = (row: any) => {
   const roleIds = row.roleId || state.ids;
@@ -569,41 +543,32 @@ const getRoleDeptTreeselect = (roleId: number) => {
     return response;
   });
 };
-/** 根据角色ID查询菜单树结构 */
-const getRoleMenuTreeselect = (roleId: number) => {
-  return roleMenuTreeselect(roleId).then((response) => {
-    state.menuOptions = response.menus;
-    return response;
-  });
-};
 /** 提交按钮 */
-const submitForm = () => {
-  const formWrap = unref(roleFormRef) as any;
-  if (!formWrap) return;
-  formWrap.validate((valid: boolean) => {
-    if (valid) {
-      state.bunLoading = true;
-      if (state.roleForm != null && state.roleForm.roleId != undefined) {
-        state.roleForm.menuIds = getMenuAllCheckedKeys();
-        state.roleForm.apiIds = getApiAllCheckedKeys();
-        updateRole(state.roleForm).then(() => {
-          ElMessage.success("修改成功");
-          state.bunLoading = true;
-          state.open = false;
-          getList();
-        });
-      } else {
-        state.roleForm.menuIds = getMenuAllCheckedKeys();
-        state.roleForm.apiIds = getApiAllCheckedKeys();
-        addRole(state.roleForm).then(() => {
-          ElMessage.success("新增成功");
-          state.bunLoading = true;
-          state.open = false;
-          getList();
-        });
-      }
-    }
-  });
+const submitForm = async () => {
+  const form = unref(roleFormRef) as any;
+  if (!form || !state.permissionsReady || state.bunLoading) return;
+  state.bunLoading = true;
+  if (!await form.validate().catch(() => false)) {
+    state.bunLoading = false;
+    return;
+  }
+  const role = state.roleForm;
+  // The HTTP client adds snake_case aliases on read. Send only canonical fields from the edited form.
+  const data = {
+    roleId: role.roleId, roleKey: role.roleKey, roleName: role.roleName, sort: role.roleSort,
+    status: Number(role.status), dataScope: Number(role.dataScope || 0), defaultRouter: role.defaultRouter,
+    remark: role.remark, menuIds: state.menuChanged ? getMenuAllCheckedKeys() : state.menuCheckedKeys,
+    apiIds: getApiAllCheckedKeys(),
+  };
+  try {
+    if (role.roleId) await updateRole(data);
+    else await addRole(data);
+    ElMessage.success(role.roleId ? "修改成功" : "新增成功");
+    state.open = false;
+    getList();
+  } finally {
+    state.bunLoading = false;
+  }
 };
 // 取消按钮
 const cancel = () => {
@@ -613,28 +578,17 @@ const cancel = () => {
 // 所有菜单节点数据
 const getMenuAllCheckedKeys = () => {
   const formWrap = unref(menuRef) as any;
-  if (!formWrap) return;
   // 目前被选中的菜单节点
   let checkedKeys = formWrap.getCheckedKeys();
   // 半选中的菜单节点
   let halfCheckedKeys = formWrap.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
+  const absent = state.menuCheckedKeys.filter((id: number) => !formWrap.getNode(id));
+  return [...new Set([...checkedKeys, ...halfCheckedKeys, ...absent])];
 };
 // 所有菜单节点数据
 const getApiAllCheckedKeys = () => {
   const formWrap = unref(apiRef) as any;
-  if (!formWrap) return;
-  let checkArr: any[] = formWrap.getCheckedNodes(true)
-  let casbinInfos: any[] = []
-  checkArr && checkArr.map(item => {
-    let casbinInfo = {
-      path: item.path,
-      method: item.method
-    }
-    casbinInfos.push(casbinInfo)
-  })
-  return casbinInfos;
+  return formWrap.getCheckedNodes(true).map(({ path, method }: RoleApi) => ({ path, method }));
 };
 
 // 取消按钮（数据权限）
@@ -677,6 +631,7 @@ const handleCheckedTreeExpand = (value: any, type: any) => {
 // 树权限（全选/全不选）
 const handleCheckedTreeNodeAll = (value: any, type: any) => {
   if (type == "menu") {
+    state.menuChanged = true;
     const formWrap = unref(menuRef) as any;
     formWrap.setCheckedNodes(value ? state.menuOptions : []);
   } else if (type == "api") {

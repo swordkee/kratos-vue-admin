@@ -233,17 +233,23 @@ const getList = async () => {
   state.loading = true;
   listUser(state.queryParams).then(
     (response: any) => {
-      if (response.code != 200) {
-        state.loading = false;
-      }
-      state.tableData.data = response.data;
-      state.tableData.forEach((a: any) => {
-        a.sex ?? (a.sex = 0)
+      // 分页响应兼容三种形态：{list,total}（exAdmin 便于读） / {data:{data,total}}（分页包裹）
+      // / {data:[...],total}；拦截器可能已剥掉 {code,data} 外壳，故两者都要看。
+      const page = response?.data ?? {};
+      const rows = Array.isArray(page)
+        ? page
+        : (Array.isArray(page.data) ? page.data : (Array.isArray(response?.list) ? response.list : []));
+      rows.forEach((a: any) => {
+        a.sex ?? (a.sex = 0);
       });
-      state.tableData.total = response.total;
+      state.tableData.data = rows;
+      state.tableData.total = page.total ?? response?.total ?? rows.length;
       state.loading = false;
     }
-  );
+  ).catch(() => {
+    state.tableData.data = [];
+    state.loading = false;
+  });
 };
 // 多选框选中数据
 const handleSelectionChange = (selection: any) => {

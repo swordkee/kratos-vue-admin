@@ -236,6 +236,7 @@ type RoleData struct {
 	MenuIds       []int32                `protobuf:"varint,10,rep,packed,name=menuIds,proto3" json:"menuIds,omitempty"`
 	CreateTime    *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	UpdateTime    *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=updateTime,proto3" json:"updateTime,omitempty"`
+	DefaultRouter string                 `protobuf:"bytes,15,opt,name=defaultRouter,proto3" json:"defaultRouter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -352,6 +353,13 @@ func (x *RoleData) GetUpdateTime() *timestamppb.Timestamp {
 		return x.UpdateTime
 	}
 	return nil
+}
+
+func (x *RoleData) GetDefaultRouter() string {
+	if x != nil {
+		return x.DefaultRouter
+	}
+	return ""
 }
 
 type ApiData struct {
@@ -1932,7 +1940,7 @@ const file_base_proto_rawDesc = "" +
 	"createTime\x12:\n" +
 	"\n" +
 	"updateTime\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"updateTime\"\x8c\x03\n" +
+	"updateTime\"\xb2\x03\n" +
 	"\bRoleData\x12\x16\n" +
 	"\x06roleId\x18\x01 \x01(\x03R\x06roleId\x12\x1a\n" +
 	"\broleName\x18\x02 \x01(\tR\broleName\x12\x16\n" +
@@ -1950,7 +1958,8 @@ const file_base_proto_rawDesc = "" +
 	"createTime\x12:\n" +
 	"\n" +
 	"updateTime\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"updateTime\"\xfb\x01\n" +
+	"updateTime\x12$\n" +
+	"\rdefaultRouter\x18\x0f \x01(\tR\rdefaultRouter\"\xfb\x01\n" +
 	"\aApiData\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04path\x12 \n" +

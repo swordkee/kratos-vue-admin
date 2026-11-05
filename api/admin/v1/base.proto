@@ -41,6 +41,7 @@ message RoleData {
   repeated int32 menuIds = 10;
   google.protobuf.Timestamp createTime = 13;
   google.protobuf.Timestamp updateTime = 14;
+  string defaultRouter = 15;
 }
 
 message ApiData {

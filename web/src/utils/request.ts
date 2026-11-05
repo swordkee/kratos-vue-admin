@@ -7,7 +7,7 @@ import { Session } from '@/utils/storage';
 // 对应键」的 camelCase 副本（仅当两者并存时），避免重复字段错误。
 function dedupeCamelAliases(value: any): any {
 	if (Array.isArray(value)) return value.map(dedupeCamelAliases);
-	if (value && typeof value === 'object') {
+	if (value && typeof value === 'object' && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null)) {
 		const out: Record<string, any> = {};
 		for (const k of Object.keys(value)) {
 			out[k] = dedupeCamelAliases((value as any)[k]);
@@ -16,41 +16,6 @@ function dedupeCamelAliases(value: any): any {
 			const snake = camelToSnake(k);
 			if (snake !== k && Object.prototype.hasOwnProperty.call(out, snake)) {
 				delete out[k];
-			}
-		}
-		return out;
-	}
-	return value;
-}
-
-// 根因收口：protojson 将 int64 序列化为「字符串」（如 commodityId:"1"），
-// 列表/详情回填表单后原样回传，后端按 Go struct int64 反序列化即报
-// "json: cannot unmarshal string into Go struct field ... of type int64"（HTTP 500）。
-// 覆盖：标量、ID 数组、嵌套对象。仅在 JS 安全整数范围内转 number（超范围保持字符串
-// 避免精度丢失——服务端 protojson 同时接受 int64 的字符串/数字两种形态）；
-// FormData/Blob 等二进制体不处理。
-function coerceInt64String(v: string): string | number {
-	if (!/^-?\d+$/.test(v)) return v;
-	const n = Number(v);
-	return Number.isSafeInteger(n) && String(n) === v ? n : v;
-}
-
-function coerceProtoInt64(value: any): any {
-	if (Array.isArray(value)) return value.map(coerceProtoInt64);
-	if (value && typeof value === 'object') {
-		const out: Record<string, any> = {};
-		for (const k of Object.keys(value)) {
-			const v = (value as any)[k];
-			if (/(_id|Id)$/.test(k)) {
-				// 标量 int64（position_id:"1"）；数组值按同名单值数组逐项处理
-				if (typeof v === 'string') out[k] = coerceInt64String(v);
-				else if (Array.isArray(v)) out[k] = v.map((item) => typeof item === 'string' ? coerceInt64String(item) : coerceProtoInt64(item));
-				else out[k] = coerceProtoInt64(v);
-			} else if (/ids$/i.test(k) && Array.isArray(v)) {
-				// repeated int64（order_ids/position_ids/user_ids/settle_member_ids/menuIds/ids…）
-				out[k] = v.map((item) => typeof item === 'string' ? coerceInt64String(item) : coerceProtoInt64(item));
-			} else {
-				out[k] = coerceProtoInt64(v);
 			}
 		}
 		return out;
@@ -131,15 +96,13 @@ service.interceptors.request.use(
 		if (Session.get('token')) {
 			config.headers!['Authorization'] = `Bearer ${Session.get('token')}`;
 		}
-		// protojson int64 字符串 → number（仅 JSON 请求体，跳过 FormData/Blob 等）；
-		// 同时去除 camel/snake 同名字段双写。
-		if (
-			config.data &&
-			typeof config.data === 'object' &&
-			!(config.data instanceof FormData) &&
-			!(config.data instanceof Blob)
-		) {
-			config.data = coerceProtoInt64(dedupeCamelAliases(config.data));
+		// FormData 的 Content-Type 由浏览器生成，包含 multipart boundary；
+		// 不能沿用默认的 application/json，否则 Axios 会把文件转成 JSON。
+		if (config.data instanceof FormData) {
+			config.headers.delete('Content-Type');
+		} else if (config.data && typeof config.data === 'object' && !(config.data instanceof Blob)) {
+			// protojson 可接收 int64 数字或数字字符串；字符串 ID 必须保留原始类型。
+			config.data = dedupeCamelAliases(config.data);
 		}
 		// 分页参数兼容：部分 GET 列表接口 proto 字段为 page_num，而页面统一传 page。
 		// 对 GET query 同时补发 page_num（未知 query 键会被 Kratos 标准 encoding/json

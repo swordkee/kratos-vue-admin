@@ -35,17 +35,18 @@ func (r *RolesService) ListRoles(ctx context.Context, req *pb.ListRolesRequest) 
 	data := make([]*pb.RoleData, len(roleList))
 	for i, d := range roleList {
 		data[i] = &pb.RoleData{
-			RoleId:     d.ID,
-			RoleName:   d.RoleName,
-			Status:     d.Status,
-			RoleKey:    d.RoleKey,
-			RoleSort:   d.RoleSort,
-			DataScope:  int64(d.DataScope),
-			CreateBy:   d.CreateBy,
-			UpdateBy:   d.UpdateBy,
-			Remark:     d.Remark,
-			CreateTime: util.NewTimestamp(d.CreatedAt),
-			UpdateTime: util.NewTimestamp(d.UpdatedAt),
+			RoleId:        d.ID,
+			RoleName:      d.RoleName,
+			Status:        d.Status,
+			RoleKey:       d.RoleKey,
+			RoleSort:      d.RoleSort,
+			DataScope:     int64(d.DataScope),
+			DefaultRouter: d.DefaultRouter,
+			CreateBy:      d.CreateBy,
+			UpdateBy:      d.UpdateBy,
+			Remark:        d.Remark,
+			CreateTime:    util.NewTimestamp(d.CreatedAt),
+			UpdateTime:    util.NewTimestamp(d.UpdatedAt),
 		}
 
 	}
@@ -68,18 +69,19 @@ func (r *RolesService) FindRoles(ctx context.Context, req *pb.FindRolesRequest) 
 	}
 	return &pb.FindRolesReply{
 		Role: &pb.RoleData{
-			RoleId:     role.ID,
-			RoleName:   role.RoleName,
-			Status:     role.Status,
-			RoleKey:    role.RoleKey,
-			RoleSort:   role.RoleSort,
-			DataScope:  int64(role.DataScope),
-			MenuIds:    menuIds,
-			CreateBy:   role.CreateBy,
-			UpdateBy:   role.UpdateBy,
-			Remark:     role.Remark,
-			CreateTime: util.NewTimestamp(role.CreatedAt),
-			UpdateTime: util.NewTimestamp(role.UpdatedAt),
+			RoleId:        role.ID,
+			RoleName:      role.RoleName,
+			Status:        role.Status,
+			RoleKey:       role.RoleKey,
+			RoleSort:      role.RoleSort,
+			DataScope:     int64(role.DataScope),
+			MenuIds:       menuIds,
+			DefaultRouter: role.DefaultRouter,
+			CreateBy:      role.CreateBy,
+			UpdateBy:      role.UpdateBy,
+			Remark:        role.Remark,
+			CreateTime:    util.NewTimestamp(role.CreatedAt),
+			UpdateTime:    util.NewTimestamp(role.UpdatedAt),
 		},
 	}, nil
 }

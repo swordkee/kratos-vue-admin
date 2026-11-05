@@ -448,6 +448,8 @@ func (m *RoleData) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for DefaultRouter
+
 	if len(errors) > 0 {
 		return RoleDataMultiError(errors)
 	}

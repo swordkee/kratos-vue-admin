@@ -160,8 +160,10 @@ func ConvertToDeptTree(deptList []*model.SysDepts) []*pb.DeptTree {
 		menuMap[dept.ID] = menuTree
 	}
 
+	// 按 deptList 顺序（仓储已按 sort,id 排序）遍历，避免 map 迭代顺序随机导致树序抖动。
 	var root []*pb.DeptTree
-	for _, menuTree := range menuMap {
+	for _, dept := range deptList {
+		menuTree := menuMap[dept.ID]
 		parentID := menuTree.ParentId
 		if parentID == 0 {
 			root = append(root, menuTree)
@@ -183,8 +185,10 @@ func ConvertToDeptTreeChildren(deptList []*pb.DeptTree) []*pb.DeptTree {
 		menuMap[dept.DeptId] = dept
 	}
 
+	// 同上：按入参顺序遍历，保持树序稳定。
 	var root []*pb.DeptTree
-	for _, menuTree := range menuMap {
+	for _, dept := range deptList {
+		menuTree := dept
 		parentID := menuTree.ParentId
 		if parentID == 0 {
 			root = append(root, menuTree)

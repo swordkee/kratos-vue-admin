@@ -50,7 +50,7 @@
         <el-table-column prop="sort" label="排序" width="200"></el-table-column>
         <el-table-column prop="status" label="状态" width="100">
           <template #default="scope">
-            <el-tag :type="scope.row.status === 1 ? 'danger' : 'success'" disable-transitions>{{ statusFormat(scope.row)
+            <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'" disable-transitions>{{ statusFormat(scope.row)
             }}
             </el-tag>
           </template>
@@ -123,7 +123,7 @@ const state = reactive({
 const handleQuery = () => {
   state.loading = true;
   listDept(state.queryParams).then((response: any) => {
-    state.tableData = response.data?.data;
+    state.tableData = response.data || [];
     state.loading = false;
   });
 };
