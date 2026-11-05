@@ -103,18 +103,27 @@ func (uc *UseCase) VerifyCode(ctx context.Context, key, code string) (bool, erro
 // SendSmsCode 发送验证码短信（feature_id=201）；验证码先缓存后发送，发送失败不影响缓存（可重发）
 func (uc *UseCase) SendSmsCode(ctx context.Context, mobile, code string, expireMinutes int32) error {
 	uc.log.Infow(ctx, "msg", "开始发送验证码", "mobile", mobile, "expireMinutes", expireMinutes)
-	provider, err := uc.getProvider(201)
-	if err != nil {
-		return fmt.Errorf("获取短信服务失败：%w", err)
-	}
-	if err := provider.SendCode(ctx, mobile, code); err != nil {
-		return fmt.Errorf("发送验证码失败：%w", err)
+	if err := uc.SendSmsCodeOnly(ctx, mobile, code); err != nil {
+		return err
 	}
 	if expireMinutes > 0 {
 		cacheKey := uc.GetCacheKey(uc.config.GetPhoneLogin().GetCachePrefix(), mobile)
 		if err := uc.SaveCode(ctx, cacheKey, code, expireMinutes); err != nil {
 			uc.log.Errorw(ctx, "msg", "验证码缓存失败", "error", err)
 		}
+	}
+	return nil
+}
+
+// SendSmsCodeOnly 只发送短信验证码、不写缓存（缓存键由调用方按场景自管，
+// 供「登录二因素短信码」等独立流程复用，避免与手机登录码共用前缀）。
+func (uc *UseCase) SendSmsCodeOnly(ctx context.Context, mobile, code string) error {
+	provider, err := uc.getProvider(201)
+	if err != nil {
+		return fmt.Errorf("获取短信服务失败：%w", err)
+	}
+	if err := provider.SendCode(ctx, mobile, code); err != nil {
+		return fmt.Errorf("发送验证码失败：%w", err)
 	}
 	return nil
 }

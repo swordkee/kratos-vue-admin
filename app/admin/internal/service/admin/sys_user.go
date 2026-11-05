@@ -66,6 +66,8 @@ func (s *SysUserService) CreateSysUser(ctx context.Context, req *pb.CreateSysUse
 		RoleIds:  req.RoleIds,
 		PostIds:  req.PostIds,
 		Secret:   req.Secret,
+		// 登录方式：1=TOTP（默认）2=手机验证码短信；传 0 由 biz 层归一为 TOTP
+		LoginMethod: req.GetLoginMethod(),
 	})
 	if err != nil {
 		return nil, err
@@ -95,6 +97,8 @@ func (s *SysUserService) UpdateSysUser(ctx context.Context, req *pb.UpdateSysUse
 		RoleIds:  req.RoleIds,
 		PostIds:  req.PostIds,
 		Secret:   req.Secret,
+		// 登录方式：1=TOTP 2=手机验证码；0=未提交，biz 层保留库中原值
+		LoginMethod: req.GetLoginMethod(),
 	})
 	if err != nil {
 		return nil, err
@@ -174,27 +178,28 @@ func (s *SysUserService) FindSysUser(ctx context.Context, req *pb.FindSysUserReq
 		roleName = role.RoleName
 	}
 	replyUser := &pb.UserData{
-		UserId:     user.ID,
-		NickName:   user.NickName,
-		Phone:      user.Phone,
-		RoleId:     int32(user.RoleID),
-		Avatar:     user.Avatar,
-		Sex:        int64(user.Sex),
-		Email:      user.Email,
-		DeptId:     int32(user.DeptID),
-		PostId:     int32(user.PostID),
-		RoleIds:    user.RoleIds,
-		PostIds:    user.PostIds,
-		CreateBy:   user.CreateBy,
-		UpdateBy:   user.UpdateBy,
-		Remark:     user.Remark,
-		Status:     user.Status,
-		Username:   roleName,
-		RoleName:   role.RoleName,
-		CreateTime: util.NewTimestamp(user.CreatedAt),
-		UpdateTime: util.NewTimestamp(user.UpdatedAt),
-		Secret:     user.Secret,
-		Qrcode:     util.NewGoogleAuth().GetQrcode(user.Secret),
+		UserId:      user.ID,
+		NickName:    user.NickName,
+		Phone:       user.Phone,
+		RoleId:      int32(user.RoleID),
+		Avatar:      user.Avatar,
+		Sex:         int64(user.Sex),
+		Email:       user.Email,
+		DeptId:      int32(user.DeptID),
+		PostId:      int32(user.PostID),
+		RoleIds:     user.RoleIds,
+		PostIds:     user.PostIds,
+		CreateBy:    user.CreateBy,
+		UpdateBy:    user.UpdateBy,
+		Remark:      user.Remark,
+		Status:      user.Status,
+		Username:    roleName,
+		RoleName:    role.RoleName,
+		CreateTime:  util.NewTimestamp(user.CreatedAt),
+		UpdateTime:  util.NewTimestamp(user.UpdatedAt),
+		Secret:      user.Secret,
+		Qrcode:      util.NewGoogleAuth().GetQrcode(user.Secret),
+		LoginMethod: user.LoginMethod,
 	}
 
 	replyDepts := admin.ConvertToDeptTreeChildren(deptList)
@@ -239,28 +244,29 @@ func (s *SysUserService) ListSysUser(ctx context.Context, req *pb.ListSysUserReq
 		role, _ := roleCache.Get(user.RoleID)
 		dept, _ := deptCache.Get(user.DeptID)
 		replyData[i] = &pb.UserData{
-			UserId:     user.ID,
-			NickName:   user.NickName,
-			Phone:      user.Phone,
-			RoleId:     int32(user.RoleID),
-			Avatar:     user.Avatar,
-			Sex:        int64(user.Sex),
-			Email:      user.Email,
-			DeptId:     int32(user.DeptID),
-			PostId:     int32(user.PostID),
-			RoleIds:    user.RoleIds,
-			PostIds:    user.PostIds,
-			CreateBy:   user.CreateBy,
-			UpdateBy:   user.UpdateBy,
-			Remark:     user.Remark,
-			Status:     user.Status,
-			CreateTime: util.NewTimestamp(user.CreatedAt),
-			UpdateTime: util.NewTimestamp(user.UpdatedAt),
-			Username:   user.Username,
-			RoleName:   role.RoleName,
-			DeptName:   dept.DeptName,
-			Secret:     user.Secret,
-			Qrcode:     gAuth.GetQrcode(user.Secret),
+			UserId:      user.ID,
+			NickName:    user.NickName,
+			Phone:       user.Phone,
+			RoleId:      int32(user.RoleID),
+			Avatar:      user.Avatar,
+			Sex:         int64(user.Sex),
+			Email:       user.Email,
+			DeptId:      int32(user.DeptID),
+			PostId:      int32(user.PostID),
+			RoleIds:     user.RoleIds,
+			PostIds:     user.PostIds,
+			CreateBy:    user.CreateBy,
+			UpdateBy:    user.UpdateBy,
+			Remark:      user.Remark,
+			Status:      user.Status,
+			CreateTime:  util.NewTimestamp(user.CreatedAt),
+			UpdateTime:  util.NewTimestamp(user.UpdatedAt),
+			Username:    user.Username,
+			RoleName:    role.RoleName,
+			DeptName:    dept.DeptName,
+			Secret:      user.Secret,
+			Qrcode:      gAuth.GetQrcode(user.Secret),
+			LoginMethod: user.LoginMethod,
 		}
 	}
 
@@ -359,6 +365,15 @@ func (s *SysUserService) PhoneLogin(ctx context.Context, req *pb.PhoneLoginReque
 		return nil, pb.ErrorCaptchaInvalid("验证码错误或已过期")
 	}
 	return s.authCase.PhoneLogin(ctx, req.Phone)
+}
+
+// SmsVerifyLogin 手机验证码登录第二步（login_method=2）：
+// 短信待验证 token + 短信码 → 正式 token。公开接口（Auth 白名单），不走鉴权链。
+func (s *SysUserService) SmsVerifyLogin(ctx context.Context, req *pb.SmsVerifyLoginRequest) (*pb.LoginReply, error) {
+	if strings.TrimSpace(req.GetMfaToken()) == "" || strings.TrimSpace(req.GetCode()) == "" {
+		return nil, pb.ErrorLoginFail("请填写短信验证码")
+	}
+	return s.authCase.VerifySmsLogin(ctx, req.GetMfaToken(), req.GetCode())
 }
 
 func (s *SysUserService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutReply, error) {

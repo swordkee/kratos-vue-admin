@@ -27,6 +27,19 @@ export function signIn(params: object) {
 }
 
 /**
+ * 手机验证码登录第二步（login_method=2）：短信待验证 token + 短信码 → 正式 token
+ * @param mfaToken 登录第一步返回的 mfaToken（needSms=true 时）
+ * @param code 短信验证码
+ */
+export function smsVerifyLogin(mfaToken: string, code: string) {
+	return request({
+		url: '/system/user/phone/verify',
+		method: 'post',
+		data: { mfaToken, code },
+	});
+}
+
+/**
  * 用户退出登录
  * @param params 要传的参数值
  * @returns 返回接口数据

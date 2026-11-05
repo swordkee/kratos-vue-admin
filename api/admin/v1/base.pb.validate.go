@@ -1466,6 +1466,8 @@ func (m *UserData) validate(all bool) error {
 
 	// no validation rules for Qrcode
 
+	// no validation rules for LoginMethod
+
 	if len(errors) > 0 {
 		return UserDataMultiError(errors)
 	}

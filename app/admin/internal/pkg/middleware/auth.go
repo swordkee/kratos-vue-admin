@@ -26,6 +26,9 @@ func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList["/api.admin.v1.SysMfa/Verify"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/SendPhoneLoginCode"] = struct{}{}
 	whiteList["/api.admin.v1.SysUser/PhoneLogin"] = struct{}{}
+	// 手机验证码登录第二步（login_method=2）：走短信待验证 token（MfaPending=true），
+	// 与 /mfa/verify 同理必须在白名单内，否则中间件先拦 MfaPending 导致无法换正式 token。
+	whiteList["/api.admin.v1.SysUser/SmsVerifyLogin"] = struct{}{}
 	return func(ctx context.Context, operation string) bool {
 		if _, ok := whiteList[operation]; ok {
 			return false

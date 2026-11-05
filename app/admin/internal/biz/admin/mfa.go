@@ -90,6 +90,10 @@ func (uc *MfaUseCase) Verify(ctx context.Context, mfaToken, code string) (*pb.Lo
 	if !claims.MfaPending {
 		return nil, pb.ErrorMfaVerifyFailed("无效的验证会话")
 	}
+	// 防串道：短信待验证中间态（login_method=2）不得走 TOTP 校验接口
+	if claims.SmsPending {
+		return nil, pb.ErrorMfaVerifyFailed("该账号使用手机验证码登录，请改用短信验证码校验")
+	}
 
 	ok, err := uc.mfaSvc.VerifyForLogin(ctx, claims.UserID, code)
 	if err != nil || !ok {

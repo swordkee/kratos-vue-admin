@@ -82,6 +82,13 @@
             <el-table-column label="用户性别" align="center" prop="sex" :formatter="sexFormat" />
             <el-table-column prop="phone" label="手机" show-overflow-tooltip></el-table-column>
             <el-table-column prop="email" label="邮箱" show-overflow-tooltip></el-table-column>
+            <el-table-column label="登录方式" align="center" width="130">
+              <template #default="scope">
+                <el-tag :type="Number(scope.row.loginMethod) === 2 ? 'warning' : 'success'" size="small">
+                  {{ Number(scope.row.loginMethod) === 2 ? '手机验证码' : 'TOTP' }}
+                </el-tag>
+              </template>
+            </el-table-column>
             <el-table-column label="状态" align="center" key="status">
               <template #default="scope">
                 <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0"

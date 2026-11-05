@@ -18,6 +18,8 @@ var ProviderSet = wire.NewSet(
 	admin.NewMfaUseCase,
 	sms.NewGatewayRepo,
 	NewSmsUseCase,
+	// 登录二因素短信码端口（login_method=2）：biz/sms.UseCase 适配为 admin.SmsLoginCodeRepo
+	SmsLoginCodeRepoProvider,
 	admin.NewSysMenusUseCase,
 	admin.NewSysDeptUseCase,
 	admin.NewSysPostUseCase,

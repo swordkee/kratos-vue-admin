@@ -61,10 +61,11 @@
     </el-form-item>
   </el-form>
 
-  <!-- TOTP 二因素验证步骤：登录 step1 返回 needMfa 后显示 -->
+  <!-- 二因素验证步骤：登录 step1 返回 needMfa（TOTP）或 needSms（手机验证码）后显示 -->
   <el-form v-else size="large" class="login-content-form">
     <el-form-item>
-      <el-input type="text" maxlength="6" placeholder="输入动态验证码" v-model="state.mfaCode" clearable
+      <el-input type="text" :maxlength="state.isSmsStep ? 6 : 9"
+        :placeholder="state.isSmsStep ? '输入手机短信验证码' : '输入动态验证码'" v-model="state.mfaCode" clearable
         autocomplete="off" @keyup.enter="onMfaVerify">
         <template #prefix>
           <el-icon class="el-input__icon">
@@ -99,7 +100,7 @@ import { useI18n } from "vue-i18n";
 import { initBackEndControlRoutes } from "@/router/index";
 import { Session } from "@/utils/storage";
 import Cookies from 'js-cookie';
-import { signIn, captcha as getCaptchaApi } from "@/api/login/index";
+import { signIn, captcha as getCaptchaApi, smsVerifyLogin } from "@/api/login/index";
 import { mfaVerify } from "@/api/mfa";
 import { formatAxis } from "@/utils/formatTime";
 import rotate from '@/assets/rotate.png'
@@ -129,8 +130,9 @@ const state = reactive({
   base64Image: "",
   timestamp: Date.now(),
   getCaptchaLoading: false,
-  // TOTP 两段式登录：needMfa=true 时进入二因素步骤
+  // 两段式登录：needMfa=true（TOTP）/ needSms=true（手机验证码）时进入二因素步骤
   isMfaStep: false,
+  isSmsStep: false,
   mfaToken: "",
   mfaCode: "",
   rules: {
@@ -199,9 +201,10 @@ const onSignIn = async () => {
   }
   // request 成功时已解包 data；兼容返回 {data:{...}} 包装的形态
   let loginRes = loginRespon?.data ?? loginRespon;
-  // TOTP 两段式登录：needMfa=true → 进入二因素验证步骤（不签发正式 token）
-  if (loginRes?.needMfa) {
+  // 两段式登录：needMfa（TOTP，已绑定）或 needSms（手机验证码，已发码）→ 进入验证步骤
+  if (loginRes?.needMfa || loginRes?.needSms) {
     state.mfaToken = loginRes.mfaToken;
+    state.isSmsStep = !!loginRes?.needSms;
     state.isMfaStep = true;
     state.loading.signIn = false;
     return;
@@ -222,19 +225,22 @@ const openVerify = () => {
 // 退出二因素步骤，返回账号密码登录
 const backToLogin = () => {
   state.isMfaStep = false;
+  state.isSmsStep = false;
   state.mfaToken = "";
   state.mfaCode = "";
 };
 
-// TOTP 二因素验证：动态码 → /mfa/verify 换正式 token → 登录成功
+// 二因素验证：TOTP 动态码 → /mfa/verify；手机验证码 → /system/user/phone/verify → 正式 token
 const onMfaVerify = async () => {
   if (!state.mfaCode) {
-    ElMessage.warning("请输入动态验证码");
+    ElMessage.warning(state.isSmsStep ? "请输入手机短信验证码" : "请输入动态验证码");
     return;
   }
   state.loading.signIn = true;
   try {
-    const verifyRes: any = await mfaVerify(state.mfaToken, state.mfaCode);
+    const verifyRes: any = state.isSmsStep
+      ? await smsVerifyLogin(state.mfaToken, state.mfaCode)
+      : await mfaVerify(state.mfaToken, state.mfaCode);
     const vRes = verifyRes?.data ?? verifyRes;
     if (!vRes?.token) {
       ElMessage.error("验证失败，请重试");

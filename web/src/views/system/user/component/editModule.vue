@@ -82,6 +82,19 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <el-form-item label="登录方式" prop="loginMethod">
+              <el-radio-group v-model="state.ruleForm.loginMethod">
+                <el-radio :label="1">TOTP 动态验证码</el-radio>
+                <el-radio :label="2">手机验证码短信</el-radio>
+              </el-radio-group>
+              <div class="form-hint">
+                {{ Number(state.ruleForm.loginMethod) === 2
+                  ? '登录时向该用户手机号发送短信验证码（需用户已绑定手机号）'
+                  : '登录时校验认证器动态验证码（用户需先绑定认证器）' }}
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-form-item label="谷歌秘钥" prop="secret">
               <div class="system-secret">
                 <el-input v-model="state.ruleForm.secret" disabled />
@@ -158,6 +171,8 @@ const state = reactive({
     roleIds: "",
     secret: "",
     qrcode: "",//二维码地址
+    // 登录方式：1=TOTP 动态验证码（默认） 2=手机验证码短信
+    loginMethod: 1,
   },
   postIds: [],
   roleIds: [],
@@ -176,6 +191,9 @@ const state = reactive({
     ],
     nickName: [
       { required: true, message: "用户昵称不能为空", trigger: "blur" },
+    ],
+    loginMethod: [
+      { required: true, message: "请选择登录方式", trigger: "change" },
     ],
     password: [
       { required: true, message: "用户密码不能为空", trigger: "blur" },
@@ -218,6 +236,8 @@ const openDialog = (row: any) => {
         return Number(item)
       });
       state.ruleForm.password = ""
+      // 登录方式必填：后端返回 1/2；缺省或脏值按 TOTP 展示（与后端 fail-closed 口径一致）
+      state.ruleForm.loginMethod = Number(state.ruleForm.loginMethod) === 2 ? 2 : 1;
     });
   } else {
     getUserInit().then(response => {
@@ -276,6 +296,8 @@ const onSubmit = () => {
       state.ruleForm.roleId = state.roleIds[0]
       state.ruleForm.postIds = state.postIds.join(',')
       state.ruleForm.roleIds = state.roleIds.join(',')
+      // 登录方式必填：只允许 1/2，其余按 TOTP 提交（与后端归一一致）
+      state.ruleForm.loginMethod = Number(state.ruleForm.loginMethod) === 2 ? 2 : 1
       state.loading = true;
       if (state.ruleForm.userId != undefined) {
         updateUser(state.ruleForm).then((response) => {
@@ -354,5 +376,11 @@ defineExpose({
   .el-button {
     margin-left: 20px;
   }
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #909399;
+  line-height: 1.4;
 }
 </style>

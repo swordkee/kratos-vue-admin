@@ -90,6 +90,13 @@ service SysUser {
       body: "*"
     };
   };
+  // 手机验证码登录第二步（login_method=2）：短信待验证 token + 短信码 → 正式 token
+  rpc SmsVerifyLogin (SmsVerifyLoginRequest) returns (LoginReply){
+    option (google.api.http) = {
+      post: "/system/user/phone/verify"
+      body: "*"
+    };
+  };
   // 更新用户状态
   rpc ChangeStatus(ChangeStatusRequest) returns (ChangeStatusReply){
     option (google.api.http) = {
@@ -141,6 +148,8 @@ message CreateSysUserRequest {
   string roleIds = 13;
   string avatar = 14;
   string secret = 15 [(validate.rules).string.len = 32];
+  // 登录方式（必填，用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信
+  int32 loginMethod = 16;
 }
 
 message CreateSysUserReply {}
@@ -168,6 +177,9 @@ message UpdateSysUserRequest {
   string password = 22;
   string role_name = 23;
   string secret = 24;
+  // 登录方式（必填，用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信；
+  // 传 0 表示未提交，保留库中原值
+  int32 loginMethod = 25;
 }
 message UpdateSysUserReply {}
 
@@ -231,6 +243,9 @@ message LoginReply{
   // TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
   bool needMfa = 3;
   string mfaToken = 4;
+  // 手机验证码：用户 login_method=2 时密码正确后返回 5 分钟待验证 token（已发送短信码），
+  // 前端走 /system/user/phone/verify 校验短信码换正式 token
+  bool needSms = 5;
 }
 
 message SendPhoneLoginCodeRequest {
@@ -248,6 +263,12 @@ message SendPhoneLoginCodeReply {
 message PhoneLoginRequest {
   string phone = 1; // 手机号
   string code = 2;  // 短信验证码
+}
+
+// 手机验证码登录第二步请求（login_method=2）
+message SmsVerifyLoginRequest {
+  string mfaToken = 1; // 登录第一步返回的短信待验证 token（needSms=true 时）
+  string code = 2;     // 短信验证码
 }
 
 message LogoutRequest{}

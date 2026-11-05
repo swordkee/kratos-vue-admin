@@ -124,6 +124,8 @@ func (m *CreateSysUserRequest) validate(all bool) error {
 
 	}
 
+	// no validation rules for LoginMethod
+
 	if len(errors) > 0 {
 		return CreateSysUserRequestMultiError(errors)
 	}
@@ -425,6 +427,8 @@ func (m *UpdateSysUserRequest) validate(all bool) error {
 	// no validation rules for RoleName
 
 	// no validation rules for Secret
+
+	// no validation rules for LoginMethod
 
 	if len(errors) > 0 {
 		return UpdateSysUserRequestMultiError(errors)
@@ -1958,6 +1962,8 @@ func (m *LoginReply) validate(all bool) error {
 
 	// no validation rules for MfaToken
 
+	// no validation rules for NeedSms
+
 	if len(errors) > 0 {
 		return LoginReplyMultiError(errors)
 	}
@@ -2356,6 +2362,112 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PhoneLoginRequestValidationError{}
+
+// Validate checks the field values on SmsVerifyLoginRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SmsVerifyLoginRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SmsVerifyLoginRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SmsVerifyLoginRequestMultiError, or nil if none found.
+func (m *SmsVerifyLoginRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SmsVerifyLoginRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MfaToken
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return SmsVerifyLoginRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SmsVerifyLoginRequestMultiError is an error wrapping multiple validation
+// errors returned by SmsVerifyLoginRequest.ValidateAll() if the designated
+// constraints aren't met.
+type SmsVerifyLoginRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SmsVerifyLoginRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SmsVerifyLoginRequestMultiError) AllErrors() []error { return m }
+
+// SmsVerifyLoginRequestValidationError is the validation error returned by
+// SmsVerifyLoginRequest.Validate if the designated constraints aren't met.
+type SmsVerifyLoginRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SmsVerifyLoginRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SmsVerifyLoginRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SmsVerifyLoginRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SmsVerifyLoginRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SmsVerifyLoginRequestValidationError) ErrorName() string {
+	return "SmsVerifyLoginRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SmsVerifyLoginRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSmsVerifyLoginRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SmsVerifyLoginRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SmsVerifyLoginRequestValidationError{}
 
 // Validate checks the field values on LogoutRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first

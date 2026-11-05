@@ -150,6 +150,8 @@ func main() {
 			switch tc.TableName {
 			case "sys_users":
 				// 不太可能有金额字段，但为保持一致性而保留
+				// 2026-11-05 login_method：tinyint NOT NULL DEFAULT 1（1=TOTP 2=手机验证码短信），
+				// 默认 int32 映射即可，无需 FieldType 特化（与 mfa_enabled 同口径）。
 			// === 站内信（TASK-03 批1 模板版）===
 			// read_at 可空（未读=NULL）：非指针 time.Time 零值会落 '0000-00-00 00:00:00'，
 			// MySQL strict 模式报 1292 拒写（exAdmin 冒烟实测），指针化后 INSERT 省列=NULL、

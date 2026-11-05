@@ -41,6 +41,8 @@ type SysUsers struct {
 	MfaEnabled int32      `gorm:"column:mfa_enabled;not null;comment:TOTP 双因素是否开启(R26，AES-256-GCM 加密密钥存 mfa_secret)" json:"mfa_enabled"`
 	MfaSecret  string     `gorm:"column:mfa_secret;comment:AES-256-GCM 加密的 TOTP secret(32 字节主密钥，auth.mfa.encryptionKey)" json:"mfa_secret"`
 	MfaBoundAt *time.Time `gorm:"column:mfa_bound_at;comment:TOTP 绑定时间" json:"mfa_bound_at"`
+	// LoginMethod 登录方式 1=TOTP动态验证码(默认) 2=手机验证码短信（用户级强制二因素方式）
+	LoginMethod int32 `gorm:"column:login_method;not null;default:1;comment:登录方式 1=TOTP动态验证码(默认) 2=手机验证码短信" json:"login_method"`
 }
 
 // TableName SysUsers's table name

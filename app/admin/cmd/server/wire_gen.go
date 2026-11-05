@@ -46,7 +46,10 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 		cleanup()
 		return nil, nil, err
 	}
-	authUseCase, err := admin2.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, service, logxLogger)
+	gatewayRepo := sms.NewGatewayRepo(db)
+	useCase := biz.NewSmsUseCase(message, universalClient, gatewayRepo, logxLogger)
+	smsLoginCodeRepo := biz.SmsLoginCodeRepoProvider(useCase)
+	authUseCase, err := admin2.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, service, smsLoginCodeRepo, logxLogger)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
@@ -61,8 +64,6 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	sysPostUseCase := admin2.NewSysPostUseCase(sysPostRepo, logger, sysUserUseCase)
 	sysDeptRepo := admin.NewSysDeptRepo(query, logger)
 	sysDeptUseCase := admin2.NewSysDeptUseCase(sysDeptRepo, logger)
-	gatewayRepo := sms.NewGatewayRepo(db)
-	useCase := biz.NewSmsUseCase(message, universalClient, gatewayRepo, logxLogger)
 	sysUserService := admin3.NewSysUserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, useCase, logger)
 	sysApiRepo := admin.NewSysApiRepo(query, logger)
 	sysApiUseCase := admin2.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)

@@ -53,6 +53,7 @@ func newSysUsers(db *gorm.DB, opts ...gen.DOOption) sysUsers {
 	_sysUsers.MfaEnabled = field.NewInt32(tableName, "mfa_enabled")
 	_sysUsers.MfaSecret = field.NewString(tableName, "mfa_secret")
 	_sysUsers.MfaBoundAt = field.NewTime(tableName, "mfa_bound_at")
+	_sysUsers.LoginMethod = field.NewInt32(tableName, "login_method")
 
 	_sysUsers.fillFieldMap()
 
@@ -90,6 +91,8 @@ type sysUsers struct {
 	MfaEnabled field.Int32  // TOTP 双因素是否开启
 	MfaSecret  field.String // AES-256-GCM 加密的 TOTP secret
 	MfaBoundAt field.Time   // TOTP 绑定时间
+
+	LoginMethod field.Int32 // 登录方式 1=TOTP动态验证码(默认) 2=手机验证码短信
 
 	fieldMap map[string]field.Expr
 }
@@ -132,6 +135,7 @@ func (s *sysUsers) updateTableName(table string) *sysUsers {
 	s.MfaEnabled = field.NewInt32(table, "mfa_enabled")
 	s.MfaSecret = field.NewString(table, "mfa_secret")
 	s.MfaBoundAt = field.NewTime(table, "mfa_bound_at")
+	s.LoginMethod = field.NewInt32(table, "login_method")
 
 	s.fillFieldMap()
 
@@ -154,7 +158,7 @@ func (s *sysUsers) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *sysUsers) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 23)
+	s.fieldMap = make(map[string]field.Expr, 27)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["uuid"] = s.UUID
 	s.fieldMap["username"] = s.Username
@@ -181,6 +185,7 @@ func (s *sysUsers) fillFieldMap() {
 	s.fieldMap["mfa_enabled"] = s.MfaEnabled
 	s.fieldMap["mfa_secret"] = s.MfaSecret
 	s.fieldMap["mfa_bound_at"] = s.MfaBoundAt
+	s.fieldMap["login_method"] = s.LoginMethod
 }
 
 func (s sysUsers) clone(db *gorm.DB) sysUsers {

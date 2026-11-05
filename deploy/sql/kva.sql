@@ -983,6 +983,7 @@ CREATE TABLE `sys_users`  (
   `mfa_enabled` tinyint NOT NULL DEFAULT 0 COMMENT 'TOTP 双因素是否开启（AES-256-GCM 密钥存 mfa_secret）',
   `mfa_secret` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'AES-256-GCM 加密的 TOTP secret（32 字节主密钥 auth.mfa.encryptionKey）',
   `mfa_bound_at` datetime NULL DEFAULT NULL COMMENT 'TOTP 绑定时间',
+  `login_method` tinyint NOT NULL DEFAULT 1 COMMENT '登录方式 1=TOTP动态验证码(默认) 2=手机验证码短信',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
@@ -990,9 +991,9 @@ CREATE TABLE `sys_users`  (
 -- ----------------------------
 -- Records of sys_users
 -- ----------------------------
-INSERT INTO `sys_users` VALUES (1, '1-1-1-1', 'admin', 'admin', '$2a$10$cKFFTCzGOvaIHHJY2K45Zuwt8TD6oPzYi4s5MzYIBAWCLL6ZhouP2', '18888888888', 1, '', '', 0, 'example@email.com', 3, 1, 'remark', 1, '1', '1', 'admin', 'admin', '2021-12-03 09:46:55', '2023-09-04 10:40:54', NULL, '', 0, NULL, NULL);
-INSERT INTO `sys_users` VALUES (2, 'd26733e4-ee09-4d98-b462-93bae039209c', 'test2', 'test2', '$2a$10$yiQ9u0lh7wsGjchqMGVOE.lp3KO99R5nw0Kc1DWQC6THI6d.JzNP.', '13312312311', 1, '', '', 1, 'email@email.com', 2, 1, 'this is a remark2', 1, '1', '1', 'admin', 'admin', '2023-08-23 11:38:47', '2023-09-07 10:02:50', NULL, '', 0, NULL, NULL);
-INSERT INTO `sys_users` VALUES (3, 'b3614db9-80a8-4892-9f65-0a6e70a00a2d', 'dahe', 'dahe', '$2a$10$iCr0rC6esWA91xCiImLZ5uMxjnW45VVhFzR2e9IPVg4QKY/XhvqEu', '13777788880', 1, '', '', 0, 'dahe@gmail.com', 3, 1, 'ewtwet', 1, '1', '1', 'admin', 'admin', '2023-08-24 08:54:34', '2023-09-04 11:16:19', NULL, '', 0, NULL, NULL);
+INSERT INTO `sys_users` VALUES (1, '1-1-1-1', 'admin', 'admin', '$2a$10$cKFFTCzGOvaIHHJY2K45Zuwt8TD6oPzYi4s5MzYIBAWCLL6ZhouP2', '18888888888', 1, '', '', 0, 'example@email.com', 3, 1, 'remark', 1, '1', '1', 'admin', 'admin', '2021-12-03 09:46:55', '2023-09-04 10:40:54', NULL, '', 0, NULL, NULL, 1);
+INSERT INTO `sys_users` VALUES (2, 'd26733e4-ee09-4d98-b462-93bae039209c', 'test2', 'test2', '$2a$10$yiQ9u0lh7wsGjchqMGVOE.lp3KO99R5nw0Kc1DWQC6THI6d.JzNP.', '13312312311', 1, '', '', 1, 'email@email.com', 2, 1, 'this is a remark2', 1, '1', '1', 'admin', 'admin', '2023-08-23 11:38:47', '2023-09-07 10:02:50', NULL, '', 0, NULL, NULL, 1);
+INSERT INTO `sys_users` VALUES (3, 'b3614db9-80a8-4892-9f65-0a6e70a00a2d', 'dahe', 'dahe', '$2a$10$iCr0rC6esWA91xCiImLZ5uMxjnW45VVhFzR2e9IPVg4QKY/XhvqEu', '13777788880', 1, '', '', 0, 'dahe@gmail.com', 3, 1, 'ewtwet', 1, '1', '1', 'admin', 'admin', '2023-08-24 08:54:34', '2023-09-04 11:16:19', NULL, '', 0, NULL, NULL, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
 

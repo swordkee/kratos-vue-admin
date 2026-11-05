@@ -130,6 +130,8 @@ message UserData {
   google.protobuf.Timestamp updateTime = 23;
   string secret = 24;
   string qrcode = 25;
+  // 登录方式（用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信
+  int32 loginMethod = 26;
 }
 
 message PostData {

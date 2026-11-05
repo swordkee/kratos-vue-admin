@@ -82,6 +82,11 @@ func (uc *SysUserUseCase) CreateSysUser(ctx context.Context, u *model.SysUsers) 
 	uc.log.WithContext(ctx).Infof("CreateSysUser: %v", u)
 	u.Password = util.BcryptHash(u.Password)
 	u.UUID = uuid.NewString()
+	// 登录方式必填兜底：未指定（0）按 TOTP 落库（列默认值 1 只在 INSERT 省略该列时生效，
+	// gorm 结构体 Create 会把 0 显式写入，故在这里归一）。
+	if u.LoginMethod == 0 {
+		u.LoginMethod = LoginMethodTOTP
+	}
 
 	claims := authz.MustFromContext(ctx)
 	u.CreateBy = claims.Nickname
@@ -110,6 +115,13 @@ func (uc *SysUserUseCase) UpdateSysUser(ctx context.Context, u *model.SysUsers) 
 	u.UUID = oldUser.UUID
 	u.Salt = oldUser.Salt
 	u.Password = oldUser.Password
+	// 登录方式：未提交（0）保留原值，避免老版本前端把已有配置冲成默认值
+	if u.LoginMethod == 0 {
+		u.LoginMethod = oldUser.LoginMethod
+	}
+	if u.LoginMethod == 0 {
+		u.LoginMethod = LoginMethodTOTP
+	}
 	u.UpdateBy = claims.Nickname
 	u.CreateBy = oldUser.CreateBy
 	return uc.userRepo.UpdateByID(ctx, u.ID, u)
