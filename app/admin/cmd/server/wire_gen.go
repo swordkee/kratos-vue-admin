@@ -49,7 +49,11 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	gatewayRepo := sms.NewGatewayRepo(db)
 	useCase := biz.NewSmsUseCase(message, universalClient, gatewayRepo, logxLogger)
 	smsLoginCodeRepo := biz.SmsLoginCodeRepoProvider(useCase)
-	authUseCase, err := admin2.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, service, smsLoginCodeRepo, logxLogger)
+	securityConfigRepo := admin.NewSecurityConfigRepo(query, logger)
+	securityConfigUseCase := admin2.NewSecurityConfigUseCase(securityConfigRepo, logger)
+	manager := data.NewLoginLockManager(dataData)
+	securityLockUseCase := admin2.NewSecurityLockUseCase(securityConfigUseCase, manager, logger)
+	authUseCase, err := admin2.NewAuthUseCase(auth, sysUserRepo, sysRoleRepo, service, smsLoginCodeRepo, securityLockUseCase, logxLogger)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
@@ -91,7 +95,8 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	messageRepo := admin.NewMessageRepo(query, logxLogger)
 	messageUseCase := admin2.NewMessageUseCase(messageRepo, logxLogger)
 	messageService := admin3.NewMessageService(messageUseCase, logxLogger)
-	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService, messageService)
+	sysSecurityConfigService := admin3.NewSysSecurityConfigService(securityConfigUseCase, securityLockUseCase, logger)
+	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService, messageService, sysSecurityConfigService)
 	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()

@@ -196,7 +196,7 @@ func newLoginMethodFixture(t *testing.T, loginMethod int32, phone string, mfaCfg
 	if withSms {
 		smsRepo = fakeSms
 	}
-	auth, err := NewAuthUseCase(authConf, &loginStubUserRepo{user: user}, loginStubRoleRepo{}, mfaSvc, smsRepo, newMessageTestLogger())
+	auth, err := NewAuthUseCase(authConf, &loginStubUserRepo{user: user}, loginStubRoleRepo{}, mfaSvc, smsRepo, nil, newMessageTestLogger())
 	if err != nil {
 		t.Fatalf("构造 AuthUseCase 失败: %v", err)
 	}

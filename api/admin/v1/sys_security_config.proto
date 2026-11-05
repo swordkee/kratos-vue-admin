@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package api.admin.v1;
+
+option go_package = "github.com/swordkee/kratos-vue-admin/api/admin/v1;v1";
+
+import "google/api/annotations.proto";
+
+// SysSecurityConfig 登录安全策略（gva model/system/sys_security_config.go +
+// service/system/sys_security_config.go + service/system/security_lock.go 回灌）。
+//
+// 存储：单行表 sys_security_config（固定 id=1，DDL 见
+// deploy/sql/20261105_sys_security_config.sql）；进程内原子缓存热读，保存即热更新。
+//
+// 行为接入：登录失败锁定段（lockEnable/lockThreshold/lockDuration）已接入
+// POST /system/user/login（失败计数、达阈值置锁、成功清计数、锁定期直接拒绝）；
+// 计数/锁态存 Redis（未配置 Redis 时进程内存，对齐 gva GVA_CACHE 双后端语义），
+// Redis 故障时按源语义「不计数、不锁定」并记日志。
+// 其余段（验证码/密码复杂度/限流/密码过期/MFA 强制）先按源落库并提供读写面，
+// 行为接入情况见 docs/tasks 台账登记项。
+service SysSecurityConfig {
+	//获取安全配置
+	rpc GetSecurityConfig (GetSecurityConfigRequest) returns (GetSecurityConfigReply) {
+		option (google.api.http) = {
+			get: "/system/security-config"
+		};
+	};
+
+	//设置安全配置（单行，固定 id=1；保存即热更新）
+	rpc UpdateSecurityConfig (UpdateSecurityConfigRequest) returns (UpdateSecurityConfigReply) {
+		option (google.api.http) = {
+			put: "/system/security-config"
+			body: "*"
+		};
+	};
+
+	//查询账号登录锁状态（失败计数 / 剩余锁定秒数）
+	rpc GetLoginLock (GetLoginLockRequest) returns (GetLoginLockReply) {
+		option (google.api.http) = {
+			get: "/system/security-config/lock"
+		};
+	};
+
+	//解锁账号（清除失败计数与锁态）
+	rpc UnlockLogin (UnlockLoginRequest) returns (UnlockLoginReply) {
+		option (google.api.http) = {
+			post: "/system/security-config/unlock"
+			body: "*"
+		};
+	};
+}
+
+// SecurityConfigItem 安全配置全量（单行）
+message SecurityConfigItem {
+	uint64 id = 1;
+	// 验证码段
+	int32 captchaOpen = 2;    // 错误N次后出验证码 0=每次都要
+	int32 captchaTimeout = 3; // 防爆破计数缓存超时(秒)
+	int32 keyLong = 4;        // 验证码长度
+	int32 imgWidth = 5;       // 验证码宽度
+	int32 imgHeight = 6;      // 验证码高度
+	// 密码复杂度段
+	int32 pwdMinLength = 7;
+	bool pwdRequireUpper = 8;
+	bool pwdRequireLower = 9;
+	bool pwdRequireDigit = 10;
+	bool pwdRequireSpecial = 11;
+	// 限流段
+	bool limitEnable = 12;
+	int32 limitWindow = 13; // 窗口(秒)
+	int32 limitCount = 14;  // 窗口内最大次数
+	// 失败锁定段
+	bool lockEnable = 15;
+	int32 lockThreshold = 16; // 失败次数阈值
+	int32 lockDuration = 17;  // 锁定时长(分钟)
+	// 密码过期段
+	bool pwdExpireEnable = 18;
+	int32 pwdExpireDays = 19;
+	bool forceNewUserChangePassword = 20;
+	// 双因素
+	bool mfaRequired = 21;
+	string createdAt = 22;
+	string updatedAt = 23;
+}
+
+message GetSecurityConfigRequest {}
+message GetSecurityConfigReply {
+	SecurityConfigItem config = 1;
+}
+
+message UpdateSecurityConfigRequest {
+	int32 captchaOpen = 1;
+	int32 captchaTimeout = 2;
+	int32 keyLong = 3;
+	int32 imgWidth = 4;
+	int32 imgHeight = 5;
+	int32 pwdMinLength = 6;
+	bool pwdRequireUpper = 7;
+	bool pwdRequireLower = 8;
+	bool pwdRequireDigit = 9;
+	bool pwdRequireSpecial = 10;
+	bool limitEnable = 11;
+	int32 limitWindow = 12;
+	int32 limitCount = 13;
+	bool lockEnable = 14;
+	int32 lockThreshold = 15;
+	int32 lockDuration = 16;
+	bool pwdExpireEnable = 17;
+	int32 pwdExpireDays = 18;
+	bool forceNewUserChangePassword = 19;
+	bool mfaRequired = 20;
+}
+message UpdateSecurityConfigReply {
+	SecurityConfigItem config = 1;
+}
+
+message GetLoginLockRequest {
+	string username = 1;
+}
+message GetLoginLockReply {
+	string username = 1;
+	bool lockEnable = 2;        // 当前配置是否开启失败锁定
+	bool locked = 3;            // 账号当前是否锁定
+	int64 failCount = 4;        // 窗口内失败次数
+	int64 remainSeconds = 5;    // 剩余锁定秒数（未锁定=0）
+	int32 lockThreshold = 6;
+	int32 lockDuration = 7;
+}
+
+message UnlockLoginRequest {
+	string username = 1;
+}
+message UnlockLoginReply {
+	string username = 1;
+	bool cleared = 2; // 是否已清除（含本就无锁的情况）
+}

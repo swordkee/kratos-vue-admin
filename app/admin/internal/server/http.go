@@ -15,11 +15,11 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/go-kratos/kratos/v3/middleware/logging"
 	"github.com/go-kratos/kratos/v3/middleware/recovery"
 	"github.com/go-kratos/kratos/v3/transport/http"
 	"github.com/gorilla/handlers"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	v1 "github.com/swordkee/kratos-vue-admin/api/admin/v1"
@@ -200,6 +200,8 @@ func NewHTTPServer(
 	sysMfaService *adminV1.SysMfaService,
 	// 统一站内信（TASK-03 批1 模板版：/system/message/*）
 	messageService *adminV1.MessageService,
+	// 登录安全策略（/system/security-config/*）
+	securityConfigService *adminV1.SysSecurityConfigService,
 ) *http.Server {
 	// 构建日志中间件配置
 	logMiddlewareConfig := middleware.DefaultLogConfig()
@@ -251,6 +253,7 @@ func NewHTTPServer(
 	v1.RegisterRolesHTTPServer(srv, roleService)
 	v1.RegisterSysMfaHTTPServer(srv, sysMfaService)
 	v1.RegisterMessageServiceHTTPServer(srv, messageService)
+	v1.RegisterSysSecurityConfigHTTPServer(srv, securityConfigService)
 
 	// 上传文件的路由
 	r := srv.Route("/")

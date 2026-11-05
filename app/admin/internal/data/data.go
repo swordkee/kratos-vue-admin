@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"github.com/google/wire"
 	go_redis "github.com/redis/go-redis/v9"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
+	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
@@ -37,6 +37,10 @@ var ProviderSet = wire.NewSet(
 	admin.NewSysDictDataRepo,
 	admin.NewSysDictTypeRepo,
 	admin.NewMessageRepo,
+	// 登录安全策略（gva sys_security_config 回灌）
+	admin.NewSecurityConfigRepo,
+	// 登录失败计数/锁态存取器（Redis 共享 / 无 Redis 进程内存双后端）
+	NewLoginLockManager,
 )
 
 // NewQuery returns the query instance from Data

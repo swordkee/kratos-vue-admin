@@ -19,4 +19,6 @@ var ProviderSet = wire.NewSet(
 	admin.NewDictTypeService,
 	admin.NewSysMfaService,
 	admin.NewMessageService,
+	// 登录安全策略（/system/security-config/*）
+	admin.NewSysSecurityConfigService,
 )

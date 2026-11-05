@@ -31,6 +31,9 @@ var ProviderSet = wire.NewSet(
 	admin.NewSysDictTypeUseCase,
 	admin.NewSysLogsUseCase,
 	admin.NewMessageUseCase,
+	// 登录安全策略（gva sys_security_config + security_lock 回灌）
+	admin.NewSecurityConfigUseCase,
+	admin.NewSecurityLockUseCase,
 )
 
 // Transaction 事务接口类型别名（指向 admin.Transaction 以避免循环导入）
@@ -162,6 +165,10 @@ type SysDictDatumUseCase = admin.SysDictDatumUseCase
 type SysDictTypeUseCase = admin.SysDictTypeUseCase
 type SysRoleMenuUseCase = admin.SysRoleMenuUseCase
 type SysLogsUseCase = admin.SysLogsUseCase
+
+// 登录安全策略（gva sys_security_config 回灌）
+type SecurityConfigUseCase = admin.SecurityConfigUseCase
+type SecurityLockUseCase = admin.SecurityLockUseCase
 
 // 函数别名
 var ConvertToDeptTree = admin.ConvertToDeptTree

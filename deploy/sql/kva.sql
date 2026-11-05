@@ -1075,3 +1075,53 @@ CREATE TABLE IF NOT EXISTS `sys_message`  (
   INDEX `idx_sys_message_type`(`type`) USING BTREE,
   INDEX `idx_sys_message_created_at`(`created_at`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '统一站内信（KVA）' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for sys_security_config（登录安全策略单行表，2026-11-05 回灌 gva loginlock）
+-- 头注：本表为**配置数据**，用 `CREATE TABLE IF NOT EXISTS` + 缺行补插，
+--   重复执行不清数据（同 sys_message / sys_sms_gateway / sys_mfa_recovery_code 口径）。
+--   完整说明与 4 个管理面 API 的 sys_apis 记录见 deploy/sql/20261105_sys_security_config.sql。
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `sys_security_config`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `captcha_open` int NOT NULL DEFAULT 0 COMMENT '错误N次后出验证码 0=每次都要',
+  `captcha_timeout` int NOT NULL DEFAULT 3600 COMMENT '防爆破计数缓存超时(秒)',
+  `key_long` int NOT NULL DEFAULT 6 COMMENT '验证码长度',
+  `img_width` int NOT NULL DEFAULT 240 COMMENT '验证码宽度',
+  `img_height` int NOT NULL DEFAULT 80 COMMENT '验证码高度',
+  `pwd_min_length` int NOT NULL DEFAULT 8 COMMENT '密码最小长度',
+  `pwd_require_upper` tinyint(1) NOT NULL DEFAULT 0 COMMENT '需大写字母',
+  `pwd_require_lower` tinyint(1) NOT NULL DEFAULT 0 COMMENT '需小写字母',
+  `pwd_require_digit` tinyint(1) NOT NULL DEFAULT 0 COMMENT '需数字',
+  `pwd_require_special` tinyint(1) NOT NULL DEFAULT 0 COMMENT '需特殊字符',
+  `limit_enable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否开启限流',
+  `limit_window` int NOT NULL DEFAULT 60 COMMENT '限流窗口(秒)',
+  `limit_count` int NOT NULL DEFAULT 30 COMMENT '窗口内最大次数',
+  `lock_enable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否开启失败锁定',
+  `lock_threshold` int NOT NULL DEFAULT 5 COMMENT '失败次数阈值',
+  `lock_duration` int NOT NULL DEFAULT 30 COMMENT '锁定时长(分钟)',
+  `pwd_expire_enable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否开启密码过期',
+  `pwd_expire_days` int NOT NULL DEFAULT 90 COMMENT '密码有效天数',
+  `force_new_user_change_password` tinyint(1) NOT NULL DEFAULT 0 COMMENT '新用户首次登录是否强制改密',
+  `mfa_required` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否强制全员开启TOTP',
+  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC COMMENT = '登录安全策略（单行表）';
+
+INSERT INTO `sys_security_config`
+  (`id`, `captcha_open`, `captcha_timeout`, `key_long`, `img_width`, `img_height`,
+   `pwd_min_length`, `pwd_require_upper`, `pwd_require_lower`, `pwd_require_digit`, `pwd_require_special`,
+   `limit_enable`, `limit_window`, `limit_count`,
+   `lock_enable`, `lock_threshold`, `lock_duration`,
+   `pwd_expire_enable`, `pwd_expire_days`, `force_new_user_change_password`, `mfa_required`,
+   `created_at`, `updated_at`)
+SELECT 1, 0, 3600, 6, 240, 80,
+       8, 0, 0, 0, 0,
+       0, 60, 30,
+       0, 5, 30,
+       0, 90, 0, 0,
+       NOW(), NOW()
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_security_config` WHERE `id` = 1);

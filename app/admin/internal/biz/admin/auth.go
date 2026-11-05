@@ -49,11 +49,14 @@ type AuthUseCase struct {
 	mfaSvc *mfa.Service
 	// smsSvc 短信登录码端口（login_method=2）。nil 安全：未装配时该登录方式拒绝。
 	smsSvc SmsLoginCodeRepo
-	log    *logx.Logger
+	// lockSvc 登录失败锁定（gva security_lock 迁入）。nil 安全：未装配时
+	// 全部锁定判定退化为 no-op，登录行为与本批改动前一致。
+	lockSvc *SecurityLockUseCase
+	log     *logx.Logger
 }
 
 func NewAuthUseCase(conf *conf.Auth, userRepo SysUserRepo, roleRepo SysRoleRepo, mfaSvc *mfa.Service,
-	smsSvc SmsLoginCodeRepo, logger *logx.Logger) (*AuthUseCase, error) {
+	smsSvc SmsLoginCodeRepo, lockSvc *SecurityLockUseCase, logger *logx.Logger) (*AuthUseCase, error) {
 	// 解析签发侧 ECDSA P-384 私钥；配置缺失或非法直接报错拒绝启动（fail-closed）。
 	priv, err := authz.ParseECDSAPrivateKey(conf.EcdsaPrivateKey)
 	if err != nil {
@@ -66,21 +69,31 @@ func NewAuthUseCase(conf *conf.Auth, userRepo SysUserRepo, roleRepo SysRoleRepo,
 		roleRepo: roleRepo,
 		mfaSvc:   mfaSvc,
 		smsSvc:   smsSvc,
+		lockSvc:  lockSvc,
 		log:      logger,
 	}, nil
 }
 
-// Login 密码登录（按用户 login_method 分流 + 图形验证码在 service 入口校验）。
+// Login 密码登录（按用户 login_method 分流 + 图形验证码在 service 入口校验，
+// 失败计数/锁定在 biz 层按 gva 语义判定）。
 func (receiver *AuthUseCase) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
+	// 1. 账号锁定检查（gva 登录第 1 步：锁定期间连密码都不校验）
+	if locked, minutes := receiver.accountLocked(ctx, req.Username); locked {
+		return nil, pb.ErrorLoginFail("账号已锁定，请 %d 分钟后再试", minutes)
+	}
 	user, err := receiver.userRepo.FindByUsername(ctx, req.Username)
 	if err != nil {
+		// gva 口径：用户名不存在与密码错误同样计入失败计数
+		receiver.recordLoginFail(ctx, req.Username)
 		return nil, pb.ErrorUserNotFound("用户名或密码错误")
 	}
 	if user.Status == constant.StatusUserForbidden {
+		// gva 口径：停用账号不计失败（不是凭证失败）
 		return nil, pb.ErrorAccountForbidden("账号被停用")
 	}
 
 	if !util.BcryptCheck(req.Password, user.Password) {
+		receiver.recordLoginFail(ctx, req.Username)
 		return nil, pb.ErrorLoginFail(pkg.ErrPassword)
 	}
 
@@ -88,7 +101,40 @@ func (receiver *AuthUseCase) Login(ctx context.Context, req *pb.LoginRequest) (*
 	if err != nil {
 		return nil, err
 	}
-	return receiver.issueLoginReply(ctx, user, role)
+	reply, err := receiver.issueLoginReply(ctx, user, role)
+	if err != nil {
+		return nil, err
+	}
+	// gva 口径：只有完整登录成功才清失败计数（TOTP / 短信待验证阶段不清，
+	// 由第二步校验成功后再清）。本仓两种二因素并存，故两个标志都要判。
+	if !reply.GetNeedMfa() && !reply.GetNeedSms() {
+		receiver.clearLoginFail(ctx, req.Username)
+	}
+	return reply, nil
+}
+
+// accountLocked 账号锁定判定（nil 安全）。
+func (receiver *AuthUseCase) accountLocked(ctx context.Context, username string) (bool, int32) {
+	if receiver.lockSvc == nil {
+		return false, 0
+	}
+	return receiver.lockSvc.IsAccountLocked(ctx, username)
+}
+
+// recordLoginFail 记一次登录失败（配置关闭失败锁定时内部直接返回）。
+func (receiver *AuthUseCase) recordLoginFail(ctx context.Context, username string) {
+	if receiver.lockSvc == nil {
+		return
+	}
+	receiver.lockSvc.RecordLoginFail(ctx, username)
+}
+
+// clearLoginFail 清失败计数与锁态。
+func (receiver *AuthUseCase) clearLoginFail(ctx context.Context, username string) {
+	if receiver.lockSvc == nil {
+		return
+	}
+	receiver.lockSvc.ClearLoginFail(ctx, username)
 }
 
 // PhoneLogin 手机验证码登录（短信码在 service 入口已校验）。
