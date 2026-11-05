@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
+
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/sensitive"
 )
 
 // 操作日志载荷「入库前脱敏」（2026-10-05）。
@@ -63,20 +65,8 @@ func piiMask(k string) string {
 	return ""
 }
 
-// maskKeepEnds 通用两端保留掩码；空串原样；过短（head+tail 放不下）整串替换为等长 '*'。
-func maskKeepEnds(v string, head, tail int) string {
-	if v == "" {
-		return v
-	}
-	n := len([]rune(v))
-	if n <= head+tail {
-		return strings.Repeat("*", n)
-	}
-	r := []rune(v)
-	return string(r[:head]) + strings.Repeat("*", n-head-tail) + string(r[n-tail:])
-}
-
 // maskStringValue 按字段名掩码单个字符串值；非敏感字段原样。
+// 掩码算法统一取自 pkg/sensitive（与响应面掩码同一实现，避免两套口径漂移）。
 func maskStringValue(key, val string) string {
 	if isCredentialKey(key) {
 		if val == "" {
@@ -86,11 +76,11 @@ func maskStringValue(key, val string) string {
 	}
 	switch piiMask(key) {
 	case "idcard":
-		return maskKeepEnds(val, 3, 4)
+		return sensitive.MaskIDCard(val)
 	case "mobile":
-		return maskKeepEnds(val, 3, 4)
+		return sensitive.MaskMobile(val)
 	case "bankcard":
-		return maskKeepEnds(val, 4, 4)
+		return sensitive.MaskBankCard(val)
 	}
 	return val
 }

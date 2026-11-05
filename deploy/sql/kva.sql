@@ -1125,3 +1125,17 @@ SELECT 1, 0, 3600, 6, 240, 80,
        NOW(), NOW()
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM `sys_security_config` WHERE `id` = 1);
+
+-- ----------------------------
+-- 敏感信息明文查看虚拟权限点（2026-11-05 回灌 go-exAdmin 同名功能）
+--   无真实路由；「API 管理」可见后由「角色管理」按需勾选 → casbin_rule。
+--   超管（role_key=admin）由中间件旁路，无需分配。
+--   本次改动的库补丁版见 deploy/sql/20261105_sensitive_view_api.sql。
+-- ----------------------------
+INSERT INTO `sys_apis` (`path`, `description`, `api_group`, `method`, `created_at`, `updated_at`)
+SELECT '/sensitive/view', '敏感信息明文查看（按角色授权；控制身份证/手机号/银行卡号是否掩码）', '敏感数据', 'GET', NOW(), NOW()
+FROM DUAL
+WHERE NOT EXISTS (
+  SELECT 1 FROM `sys_apis`
+  WHERE `path` = '/sensitive/view' AND `method` = 'GET' AND `deleted_at` IS NULL
+);

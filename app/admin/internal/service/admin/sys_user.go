@@ -15,6 +15,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/sensitive"
 	"github.com/swordkee/kratos-vue-admin/pkg/util"
 )
 
@@ -80,10 +81,21 @@ func (s *SysUserService) UpdateSysUser(ctx context.Context, req *pb.UpdateSysUse
 		return nil, err
 	}
 
+	// 掩码回环保护（2026-11-05 回灌）：编辑表单回填的是掩码手机号 138****1234，
+	// 值含 '*' 视为「未修改」，保留库中原值，避免掩码串回写覆盖明文。
+	phone := req.Phone
+	if sensitive.HasMask(phone) {
+		exist, ferr := s.userCase.FindSysUserById(ctx, req.UserId)
+		if ferr != nil {
+			return nil, ferr
+		}
+		phone = sensitive.ResolveMasked(phone, exist.Phone)
+	}
+
 	err := s.userCase.UpdateSysUser(ctx, &model.SysUsers{
 		ID:       req.UserId,
 		NickName: req.NickName,
-		Phone:    req.Phone,
+		Phone:    phone,
 		RoleID:   req.RoleId,
 		Avatar:   req.Avatar,
 		Sex:      req.Sex,
@@ -180,7 +192,7 @@ func (s *SysUserService) FindSysUser(ctx context.Context, req *pb.FindSysUserReq
 	replyUser := &pb.UserData{
 		UserId:      user.ID,
 		NickName:    user.NickName,
-		Phone:       user.Phone,
+		Phone:       maskPhone(sensitive.CanReveal(ctx), user.Phone),
 		RoleId:      int32(user.RoleID),
 		Avatar:      user.Avatar,
 		Sex:         int64(user.Sex),
@@ -239,6 +251,7 @@ func (s *SysUserService) ListSysUser(ctx context.Context, req *pb.ListSysUserReq
 	})
 
 	gAuth := util.NewGoogleAuth()
+	reveal := sensitive.CanReveal(ctx)
 	replyData := make([]*pb.UserData, len(users))
 	for i, user := range users {
 		role, _ := roleCache.Get(user.RoleID)
@@ -246,7 +259,7 @@ func (s *SysUserService) ListSysUser(ctx context.Context, req *pb.ListSysUserReq
 		replyData[i] = &pb.UserData{
 			UserId:      user.ID,
 			NickName:    user.NickName,
-			Phone:       user.Phone,
+			Phone:       maskPhone(reveal, user.Phone),
 			RoleId:      int32(user.RoleID),
 			Avatar:      user.Avatar,
 			Sex:         int64(user.Sex),

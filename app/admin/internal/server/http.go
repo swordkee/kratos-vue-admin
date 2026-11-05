@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-kratos/kratos/v3/transport/http/pprof"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/middleware"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/sensitive"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -214,6 +215,13 @@ func NewHTTPServer(
 			logging.Server(slog.Default()),
 			middleware.OperationRecordWithConfig(opRecordsCase, logMiddlewareConfig),
 			middleware.Auth(s, casbinRepo, userRepo),
+			// 敏感信息可见性（2026-11-04，对齐 go-exAdmin 同名功能）：判定结果注入 ctx，
+			// 响应构建点经 sensitive.CanReveal(ctx) 决定明文/掩码；置于 Auth 之后依赖 claims。
+			middleware.SensitiveInfoGuard(
+				func(ctx context.Context, roleKey string) (bool, error) {
+					return casbinRepo.Enforce(roleKey, sensitive.ViewPermissionPath, sensitive.ViewPermissionMethod)
+				},
+			),
 		),
 		http.ResponseEncoder(EncoderResponse()),
 		http.RequestDecoder(CustomRequestDecoder),
