@@ -10,10 +10,12 @@ import (
 	"github.com/go-kratos/kratos/v3"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	admin2 "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	media2 "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/media"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/sms"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
+	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/media"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/pkg/oss"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/server"
 	admin3 "github.com/swordkee/kratos-vue-admin/app/admin/internal/service/admin"
@@ -70,21 +72,21 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	sysDeptUseCase := admin2.NewSysDeptUseCase(sysDeptRepo, logger)
 	sysUserService := admin3.NewSysUserService(confServer, sysUserUseCase, authUseCase, sysRoleUseCase, sysRoleMenuUseCase, sysPostUseCase, sysDeptUseCase, useCase, logger)
 	sysApiRepo := admin.NewSysApiRepo(query, logger)
-	sysApiUseCase := admin2.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
-	apiService := admin3.NewApiService(sysApiUseCase, logger, casbinRuleUseCase)
+	v := admin2.NewSysApiUseCase(sysApiRepo, casbinRuleRepo, logger)
+	apiService := admin3.NewApiService(v, logger, casbinRuleUseCase)
 	deptService := admin3.NewDeptService(sysDeptUseCase, logger)
 	sysLogsRepo := admin.NewSysLogsRepo(query, logger)
-	sysLogsUseCase := admin2.NewSysLogsUseCase(sysLogsRepo, logger)
-	sysLogsService := admin3.NewSysLogsService(sysLogsUseCase, logger)
-	sysMenuUseCase := admin2.NewSysMenusUseCase(sysMenuRepo, logger)
-	menusService := admin3.NewMenusService(sysMenuUseCase, sysRoleMenuUseCase, logger)
+	v2 := admin2.NewSysLogsUseCase(sysLogsRepo, logger)
+	sysLogsService := admin3.NewSysLogsService(v2, logger)
+	v3 := admin2.NewSysMenusUseCase(sysMenuRepo, logger)
+	menusService := admin3.NewMenusService(v3, sysRoleMenuUseCase, logger)
 	postService := admin3.NewPostService(sysPostUseCase, logger)
 	sysDictTypeRepo := admin.NewSysDictTypeRepo(query, logger)
-	sysDictTypeUseCase := admin2.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
-	dictTypeService := admin3.NewDictTypeService(sysDictTypeUseCase, logger)
+	v4 := admin2.NewSysDictTypeUseCase(sysDictTypeRepo, logger)
+	dictTypeService := admin3.NewDictTypeService(v4, logger)
 	sysDictDataRepo := admin.NewSysDictDataRepo(query, logger)
-	sysDictDatumUseCase := admin2.NewSysDictDatumUseCase(sysDictDataRepo, logger)
-	dictDataService := admin3.NewDictDataService(sysDictDatumUseCase, logger)
+	v5 := admin2.NewSysDictDatumUseCase(sysDictDataRepo, logger)
+	dictDataService := admin3.NewDictDataService(v5, logger)
 	rolesService := admin3.NewRolesService(sysRoleUseCase, logger, casbinRuleUseCase)
 	mfaUseCase, err := admin2.NewMfaUseCase(auth, service, sysUserRepo, sysRoleRepo, logxLogger)
 	if err != nil {
@@ -96,7 +98,22 @@ func wireApp(confServer *conf.Server, confData *conf.Data, auth *conf.Auth, casb
 	messageUseCase := admin2.NewMessageUseCase(messageRepo, logxLogger)
 	messageService := admin3.NewMessageService(messageUseCase, logxLogger)
 	sysSecurityConfigService := admin3.NewSysSecurityConfigService(securityConfigUseCase, securityLockUseCase, logger)
-	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, sysLogsUseCase, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService, messageService, sysSecurityConfigService)
+	categoryRepo := media.NewCategoryRepo(dataData)
+	categoryUseCase := media2.NewCategoryUseCase(categoryRepo, logger)
+	mediaCategoryService := admin3.NewMediaCategoryService(categoryUseCase)
+	fileRepo := media.NewFileRepo(dataData)
+	storageRepo, err := media.NewStorageRepo(confOss, logger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	fileUseCase := media2.NewFileUseCase(fileRepo, storageRepo, logger)
+	mediaFileService := admin3.NewMediaFileService(fileUseCase)
+	chunkRepo := media.NewChunkRepo(dataData)
+	chunkStore := media.NewChunkStore(confOss)
+	chunkUseCase := media2.NewChunkUseCase(chunkRepo, fileRepo, storageRepo, chunkStore, logger)
+	mediaBreakpointService := admin3.NewMediaBreakpointService(chunkUseCase)
+	httpServer := server.NewHTTPServer(confServer, auth, casbinRuleRepo, sysUserRepo, logger, sysUserService, apiService, deptService, v2, sysLogsService, menusService, postService, dictTypeService, dictDataService, rolesService, sysMfaService, messageService, sysSecurityConfigService, mediaCategoryService, mediaFileService, mediaBreakpointService, confOss)
 	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()

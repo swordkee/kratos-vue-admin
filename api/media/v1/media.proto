@@ -1,0 +1,274 @@
+syntax = "proto3";
+
+package api.media.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/swordkee/kratos-vue-admin/api/media/v1;v1";
+
+// 媒体库（附件/上传）域 —— 迁移自 api-admin（gin-vue-admin）server/api/v1/example：
+//   exa_attachment_category.go       分类树（/attachmentCategory/*）
+//   exa_file_upload_download.go      文件记录（/fileUploadAndDownload/*）
+//   exa_breakpoint_continue.go       断点续传（/fileUploadAndDownload/{findFile,breakpointContinue*}）
+//
+// 路径与源端逐条对齐（源前端 web/src/api/{attachmentCategory,breakpoint,fileUploadAndDownload}.js 直连）。
+//
+// ⚠️ 不进 proto 的 3 条 multipart/流式路由（挂在 server/http.go，operation 见各 handler）：
+//   POST /fileUploadAndDownload/upload             普通上传（form 字段 file；query noSave=1 只回显不落库）
+//   POST /fileUploadAndDownload/breakpointContinue 分片上传（form: file/fileMd5/fileName/chunkNumber/chunkTotal/chunkMd5）
+//     其中 fileMd5 为「文件指纹」（源端是整体 MD5；本仓前端用 sha256(文件名|大小|最后修改时间)，
+//     服务端只把它当会话键，不做格式校验）；chunkMd5 支持两种形态：裸 32 位十六进制=MD5（源口径），
+//     "sha256:<hex>"=SHA-256（浏览器 WebCrypto 无 MD5）。
+//   GET  /fileUploadAndDownload/download           下载（?id= 或 ?key=；本地存储流式回包，aliyun 302 到直链）
+//
+// 源端已确认**存在**断点续传/扫码上传：
+//   - 断点续传：源 view/example/breakpoint/breakpoint.vue（1MB 分片 + SparkMD5 + 秒传/续传/合并/清片），
+//     本次完整移植（分片暂存本地、合并后落存储并建档）；
+//   - 扫码上传：源 view/example/upload/scanUpload.vue 为手机页，复用的就是 /upload（token 走 query），
+//     无独立后端端点 ⇒ 本次只补前端页 + 静态路由，不新增公开接口。
+//
+// 未迁移（显式登记，源端依赖壁纸 AI/阿里云缩略图专用逻辑）：
+//   /fileUploadAndDownload/uploadbyai     AI 自动打标（依赖 wallpaper.GetMetadata + 翻译 + w_menu_category/w_tags）
+//   /fileUploadAndDownload/uploadPublic   公开读上传（源端仅本地/公开桶的一层包装，与 upload 同构）
+//   /fileUploadAndDownload/clearThumbnail 按 key 推导 7 个 webp 缩略图键再删（壁纸派生图专用，走 OSS SDK 私有语义）
+service AttachmentCategoryService {
+  // 分类树列表（源 GetCategoryList：全量取回后在内存组树，根 pid=0）
+  rpc GetCategoryList(GetCategoryListReq) returns (GetCategoryListRsp) {
+    option (google.api.http) = {get: "/attachmentCategory/getCategoryList"};
+  }
+  // 添加/编辑分类（id>0 走更新；同 name+pid 重名拒绝——源 Take 检查对更新也生效）
+  rpc AddCategory(AddCategoryReq) returns (AddCategoryRsp) {
+    option (google.api.http) = {
+      post: "/attachmentCategory/addCategory"
+      body: "*"
+    };
+  }
+  // 删除分类（有子级拒绝「请先删除子级」；Unscoped 物理删）
+  rpc DeleteCategory(DeleteCategoryReq) returns (DeleteCategoryRsp) {
+    option (google.api.http) = {
+      post: "/attachmentCategory/deleteCategory"
+      body: "*"
+    };
+  }
+}
+
+service FileUploadAndDownloadService {
+  // 分页文件列表（keyword 模糊 name；源端 ORDER BY updated_at DESC）
+  rpc GetFileList(GetFileListReq) returns (GetFileListRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/getFileList"
+      body: "*"
+    };
+  }
+  // 编辑文件名/备注（源 EditFileName：仅更新 name 列）
+  rpc EditFileName(EditFileNameReq) returns (EditFileNameRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/editFileName"
+      body: "*"
+    };
+  }
+  // 删除单条（Unscoped 硬删记录 + 删存储对象；源 DeleteFile = oss.DeleteFile(key) 后删行）
+  rpc DeleteFile(DeleteFileReq) returns (DeleteFileRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/deleteFile"
+      body: "*"
+    };
+  }
+  // 批量删除（KVA 增补：源端只有单选删除，前端批量勾选需要；逐条走 DeleteFile 语义，
+  // 失败项收集进 failed_ids 不中断）
+  rpc DeleteFiles(DeleteFilesReq) returns (DeleteFilesRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/deleteFiles"
+      body: "*"
+    };
+  }
+  // 导入外部 URL（批量建档，源 ImportURL：仅写库，不下载对象）
+  rpc ImportURL(ImportURLReq) returns (ImportURLRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/importURL"
+      body: "*"
+    };
+  }
+}
+
+service BreakpointContinueService {
+  // 查询/建立断点续传会话（源 FindFile 语义：同 md5 且已完成 ⇒ 秒传新建一行；
+  // 否则按 fileMd5+fileName FirstOrCreate 并回带已完成分片。**GET 有写副作用，保真保留**）
+  rpc FindFile(FindFileReq) returns (FindFileRsp) {
+    option (google.api.http) = {get: "/fileUploadAndDownload/findFile"};
+  }
+  // 分片传输完成 → 合并（query: fileMd5/fileName；返回合并后的对象键）
+  rpc BreakpointContinueFinish(BreakpointContinueFinishReq) returns (BreakpointContinueFinishRsp) {
+    option (google.api.http) = {post: "/fileUploadAndDownload/breakpointContinueFinish"};
+  }
+  // 删除缓存分片（body: fileMd5/filePath；同时把主表置 is_finish=1、落 file_path 并清分片行）
+  rpc RemoveChunk(RemoveChunkReq) returns (RemoveChunkRsp) {
+    option (google.api.http) = {
+      post: "/fileUploadAndDownload/removeChunk"
+      body: "*"
+    };
+  }
+}
+
+// ---------- 分类 ----------
+
+message MediaCategory {
+  int64 id = 1;
+  int64 created_at = 2; // 毫秒时间戳
+  int64 updated_at = 3;
+  string name = 4;
+  int64 pid = 5;
+  repeated MediaCategory children = 6;
+}
+
+message GetCategoryListReq {}
+message GetCategoryListRsp {
+  int32 code = 1;
+  string msg = 2;
+  repeated MediaCategory list = 3;
+}
+
+message AddCategoryReq {
+  // id>0 视为更新（源 AddCategory 同一入口）
+  int64 id = 1;
+  string name = 2 [(validate.rules).string = {min_len: 1, max_len: 255}];
+  int64 pid = 3;
+}
+message AddCategoryRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 id = 3;
+}
+
+message DeleteCategoryReq {
+  int64 id = 1 [(validate.rules).int64.gt = 0];
+}
+message DeleteCategoryRsp {
+  int32 code = 1;
+  string msg = 2;
+}
+
+// ---------- 文件 ----------
+
+message MediaFile {
+  int64 id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string name = 4;       // 文件名/备注
+  string url = 5;        // 访问地址（local=/fileUploadAndDownload/download?key=…；aliyun=CDN 直链）
+  string tag = 6;        // 扩展名
+  string key = 7;        // 对象键
+  string resolution = 8; // 分辨率（源端解析图片宽高，解析不出为空）
+  int64 size = 9;        // 字节
+  string oss_type = 10;  // local / aliyun
+  int64 created_by = 11; // 上传用户 UID
+}
+
+message GetFileListReq {
+  int32 page = 1;
+  int32 page_size = 2;
+  string keyword = 3; // 模糊 name
+}
+message GetFileListRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 total = 3;
+  int32 page = 4;
+  int32 page_size = 5;
+  repeated MediaFile list = 6;
+}
+
+message EditFileNameReq {
+  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string name = 2 [(validate.rules).string = {min_len: 1, max_len: 255}];
+}
+message EditFileNameRsp {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message DeleteFileReq {
+  int64 id = 1 [(validate.rules).int64.gt = 0];
+}
+message DeleteFileRsp {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message DeleteFilesReq {
+  repeated int64 ids = 1 [(validate.rules).repeated = {min_items: 1}];
+}
+message DeleteFilesRsp {
+  int32 code = 1;
+  string msg = 2;
+  repeated int64 failed_ids = 3;
+}
+
+message ImportURLItem {
+  string name = 1;
+  string url = 2;
+  string tag = 3;
+  string key = 4;
+}
+message ImportURLReq {
+  repeated ImportURLItem list = 1 [(validate.rules).repeated = {min_items: 1}];
+}
+message ImportURLRsp {
+  int32 code = 1;
+  string msg = 2;
+  int64 count = 3;
+}
+
+// ---------- 断点续传 ----------
+
+message FileChunk {
+  int64 id = 1;
+  int64 exa_file_id = 2;
+  int32 file_chunk_number = 3;
+  string file_chunk_path = 4;
+}
+
+message ExaFile {
+  int64 id = 1;
+  string file_name = 2;
+  string file_md5 = 3;
+  string file_path = 4;
+  int32 chunk_total = 5;
+  bool is_finish = 6; // 1=秒传/已合并
+  repeated FileChunk chunks = 7;
+}
+
+message FindFileReq {
+  // 文件指纹：源端为整体 MD5，本仓允许任意稳定指纹（服务端仅作会话键 + 秒传判定）
+  string file_md5 = 1 [(validate.rules).string = {min_len: 1}];
+  string file_name = 2 [(validate.rules).string = {min_len: 1}];
+  int32 chunk_total = 3;
+}
+message FindFileRsp {
+  int32 code = 1;
+  string msg = 2;
+  ExaFile file = 3;
+}
+
+message BreakpointContinueFinishReq {
+  string file_md5 = 1 [(validate.rules).string = {min_len: 1}];
+  string file_name = 2 [(validate.rules).string = {min_len: 1}];
+}
+message BreakpointContinueFinishRsp {
+  int32 code = 1;
+  string msg = 2;
+  string file_path = 3;   // 合并后的对象键
+  string url = 4;         // 访问地址（已按当前存储模式生成）
+  int64 size = 5;         // 合并后字节数
+  string file_id = 6;     // 建档后的文件记录 id（十进制串；0=未落库）
+}
+
+message RemoveChunkReq {
+  string file_md5 = 1 [(validate.rules).string = {min_len: 1}];
+  string file_path = 2;
+}
+message RemoveChunkRsp {
+  int32 code = 1;
+  string msg = 2;
+}

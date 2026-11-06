@@ -1,4 +1,4 @@
-﻿
+
 import { useKeepAliveNamesStore } from '@/stores/keepAliveNames'
 import { useRoutesListStore } from "@/stores/routesList";
 import { useTagsViewRoutesStore } from "@/stores/tagsViewRoutes";
@@ -70,6 +70,22 @@ export async function initBackEndControlRoutes() {
 						isAffix: true,
 						isIframe: false,
 						icon: 'iconfont icon-shouye',
+					},
+				},
+				// 媒体库扫码上传：手机扫码直达 /#/scanUpload?pid=&token=（源 scanUpload.vue），
+				// 不进侧边菜单；token 由链接携带，守卫在 beforeEach 里把它写进 Session 后去 query 重进。
+				{
+					path: '/scanUpload',
+					name: 'mediaScanUpload',
+					component: () => import('@/views/media/scanUpload/index.vue'),
+					meta: {
+						title: '扫码上传',
+						isLink: '',
+						isHide: true,
+						isKeepAlive: false,
+						isAffix: false,
+						isIframe: false,
+						icon: 'iconfont icon-shangchuan',
 					},
 				},
 				// 个人中心：头像下拉入口（user.vue command=/personal），不进侧边菜单。
@@ -238,6 +254,16 @@ export function formatTwoStageRoutes(arr: any) {
 router.beforeEach(async (to, from, next) => {
 	NProgress.configure({ showSpinner: false });
 	if (to.meta.title) NProgress.start();
+	// 媒体库扫码上传页：手机首次打开时 token 只在 query 里（二维码链接），先落到 Session
+	// 再去掉 query 重新进入（避免 token 留在地址栏/历史里）。
+	if (to.path === '/scanUpload' && to.query.token && !Session.get('token')) {
+		Session.set('token', String(to.query.token));
+		const rest = { ...to.query };
+		delete rest.token;
+		next({ path: to.path, query: rest, replace: true });
+		NProgress.done();
+		return;
+	}
 	const token = Session.get('token');
 	if (to.path === '/login' && !token) {
 		next();

@@ -37,6 +37,11 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		SysRoles:          newSysRoles(db, opts...),
 		SysUsers:          newSysUsers(db, opts...),
 		SysSecurityConfig: newSysSecurityConfig(db, opts...),
+		// 媒体库（feat/media，同步 wp feat/wp-media）
+		ExaAttachmentCategory:     newExaAttachmentCategory(db, opts...),
+		ExaFileUploadAndDownloads: newExaFileUploadAndDownloads(db, opts...),
+		ExaFiles:                  newExaFiles(db, opts...),
+		ExaFileChunks:             newExaFileChunks(db, opts...),
 	}
 }
 
@@ -62,6 +67,11 @@ type Query struct {
 	SysRoles          sysRoles
 	SysUsers          sysUsers
 	SysSecurityConfig sysSecurityConfig
+	// 媒体库（feat/media）
+	ExaAttachmentCategory     exaAttachmentCategory
+	ExaFileUploadAndDownloads exaFileUploadAndDownloads
+	ExaFiles                  exaFiles
+	ExaFileChunks             exaFileChunks
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -88,6 +98,11 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		SysRoles:          q.SysRoles.clone(db),
 		SysUsers:          q.SysUsers.clone(db),
 		SysSecurityConfig: q.SysSecurityConfig.clone(db),
+		// 媒体库（feat/media）
+		ExaAttachmentCategory:     q.ExaAttachmentCategory.clone(db),
+		ExaFileUploadAndDownloads: q.ExaFileUploadAndDownloads.clone(db),
+		ExaFiles:                  q.ExaFiles.clone(db),
+		ExaFileChunks:             q.ExaFileChunks.clone(db),
 	}
 }
 
@@ -121,6 +136,11 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		SysRoles:          q.SysRoles.replaceDB(db),
 		SysUsers:          q.SysUsers.replaceDB(db),
 		SysSecurityConfig: q.SysSecurityConfig.replaceDB(db),
+		// 媒体库（feat/media）
+		ExaAttachmentCategory:     q.ExaAttachmentCategory.replaceDB(db),
+		ExaFileUploadAndDownloads: q.ExaFileUploadAndDownloads.replaceDB(db),
+		ExaFiles:                  q.ExaFiles.replaceDB(db),
+		ExaFileChunks:             q.ExaFileChunks.replaceDB(db),
 	}
 }
 
@@ -144,6 +164,11 @@ type queryCtx struct {
 	SysRoles          *sysRolesDo
 	SysUsers          *sysUsersDo
 	SysSecurityConfig *sysSecurityConfigDo
+	// 媒体库（feat/media）
+	ExaAttachmentCategory     *exaAttachmentCategoryDo
+	ExaFileUploadAndDownloads *exaFileUploadAndDownloadsDo
+	ExaFiles                  *exaFilesDo
+	ExaFileChunks             *exaFileChunksDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -167,6 +192,11 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		SysRoles:          q.SysRoles.WithContext(ctx),
 		SysUsers:          q.SysUsers.WithContext(ctx),
 		SysSecurityConfig: q.SysSecurityConfig.WithContext(ctx),
+		// 媒体库（feat/media）
+		ExaAttachmentCategory:     q.ExaAttachmentCategory.WithContext(ctx),
+		ExaFileUploadAndDownloads: q.ExaFileUploadAndDownloads.WithContext(ctx),
+		ExaFiles:                  q.ExaFiles.WithContext(ctx),
+		ExaFileChunks:             q.ExaFileChunks.WithContext(ctx),
 	}
 }
 

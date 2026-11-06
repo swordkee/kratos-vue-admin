@@ -21,4 +21,8 @@ var ProviderSet = wire.NewSet(
 	admin.NewMessageService,
 	// 登录安全策略（/system/security-config/*）
 	admin.NewSysSecurityConfigService,
+	// 媒体库（feat/media，同步 wp feat/wp-media）
+	admin.NewMediaCategoryService,
+	admin.NewMediaFileService,
+	admin.NewMediaBreakpointService,
 )

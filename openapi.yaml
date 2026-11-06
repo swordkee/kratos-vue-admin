@@ -6,6 +6,333 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /attachmentCategory/addCategory:
+        post:
+            tags:
+                - AttachmentCategoryService
+            description: 添加/编辑分类（id>0 走更新；同 name+pid 重名拒绝——源 Take 检查对更新也生效）
+            operationId: AttachmentCategoryService_AddCategory
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.AddCategoryReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.AddCategoryRsp'
+    /attachmentCategory/deleteCategory:
+        post:
+            tags:
+                - AttachmentCategoryService
+            description: 删除分类（有子级拒绝「请先删除子级」；Unscoped 物理删）
+            operationId: AttachmentCategoryService_DeleteCategory
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.DeleteCategoryReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.DeleteCategoryRsp'
+    /attachmentCategory/getCategoryList:
+        get:
+            tags:
+                - AttachmentCategoryService
+            description: 分类树列表（源 GetCategoryList：全量取回后在内存组树，根 pid=0）
+            operationId: AttachmentCategoryService_GetCategoryList
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.GetCategoryListRsp'
+    /fileUploadAndDownload/breakpointContinueFinish:
+        post:
+            tags:
+                - BreakpointContinueService
+            description: '分片传输完成 → 合并（query: fileMd5/fileName；返回合并后的对象键）'
+            operationId: BreakpointContinueService_BreakpointContinueFinish
+            parameters:
+                - name: fileMd5
+                  in: query
+                  schema:
+                    type: string
+                - name: fileName
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.BreakpointContinueFinishRsp'
+    /fileUploadAndDownload/deleteFile:
+        post:
+            tags:
+                - FileUploadAndDownloadService
+            description: 删除单条（Unscoped 硬删记录 + 删存储对象；源 DeleteFile = oss.DeleteFile(key) 后删行）
+            operationId: FileUploadAndDownloadService_DeleteFile
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.DeleteFileReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.DeleteFileRsp'
+    /fileUploadAndDownload/deleteFiles:
+        post:
+            tags:
+                - FileUploadAndDownloadService
+            description: |-
+                批量删除（KVA 增补：源端只有单选删除，前端批量勾选需要；逐条走 DeleteFile 语义，
+                 失败项收集进 failed_ids 不中断）
+            operationId: FileUploadAndDownloadService_DeleteFiles
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.DeleteFilesReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.DeleteFilesRsp'
+    /fileUploadAndDownload/editFileName:
+        post:
+            tags:
+                - FileUploadAndDownloadService
+            description: 编辑文件名/备注（源 EditFileName：仅更新 name 列）
+            operationId: FileUploadAndDownloadService_EditFileName
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.EditFileNameReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.EditFileNameRsp'
+    /fileUploadAndDownload/findFile:
+        get:
+            tags:
+                - BreakpointContinueService
+            description: |-
+                查询/建立断点续传会话（源 FindFile 语义：同 md5 且已完成 ⇒ 秒传新建一行；
+                 否则按 fileMd5+fileName FirstOrCreate 并回带已完成分片。**GET 有写副作用，保真保留**）
+            operationId: BreakpointContinueService_FindFile
+            parameters:
+                - name: fileMd5
+                  in: query
+                  description: 文件指纹：源端为整体 MD5，本仓允许任意稳定指纹（服务端仅作会话键 + 秒传判定）
+                  schema:
+                    type: string
+                - name: fileName
+                  in: query
+                  schema:
+                    type: string
+                - name: chunkTotal
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.FindFileRsp'
+    /fileUploadAndDownload/getFileList:
+        post:
+            tags:
+                - FileUploadAndDownloadService
+            description: 分页文件列表（keyword 模糊 name；源端 ORDER BY updated_at DESC）
+            operationId: FileUploadAndDownloadService_GetFileList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.GetFileListReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.GetFileListRsp'
+    /fileUploadAndDownload/importURL:
+        post:
+            tags:
+                - FileUploadAndDownloadService
+            description: 导入外部 URL（批量建档，源 ImportURL：仅写库，不下载对象）
+            operationId: FileUploadAndDownloadService_ImportURL
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.ImportURLReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.ImportURLRsp'
+    /fileUploadAndDownload/removeChunk:
+        post:
+            tags:
+                - BreakpointContinueService
+            description: '删除缓存分片（body: fileMd5/filePath；同时把主表置 is_finish=1、落 file_path 并清分片行）'
+            operationId: BreakpointContinueService_RemoveChunk
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.media.v1.RemoveChunkReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.media.v1.RemoveChunkRsp'
+    /mfa/disable:
+        post:
+            tags:
+                - SysMfa
+            description: 关闭（需动态码或恢复码二次确认）
+            operationId: SysMfa_Disable
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.MfaCodeReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaRsp'
+    /mfa/enable:
+        post:
+            tags:
+                - SysMfa
+            description: 校验动态码并启用（返回一次性恢复码）
+            operationId: SysMfa_Enable
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.MfaCodeReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaEnableRsp'
+    /mfa/enroll:
+        post:
+            tags:
+                - SysMfa
+            description: 生成 TOTP 密钥与 otpauth URI（待确认，5 分钟会话缓存）
+            operationId: SysMfa_Enroll
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.MfaEnrollReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaEnrollRsp'
+    /mfa/reset:
+        post:
+            tags:
+                - SysMfa
+            description: 管理员重置指定用户 TOTP
+            operationId: SysMfa_Reset
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.MfaResetReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaRsp'
+    /mfa/status:
+        get:
+            tags:
+                - SysMfa
+            description: 查询当前用户 TOTP 状态（available=总开关，enabled=本人是否已绑定）
+            operationId: SysMfa_Status
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaStatusRsp'
+    /mfa/verify:
+        post:
+            tags:
+                - SysMfa
+            description: 两段式登录二次验证：MfaPending token + 动态码/恢复码 → 正式 token（公开，白名单）
+            operationId: SysMfa_Verify
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.MfaVerifyReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MfaVerifyRsp'
     /system/api:
         put:
             tags:
@@ -729,6 +1056,147 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.admin.v1.DeleteMenusReply'
+    /system/message/info/{id}:
+        get:
+            tags:
+                - MessageService
+            description: 详情（收件人=JWT 注入）
+            operationId: MessageService_GetMessage
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.GetMessageRsp'
+    /system/message/list:
+        get:
+            tags:
+                - MessageService
+            description: 分页列表（type / is_read 过滤；默认查自己，超管可传 uid 查他人）
+            operationId: MessageService_ListMessages
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: uid
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: type
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: isRead
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.ListMessagesRsp'
+    /system/message/read/{id}:
+        put:
+            tags:
+                - MessageService
+            description: 单条已读（复合条件 id+uid；重复已读幂等成功）
+            operationId: MessageService_MarkRead
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MarkReadRsp'
+    /system/message/readAll:
+        put:
+            tags:
+                - MessageService
+            description: 全部已读（按 uid 批量）
+            operationId: MessageService_MarkAllRead
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.MarkAllReadRsp'
+    /system/message/send:
+        post:
+            tags:
+                - MessageService
+            description: 发送站内信
+            operationId: MessageService_SendMessage
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.SendMessageReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.SendMessageRsp'
+    /system/message/unread:
+        get:
+            tags:
+                - MessageService
+            description: 未读数（角标）
+            operationId: MessageService_CountUnread
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.CountUnreadRsp'
+    /system/message/{id}:
+        delete:
+            tags:
+                - MessageService
+            description: 删除（软删 deleted_at；复合条件 id+uid）
+            operationId: MessageService_DeleteMessage
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.DeleteMessageRsp'
     /system/post:
         put:
             tags:
@@ -971,6 +1439,74 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.admin.v1.DeleteRolesReply'
+    /system/security-config:
+        get:
+            tags:
+                - SysSecurityConfig
+            description: 获取安全配置
+            operationId: SysSecurityConfig_GetSecurityConfig
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.GetSecurityConfigReply'
+        put:
+            tags:
+                - SysSecurityConfig
+            description: 设置安全配置（单行，固定 id=1；保存即热更新）
+            operationId: SysSecurityConfig_UpdateSecurityConfig
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.UpdateSecurityConfigRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.UpdateSecurityConfigReply'
+    /system/security-config/lock:
+        get:
+            tags:
+                - SysSecurityConfig
+            description: 查询账号登录锁状态（失败计数 / 剩余锁定秒数）
+            operationId: SysSecurityConfig_GetLoginLock
+            parameters:
+                - name: username
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.GetLoginLockReply'
+    /system/security-config/unlock:
+        post:
+            tags:
+                - SysSecurityConfig
+            description: 解锁账号（清除失败计数与锁态）
+            operationId: SysSecurityConfig_UnlockLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.UnlockLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.UnlockLoginReply'
     /system/user:
         put:
             tags:
@@ -1159,6 +1695,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.admin.v1.LoginReply'
+    /system/user/loginConfig:
+        get:
+            tags:
+                - SysUser
+            description: 登录页开关（公开；前端按此决定是否展示图形验证码/手机验证码登录）
+            operationId: SysUser_GetLoginConfig
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.GetLoginConfigReply'
     /system/user/logout:
         post:
             tags:
@@ -1178,6 +1727,63 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.admin.v1.LogoutReply'
+    /system/user/phone/login:
+        post:
+            tags:
+                - SysUser
+            description: 手机验证码登录（与密码登录共用 MFA 两段式语义）
+            operationId: SysUser_PhoneLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.PhoneLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.LoginReply'
+    /system/user/phone/sendcode:
+        post:
+            tags:
+                - SysUser
+            description: 发送手机登录验证码（需先通过图形验证码）
+            operationId: SysUser_SendPhoneLoginCode
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.SendPhoneLoginCodeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.SendPhoneLoginCodeReply'
+    /system/user/phone/verify:
+        post:
+            tags:
+                - SysUser
+            description: 手机验证码登录第二步（login_method=2）：短信待验证 token + 短信码 → 正式 token
+            operationId: SysUser_SmsVerifyLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.admin.v1.SmsVerifyLoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.admin.v1.LoginReply'
     /system/user/pwd:
         put:
             tags:
@@ -1392,6 +1998,16 @@ components:
             properties:
                 deleted:
                     type: string
+        api.admin.v1.CountUnreadRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                count:
+                    type: string
         api.admin.v1.CreateApiReply:
             type: object
             properties: {}
@@ -1604,6 +2220,10 @@ components:
                     type: string
                 secret:
                     type: string
+                loginMethod:
+                    type: integer
+                    description: 登录方式（必填，用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信
+                    format: int32
         api.admin.v1.DataScopeReply:
             type: object
             properties: {}
@@ -1637,6 +2257,14 @@ components:
         api.admin.v1.DeleteMenusReply:
             type: object
             properties: {}
+        api.admin.v1.DeleteMessageRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
         api.admin.v1.DeletePostReply:
             type: object
             properties: {}
@@ -1894,6 +2522,48 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.PostData'
+        api.admin.v1.GetLoginConfigReply:
+            type: object
+            properties:
+                captchaEnabled:
+                    type: boolean
+                phoneLoginEnabled:
+                    type: boolean
+            description: 登录页开关：由 config.yaml message.loginCaptcha.enabled / phoneLogin.enabled 控制
+        api.admin.v1.GetLoginLockReply:
+            type: object
+            properties:
+                username:
+                    type: string
+                lockEnable:
+                    type: boolean
+                locked:
+                    type: boolean
+                failCount:
+                    type: string
+                remainSeconds:
+                    type: string
+                lockThreshold:
+                    type: integer
+                    format: int32
+                lockDuration:
+                    type: integer
+                    format: int32
+        api.admin.v1.GetMessageRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/api.admin.v1.Message'
+        api.admin.v1.GetSecurityConfigReply:
+            type: object
+            properties:
+                config:
+                    $ref: '#/components/schemas/api.admin.v1.SecurityConfigItem'
         api.admin.v1.ListApiReply:
             type: object
             properties:
@@ -1966,6 +2636,21 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.MenuTree'
+        api.admin.v1.ListMessagesRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                total:
+                    type: integer
+                    format: int32
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.admin.v1.Message'
         api.admin.v1.ListPostReply:
             type: object
             properties:
@@ -2021,6 +2706,16 @@ components:
                     type: string
                 expire:
                     type: string
+                needMfa:
+                    type: boolean
+                    description: TOTP：密码正确且用户已绑定二因素时，返回 5 分钟待验证 token，前端走 /mfa/verify
+                mfaToken:
+                    type: string
+                needSms:
+                    type: boolean
+                    description: |-
+                        手机验证码：用户 login_method=2 时密码正确后返回 5 分钟待验证 token（已发送短信码），
+                         前端走 /system/user/phone/verify 校验短信码换正式 token
         api.admin.v1.LoginRequest:
             type: object
             properties:
@@ -2030,12 +2725,33 @@ components:
                     type: string
                 code:
                     type: string
+                captchaId:
+                    type: string
+                    description: 图形验证码 ID（FindCaptcha 返回的 captchaId），与 code 一起在登录时校验
         api.admin.v1.LogoutReply:
             type: object
             properties: {}
         api.admin.v1.LogoutRequest:
             type: object
             properties: {}
+        api.admin.v1.MarkAllReadRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                updated:
+                    type: string
+        api.admin.v1.MarkReadRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
         api.admin.v1.MenuLabel:
             type: object
             properties:
@@ -2145,6 +2861,104 @@ components:
                         type: string
                 icon:
                     type: string
+        api.admin.v1.Message:
+            type: object
+            properties:
+                id:
+                    type: string
+                uid:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                title:
+                    type: string
+                content:
+                    type: string
+                scene:
+                    type: string
+                param:
+                    type: string
+                senderId:
+                    type: integer
+                    format: int32
+                senderName:
+                    type: string
+                isRead:
+                    type: integer
+                    format: int32
+                readAt:
+                    type: string
+                deletedAt:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+            description: Message 站内信行（sys_message 列全集）
+        api.admin.v1.MfaCodeReq:
+            type: object
+            properties:
+                code:
+                    type: string
+        api.admin.v1.MfaEnableRsp:
+            type: object
+            properties:
+                recoveryCodes:
+                    type: array
+                    items:
+                        type: string
+        api.admin.v1.MfaEnrollReq:
+            type: object
+            properties:
+                username:
+                    type: string
+        api.admin.v1.MfaEnrollRsp:
+            type: object
+            properties:
+                secret:
+                    type: string
+                url:
+                    type: string
+        api.admin.v1.MfaResetReq:
+            type: object
+            properties:
+                userId:
+                    type: string
+        api.admin.v1.MfaRsp:
+            type: object
+            properties: {}
+        api.admin.v1.MfaStatusRsp:
+            type: object
+            properties:
+                available:
+                    type: boolean
+                enabled:
+                    type: boolean
+                boundAt:
+                    type: string
+        api.admin.v1.MfaVerifyReq:
+            type: object
+            properties:
+                mfaToken:
+                    type: string
+                code:
+                    type: string
+        api.admin.v1.MfaVerifyRsp:
+            type: object
+            properties:
+                token:
+                    type: string
+                expire:
+                    type: string
+        api.admin.v1.PhoneLoginRequest:
+            type: object
+            properties:
+                phone:
+                    type: string
+                code:
+                    type: string
         api.admin.v1.PostData:
             type: object
             properties:
@@ -2227,6 +3041,8 @@ components:
                 updateTime:
                     type: string
                     format: date-time
+                defaultRouter:
+                    type: string
         api.admin.v1.RoleDeptTreeSelectReply:
             type: object
             properties:
@@ -2251,6 +3067,122 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.MenuLabel'
+        api.admin.v1.SecurityConfigItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                captchaOpen:
+                    type: integer
+                    description: 验证码段
+                    format: int32
+                captchaTimeout:
+                    type: integer
+                    format: int32
+                keyLong:
+                    type: integer
+                    format: int32
+                imgWidth:
+                    type: integer
+                    format: int32
+                imgHeight:
+                    type: integer
+                    format: int32
+                pwdMinLength:
+                    type: integer
+                    description: 密码复杂度段
+                    format: int32
+                pwdRequireUpper:
+                    type: boolean
+                pwdRequireLower:
+                    type: boolean
+                pwdRequireDigit:
+                    type: boolean
+                pwdRequireSpecial:
+                    type: boolean
+                limitEnable:
+                    type: boolean
+                    description: 限流段
+                limitWindow:
+                    type: integer
+                    format: int32
+                limitCount:
+                    type: integer
+                    format: int32
+                lockEnable:
+                    type: boolean
+                    description: 失败锁定段
+                lockThreshold:
+                    type: integer
+                    format: int32
+                lockDuration:
+                    type: integer
+                    format: int32
+                pwdExpireEnable:
+                    type: boolean
+                    description: 密码过期段
+                pwdExpireDays:
+                    type: integer
+                    format: int32
+                forceNewUserChangePassword:
+                    type: boolean
+                mfaRequired:
+                    type: boolean
+                    description: 双因素
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+            description: SecurityConfigItem 安全配置全量（单行）
+        api.admin.v1.SendMessageReq:
+            type: object
+            properties:
+                uid:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                title:
+                    type: string
+                content:
+                    type: string
+                scene:
+                    type: string
+                param:
+                    type: string
+            description: |-
+                信封字段 code/msg：与本目录既有 envelope 语义一致（0=成功；HTTP 外层
+                 EncoderResponse 会再包一层 CommonReply{code,message,data}，前端解包 data 后读本层）。
+        api.admin.v1.SendMessageRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                id:
+                    type: string
+        api.admin.v1.SendPhoneLoginCodeReply:
+            type: object
+            properties:
+                retCode:
+                    type: integer
+                    format: int32
+                retMsg:
+                    type: string
+        api.admin.v1.SendPhoneLoginCodeRequest:
+            type: object
+            properties:
+                phone:
+                    type: string
+                username:
+                    type: string
+                captchaId:
+                    type: string
+                code:
+                    type: string
         api.admin.v1.SimpleMenu:
             type: object
             properties:
@@ -2262,6 +3194,14 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.admin.v1.SimpleMenu'
+        api.admin.v1.SmsVerifyLoginRequest:
+            type: object
+            properties:
+                mfaToken:
+                    type: string
+                code:
+                    type: string
+            description: 手机验证码登录第二步请求（login_method=2）
         api.admin.v1.SysLogs:
             type: object
             properties:
@@ -2323,6 +3263,18 @@ components:
                 userId:
                     type: string
             description: Extended fields for detailed operation records (from SQL schema)
+        api.admin.v1.UnlockLoginReply:
+            type: object
+            properties:
+                username:
+                    type: string
+                cleared:
+                    type: boolean
+        api.admin.v1.UnlockLoginRequest:
+            type: object
+            properties:
+                username:
+                    type: string
         api.admin.v1.UpdateApiReply:
             type: object
             properties: {}
@@ -2551,6 +3503,65 @@ components:
                     type: string
                 roleId:
                     type: string
+        api.admin.v1.UpdateSecurityConfigReply:
+            type: object
+            properties:
+                config:
+                    $ref: '#/components/schemas/api.admin.v1.SecurityConfigItem'
+        api.admin.v1.UpdateSecurityConfigRequest:
+            type: object
+            properties:
+                captchaOpen:
+                    type: integer
+                    format: int32
+                captchaTimeout:
+                    type: integer
+                    format: int32
+                keyLong:
+                    type: integer
+                    format: int32
+                imgWidth:
+                    type: integer
+                    format: int32
+                imgHeight:
+                    type: integer
+                    format: int32
+                pwdMinLength:
+                    type: integer
+                    format: int32
+                pwdRequireUpper:
+                    type: boolean
+                pwdRequireLower:
+                    type: boolean
+                pwdRequireDigit:
+                    type: boolean
+                pwdRequireSpecial:
+                    type: boolean
+                limitEnable:
+                    type: boolean
+                limitWindow:
+                    type: integer
+                    format: int32
+                limitCount:
+                    type: integer
+                    format: int32
+                lockEnable:
+                    type: boolean
+                lockThreshold:
+                    type: integer
+                    format: int32
+                lockDuration:
+                    type: integer
+                    format: int32
+                pwdExpireEnable:
+                    type: boolean
+                pwdExpireDays:
+                    type: integer
+                    format: int32
+                forceNewUserChangePassword:
+                    type: boolean
+                mfaRequired:
+                    type: boolean
         api.admin.v1.UpdateSysUserReply:
             type: object
             properties: {}
@@ -2605,6 +3616,12 @@ components:
                     type: string
                 secret:
                     type: string
+                loginMethod:
+                    type: integer
+                    description: |-
+                        登录方式（必填，用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信；
+                         传 0 表示未提交，保留库中原值
+                    format: int32
         api.admin.v1.UserData:
             type: object
             properties:
@@ -2662,6 +3679,276 @@ components:
                     type: string
                 qrcode:
                     type: string
+                loginMethod:
+                    type: integer
+                    description: 登录方式（用户级强制二因素方式）：1=TOTP 动态验证码（默认） 2=手机验证码短信
+                    format: int32
+        api.media.v1.AddCategoryReq:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: id>0 视为更新（源 AddCategory 同一入口）
+                name:
+                    type: string
+                pid:
+                    type: string
+        api.media.v1.AddCategoryRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                id:
+                    type: string
+        api.media.v1.BreakpointContinueFinishRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                filePath:
+                    type: string
+                url:
+                    type: string
+                size:
+                    type: string
+                fileId:
+                    type: string
+        api.media.v1.DeleteCategoryReq:
+            type: object
+            properties:
+                id:
+                    type: string
+        api.media.v1.DeleteCategoryRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+        api.media.v1.DeleteFileReq:
+            type: object
+            properties:
+                id:
+                    type: string
+        api.media.v1.DeleteFileRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+        api.media.v1.DeleteFilesReq:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        api.media.v1.DeleteFilesRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                failedIds:
+                    type: array
+                    items:
+                        type: string
+        api.media.v1.EditFileNameReq:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+        api.media.v1.EditFileNameRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+        api.media.v1.ExaFile:
+            type: object
+            properties:
+                id:
+                    type: string
+                fileName:
+                    type: string
+                fileMd5:
+                    type: string
+                filePath:
+                    type: string
+                chunkTotal:
+                    type: integer
+                    format: int32
+                isFinish:
+                    type: boolean
+                chunks:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.media.v1.FileChunk'
+        api.media.v1.FileChunk:
+            type: object
+            properties:
+                id:
+                    type: string
+                exaFileId:
+                    type: string
+                fileChunkNumber:
+                    type: integer
+                    format: int32
+                fileChunkPath:
+                    type: string
+        api.media.v1.FindFileRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                file:
+                    $ref: '#/components/schemas/api.media.v1.ExaFile'
+        api.media.v1.GetCategoryListRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.media.v1.MediaCategory'
+        api.media.v1.GetFileListReq:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                keyword:
+                    type: string
+        api.media.v1.GetFileListRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                total:
+                    type: string
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.media.v1.MediaFile'
+        api.media.v1.ImportURLItem:
+            type: object
+            properties:
+                name:
+                    type: string
+                url:
+                    type: string
+                tag:
+                    type: string
+                key:
+                    type: string
+        api.media.v1.ImportURLReq:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.media.v1.ImportURLItem'
+        api.media.v1.ImportURLRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
+                count:
+                    type: string
+        api.media.v1.MediaCategory:
+            type: object
+            properties:
+                id:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                name:
+                    type: string
+                pid:
+                    type: string
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.media.v1.MediaCategory'
+        api.media.v1.MediaFile:
+            type: object
+            properties:
+                id:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                name:
+                    type: string
+                url:
+                    type: string
+                tag:
+                    type: string
+                key:
+                    type: string
+                resolution:
+                    type: string
+                size:
+                    type: string
+                ossType:
+                    type: string
+                createdBy:
+                    type: string
+        api.media.v1.RemoveChunkReq:
+            type: object
+            properties:
+                fileMd5:
+                    type: string
+                filePath:
+                    type: string
+        api.media.v1.RemoveChunkRsp:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                msg:
+                    type: string
         google.protobuf.Any:
             type: object
             properties:
@@ -2673,16 +3960,74 @@ components:
 tags:
     - name: Api
       description: api管理
+    - name: AttachmentCategoryService
+      description: |-
+        媒体库（附件/上传）域 —— 迁移自 api-admin（gin-vue-admin）server/api/v1/example：
+           exa_attachment_category.go       分类树（/attachmentCategory/*）
+           exa_file_upload_download.go      文件记录（/fileUploadAndDownload/*）
+           exa_breakpoint_continue.go       断点续传（/fileUploadAndDownload/{findFile,breakpointContinue*}）
+
+         路径与源端逐条对齐（源前端 web/src/api/{attachmentCategory,breakpoint,fileUploadAndDownload}.js 直连）。
+
+         ⚠️ 不进 proto 的 3 条 multipart/流式路由（挂在 server/http.go，operation 见各 handler）：
+           POST /fileUploadAndDownload/upload             普通上传（form 字段 file；query noSave=1 只回显不落库）
+           POST /fileUploadAndDownload/breakpointContinue 分片上传（form: file/fileMd5/fileName/chunkNumber/chunkTotal/chunkMd5）
+             其中 fileMd5 为「文件指纹」（源端是整体 MD5；本仓前端用 sha256(文件名|大小|最后修改时间)，
+             服务端只把它当会话键，不做格式校验）；chunkMd5 支持两种形态：裸 32 位十六进制=MD5（源口径），
+             "sha256:<hex>"=SHA-256（浏览器 WebCrypto 无 MD5）。
+           GET  /fileUploadAndDownload/download           下载（?id= 或 ?key=；本地存储流式回包，aliyun 302 到直链）
+
+         源端已确认**存在**断点续传/扫码上传：
+           - 断点续传：源 view/example/breakpoint/breakpoint.vue（1MB 分片 + SparkMD5 + 秒传/续传/合并/清片），
+             本次完整移植（分片暂存本地、合并后落存储并建档）；
+           - 扫码上传：源 view/example/upload/scanUpload.vue 为手机页，复用的就是 /upload（token 走 query），
+             无独立后端端点 ⇒ 本次只补前端页 + 静态路由，不新增公开接口。
+
+         未迁移（显式登记，源端依赖壁纸 AI/阿里云缩略图专用逻辑）：
+           /fileUploadAndDownload/uploadbyai     AI 自动打标（依赖 wallpaper.GetMetadata + 翻译 + w_menu_category/w_tags）
+           /fileUploadAndDownload/uploadPublic   公开读上传（源端仅本地/公开桶的一层包装，与 upload 同构）
+           /fileUploadAndDownload/clearThumbnail 按 key 推导 7 个 webp 缩略图键再删（壁纸派生图专用，走 OSS SDK 私有语义）
+    - name: BreakpointContinueService
     - name: Dept
       description: 部门管理
     - name: DictData
     - name: DictType
+    - name: FileUploadAndDownloadService
     - name: LogsService
     - name: Menus
       description: 菜单管理
+    - name: MessageService
+      description: |-
+        统一站内信（KVA 域，表 sys_message；TASK-03 批1 模板版，2026-09-23）
+
+         身份纪律（服务端强制，请求里的 uid 不可信）：
+           - List/Get/已读/删除/未读数的目标收件人一律取 JWT claims 的 UserID（authz.FromContext）；
+           - ListMessages 额外允许「超管传 uid 查他人」，非超管传他人 uid → 403，无身份 → 401；
+           - SendMessage 的 uid=收件人（可为任意用户），sender_id/sender_name 由服务端 claims 注入；
+           - MarkRead / DeleteMessage 请求体不带 uid（带了也会被忽略）。
     - name: Roles
       description: 角色管理
+    - name: SysMfa
+      description: |-
+        MFA TOTP 双因素认证
+         R26 接入（设计 docs/design/2026-09-12-mfa-totp-integration.md，参考 api-admin feature/mfa-totp）：
+           - 两段式登录：密码 → MfaPending 5min token → Verify 校验动态码/恢复码 → 正式 token
+           - 绑定/解绑/恢复码/管理员重置；默认不启用（auth.mfa.enabled=false）
     - name: SysPost
       description: 岗位管理
+    - name: SysSecurityConfig
+      description: |-
+        SysSecurityConfig 登录安全策略（gva model/system/sys_security_config.go +
+         service/system/sys_security_config.go + service/system/security_lock.go 回灌）。
+
+         存储：单行表 sys_security_config（固定 id=1，DDL 见
+         deploy/sql/20261105_sys_security_config.sql）；进程内原子缓存热读，保存即热更新。
+
+         行为接入：登录失败锁定段（lockEnable/lockThreshold/lockDuration）已接入
+         POST /system/user/login（失败计数、达阈值置锁、成功清计数、锁定期直接拒绝）；
+         计数/锁态存 Redis（未配置 Redis 时进程内存，对齐 gva GVA_CACHE 双后端语义），
+         Redis 故障时按源语义「不计数、不锁定」并记日志。
+         其余段（验证码/密码复杂度/限流/密码过期/MFA 强制）先按源落库并提供读写面，
+         行为接入情况见 docs/tasks 台账登记项。
     - name: SysUser
       description: 用户管理

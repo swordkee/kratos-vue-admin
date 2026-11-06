@@ -10,6 +10,8 @@ import (
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/conf"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/admin"
+	bizmedia "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/media"
+	datamedia "github.com/swordkee/kratos-vue-admin/app/admin/internal/data/media"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/dao"
 	"github.com/swordkee/kratos-vue-admin/pkg/log"
 	"gorm.io/driver/mysql"
@@ -41,6 +43,13 @@ var ProviderSet = wire.NewSet(
 	admin.NewSecurityConfigRepo,
 	// 登录失败计数/锁态存取器（Redis 共享 / 无 Redis 进程内存双后端）
 	NewLoginLockManager,
+	// 媒体库（feat/media，同步 wp feat/wp-media）：*data.Data 同时满足 datamedia.QuerySource；
+	// 仓储构造器返回具体类型，按 biz 侧接口逐个 Bind。
+	wire.Bind(new(datamedia.QuerySource), new(*Data)),
+	wire.Bind(new(bizmedia.CategoryRepo), new(*datamedia.CategoryRepo)),
+	wire.Bind(new(bizmedia.FileRepo), new(*datamedia.FileRepo)),
+	wire.Bind(new(bizmedia.ChunkRepo), new(*datamedia.ChunkRepo)),
+	datamedia.ProviderSet,
 )
 
 // NewQuery returns the query instance from Data

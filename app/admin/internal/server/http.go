@@ -23,6 +23,7 @@ import (
 	"github.com/swordkee/kratos-vue-admin/pkg/log"
 
 	pb "github.com/swordkee/kratos-vue-admin/api/admin/v1"
+	mediapb "github.com/swordkee/kratos-vue-admin/api/media/v1"
 	v1 "github.com/swordkee/kratos-vue-admin/api/admin/v1"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
@@ -203,6 +204,12 @@ func NewHTTPServer(
 	messageService *adminV1.MessageService,
 	// 登录安全策略（/system/security-config/*）
 	securityConfigService *adminV1.SysSecurityConfigService,
+	// 媒体库（feat/media：/attachmentCategory/* /fileUploadAndDownload/*）
+	mediaCategoryService *adminV1.MediaCategoryService,
+	mediaFileService *adminV1.MediaFileService,
+	mediaBreakpointService *adminV1.MediaBreakpointService,
+	// ossConf 仅用于判定是否挂载本地存储的公开静态面（/static/）
+	ossConf *conf.Oss,
 ) *http.Server {
 	// 构建日志中间件配置
 	logMiddlewareConfig := middleware.DefaultLogConfig()
@@ -262,6 +269,10 @@ func NewHTTPServer(
 	v1.RegisterSysMfaHTTPServer(srv, sysMfaService)
 	v1.RegisterMessageServiceHTTPServer(srv, messageService)
 	v1.RegisterSysSecurityConfigHTTPServer(srv, securityConfigService)
+	// 媒体库（feat/media）
+	mediapb.RegisterAttachmentCategoryServiceHTTPServer(srv, mediaCategoryService)
+	mediapb.RegisterFileUploadAndDownloadServiceHTTPServer(srv, mediaFileService)
+	mediapb.RegisterBreakpointContinueServiceHTTPServer(srv, mediaBreakpointService)
 
 	// 上传文件的路由
 	r := srv.Route("/")
@@ -286,6 +297,47 @@ func NewHTTPServer(
 		rep["url"] = url
 		return ctx.Result(200, url)
 	})
+
+	// ===== 媒体库 REST 面（multipart/流式不进 proto，源端同样是 multipart 裸路由）=====
+	// 普通上传：源 POST /fileUploadAndDownload/upload（form 字段 file，query noSave）。
+	// 响应沿用源形态 {file:{...}}（本仓信封 data 内再包一层 file）。
+	r.POST("/fileUploadAndDownload/upload", func(ctx http.Context) error {
+		http.SetOperation(ctx, "/api.media.v1.FileUploadAndDownloadService/UploadFile")
+		h := ctx.Middleware(func(c context.Context, _ interface{}) (interface{}, error) {
+			return mediaFileService.RESTUploadFile(ctx)
+		})
+		res, err := h(ctx, nil)
+		if err != nil {
+			return err
+		}
+		return ctx.Result(200, res)
+	})
+	// 分片上传：源 POST /fileUploadAndDownload/breakpointContinue。
+	r.POST("/fileUploadAndDownload/breakpointContinue", func(ctx http.Context) error {
+		http.SetOperation(ctx, "/api.media.v1.BreakpointContinueService/BreakpointContinue")
+		h := ctx.Middleware(func(c context.Context, _ interface{}) (interface{}, error) {
+			return nil, mediaBreakpointService.RESTBreakpointContinue(ctx)
+		})
+		if _, err := h(ctx, nil); err != nil {
+			return err
+		}
+		return ctx.Result(200, map[string]any{"code": 0, "msg": "切片创建成功"})
+	})
+	// 下载：源端无接口（前端直接下载 url），本仓补一条受限路由（本地流式 / aliyun 302）。
+	r.GET("/fileUploadAndDownload/download", func(ctx http.Context) error {
+		http.SetOperation(ctx, "/api.media.v1.FileUploadAndDownloadService/DownloadFile")
+		h := ctx.Middleware(func(c context.Context, _ interface{}) (interface{}, error) {
+			return nil, mediaFileService.RESTDownload(ctx)
+		})
+		_, err := h(ctx, nil)
+		return err
+	})
+
+	// 本地存储的公开静态面（对齐源端 gin static：媒体图片要能直接 <img> 预览/复制链接）。
+	// 仅 oss.use=local 时注册，且 handler 自带路径穿越校验；aliyun 模式由 CDN 直链承担。
+	if ossConf != nil && ossConf.Use == conf.OssUseMode_local && ossConf.Local != nil && ossConf.Local.Dir != "" {
+		srv.HandlePrefix("/static/", newLocalStaticHandler(ossConf.Local.Dir))
+	}
 
 	// pprof 调试端点为裸处理器（不经认证中间件），生产环境必须关闭；仅 dev/test 保留。
 	if c.Env != conf.Env_pro {

@@ -32,6 +32,7 @@
 - **kratos http `ctx.Header()` 返回的是请求头**，对它 Set 是静默丢失；设响应头必须 `ctx.Response().Header()`。
 - **`StrictSlash(true)`（kratos 默认）下 catch-all `/{path:.*}` 会把 `GET /` 变 301 自环**，须显式注册精确 `GET /`（web embed 实证）。
 - **`*.pb.go` 禁止文本替换**：rawDesc 是字节编码，改字符串不改长度/偏移会运行时炸；一律重新 protoc。
+- **proto 分域首例 = `api/media/v1`**（媒体库，2026-11-06 从 `wallpaper/go-kva-admin` feat/wp-media 回灌）：`--proto_path=api` 为根、各域目录自包含；《Makefile》的 `API_PROTO_FILES` 已改为 `cd api && find`，admin 域内 `import "base.proto"` 需写成 `import "admin/v1/base.proto"`（分域后不再有 `--proto_path=api/admin/v1`，只保留 `api` 根）。**重新生成会让 admin 域 pb.go 全量漂移**（`source:` 行 `base.proto` → `admin/v1/base.proto` + 内部变量名 `file_` → `file_admin_v1_`），属预期迁移，勿回退；openapi 只需核对「原路径/schema 一条不少」。
 - **MySQL 8.4 无 `ADD COLUMN IF NOT EXISTS`**（MariaDB 语法，直接 1064）：幂等 DDL 用 `information_schema.COLUMNS` 判定 + `PREPARE/EXECUTE`。
 - **proto 字段号只增不复用**：加字段前 grep 本仓 proto 实际占位（各仓布局不同：kv/gva/wp/模板=26，exAdmin=27 因 memberId 占 26）。
 - **`go test` 一律 `-p 1` 串行**（提交内存小，并行会 OOM 假红）；worktree 内 GOCACHE 若报「path not found」多为依赖未下载完的假错，重跑即可。

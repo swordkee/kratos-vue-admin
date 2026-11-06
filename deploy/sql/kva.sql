@@ -1139,3 +1139,182 @@ WHERE NOT EXISTS (
   SELECT 1 FROM `sys_apis`
   WHERE `path` = '/sensitive/view' AND `method` = 'GET' AND `deleted_at` IS NULL
 );
+
+-- ============================================================================
+-- 媒体库（附件分类 / 文件上传下载 / 断点续传）—— 2026-11-06 模板回灌
+--   与 deploy/sql/media_20261106.sql 同源；沿用本文件的幂等追加段口径
+--   （CREATE TABLE IF NOT EXISTS + 默认行 WHERE NOT EXISTS），重复执行不删表不清数据。
+--   gen 模型见 app/admin/internal/data/gen/{model,dao}/exa_*.gen.go。
+-- ============================================================================
+-- ----------------------------
+-- 媒体库分类（/attachmentCategory/*）
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `exa_attachment_category` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime(3) NULL DEFAULT NULL COMMENT '删除时间',
+  `name` varchar(255) NULL DEFAULT NULL COMMENT '分类名称',
+  `pid` int(11) NULL DEFAULT 0 COMMENT '父节点ID（0=根）',
+  PRIMARY KEY (`id`),
+  KEY `idx_deleted_at` (`deleted_at`),
+  KEY `idx_pid` (`pid`),
+  KEY `idx_name_pid` (`name`, `pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='媒体库分类';
+
+-- ----------------------------
+-- 文件记录（/fileUploadAndDownload/*）
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `exa_file_upload_and_downloads` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime(3) NULL DEFAULT NULL COMMENT '删除时间',
+  `name` varchar(255) NULL DEFAULT NULL COMMENT '文件名/备注',
+  `url` varchar(255) NULL DEFAULT NULL COMMENT '访问地址',
+  `tag` varchar(255) NULL DEFAULT NULL COMMENT '文件标签（扩展名）',
+  `key` varchar(255) NULL DEFAULT NULL COMMENT '对象键',
+  `resolution` varchar(255) NULL DEFAULT NULL COMMENT '分辨率',
+  `size` bigint(20) NULL DEFAULT NULL COMMENT '大小（字节）',
+  `oss_type` varchar(255) NULL DEFAULT NULL COMMENT '存储类型 local/aliyun',
+  `created_by` bigint(20) unsigned NULL DEFAULT NULL COMMENT '上传用户 UID',
+  PRIMARY KEY (`id`),
+  KEY `idx_deleted_at` (`deleted_at`),
+  KEY `idx_key` (`key`),
+  KEY `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='文件上传下载记录';
+
+-- ----------------------------
+-- 断点续传主表（/fileUploadAndDownload/{findFile,breakpointContinue*}）
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `exa_files` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime(3) NULL DEFAULT NULL COMMENT '删除时间',
+  `file_name` varchar(255) NULL DEFAULT NULL COMMENT '文件名',
+  `file_md5` varchar(255) NULL DEFAULT NULL COMMENT '文件指纹（源端为整体 MD5）',
+  `file_path` varchar(255) NULL DEFAULT NULL COMMENT '合并后对象键',
+  `chunk_total` int(11) NULL DEFAULT NULL COMMENT '分片总数',
+  `is_finish` tinyint(1) NULL DEFAULT 0 COMMENT '是否已完成（1=秒传/已合并）',
+  PRIMARY KEY (`id`),
+  KEY `idx_deleted_at` (`deleted_at`),
+  KEY `idx_file_md5` (`file_md5`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='断点续传主表';
+
+-- ----------------------------
+-- 断点续传分片表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `exa_file_chunks` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` datetime(3) NULL DEFAULT NULL COMMENT '删除时间',
+  `exa_file_id` bigint(20) unsigned NULL DEFAULT NULL COMMENT 'exa_files.id',
+  `file_chunk_number` int(11) NULL DEFAULT NULL COMMENT '分片序号（0 起）',
+  `file_chunk_path` varchar(255) NULL DEFAULT NULL COMMENT '分片落盘路径',
+  PRIMARY KEY (`id`),
+  KEY `idx_deleted_at` (`deleted_at`),
+  KEY `idx_exa_file_id` (`exa_file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='断点续传分片';
+
+-- ----------------------------
+-- 默认分类（源端 initdb 的「默认分类」；按 name+pid 幂等，可重复执行）
+-- ----------------------------
+INSERT INTO `exa_attachment_category` (`created_at`, `updated_at`, `name`, `pid`)
+SELECT NOW(3), NOW(3), '默认分类', 0
+FROM DUAL
+WHERE NOT EXISTS (
+  SELECT 1 FROM `exa_attachment_category`
+  WHERE `name` = '默认分类' AND `pid` = 0 AND `deleted_at` IS NULL
+);
+
+-- ----------------------------
+-- 自检（执行后人工核对，期望 4 张表 / 1 行默认分类）
+-- ----------------------------
+-- SHOW TABLES LIKE 'exa_%';
+-- SELECT id, name, pid FROM exa_attachment_category WHERE deleted_at IS NULL;
+
+-- ============================================================================
+-- 媒体库菜单与 API 权限点（feat/media，2026-11-06 模板回灌）
+--   与 deploy/sql/media_menu_20261106.sql 同源；幂等（path NOT EXISTS / @media_root 动态父）。
+--   扫码上传页 /scanUpload 是静态路由（不进侧边菜单），故无菜单行。
+-- ============================================================================
+-- ---------------------------------------------------------------------------
+-- 一级目录：媒体库
+-- ---------------------------------------------------------------------------
+INSERT INTO `sys_menus`
+(`menu_name`, `title`, `parent_id`, `sort`, `icon`, `path`, `component`, `is_iframe`, `link`,
+ `menu_type`, `hidden`, `keep_alive`, `is_affix`, `permission`, `status`, `create_by`, `update_by`,
+ `remark`, `created_at`, `updated_at`)
+SELECT '媒体库', '', 0, 12, 'elementFiles', '/media', 'Layout', 2, '',
+       'M', 1, 2, 2, '', 1, 'admin', '', '媒体库（feat/media：上传页 + 文件管理）', NOW(), NOW()
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `sys_menus` m WHERE m.`path` = '/media' AND m.`menu_type` = 'M');
+
+SET @media_root := (SELECT `id` FROM `sys_menus` WHERE `path` = '/media' AND `menu_type` = 'M' AND `deleted_at` IS NULL ORDER BY `id` LIMIT 1);
+
+-- 媒体库上传 → views/media/upload/index.vue
+--   源 view/example/upload/upload.vue（分类树 + 多文件上传 + 分片上传 + 扫码上传 + 导入URL + 列表）
+INSERT INTO `sys_menus`
+(`menu_name`, `title`, `parent_id`, `sort`, `icon`, `path`, `component`, `is_iframe`, `link`,
+ `menu_type`, `hidden`, `keep_alive`, `is_affix`, `permission`, `status`, `create_by`, `update_by`,
+ `remark`, `created_at`, `updated_at`)
+SELECT '媒体库上传', '', @media_root, 1, 'elementUpload', '/media/upload', 'media/upload/index', 2, '',
+       'C', 1, 2, 2, 'media:upload', 1, 'admin', '',
+       '/attachmentCategory/* + /fileUploadAndDownload/*（api/media/v1/media.proto）', NOW(), NOW()
+FROM DUAL
+WHERE @media_root IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM `sys_menus` m WHERE m.`path` = '/media/upload' AND m.`menu_type` = 'C');
+
+-- 文件管理 → views/media/file/index.vue
+--   源 view/example/upload/upload.vue 的列表/改名/删除/导入URL（批量删为增补）
+INSERT INTO `sys_menus`
+(`menu_name`, `title`, `parent_id`, `sort`, `icon`, `path`, `component`, `is_iframe`, `link`,
+ `menu_type`, `hidden`, `keep_alive`, `is_affix`, `permission`, `status`, `create_by`, `update_by`,
+ `remark`, `created_at`, `updated_at`)
+SELECT '文件管理', '', @media_root, 2, 'elementFiles', '/media/file', 'media/file/index', 2, '',
+       'C', 1, 2, 2, 'media:file', 1, 'admin', '',
+       '/fileUploadAndDownload/getFileList|editFileName|deleteFile|deleteFiles|importURL', NOW(), NOW()
+FROM DUAL
+WHERE @media_root IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM `sys_menus` m WHERE m.`path` = '/media/file' AND m.`menu_type` = 'C');
+
+-- ---------------------------------------------------------------------------
+-- 角色授权：超管理员(role_id=1) / 管理员(role_id=2)
+-- ---------------------------------------------------------------------------
+INSERT INTO `sys_role_menus` (`role_id`, `menu_id`, `role_name`)
+SELECT r.id, m.id, r.role_name
+FROM `sys_menus` m
+JOIN `sys_roles` r ON r.id IN (1, 2)
+WHERE m.`path` IN ('/media', '/media/upload', '/media/file')
+  AND m.`deleted_at` IS NULL
+  AND NOT EXISTS (
+    SELECT 1 FROM `sys_role_menus` rm WHERE rm.`role_id` = r.id AND rm.`menu_id` = m.id
+  );
+
+-- ---------------------------------------------------------------------------
+-- 媒体库 API 权限点（casbin 对象名 = proto operation；供「角色管理」按需勾选）
+--   multipart/流式 3 条裸路由的 operation 也在内（upload / breakpointContinue / download）。
+-- ---------------------------------------------------------------------------
+INSERT INTO `sys_apis` (`path`, `description`, `api_group`, `method`, `created_at`, `updated_at`)
+SELECT t.path, t.descr, '媒体库', t.method, NOW(), NOW()
+FROM (
+  SELECT '/api.media.v1.AttachmentCategoryService/GetCategoryList' AS path, '媒体库-分类树' AS descr, 'GET' AS method
+  UNION ALL SELECT '/api.media.v1.AttachmentCategoryService/AddCategory', '媒体库-新增/编辑分类', 'POST'
+  UNION ALL SELECT '/api.media.v1.AttachmentCategoryService/DeleteCategory', '媒体库-删除分类', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/GetFileList', '媒体库-文件列表', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/EditFileName', '媒体库-文件改名', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/DeleteFile', '媒体库-删除文件', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/DeleteFiles', '媒体库-批量删除文件', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/ImportURL', '媒体库-导入外链', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/UploadFile', '媒体库-普通上传（multipart 裸路由 /fileUploadAndDownload/upload）', 'POST'
+  UNION ALL SELECT '/api.media.v1.FileUploadAndDownloadService/DownloadFile', '媒体库-下载（流式裸路由 /fileUploadAndDownload/download）', 'GET'
+  UNION ALL SELECT '/api.media.v1.BreakpointContinueService/FindFile', '媒体库-断点续传会话', 'GET'
+  UNION ALL SELECT '/api.media.v1.BreakpointContinueService/BreakpointContinue', '媒体库-分片上传（multipart 裸路由 /fileUploadAndDownload/breakpointContinue）', 'POST'
+  UNION ALL SELECT '/api.media.v1.BreakpointContinueService/BreakpointContinueFinish', '媒体库-分片合并', 'POST'
+  UNION ALL SELECT '/api.media.v1.BreakpointContinueService/RemoveChunk', '媒体库-清理分片', 'POST'
+) t
+WHERE NOT EXISTS (
+  SELECT 1 FROM `sys_apis` a WHERE a.`path` = t.path AND a.`method` = t.method AND a.`deleted_at` IS NULL
+);

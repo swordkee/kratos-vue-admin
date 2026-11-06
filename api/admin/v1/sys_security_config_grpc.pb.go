@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.2
 // - protoc             v7.36.2
-// source: sys_security_config.proto
+// source: admin/v1/sys_security_config.proto
 
 package v1
 
@@ -265,5 +265,5 @@ var SysSecurityConfig_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "sys_security_config.proto",
+	Metadata: "admin/v1/sys_security_config.proto",
 }

@@ -2,7 +2,7 @@ GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 APP_RELATIVE_PATH=$(shell a=`basename $$PWD` && cd .. && b=`basename $$PWD` && echo $$b/$$a)
 INTERNAL_PROTO_FILES=$(shell  cd app/admin && find internal -name *.proto)
-API_PROTO_FILES=$(shell cd api/admin/v1/ && find . -name "*.proto")
+API_PROTO_FILES=$(shell cd api && find . -name "*.proto" | sed "s|^\./||")
 KRATOS_VERSION=$(shell go mod graph |grep "go-kratos/kratos/v3@" |head -n 1 |awk -F '@' '{print $$2}')
 KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v3@$(KRATOS_VERSION)
 APP_NAME=$(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
@@ -23,33 +23,33 @@ init:
 .PHONY: grpc
 # generate grpc code
 grpc:
-	 cd api/admin/v1 && protoc --proto_path=. \
-           --proto_path=../../../third_party \
-           --proto_path=../../../pkg/proto \
-           --go_out=paths=source_relative:. \
-           --go-grpc_out=paths=source_relative:. \
+	protoc --proto_path=api \
+           --proto_path=third_party \
+           --proto_path=pkg/proto \
+           --go_out=paths=source_relative:api \
+           --go-grpc_out=paths=source_relative:api \
            $(API_PROTO_FILES)
 
 .PHONY: http
 # generate http code
 http:
-	cd api/admin/v1 && protoc --proto_path=. \
-           --proto_path=../../../third_party \
-           --proto_path=../../../pkg/proto \
-           --go_out=paths=source_relative:. \
-           --go-http_out=paths=source_relative:. \
-           --validate_out=paths=source_relative,lang=go:. \
-           --openapi_out=fq_schema_naming=true,default_response=false:../../../. \
+	protoc --proto_path=api \
+           --proto_path=third_party \
+           --proto_path=pkg/proto \
+           --go_out=paths=source_relative:api \
+           --go-http_out=paths=source_relative:api \
+           --validate_out=paths=source_relative,lang=go:api \
+           --openapi_out=fq_schema_naming=true,default_response=false:. \
            $(API_PROTO_FILES)
 
 .PHONY: errors
 # generate errors code
 errors:
-	cd api/admin/v1 && protoc --proto_path=. \
-           --proto_path=../../../third_party \
-           --proto_path=../../../pkg/proto \
-           --go_out=paths=source_relative:. \
-           --go-errors_out=paths=source_relative:. \
+	protoc --proto_path=api \
+           --proto_path=third_party \
+           --proto_path=pkg/proto \
+           --go_out=paths=source_relative:api \
+           --go-errors_out=paths=source_relative:api \
            $(API_PROTO_FILES)
 
 .PHONY: config
@@ -64,15 +64,15 @@ config:
 .PHONY: swagger
 # generate swagger
 swagger:
-	cd api/admin/v1 && protoc --proto_path=. \
-	       --proto_path=../../../third_party \
-	       --proto_path=../../../pkg/proto \
-	       --openapiv2_out . \
+	protoc --proto_path=api \
+	       --proto_path=third_party \
+	       --proto_path=pkg/proto \
+	       --openapiv2_out api/admin/v1 \
 	       --openapiv2_opt logtostderr=true \
 	       --openapiv2_opt allow_merge=true \
 	       --openapiv2_opt merge_file_name=api.proto \
 	       --openapiv2_opt json_names_for_fields=false \
-	       --openapiv2_opt=openapi_configuration=swagger.config.yaml \
+	       --openapiv2_opt=openapi_configuration=api/admin/v1/swagger.config.yaml \
            $(API_PROTO_FILES)
 
 .PHONY: proto

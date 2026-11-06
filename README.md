@@ -19,6 +19,7 @@
 - **TOTP 双因素**：绑定/校验/解绑全流程 + 登录图形验证码（真实校验，可开关）
 - **登录失败锁定（loginlock）**：阈值/窗口/锁定时长后台可配（sys_security_config），Redis 共享 / 无 Redis 进程内存双后端，nil 安全装配
 - **敏感信息权限可见性（sensitive）**：列表默认脱敏（手机号/身份证等），`/sensitive/view` 虚拟权限点控制明文查看，权限判定故障 fail-closed；日志脱敏统一由 `pkg/sensitive` 输出掩码
+- **媒体库（附件分类 / 文件上传下载 / 断点续传）**：分类树增删改、分页文件库（改名/单删/批量删/导入外链）、大文件 1MB 分片上传（分片摘要 + 整文件摘要双重校验、秒传、续传、合并建档）、本地/阿里云 OSS 双模存储、`/static/*` 本地静态面（路径穿越 fail-closed）；前端三页 `web/src/views/media/{upload,file,scanUpload}`
 - **操作审计**：全接口操作记录（record_log），敏感查询行为留痕
 - **CORS 白名单配置化**（未配置即拒绝，fail-closed）；pprof 生产环境自动关闭
 
@@ -108,7 +109,7 @@ server {
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         API Layer                            │
-│                     (api/admin/v1/*.proto)                   │
+│                     (api/admin/v1/*.proto + api/media/v1)     │
 │  - Protobuf 服务定义                                         │
 │  - HTTP/gRPC 路由映射                                        │
 │  - OpenAPI 文档生成                                          │
@@ -141,7 +142,8 @@ server {
 ### 目录结构
 
 ```
-api/admin/v1/                    # API 层 - Protobuf 定义（生成物禁手改）
+api/admin/v1/                    # API 层 - Protobuf 定义（系统面：用户/角色/菜单/字典/日志…）
+api/media/v1/                    # API 层 - 媒体库域（分类/文件/断点续传；分域首例）
 app/admin/
 ├── cmd/server/                  # 入口 + wire_gen.go
 ├── configs/                     # config.yaml / examples（多库分组样例）

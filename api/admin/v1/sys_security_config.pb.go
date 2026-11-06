@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        v7.36.2
-// source: sys_security_config.proto
+// source: admin/v1/sys_security_config.proto
 
 package v1
 
@@ -60,7 +60,7 @@ type SecurityConfigItem struct {
 
 func (x *SecurityConfigItem) Reset() {
 	*x = SecurityConfigItem{}
-	mi := &file_sys_security_config_proto_msgTypes[0]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -72,7 +72,7 @@ func (x *SecurityConfigItem) String() string {
 func (*SecurityConfigItem) ProtoMessage() {}
 
 func (x *SecurityConfigItem) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[0]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -85,7 +85,7 @@ func (x *SecurityConfigItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SecurityConfigItem.ProtoReflect.Descriptor instead.
 func (*SecurityConfigItem) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{0}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SecurityConfigItem) GetId() uint64 {
@@ -257,7 +257,7 @@ type GetSecurityConfigRequest struct {
 
 func (x *GetSecurityConfigRequest) Reset() {
 	*x = GetSecurityConfigRequest{}
-	mi := &file_sys_security_config_proto_msgTypes[1]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -269,7 +269,7 @@ func (x *GetSecurityConfigRequest) String() string {
 func (*GetSecurityConfigRequest) ProtoMessage() {}
 
 func (x *GetSecurityConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[1]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -282,7 +282,7 @@ func (x *GetSecurityConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSecurityConfigRequest.ProtoReflect.Descriptor instead.
 func (*GetSecurityConfigRequest) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{1}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{1}
 }
 
 type GetSecurityConfigReply struct {
@@ -294,7 +294,7 @@ type GetSecurityConfigReply struct {
 
 func (x *GetSecurityConfigReply) Reset() {
 	*x = GetSecurityConfigReply{}
-	mi := &file_sys_security_config_proto_msgTypes[2]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -306,7 +306,7 @@ func (x *GetSecurityConfigReply) String() string {
 func (*GetSecurityConfigReply) ProtoMessage() {}
 
 func (x *GetSecurityConfigReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[2]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -319,7 +319,7 @@ func (x *GetSecurityConfigReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSecurityConfigReply.ProtoReflect.Descriptor instead.
 func (*GetSecurityConfigReply) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{2}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetSecurityConfigReply) GetConfig() *SecurityConfigItem {
@@ -357,7 +357,7 @@ type UpdateSecurityConfigRequest struct {
 
 func (x *UpdateSecurityConfigRequest) Reset() {
 	*x = UpdateSecurityConfigRequest{}
-	mi := &file_sys_security_config_proto_msgTypes[3]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -369,7 +369,7 @@ func (x *UpdateSecurityConfigRequest) String() string {
 func (*UpdateSecurityConfigRequest) ProtoMessage() {}
 
 func (x *UpdateSecurityConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[3]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -382,7 +382,7 @@ func (x *UpdateSecurityConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSecurityConfigRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSecurityConfigRequest) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{3}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateSecurityConfigRequest) GetCaptchaOpen() int32 {
@@ -534,7 +534,7 @@ type UpdateSecurityConfigReply struct {
 
 func (x *UpdateSecurityConfigReply) Reset() {
 	*x = UpdateSecurityConfigReply{}
-	mi := &file_sys_security_config_proto_msgTypes[4]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -546,7 +546,7 @@ func (x *UpdateSecurityConfigReply) String() string {
 func (*UpdateSecurityConfigReply) ProtoMessage() {}
 
 func (x *UpdateSecurityConfigReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[4]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -559,7 +559,7 @@ func (x *UpdateSecurityConfigReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSecurityConfigReply.ProtoReflect.Descriptor instead.
 func (*UpdateSecurityConfigReply) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{4}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateSecurityConfigReply) GetConfig() *SecurityConfigItem {
@@ -578,7 +578,7 @@ type GetLoginLockRequest struct {
 
 func (x *GetLoginLockRequest) Reset() {
 	*x = GetLoginLockRequest{}
-	mi := &file_sys_security_config_proto_msgTypes[5]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -590,7 +590,7 @@ func (x *GetLoginLockRequest) String() string {
 func (*GetLoginLockRequest) ProtoMessage() {}
 
 func (x *GetLoginLockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[5]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -603,7 +603,7 @@ func (x *GetLoginLockRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLoginLockRequest.ProtoReflect.Descriptor instead.
 func (*GetLoginLockRequest) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{5}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetLoginLockRequest) GetUsername() string {
@@ -628,7 +628,7 @@ type GetLoginLockReply struct {
 
 func (x *GetLoginLockReply) Reset() {
 	*x = GetLoginLockReply{}
-	mi := &file_sys_security_config_proto_msgTypes[6]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -640,7 +640,7 @@ func (x *GetLoginLockReply) String() string {
 func (*GetLoginLockReply) ProtoMessage() {}
 
 func (x *GetLoginLockReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[6]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -653,7 +653,7 @@ func (x *GetLoginLockReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLoginLockReply.ProtoReflect.Descriptor instead.
 func (*GetLoginLockReply) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{6}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetLoginLockReply) GetUsername() string {
@@ -714,7 +714,7 @@ type UnlockLoginRequest struct {
 
 func (x *UnlockLoginRequest) Reset() {
 	*x = UnlockLoginRequest{}
-	mi := &file_sys_security_config_proto_msgTypes[7]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -726,7 +726,7 @@ func (x *UnlockLoginRequest) String() string {
 func (*UnlockLoginRequest) ProtoMessage() {}
 
 func (x *UnlockLoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[7]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -739,7 +739,7 @@ func (x *UnlockLoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnlockLoginRequest.ProtoReflect.Descriptor instead.
 func (*UnlockLoginRequest) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{7}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UnlockLoginRequest) GetUsername() string {
@@ -759,7 +759,7 @@ type UnlockLoginReply struct {
 
 func (x *UnlockLoginReply) Reset() {
 	*x = UnlockLoginReply{}
-	mi := &file_sys_security_config_proto_msgTypes[8]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -771,7 +771,7 @@ func (x *UnlockLoginReply) String() string {
 func (*UnlockLoginReply) ProtoMessage() {}
 
 func (x *UnlockLoginReply) ProtoReflect() protoreflect.Message {
-	mi := &file_sys_security_config_proto_msgTypes[8]
+	mi := &file_admin_v1_sys_security_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -784,7 +784,7 @@ func (x *UnlockLoginReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnlockLoginReply.ProtoReflect.Descriptor instead.
 func (*UnlockLoginReply) Descriptor() ([]byte, []int) {
-	return file_sys_security_config_proto_rawDescGZIP(), []int{8}
+	return file_admin_v1_sys_security_config_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UnlockLoginReply) GetUsername() string {
@@ -801,11 +801,11 @@ func (x *UnlockLoginReply) GetCleared() bool {
 	return false
 }
 
-var File_sys_security_config_proto protoreflect.FileDescriptor
+var File_admin_v1_sys_security_config_proto protoreflect.FileDescriptor
 
-const file_sys_security_config_proto_rawDesc = "" +
+const file_admin_v1_sys_security_config_proto_rawDesc = "" +
 	"\n" +
-	"\x19sys_security_config.proto\x12\fapi.admin.v1\x1a\x1cgoogle/api/annotations.proto\"\xce\x06\n" +
+	"\"admin/v1/sys_security_config.proto\x12\fapi.admin.v1\x1a\x1cgoogle/api/annotations.proto\"\xce\x06\n" +
 	"\x12SecurityConfigItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12 \n" +
 	"\vcaptchaOpen\x18\x02 \x01(\x05R\vcaptchaOpen\x12&\n" +
@@ -890,19 +890,19 @@ const file_sys_security_config_proto_rawDesc = "" +
 	"\vUnlockLogin\x12 .api.admin.v1.UnlockLoginRequest\x1a\x1e.api.admin.v1.UnlockLoginReply\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/system/security-config/unlockB6Z4github.com/swordkee/kratos-vue-admin/api/admin/v1;v1b\x06proto3"
 
 var (
-	file_sys_security_config_proto_rawDescOnce sync.Once
-	file_sys_security_config_proto_rawDescData []byte
+	file_admin_v1_sys_security_config_proto_rawDescOnce sync.Once
+	file_admin_v1_sys_security_config_proto_rawDescData []byte
 )
 
-func file_sys_security_config_proto_rawDescGZIP() []byte {
-	file_sys_security_config_proto_rawDescOnce.Do(func() {
-		file_sys_security_config_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_sys_security_config_proto_rawDesc), len(file_sys_security_config_proto_rawDesc)))
+func file_admin_v1_sys_security_config_proto_rawDescGZIP() []byte {
+	file_admin_v1_sys_security_config_proto_rawDescOnce.Do(func() {
+		file_admin_v1_sys_security_config_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_admin_v1_sys_security_config_proto_rawDesc), len(file_admin_v1_sys_security_config_proto_rawDesc)))
 	})
-	return file_sys_security_config_proto_rawDescData
+	return file_admin_v1_sys_security_config_proto_rawDescData
 }
 
-var file_sys_security_config_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
-var file_sys_security_config_proto_goTypes = []any{
+var file_admin_v1_sys_security_config_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_admin_v1_sys_security_config_proto_goTypes = []any{
 	(*SecurityConfigItem)(nil),          // 0: api.admin.v1.SecurityConfigItem
 	(*GetSecurityConfigRequest)(nil),    // 1: api.admin.v1.GetSecurityConfigRequest
 	(*GetSecurityConfigReply)(nil),      // 2: api.admin.v1.GetSecurityConfigReply
@@ -913,7 +913,7 @@ var file_sys_security_config_proto_goTypes = []any{
 	(*UnlockLoginRequest)(nil),          // 7: api.admin.v1.UnlockLoginRequest
 	(*UnlockLoginReply)(nil),            // 8: api.admin.v1.UnlockLoginReply
 }
-var file_sys_security_config_proto_depIdxs = []int32{
+var file_admin_v1_sys_security_config_proto_depIdxs = []int32{
 	0, // 0: api.admin.v1.GetSecurityConfigReply.config:type_name -> api.admin.v1.SecurityConfigItem
 	0, // 1: api.admin.v1.UpdateSecurityConfigReply.config:type_name -> api.admin.v1.SecurityConfigItem
 	1, // 2: api.admin.v1.SysSecurityConfig.GetSecurityConfig:input_type -> api.admin.v1.GetSecurityConfigRequest
@@ -931,26 +931,26 @@ var file_sys_security_config_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_sys_security_config_proto_init() }
-func file_sys_security_config_proto_init() {
-	if File_sys_security_config_proto != nil {
+func init() { file_admin_v1_sys_security_config_proto_init() }
+func file_admin_v1_sys_security_config_proto_init() {
+	if File_admin_v1_sys_security_config_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sys_security_config_proto_rawDesc), len(file_sys_security_config_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_admin_v1_sys_security_config_proto_rawDesc), len(file_admin_v1_sys_security_config_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_sys_security_config_proto_goTypes,
-		DependencyIndexes: file_sys_security_config_proto_depIdxs,
-		MessageInfos:      file_sys_security_config_proto_msgTypes,
+		GoTypes:           file_admin_v1_sys_security_config_proto_goTypes,
+		DependencyIndexes: file_admin_v1_sys_security_config_proto_depIdxs,
+		MessageInfos:      file_admin_v1_sys_security_config_proto_msgTypes,
 	}.Build()
-	File_sys_security_config_proto = out.File
-	file_sys_security_config_proto_goTypes = nil
-	file_sys_security_config_proto_depIdxs = nil
+	File_admin_v1_sys_security_config_proto = out.File
+	file_admin_v1_sys_security_config_proto_goTypes = nil
+	file_admin_v1_sys_security_config_proto_depIdxs = nil
 }

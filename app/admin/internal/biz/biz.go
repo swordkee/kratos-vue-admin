@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/admin"
+	bizmedia "github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/media"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/biz/sms"
 	"github.com/swordkee/kratos-vue-admin/app/admin/internal/data/gen/model"
 )
@@ -34,6 +35,10 @@ var ProviderSet = wire.NewSet(
 	// 登录安全策略（gva sys_security_config + security_lock 回灌）
 	admin.NewSecurityConfigUseCase,
 	admin.NewSecurityLockUseCase,
+	// 媒体库（feat/media，同步 wp feat/wp-media）
+	bizmedia.NewCategoryUseCase,
+	bizmedia.NewFileUseCase,
+	bizmedia.NewChunkUseCase,
 )
 
 // Transaction 事务接口类型别名（指向 admin.Transaction 以避免循环导入）
