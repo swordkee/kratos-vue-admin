@@ -49,6 +49,15 @@
 - conf 结构、DAO/model（gorm/gen）、wire 各自入口见 Makefile；`make all` 为全量。
 - 重生成后必须 `git diff` 检查**无关漂移**（如 gorm-gen 表名单复数漂移、openapi 全量重排），漂移回退。
 
+## 改造纪律（硬性，先于一切写面改造）
+
+> 来源：lsmall `gate-first-discipline` skill。权威正文：工作区根 `E:\work\bmall\AGENTS.md` 顶部「改造纪律（2026-11-21 硬性）」+ docs 仓 `standards/UNIFIED_CODE_STANDARDS.md` §二十八（2026-11-21 在途合入，未合入前以根 AGENTS.md 摘要为准）。
+
+1. **规则先行，再看行为**：先定不变量 + 失败矩阵 + 跨端向量，**证明门禁对旧行为红**（可证伪），再改实现转绿，并配**变异验证**锁有效（把实现改坏 ⇒ 锁必须红，还原 ⇒ 绿）。
+2. **规则 + 门禁 > review，全绿才放行**：门禁全绿是放行硬前提，**门禁未全绿 = 不放行**；review 降级为门禁盲区抽查（业务语义 / 跨系统契约 / 并发设计层判断）。发现即沉淀新门禁规则或反例锁，**P0/P1 清零**才可收口。
+
+本项目门禁命令：后端 `go build ./...` + `go test -p 1 -count=1 ./...`；前端 `npx vite build`（与下文「质量门禁」节一致）。
+
 ## 质量门禁
 
 - 后端：`go build ./...` + `go test -p 1 -count=1 ./...` 全绿是合入门槛。
